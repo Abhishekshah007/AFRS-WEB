@@ -1,164 +1,149 @@
-:root {
-  --font-mono: 'Roboto Mono', monospace;
+@import "tailwindcss";
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-* {
-  box-sizing: border-box;
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-sans); }
+
+/* ── Scroll-reveal (driven by JS via IntersectionObserver) ── */
+.sr { opacity: 0; transform: translateY(24px); transition: opacity 0.6s cubic-bezier(.22,1,.36,1), transform 0.6s cubic-bezier(.22,1,.36,1); }
+.sr.sr-left { transform: translateX(-24px); }
+.sr.sr-right { transform: translateX(24px); }
+.sr.sr-scale { transform: scale(0.94); }
+.sr.visible { opacity: 1; transform: none; }
+
+/* stagger siblings */
+.stagger > *:nth-child(1) { transition-delay: 0ms; }
+.stagger > *:nth-child(2) { transition-delay: 80ms; }
+.stagger > *:nth-child(3) { transition-delay: 160ms; }
+.stagger > *:nth-child(4) { transition-delay: 240ms; }
+.stagger > *:nth-child(5) { transition-delay: 320ms; }
+.stagger > *:nth-child(6) { transition-delay: 400ms; }
+
+/* ── Page entry ── */
+.reveal-up {
+  animation: revealUp 700ms cubic-bezier(.22,1,.36,1) both;
+}
+.reveal-up-d1 { animation: revealUp 700ms 120ms cubic-bezier(.22,1,.36,1) both; }
+.reveal-up-d2 { animation: revealUp 700ms 240ms cubic-bezier(.22,1,.36,1) both; }
+.reveal-up-d3 { animation: revealUp 700ms 360ms cubic-bezier(.22,1,.36,1) both; }
+
+/* ── Hover lift ── */
+.card-pop {
+  transition: transform 240ms cubic-bezier(.22,1,.36,1), box-shadow 240ms ease, border-color 240ms ease;
+}
+.card-pop:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 36px -8px rgba(0,0,0,.18);
 }
 
-html {
-  font-size: 18px;
-  line-height: 32px;
-
-  background: rgb(0, 0, 0);
-  -webkit-font-smoothing: antialiased;
+/* ── Dark card glow ── */
+.glow-hover {
+  transition: box-shadow 300ms ease, border-color 300ms ease;
+}
+.glow-hover:hover {
+  box-shadow: 0 0 0 2px rgba(139,92,246,.5), 0 8px 40px -12px rgba(139,92,246,.5);
 }
 
-html,
-body,
-#app {
-  height: 100%;
+/* ── Animated gradient border ── */
+.grad-border {
+  position: relative;
+  z-index: 0;
+}
+.grad-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6, #3b82f6);
+  background-size: 300% 300%;
+  animation: gradMove 4s ease infinite;
+  opacity: 0;
+  transition: opacity 300ms;
+}
+.grad-border:hover::before { opacity: 1; }
+
+@keyframes gradMove {
+  0%  { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100%{ background-position: 0% 50%; }
 }
 
-body {
-  font-family: system-ui;
-  font-size: 18px;
-  line-height: 32px;
-
-  margin: 0;
-  color: rgb(1000, 1000, 1000);
-
-  @media (max-width: 1024px) {
-    font-size: 15px;
-    line-height: 24px;
-  }
+/* ── Forensic grid overlay ── */
+.forensic-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(125,211,252,.20), transparent 30%),
+    radial-gradient(circle at 85% 75%, rgba(139, 92,246,.15), transparent 28%);
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
+/* ── Scan-line on dark hero ── */
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,0,0,.04) 3px,
+    rgba(0,0,0,.04) 4px
+  );
 }
 
-h1 {
-  margin: 40px 0;
-  font-size: 64px;
-  line-height: 70px;
-  font-weight: bold;
+/* ── Animated counting number pulse ── */
+@keyframes countPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+.count-pop { animation: countPop 1s ease; }
 
-  @media (max-width: 1024px) {
-    margin: 24px 0;
-    font-size: 42px;
-    line-height: 42px;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 38px;
-    line-height: 38px;
-  }
-
-  @media (max-width: 400px) {
-    font-size: 32px;
-    line-height: 32px;
-  }
+/* ── Pulse ring on CTA ── */
+.pulse-ring {
+  position: relative;
+}
+.pulse-ring::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  border: 2px solid currentColor;
+  opacity: 0;
+  animation: pulseRing 2.5s cubic-bezier(.4,0,.6,1) infinite;
+}
+@keyframes pulseRing {
+  0%   { transform: scale(1); opacity: .5; }
+  70%  { transform: scale(1.12); opacity: 0; }
+  100% { opacity: 0; }
 }
 
-p {
-  margin: 24px 0;
-
-  @media (max-width: 1024px) {
-    margin: calc(var(--base) * 0.75) 0;
-  }
+/* ── Tag scroll-ticker ── */
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
+.ticker-track { animation: ticker 24s linear infinite; }
 
-a {
-  color: currentColor;
+/* ── Number count-up ── */
+.no-js-count { /* visible by default; JS will override */ }
 
-  &:focus {
-    opacity: 0.8;
-    outline: none;
-  }
-
-  &:active {
-    opacity: 0.7;
-    outline: none;
-  }
+/* ── Keyframes ── */
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
-svg {
-  vertical-align: middle;
+@keyframes floatSoft {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-8px); }
 }
+.float-soft { animation: floatSoft 6s ease-in-out infinite; }
 
-.home {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 100vh;
-  padding: 45px;
-  max-width: 1024px;
-  margin: 0 auto;
-  overflow: hidden;
-
-  @media (max-width: 400px) {
-    padding: 24px;
-  }
-
-  .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1;
-
-    h1 {
-      text-align: center;
-    }
-  }
-
-  .links {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    a {
-      text-decoration: none;
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-    }
-
-    .admin {
-      color: rgb(0, 0, 0);
-      background: rgb(1000, 1000, 1000);
-      border: 1px solid rgb(0, 0, 0);
-    }
-
-    .docs {
-      color: rgb(1000, 1000, 1000);
-      background: rgb(0, 0, 0);
-      border: 1px solid rgb(1000, 1000, 1000);
-    }
-  }
-
-  .footer {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    @media (max-width: 1024px) {
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    p {
-      margin: 0;
-    }
-
-    .codeLink {
-      text-decoration: none;
-      padding: 0 0.5rem;
-      background: rgb(60, 60, 60);
-      border-radius: 4px;
-    }
-  }
-}
+details summary::-webkit-details-marker { display: none; }

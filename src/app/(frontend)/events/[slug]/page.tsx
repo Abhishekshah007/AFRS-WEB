@@ -1,0 +1,150 @@
+import { notFound } from 'next/navigation'
+import Image from 'next/image'
+import Link from 'next/link'
+import { getPayloadClient } from '@/lib/payload'
+import { formatEventDate, formatEventType, resolveMediaUrl, richTextToPlain } from '@/lib/cms'
+import type { Event as AfrsEvent, Media } from '@/payload-types'
+import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
+import type { Metadata } from 'next'
+
+const fallbackBanner = 'https://www.figma.com/api/mcp/asset/4c42ae20-cfcd-4d2a-96e1-bc17321dcca2'
+
+type Props = { params: Promise<{ slug: string }> }
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const payload = await getPayloadClient()
+  const result = await payload.find({
+    collection: 'events',
+    where: { slug: { equals: slug }, published: { equals: true } },
+    limit: 1,
+    depth: 0,
+    overrideAccess: false,
+  })
+  const evt = result.docs[0] as AfrsEvent | undefined
+  if (!evt) return { title: 'Event not found' }
+  return {
+    title: evt.title,
+    description: evt.excerpt || richTextToPlain(evt.description, 160),
+  }
+}
+
+export default async function EventDetailPage({ params }: Props) {
+  const { slug } = await params
+  const payload = await getPayloadClient()
+
+  const result = await payload.find({
+    collection: 'events',
+    where: { slug: { equals: slug }, published: { equals: true } },
+    limit: 1,
+    depth: 1,
+    overrideAccess: false,
+  })
+
+  const evt = result.docs[0] as AfrsEvent | undefined
+  if (!evt) notFound()
+
+  const banner = resolveMediaUrl(evt.banner as number | Media | null | undefined, fallbackBanner)
+  const summary = evt.excerpt || richTextToPlain(evt.description, 200)
+
+  return (
+    <div className="bg-white min-h-screen">
+      {/* Breadcrumb */}
+      <div className="bg-slate-50 border-b border-slate-100">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 py-3 text-xs text-slate-500 flex gap-2 items-center">
+          <Link href="/" className="hover:text-indigo-600">Home</Link>
+          <span>/</span>
+          <Link href="/events" className="hover:text-indigo-600">Events</Link>
+          <span>/</span>
+          <span className="text-slate-700 font-semibold line-clamp-1">{evt.title}</span>
+        </div>
+      </div>
+
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 py-12 grid gap-10 lg:grid-cols-[1fr_340px] items-start">
+        {/* Main */}
+        <div>
+          <AnimateOnScroll>
+            <div className="relative h-64 sm:h-80 rounded-3xl overflow-hidden shadow-lg">
+              <Image src={banner} alt={evt.title} fill sizes="(max-width: 1024px) 100vw, 800px" priority className="object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent" />
+            </div>
+
+            <div className="mt-8">
+              {evt.eventType && (
+                <span className="rounded-full bg-indigo-100 text-indigo-700 px-4 py-1.5 text-xs font-bold">
+                  {formatEventType(evt.eventType)}
+                </span>
+              )}
+              <h1 className="mt-4 text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">{evt.title}</h1>
+
+              <div className="mt-5 flex flex-wrap gap-4 text-sm text-slate-600">
+                {evt.startDate && (
+                  <span className="flex items-center gap-1.5">📅 {formatEventDate(evt.startDate)}
+                    {evt.endDate && ` – ${formatEventDate(evt.endDate)}`}
+                  </span>
+                )}
+                {evt.startTime && <span className="flex items-center gap-1.5">🕐 {evt.startTime}</span>}
+                {evt.venue && <span className="flex items-center gap-1.5">📍 {evt.venue}</span>}
+                {evt.mode && <span className="flex items-center gap-1.5 capitalize">🖥 {evt.mode}</span>}
+              </div>
+
+              {summary && (
+                <p className="mt-6 text-slate-600 leading-relaxed text-base">{summary}</p>
+              )}
+            </div>
+          </AnimateOnScroll>
+        </div>
+
+        {/* Sidebar */}
+        <AnimateOnScroll direction="right" className="space-y-5">
+          {/* Registration card */}
+          <div className="rounded-3xl border border-slate-100 bg-white shadow-sm p-7">
+            <h2 className="font-extrabold text-slate-900 text-xl mb-5">Registration</h2>
+
+            {evt.registrationCategories && evt.registrationCategories.length > 0 && (
+              <div className="space-y-3 mb-6">
+                {evt.registrationCategories.map((cat) => (
+                  <div key={cat.id} className="flex items-center justify-between rounded-xl bg-slate-50 border border-slate-100 px-4 py-3">
+                    <span className="text-sm font-semibold text-slate-800">{cat.categoryName}</span>
+                    <span className="text-sm font-extrabold text-indigo-700">
+                      {cat.price ? `₹${cat.price.toLocaleString('en-IN')}` : 'Free'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {evt.includeKitOption && evt.kitPrice && (
+              <p className="text-xs text-slate-500 mb-4">
+                + Workshop kit available for ₹{evt.kitPrice.toLocaleString('en-IN')}
+              </p>
+            )}
+
+            {evt.registrationOpen !== false ? (
+              <Link
+                href="/contact"
+                className="block w-full text-center h-12 leading-[48px] rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold transition"
+              >
+                Register Now →
+              </Link>
+            ) : (
+              <div className="block w-full text-center h-12 leading-[48px] rounded-xl bg-slate-100 text-slate-400 text-sm font-bold cursor-not-allowed">
+                Registration Closed
+              </div>
+            )}
+          </div>
+
+          <div className="rounded-3xl border border-slate-100 bg-slate-50 p-6">
+            <p className="text-sm font-bold text-slate-800 mb-3">Need Help?</p>
+            <p className="text-xs text-slate-500 leading-relaxed mb-4">
+              For queries about registration, fees, or certificates, contact our support team.
+            </p>
+            <Link href="/contact" className="text-sm font-bold text-indigo-600 hover:text-indigo-700">
+              Contact Support →
+            </Link>
+          </div>
+        </AnimateOnScroll>
+      </div>
+    </div>
+  )
+}
