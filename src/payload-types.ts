@@ -288,6 +288,7 @@ export interface Event {
     };
     [k: string]: unknown;
   } | null;
+  eventNature?: ('national' | 'international') | null;
   eventType?: ('workshop' | 'webinar' | 'conference' | 'training') | null;
   mode?: ('online' | 'offline' | 'hybrid') | null;
   startDate: string;
@@ -549,6 +550,7 @@ export interface EventsSelect<T extends boolean = true> {
   banner?: T;
   excerpt?: T;
   description?: T;
+  eventNature?: T;
   eventType?: T;
   mode?: T;
   startDate?: T;

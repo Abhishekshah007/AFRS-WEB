@@ -16,17 +16,18 @@ import { ForensicBackground } from './ForensicBackground'
 
 /* ─── shared assets & layout ─── */
 export const heroPanelImage =
-  'https://www.figma.com/api/mcp/asset/f687555a-eb14-43e7-bcb9-cd2446819882'
+  'https://res.cloudinary.com/drrzakkgo/image/upload/v1777273424/WhatsApp_Image_2026-04-18_at_11.31.12_AM_hdi2gq.jpg'
 export const eventCardImages = [
-  'https://www.figma.com/api/mcp/asset/4c42ae20-cfcd-4d2a-96e1-bc17321dcca2',
-  'https://www.figma.com/api/mcp/asset/7dec6922-f8ad-4b52-a009-324a572ca5b5',
-  'https://www.figma.com/api/mcp/asset/15fda17c-7851-45c2-93fc-d1e48269eba9',
+  'https://www.appliedforensicresearchsciences.in/static/media/carousel-10.6bcf7e5d176fb7d57b28.jpeg',
+  'https://www.appliedforensicresearchsciences.in/static/media/carousel-6.37510e2cbc3800979dc5.jpeg',
+  'https://www.appliedforensicresearchsciences.in/static/media/carousel-7.526a8153933073ab1327.jpeg',
 ]
-export const aboutImage = 'https://www.figma.com/api/mcp/asset/e7944166-77e9-4951-b26b-6b9f94d7b9a2'
+export const aboutImage =
+  'https://www.appliedforensicresearchsciences.in/static/media/carousel-9.49c91d30b5585ee2a892.jpeg'
 export const galleryImages = [
-  'https://www.figma.com/api/mcp/asset/4c42ae20-cfcd-4d2a-96e1-bc17321dcca2',
-  'https://www.figma.com/api/mcp/asset/7dec6922-f8ad-4b52-a009-324a572ca5b5',
-  'https://www.figma.com/api/mcp/asset/15fda17c-7851-45c2-93fc-d1e48269eba9',
+  'https://res.cloudinary.com/drrzakkgo/image/upload/v1777273424/WhatsApp_Image_2026-04-15_at_11.53.12_PM_u2uvdf.jpg',
+  'https://res.cloudinary.com/drrzakkgo/image/upload/v1777273424/WhatsApp_Image_2026-04-15_at_11.54.13_PM_gzfbix.jpg',
+  'https://res.cloudinary.com/drrzakkgo/image/upload/v1777658711/d8sz7npdnmpz7pqeb78v.jpg',
   'https://www.figma.com/api/mcp/asset/e7944166-77e9-4951-b26b-6b9f94d7b9a2',
 ]
 
@@ -458,7 +459,7 @@ export function EventsSection({
                   <div
                     className={`h-10 w-10 rounded-lg ${badgeColors[index % badgeColors.length]} text-white flex items-center justify-center text-sm`}
                   >
-                    ⦿
+                    <span className="sr-only">{afrsEvent.eventNature}</span>
                   </div>
                   <h3 className="mt-4 text-xl font-bold text-slate-900">{afrsEvent.title}</h3>
                   <p className="mt-2 text-xs text-slate-500">

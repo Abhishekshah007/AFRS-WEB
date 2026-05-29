@@ -19,6 +19,16 @@ const nextConfig: NextConfig = {
         hostname: 'www.figma.com',
         pathname: '/api/mcp/asset/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/drrzakkgo/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.appliedforensicresearchsciences.in',
+        pathname: '/static/media/**',
+      }
     ],
   },
   webpack: (webpackConfig) => {

@@ -20,6 +20,12 @@ export const Events: CollectionConfig = {
     { name: 'excerpt', type: 'textarea', admin: { description: 'Short summary shown in cards and listings.' } },
     { name: 'description', type: 'richText' },
     {
+      name: 'eventNature', type: 'select', options: [
+        { label: 'National', value: 'national' },
+        { label: 'International', value: 'international' },
+      ]
+    },
+    {
       name: 'eventType',
       type: 'select',
       options: [
