@@ -1,0 +1,1 @@
+export { ArticlesPageView } from './ArticlesPageView'

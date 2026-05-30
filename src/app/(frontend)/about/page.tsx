@@ -1,65 +1,174 @@
-import { PageHero } from '@/components/marketing/PageHero'
+import { AboutPageView } from '@/components/about/AboutPageView'
+import { ABOUT_IMAGES } from '@/components/about/tokens'
+import type { AchievementStat, CertificationItem, LeaderProfile } from '@/components/about/types'
+import { resolveMediaUrl } from '@/lib/cms'
 import { getPayloadClient } from '@/lib/payload'
-import type { HomePage } from '@/payload-types'
-import Image from 'next/image'
+import type { HomePage, ImpactStat, Media, Scientist } from '@/payload-types'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'About Us',
+  description:
+    'Learn about AFRS — our vision, mission, leadership, certifications, and achievements in forensic science education and research.',
+}
+
+const defaultCertifications: CertificationItem[] = [
+  { icon: '🔬', title: 'AFPS Team', description: 'Applied Forensic Professional Standards aligned training and assessment.' },
+  { icon: '📋', title: 'ISO Protocols', description: 'Laboratory workflows following international quality management principles.' },
+  { icon: '🏛', title: 'Academic MoUs', description: 'Partnerships with universities for research and internship programmes.' },
+  { icon: '⚖️', title: 'Legal Expert Panel', description: 'Court-qualified experts for testimony and case consultancy.' },
+]
+
+const defaultUnique = [
+  { text: 'Research-led curriculum mapped to real case workflows' },
+  { text: 'ISO-minded laboratory practices and chain-of-custody focus' },
+  { text: 'Hybrid learning — online theory with offline practicals' },
+  { text: 'Mentorship from practicing forensic scientists' },
+  { text: 'Nationwide network of students and professionals' },
+]
+
+const defaultActivities = [
+  { text: 'Certificate programmes and short-term forensic courses' },
+  { text: 'Crime scene and laboratory internship placements' },
+  { text: 'Forensic consultancy for agencies and legal teams' },
+  { text: 'Workshops, webinars, and national conferences' },
+  { text: 'Published research and collaborative investigations' },
+]
+
+const defaultAchievements: AchievementStat[] = [
+  { value: '500+', label: 'Members', tone: 'blue', numericEnd: 500, suffix: '+' },
+  { value: '400+', label: 'Students', tone: 'purple', numericEnd: 400, suffix: '+' },
+  { value: '95+', label: 'Events', tone: 'orange', numericEnd: 95, suffix: '+' },
+  { value: '1', label: 'National Network', tone: 'green', numericEnd: 1, suffix: '' },
+  { value: '1000+', label: 'Followers', tone: 'red', numericEnd: 1000, suffix: '+' },
+]
+
+const toneMap: Record<string, AchievementStat['tone']> = {
+  indigo: 'blue',
+  blue: 'blue',
+  purple: 'purple',
+  orange: 'orange',
+  emerald: 'green',
+  green: 'green',
+}
+
+/** Parse CMS text values like "300+" into CountUp-friendly parts. */
+function parseStatValue(raw: string): Pick<AchievementStat, 'value' | 'numericEnd' | 'suffix'> {
+  const match = raw.trim().match(/^(\d+)(.*)$/)
+  if (!match) return { value: raw }
+  return {
+    value: raw,
+    numericEnd: Number(match[1]),
+    suffix: match[2] || '',
+  }
+}
+
+function toLeader(sci: Scientist, index: number): LeaderProfile {
+  const photoUrl = resolveMediaUrl(sci.photo as number | Media | null | undefined, '')
+  const initials =
+    sci.name
+      ?.split(' ')
+      .map((w) => w[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase() ?? '??'
+  return {
+    id: String(sci.id ?? index),
+    name: sci.name,
+    designation: sci.designation ?? 'Forensic Scientist',
+    bio: sci.bio,
+    photoUrl: photoUrl || undefined,
+    initials,
+  }
+}
+
+const fallbackLeaders: LeaderProfile[] = [
+  {
+    id: '1',
+    name: 'Mr. Rakesh Mia',
+    designation: 'Forensic Science Expert',
+    bio: 'Specialized in analytical forensics, evidence interpretation, and academic mentoring.',
+    initials: 'RM',
+  },
+  {
+    id: '2',
+    name: 'Mr. Vijay',
+    designation: 'Investigation Specialist',
+    bio: 'Focused on practical case workflows, documentation standards, and lab methodology.',
+    initials: 'VJ',
+  },
+]
+
+const fallbackCommittee: LeaderProfile[] = [
+  { id: 'c1', name: 'Dr. Sharma', designation: 'Forensic Pathologist', initials: 'DS' },
+  { id: 'c2', name: 'Dr. Patel', designation: 'Toxicologist', initials: 'DP' },
+  { id: 'c3', name: 'Dr. Khan', designation: 'Digital Forensics', initials: 'DK' },
+  { id: 'c4', name: 'Dr. Mehta', designation: 'Document Expert', initials: 'DM' },
+  { id: 'c5', name: 'Dr. Singh', designation: 'Ballistics Expert', initials: 'DS' },
+]
 
 export default async function AboutPage() {
   const payload = await getPayloadClient()
-  const home = (await payload.findGlobal({ slug: 'homePage', depth: 1 })) as HomePage
-  const sectionText = home?.sectionText
+
+  const [homePage, scientists, impactStats] = await Promise.all([
+    payload.findGlobal({ slug: 'homePage', depth: 1 }),
+    payload.find({
+      collection: 'scientists',
+      where: { published: { equals: true } },
+      sort: 'order',
+      limit: 12,
+      depth: 1,
+      overrideAccess: false,
+    }),
+    payload.find({
+      collection: 'impactStats',
+      where: { published: { equals: true } },
+      sort: 'order',
+      limit: 5,
+      depth: 0,
+      overrideAccess: false,
+    }),
+  ])
+
+  const home = homePage as HomePage
+  const sectionText = home?.sectionText ?? {}
+  const heroImage = resolveMediaUrl(
+    (home?.hero as { heroImage?: number | Media | null })?.heroImage,
+    ABOUT_IMAGES.hero,
+  )
+
+  const allLeaders =
+    scientists.docs.length > 0
+      ? (scientists.docs as Scientist[]).map((s, i) => toLeader(s, i))
+      : [...fallbackLeaders, ...fallbackCommittee]
+
+  const featuredLeaders = allLeaders.slice(0, Math.max(2, Math.min(4, allLeaders.length)))
+  const committee =
+    allLeaders.length > 2 ? allLeaders.slice(2, 7) : fallbackCommittee
+
+  const achievements: AchievementStat[] =
+    impactStats.docs.length > 0
+      ? (impactStats.docs as ImpactStat[]).map((stat, i) => {
+          const parsed = parseStatValue(stat.value ?? '0')
+          const tones: AchievementStat['tone'][] = ['blue', 'purple', 'orange', 'green', 'red']
+          return {
+            ...parsed,
+            label: stat.label ?? 'Stat',
+            tone: toneMap[stat.tone ?? ''] ?? tones[i % tones.length],
+          }
+        })
+      : defaultAchievements
 
   return (
-    <div>
-      <PageHero
-        eyebrow="ABOUT AFRS"
-        title={sectionText?.aboutHeading || 'About Applied Forensic Research Sciences'}
-        subtitle="Advancing the frontiers of forensic science through education, research, and professional excellence."
-        primaryCta={{ label: 'Explore Programs', href: '/courses' }}
-        secondaryCta={{ label: 'Contact Us', href: '/contact' }}
-      />
-
-      <section className="py-16 lg:py-20 bg-white">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 grid gap-12 lg:grid-cols-2 items-center">
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
-              Our Mission
-            </h2>
-            <p className="mt-6 text-slate-600 leading-relaxed">
-              {sectionText?.aboutDescription1 ||
-                'AFRS is a premier organization established with a vision to revolutionize the forensic science landscape through research, training, and specialized services.'}
-            </p>
-            <p className="mt-4 text-slate-600 leading-relaxed">
-              {sectionText?.aboutDescription2 ||
-                'We bridge the gap between academic theory and practical application, providing students and professionals with the tools they need to excel in the field of forensic investigation.'}
-            </p>
-
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {[
-                ['Research-led', 'Programs designed with real case workflows'],
-                ['Industry-ready', 'Practical skills and certification tracks'],
-                ['Expert team', 'Guidance from experienced scientists'],
-              ].map(([title, body]) => (
-                <div key={title} className="rounded-2xl border border-slate-100 bg-slate-50 p-5 card-pop">
-                  <p className="font-bold text-slate-900 text-sm">{title}</p>
-                  <p className="mt-2 text-xs text-slate-500 leading-relaxed">{body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="relative rounded-3xl overflow-hidden border border-slate-100 shadow-lg aspect-[4/3]">
-            <Image
-              src="https://www.figma.com/api/mcp/asset/e7944166-77e9-4951-b26b-6b9f94d7b9a2"
-              alt="AFRS laboratory"
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent" />
-          </div>
-        </div>
-      </section>
-    </div>
+    <AboutPageView
+      sectionText={sectionText}
+      featuredLeaders={featuredLeaders.length >= 2 ? featuredLeaders : fallbackLeaders}
+      committee={committee}
+      achievements={achievements}
+      certifications={defaultCertifications}
+      uniqueItems={defaultUnique}
+      activityItems={defaultActivities}
+      heroImage={heroImage}
+    />
   )
 }
-

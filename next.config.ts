@@ -28,7 +28,12 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'www.appliedforensicresearchsciences.in',
         pathname: '/static/media/**',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
     ],
   },
   webpack: (webpackConfig) => {

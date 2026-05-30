@@ -75,6 +75,7 @@ export interface Config {
     galleryItems: GalleryItem;
     impactStats: ImpactStat;
     contactMessages: ContactMessage;
+    articles: Article;
     media: Media;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -91,6 +92,7 @@ export interface Config {
     galleryItems: GalleryItemsSelect<false> | GalleryItemsSelect<true>;
     impactStats: ImpactStatsSelect<false> | ImpactStatsSelect<true>;
     contactMessages: ContactMessagesSelect<false> | ContactMessagesSelect<true>;
+    articles: ArticlesSelect<false> | ArticlesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -391,6 +393,60 @@ export interface ContactMessage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles".
+ */
+export interface Article {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  category: 'toxicology' | 'ballistics' | 'psychology' | 'dna' | 'digitalForensics' | 'odontology' | 'general';
+  coverImage?: (number | null) | Media;
+  authorName: string;
+  authorTitle?: string | null;
+  authorAvatar?: (number | null) | Media;
+  readTimeMinutes?: number | null;
+  publishedDate?: string | null;
+  /**
+   * Optional second category pill (e.g. AI in Forensics).
+   */
+  secondaryTag?: string | null;
+  tags?:
+    | {
+        tag: string;
+        id?: string | null;
+      }[]
+    | null;
+  pullQuote?: {
+    text?: string | null;
+    attribution?: string | null;
+  };
+  authorBio?: string | null;
+  /**
+   * Show as Editor’s Choice
+   */
+  featured?: boolean | null;
+  published?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -444,6 +500,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'contactMessages';
         value: number | ContactMessage;
+      } | null)
+    | ({
+        relationTo: 'articles';
+        value: number | Article;
       } | null)
     | ({
         relationTo: 'media';
@@ -640,6 +700,41 @@ export interface ContactMessagesSelect<T extends boolean = true> {
   subject?: T;
   message?: T;
   status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles_select".
+ */
+export interface ArticlesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  excerpt?: T;
+  content?: T;
+  category?: T;
+  coverImage?: T;
+  authorName?: T;
+  authorTitle?: T;
+  authorAvatar?: T;
+  readTimeMinutes?: T;
+  publishedDate?: T;
+  secondaryTag?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  pullQuote?:
+    | T
+    | {
+        text?: T;
+        attribution?: T;
+      };
+  authorBio?: T;
+  featured?: T;
+  published?: T;
   updatedAt?: T;
   createdAt?: T;
 }

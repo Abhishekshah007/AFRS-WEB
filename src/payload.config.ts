@@ -14,6 +14,7 @@ import {Scientists} from './collections/Scientists'
 import {GalleryItems} from './collections/GalleryItems'
 import {ImpactStats} from './collections/ImpactStats'
 import {ContactMessages} from './collections/ContactMessages'
+import {Articles} from './collections/Articles'
 import {SiteSettings} from './collections/globals/SiteSettings'
 import {HeaderSettings} from './collections/globals/HeaderSettings'
 import {FooterSettings} from './collections/globals/FooterSettings'
@@ -34,6 +35,7 @@ export default buildConfig({
     Events, Testimonials,
     Scientists, GalleryItems, ImpactStats,
     ContactMessages,
+    Articles,
     Media
     
   ],

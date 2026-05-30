@@ -2,6 +2,134 @@
 
 @theme {
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* About page tokens (Figma: primary blue ~#4F46E5) */
+  --color-about-primary: #4f46e5;
+  --color-about-primary-hover: #4338ca;
+  --color-about-primary-soft: #eef2ff;
+  --color-about-surface-alt: #f9fafb;
+  --color-about-text: #0f172a;
+  --color-about-text-muted: #64748b;
+  --color-about-footer: #0f172a;
+  --color-about-stat-blue: #3b82f6;
+  --color-about-stat-purple: #8b5cf6;
+  --color-about-stat-orange: #f97316;
+  --color-about-stat-green: #22c55e;
+  --color-about-stat-red: #ef4444;
+}
+
+.about-page {
+  --about-primary: var(--color-about-primary);
+  --about-primary-hover: var(--color-about-primary-hover);
+  --about-primary-soft: var(--color-about-primary-soft);
+  --about-surface-alt: var(--color-about-surface-alt);
+  --about-text: var(--color-about-text);
+  --about-text-muted: var(--color-about-text-muted);
+  --about-footer: var(--color-about-footer);
+  --about-stat-blue: var(--color-about-stat-blue);
+  --about-stat-purple: var(--color-about-stat-purple);
+  --about-stat-orange: var(--color-about-stat-orange);
+  --about-stat-green: var(--color-about-stat-green);
+  --about-stat-red: var(--color-about-stat-red);
+}
+
+.about-hero {
+  background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 50%, #2563eb 100%);
+}
+
+/* ── Service detail page (catalog item) ── */
+.service-detail-page {
+  --svc-primary: #5d5fef;
+  --svc-primary-hover: #4f46e5;
+  --svc-primary-soft: #eef0ff;
+  --svc-accent: #f28c28;
+  --svc-accent-hover: #e67e22;
+  --svc-surface: #f8f9ff;
+  --svc-text: #0a0b1e;
+  --svc-text-muted: #4b5563;
+}
+
+.svc-consult-panel {
+  background: linear-gradient(145deg, #5d5fef 0%, #4f46e5 45%, #3b37ff 100%);
+}
+
+/* ── Student Hub page ── */
+.student-hub-page {
+  --hub-primary: #4f46e5;
+  --hub-primary-hover: #4338ca;
+  --hub-primary-soft: #eef2ff;
+  --hub-text: #0f172a;
+  --hub-text-muted: #64748b;
+  --hub-navy: #0f172a;
+}
+
+.hub-hero-glow::before,
+.hub-hero-glow::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  opacity: 0.45;
+}
+.hub-hero-glow::before {
+  width: 420px;
+  height: 420px;
+  top: -120px;
+  left: -80px;
+  background: #c7d2fe;
+}
+.hub-hero-glow::after {
+  width: 380px;
+  height: 380px;
+  bottom: -100px;
+  right: -60px;
+  background: #ddd6fe;
+}
+
+.hub-exam-section {
+  background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+}
+
+.hub-quiz-card {
+  background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
+}
+
+.hub-visitor-bar {
+  background: linear-gradient(90deg, #4f46e5 0%, #6366f1 50%, #4f46e5 100%);
+}
+
+/* ── Student Hub — Articles listing ── */
+.articles-page {
+  --articles-primary: #5d78ff;
+  --articles-primary-hover: #4f63e8;
+  --articles-accent: #ff9800;
+  --articles-accent-hover: #f57c00;
+}
+
+.articles-hero {
+  background: linear-gradient(135deg, #5d78ff 0%, #4f63e8 50%, #3b5bdb 100%);
+}
+
+.articles-stats-bar {
+  background: linear-gradient(90deg, #5d78ff 0%, #6366f1 50%, #5d78ff 100%);
+}
+
+/* ── Programmes & Events page ── */
+.programmes-page {
+  --prog-primary: #5d87ff;
+  --prog-primary-hover: #4a75f0;
+  --prog-primary-soft: #eef3ff;
+  --prog-text: #0f172a;
+  --prog-text-muted: #64748b;
+}
+
+.programmes-hero {
+  background: linear-gradient(135deg, #5d87ff 0%, #4a75f0 50%, #3b63e8 100%);
+}
+
+.programmes-page .hub-visitor-bar {
+  background: linear-gradient(90deg, #5d87ff 0%, #6b93ff 50%, #5d87ff 100%);
 }
 
 html { scroll-behavior: smooth; }
@@ -147,3 +275,26 @@ body { font-family: var(--font-sans); }
 .float-soft { animation: floatSoft 6s ease-in-out infinite; }
 
 details summary::-webkit-details-marker { display: none; }
+
+/* ── AFSL Services page ── */
+.afsl-hero {
+  background: linear-gradient(155deg, #2e1065 0%, #4c1d95 35%, #6d28d9 65%, #5b21b6 100%);
+}
+
+.afsl-hero-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 20%, transparent 100%);
+}
+
+.afsl-hero-card {
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.afsl-page .no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
