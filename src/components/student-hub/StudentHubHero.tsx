@@ -1,31 +1,58 @@
+import { HeroStagger, HeroStaggerItem } from '@/components/motion/HeroStagger'
 import { StudentHubSearch } from '@/components/student-hub/StudentHubSearch'
 import { studentHubTokens } from '@/components/student-hub/tokens'
 
-/**
- * Centered hero with soft glow background, badge, and integrated search.
- */
 export function StudentHubHero() {
   return (
-    <section className="relative overflow-hidden bg-white hub-hero-glow pt-12 pb-16 md:pt-16 md:pb-20" aria-labelledby="hub-hero-title">
-      <div className={`${studentHubTokens.container} relative z-10 text-center`}>
-        <span
-          className={`inline-flex ${studentHubTokens.radiusPill} bg-[var(--hub-primary-soft)] px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-[var(--hub-primary)] reveal-up`}
-        >
-          Student Portal
-        </span>
-        <h1
-          id="hub-hero-title"
-          className="mt-5 text-3xl sm:text-4xl lg:text-[48px] font-extrabold text-[var(--hub-text)] leading-tight reveal-up-d1"
-        >
-          Student <span className="text-[var(--hub-primary)]">Resource Hub</span>
-        </h1>
-        <p className={`mt-4 max-w-2xl mx-auto text-sm sm:text-base ${studentHubTokens.body} reveal-up-d2`}>
-          Access a comprehensive collection of forensic learning materials, research papers, exam preparation
-          resources, and career guidance — curated for scholars and aspiring investigators.
-        </p>
-        <div className="reveal-up-d3">
-          <StudentHubSearch />
-        </div>
+    <section className="relative w-full overflow-hidden bg-gradient-to-b from-[#f0f4ff] via-white to-white py-20 sm:py-28 lg:py-36">
+      {/* Soft radial glow backdrop */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 flex items-start justify-center"
+      >
+        <div className="h-[500px] w-[900px] rounded-full bg-[#dde8ff] opacity-40 blur-[120px]" />
+      </div>
+
+      <div className="relative z-10 mx-auto w-full max-w-4xl px-6 text-center">
+        <HeroStagger>
+          {/* Badge */}
+          <HeroStaggerItem>
+            <span
+              className={`inline-flex ${studentHubTokens.radiusPill} bg-[var(--hub-primary-soft)] border border-[#1e3a5f]/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-[var(--hub-primary)]`}
+            >
+              Student Portal
+            </span>
+          </HeroStaggerItem>
+
+          {/* Headline */}
+          <HeroStaggerItem>
+            <h1
+              id="hub-hero-title"
+              className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[var(--hub-text)] leading-[1.1] tracking-tight text-balance"
+            >
+              Student{' '}
+              <span className="text-gradient-brand">Resource Hub</span>
+            </h1>
+          </HeroStaggerItem>
+
+          {/* Subtext */}
+          <HeroStaggerItem>
+            <p
+              className={`mt-5 mx-auto max-w-xl text-base sm:text-lg leading-relaxed ${studentHubTokens.body}`}
+            >
+              Access a comprehensive library of forensic science materials, research papers,
+              case studies, and exam preparation tools designed to accelerate your learning
+              journey.
+            </p>
+          </HeroStaggerItem>
+
+          {/* Search */}
+          <HeroStaggerItem>
+            <div className="mt-10 flex justify-center">
+              <StudentHubSearch />
+            </div>
+          </HeroStaggerItem>
+        </HeroStagger>
       </div>
     </section>
   )

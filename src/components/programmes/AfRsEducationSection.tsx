@@ -26,6 +26,9 @@ export function AfRsEducationSection({ programmes }: AfRsEducationSectionProps) 
               <p className={`mt-2 text-sm ${programmesTokens.body}`}>
                 Certificate programmes and professional courses designed for students, investigators, and laboratory staff.
               </p>
+              <Link href="/courses/education" className="mt-2 inline-flex text-sm font-bold text-[var(--prog-primary)] hover:underline">
+                Browse all education tracks →
+              </Link>
             </div>
           </header>
         </AnimateOnScroll>
@@ -34,19 +37,21 @@ export function AfRsEducationSection({ programmes }: AfRsEducationSectionProps) 
           <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {programmes.map((prog) => (
               <li key={prog.id}>
-                <article className={`${programmesTokens.radiusCard} border border-slate-100 bg-white p-6 shadow-sm card-pop h-full flex flex-col`}>
+                <Link
+                  href={prog.href}
+                  className={`${programmesTokens.radiusCard} border border-slate-100 bg-white p-6 shadow-sm card-pop h-full flex flex-col group block`}
+                >
                   <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-slate-50 text-xl border border-slate-100" aria-hidden>
                     {prog.icon}
                   </span>
-                  <h3 className="mt-4 font-extrabold text-slate-900 text-sm leading-snug">{prog.title}</h3>
+                  <h3 className="mt-4 font-extrabold text-slate-900 text-sm leading-snug group-hover:text-[var(--prog-primary)] transition">
+                    {prog.title}
+                  </h3>
                   <p className={`mt-2 text-xs flex-1 ${programmesTokens.body}`}>{prog.description}</p>
-                  <Link
-                    href={prog.href}
-                    className="mt-5 text-sm font-bold text-[var(--prog-primary)] hover:underline"
-                  >
-                    Apply Now <span aria-hidden>→</span>
-                  </Link>
-                </article>
+                  <span className="mt-5 text-sm font-bold text-[var(--prog-primary)] group-hover:underline">
+                    View programmes <span aria-hidden>→</span>
+                  </span>
+                </Link>
               </li>
             ))}
           </ul>

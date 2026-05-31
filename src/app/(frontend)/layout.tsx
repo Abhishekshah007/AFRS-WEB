@@ -1,9 +1,18 @@
 import React from 'react'
+import { Plus_Jakarta_Sans } from 'next/font/google'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { AppProviders } from '@/components/providers/AppProviders'
 import { getPayloadClient } from '@/lib/payload'
 import type { FooterSetting, HeaderSetting, SiteSetting } from '@/payload-types'
 import './styles.css'
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-jakarta',
+  display: 'swap',
+  weight: ['400', '500', '600', '700', '800'],
+})
 
 export async function generateMetadata(): Promise<import('next').Metadata> {
   const payload = await getPayloadClient()
@@ -46,10 +55,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   ])
 
   return (
-    <html lang="en">
-      <body className="bg-white text-gray-900 antialiased">
+    <html lang="en" className={plusJakarta.variable}>
+      <body className="bg-[#f8f9fc] text-slate-900 antialiased font-sans selection:bg-indigo-500/25 selection:text-indigo-950">
         <Navbar settings={headerSettings} />
-        <main>{children}</main>
+        <AppProviders>
+          <main className="relative min-h-[50vh]">{children}</main>
+        </AppProviders>
         <Footer settings={footerSettings} siteSettings={siteSettings} />
       </body>
     </html>

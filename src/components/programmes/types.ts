@@ -8,10 +8,12 @@ export type EducationProgramme = {
 
 export type TrainingOption = {
   id: string
+  slug: string
   icon: string
   title: string
   tag: string
   tagTone: 'blue' | 'green' | 'purple' | 'orange'
+  href: string
 }
 
 export type HubEventCard = {
@@ -21,6 +23,7 @@ export type HubEventCard = {
   description: string
   eventType: string
   eventTypeLabel: string
+  eventNature: 'national' | 'international'
   startDate: string
   visualTone: 'blue' | 'orange' | 'purple'
   visualIcon: string
@@ -37,6 +40,7 @@ export type ResourcePerson = {
 export type ArchiveItem = {
   label: string
   count: string
+  href: string
 }
 
 export type GalleryThumb = {

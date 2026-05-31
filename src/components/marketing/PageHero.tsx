@@ -1,4 +1,8 @@
-import Link from 'next/link'
+'use client'
+
+import { OfficialBannerShell } from '@/components/banner/OfficialBannerShell'
+import { HeroStagger, HeroStaggerItem } from '@/components/motion/HeroStagger'
+import { ShimmerLink } from '@/components/motion/ShimmerLink'
 
 export function PageHero({
   eyebrow,
@@ -14,43 +18,52 @@ export function PageHero({
   secondaryCta?: { label: string; href: string }
 }) {
   return (
-    <section
-      className="relative overflow-hidden py-14 lg:py-20 text-white"
-      style={{ background: 'linear-gradient(135deg, #2563eb 0%, #4f46e5 60%, #93c5fd 100%)' }}
+    <OfficialBannerShell
+      variant="indigo"
+      ariaLabelledBy="page-hero-title"
+      className="text-white"
+      contentClassName="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 text-center official-banner-content-pad py-14 lg:py-24"
     >
-      <div className="absolute inset-0 forensic-grid" />
-      <div className="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 text-center">
+      <HeroStagger>
         {eyebrow && (
-          <span className="inline-flex rounded-full bg-white/15 backdrop-blur px-4 py-1 text-xs font-bold uppercase tracking-wider">
-            {eyebrow}
-          </span>
+          <HeroStaggerItem>
+            <span className="inline-flex rounded-full bg-white/15 backdrop-blur-md border border-amber-400/30 px-4 py-1.5 text-xs font-bold uppercase tracking-widest">
+              {eyebrow}
+            </span>
+          </HeroStaggerItem>
         )}
-        <h1 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
-          {title}
-        </h1>
-        {subtitle && <p className="mt-4 text-base sm:text-lg text-white/85 max-w-3xl mx-auto">{subtitle}</p>}
+        <HeroStaggerItem>
+          <h1
+            id="page-hero-title"
+            className="mt-4 text-3xl sm:text-4xl lg:text-[52px] font-extrabold tracking-tight leading-[1.1] text-balance"
+          >
+            {title}
+          </h1>
+        </HeroStaggerItem>
+        {subtitle && (
+          <HeroStaggerItem>
+            <p className="mt-5 text-base sm:text-lg text-white/90 max-w-3xl mx-auto leading-relaxed">
+              {subtitle}
+            </p>
+          </HeroStaggerItem>
+        )}
         {(primaryCta || secondaryCta) && (
-          <div className="mt-8 flex flex-wrap gap-3 justify-center">
-            {primaryCta && (
-              <Link
-                href={primaryCta.href}
-                className="inline-flex h-12 items-center justify-center rounded-full bg-orange-500 hover:bg-orange-600 px-8 text-sm font-bold shadow-lg shadow-black/20 transition"
-              >
-                {primaryCta.label}
-              </Link>
-            )}
-            {secondaryCta && (
-              <Link
-                href={secondaryCta.href}
-                className="inline-flex h-12 items-center justify-center rounded-full border-2 border-white/90 bg-white/10 hover:bg-white/20 px-8 text-sm font-bold transition"
-              >
-                {secondaryCta.label}
-              </Link>
-            )}
-          </div>
+          <HeroStaggerItem>
+            <div className="mt-10 flex flex-wrap gap-4 justify-center">
+              {primaryCta && (
+                <ShimmerLink href={primaryCta.href} variant="primary">
+                  {primaryCta.label}
+                </ShimmerLink>
+              )}
+              {secondaryCta && (
+                <ShimmerLink href={secondaryCta.href} variant="ghost">
+                  {secondaryCta.label}
+                </ShimmerLink>
+              )}
+            </div>
+          </HeroStaggerItem>
         )}
-      </div>
-    </section>
+      </HeroStagger>
+    </OfficialBannerShell>
   )
 }
-

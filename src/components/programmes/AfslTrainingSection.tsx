@@ -41,19 +41,30 @@ export function AfslTrainingSection({ options }: AfslTrainingSectionProps) {
                 </li>
               ))}
             </ul>
-            <Link
-              href="/contact"
-              className="mt-8 inline-flex h-12 items-center justify-center px-8 rounded-xl bg-[var(--prog-primary)] hover:bg-[var(--prog-primary-hover)] text-white text-sm font-bold transition shadow-md"
-            >
-              Apply for Training
-            </Link>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/courses/training"
+                className="inline-flex h-12 items-center justify-center px-8 rounded-xl bg-[var(--prog-primary)] hover:bg-[var(--prog-primary-hover)] text-white text-sm font-bold transition shadow-md"
+              >
+                Browse Training Tracks
+              </Link>
+              <Link
+                href="/contact"
+                className="inline-flex h-12 items-center justify-center px-8 rounded-xl border border-slate-200 text-slate-700 hover:bg-white text-sm font-bold transition"
+              >
+                Apply for Training
+              </Link>
+            </div>
           </AnimateOnScroll>
 
           <AnimateOnScroll direction="right" stagger>
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {options.map((opt) => (
                 <li key={opt.id}>
-                  <article className={`relative ${programmesTokens.radiusCard} border border-slate-100 bg-white p-4 shadow-sm card-pop`}>
+                  <Link
+                    href={opt.href}
+                    className={`relative block ${programmesTokens.radiusCard} border border-slate-100 bg-white p-4 shadow-sm card-pop group`}
+                  >
                     <span
                       className={`absolute top-3 right-3 rounded-full px-2 py-0.5 text-[9px] font-bold ${tagToneClass[opt.tagTone]}`}
                     >
@@ -62,8 +73,10 @@ export function AfslTrainingSection({ options }: AfslTrainingSectionProps) {
                     <span className="text-2xl" aria-hidden>
                       {opt.icon}
                     </span>
-                    <p className="mt-3 text-sm font-bold text-slate-900 leading-snug">{opt.title}</p>
-                  </article>
+                    <p className="mt-3 text-sm font-bold text-slate-900 leading-snug group-hover:text-[var(--prog-primary)] transition">
+                      {opt.title}
+                    </p>
+                  </Link>
                 </li>
               ))}
             </ul>

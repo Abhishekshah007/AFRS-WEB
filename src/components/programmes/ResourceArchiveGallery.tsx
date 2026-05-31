@@ -68,7 +68,7 @@ export function ResourceArchiveGallery({ resourcePersons, archive, gallery }: Re
                 {archive.map((item) => (
                   <li key={item.label}>
                     <Link
-                      href="/events"
+                      href={item.href}
                       className="flex items-center justify-between rounded-2xl border border-slate-100 bg-white px-4 py-3.5 shadow-sm card-pop"
                     >
                       <span className="text-sm font-semibold text-slate-800">{item.label}</span>
