@@ -122,7 +122,7 @@ export default async function EventDetailPage({ params }: Props) {
 
             {evt.registrationOpen !== false ? (
               <Link
-                href="/contact"
+                href={`/events/${evt.slug}/register`}
                 className="block w-full text-center h-12 leading-[48px] rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold transition"
               >
                 Register Now →
@@ -139,7 +139,7 @@ export default async function EventDetailPage({ params }: Props) {
             <p className="text-xs text-slate-500 leading-relaxed mb-4">
               For queries about registration, fees, or certificates, contact our support team.
             </p>
-            <Link href="/contact" className="text-sm font-bold text-indigo-600 hover:text-indigo-700">
+            <Link href={`/events/${evt.slug}/register`} className="text-sm font-bold text-indigo-600 hover:text-indigo-700">
               Contact Support →
             </Link>
           </div>
@@ -148,3 +148,5 @@ export default async function EventDetailPage({ params }: Props) {
     </div>
   )
 }
+
+

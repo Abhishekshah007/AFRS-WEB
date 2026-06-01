@@ -76,6 +76,7 @@ export interface Config {
     impactStats: ImpactStat;
     contactMessages: ContactMessage;
     articles: Article;
+    eventRegistrations: EventRegistration;
     media: Media;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -93,6 +94,7 @@ export interface Config {
     impactStats: ImpactStatsSelect<false> | ImpactStatsSelect<true>;
     contactMessages: ContactMessagesSelect<false> | ContactMessagesSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    eventRegistrations: EventRegistrationsSelect<false> | EventRegistrationsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -108,12 +110,16 @@ export interface Config {
     headerSettings: HeaderSetting;
     footerSettings: FooterSetting;
     homePage: HomePage;
+    programmesCatalog: ProgrammesCatalog;
+    studentHubContent: StudentHubContent;
   };
   globalsSelect: {
     siteSettings: SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     headerSettings: HeaderSettingsSelect<false> | HeaderSettingsSelect<true>;
     footerSettings: FooterSettingsSelect<false> | FooterSettingsSelect<true>;
     homePage: HomePageSelect<false> | HomePageSelect<true>;
+    programmesCatalog: ProgrammesCatalogSelect<false> | ProgrammesCatalogSelect<true>;
+    studentHubContent: StudentHubContentSelect<false> | StudentHubContentSelect<true>;
   };
   locale: null;
   widgets: {
@@ -447,6 +453,37 @@ export interface Article {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "eventRegistrations".
+ */
+export interface EventRegistration {
+  id: number;
+  event: number | Event;
+  eventSlug: string;
+  eventTitle: string;
+  fullName: string;
+  email: string;
+  countryCode?: string | null;
+  mobileNumber: string;
+  organization: string;
+  designation: string;
+  areaOfInterest: string;
+  idProofFileName?: string | null;
+  idProofFileSize?: number | null;
+  registrationCategoryId: string;
+  registrationCategoryName: string;
+  registrationCategoryPrice: number;
+  includeKit?: boolean | null;
+  kitPrice?: number | null;
+  totalAmount: number;
+  paymentStatus: 'pending' | 'paid' | 'failed';
+  registrationStatus: 'initiated' | 'confirmed' | 'cancelled';
+  paymentReference?: string | null;
+  paymentConfirmedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -504,6 +541,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'articles';
         value: number | Article;
+      } | null)
+    | ({
+        relationTo: 'eventRegistrations';
+        value: number | EventRegistration;
       } | null)
     | ({
         relationTo: 'media';
@@ -740,6 +781,36 @@ export interface ArticlesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "eventRegistrations_select".
+ */
+export interface EventRegistrationsSelect<T extends boolean = true> {
+  event?: T;
+  eventSlug?: T;
+  eventTitle?: T;
+  fullName?: T;
+  email?: T;
+  countryCode?: T;
+  mobileNumber?: T;
+  organization?: T;
+  designation?: T;
+  areaOfInterest?: T;
+  idProofFileName?: T;
+  idProofFileSize?: T;
+  registrationCategoryId?: T;
+  registrationCategoryName?: T;
+  registrationCategoryPrice?: T;
+  includeKit?: T;
+  kitPrice?: T;
+  totalAmount?: T;
+  paymentStatus?: T;
+  registrationStatus?: T;
+  paymentReference?: T;
+  paymentConfirmedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -943,6 +1014,137 @@ export interface HomePage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programmesCatalog".
+ */
+export interface ProgrammesCatalog {
+  id: number;
+  educationCategories?:
+    | {
+        slug: string;
+        icon: string;
+        title: string;
+        summary: string;
+        programmes?:
+          | {
+              id: string;
+              title: string;
+              description: string;
+              duration: string;
+              mode: string;
+              level?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  trainingCategories?:
+    | {
+        slug: string;
+        icon: string;
+        title: string;
+        tag: string;
+        tagTone: 'blue' | 'green' | 'purple' | 'orange';
+        summary: string;
+        programmes?:
+          | {
+              id: string;
+              title: string;
+              description: string;
+              duration: string;
+              mode: string;
+              level?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  archiveFilterLinks: {
+    nationalEvents: string;
+    internationalEvents: string;
+    workshops: string;
+    webinars: string;
+  };
+  trainingChecklist?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  fallbackHubEvents?:
+    | {
+        id: string;
+        slug: string;
+        title: string;
+        description: string;
+        eventType: string;
+        eventTypeLabel: string;
+        eventNature: 'national' | 'international';
+        startDate: string;
+        visualTone: 'blue' | 'orange' | 'purple';
+        visualIcon: string;
+      }[]
+    | null;
+  fallbackResourcePersons?:
+    | {
+        name: string;
+        title: string;
+        initials: string;
+        id?: string | null;
+      }[]
+    | null;
+  fallbackGallery?:
+    | {
+        image?: (number | null) | Media;
+        alt: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "studentHubContent".
+ */
+export interface StudentHubContent {
+  id: number;
+  academicResources?:
+    | {
+        id: string;
+        title: string;
+        description: string;
+        ctaLabel: string;
+        href: string;
+        icon: string;
+        iconBg: string;
+        featured?: boolean | null;
+      }[]
+    | null;
+  examPrep?:
+    | {
+        id: string;
+        badge: string;
+        title: string;
+        subtitle: string;
+        description: string;
+        ctaLabel: string;
+        href: string;
+        watermark: string;
+      }[]
+    | null;
+  ugcNetAchievers?:
+    | {
+        name: string;
+        title?: string | null;
+        photo?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "siteSettings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
@@ -1048,6 +1250,139 @@ export interface HomePageSelect<T extends boolean = true> {
         aboutHeading?: T;
         aboutDescription1?: T;
         aboutDescription2?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programmesCatalog_select".
+ */
+export interface ProgrammesCatalogSelect<T extends boolean = true> {
+  educationCategories?:
+    | T
+    | {
+        slug?: T;
+        icon?: T;
+        title?: T;
+        summary?: T;
+        programmes?:
+          | T
+          | {
+              id?: T;
+              title?: T;
+              description?: T;
+              duration?: T;
+              mode?: T;
+              level?: T;
+            };
+        id?: T;
+      };
+  trainingCategories?:
+    | T
+    | {
+        slug?: T;
+        icon?: T;
+        title?: T;
+        tag?: T;
+        tagTone?: T;
+        summary?: T;
+        programmes?:
+          | T
+          | {
+              id?: T;
+              title?: T;
+              description?: T;
+              duration?: T;
+              mode?: T;
+              level?: T;
+            };
+        id?: T;
+      };
+  archiveFilterLinks?:
+    | T
+    | {
+        nationalEvents?: T;
+        internationalEvents?: T;
+        workshops?: T;
+        webinars?: T;
+      };
+  trainingChecklist?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  fallbackHubEvents?:
+    | T
+    | {
+        id?: T;
+        slug?: T;
+        title?: T;
+        description?: T;
+        eventType?: T;
+        eventTypeLabel?: T;
+        eventNature?: T;
+        startDate?: T;
+        visualTone?: T;
+        visualIcon?: T;
+      };
+  fallbackResourcePersons?:
+    | T
+    | {
+        name?: T;
+        title?: T;
+        initials?: T;
+        id?: T;
+      };
+  fallbackGallery?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "studentHubContent_select".
+ */
+export interface StudentHubContentSelect<T extends boolean = true> {
+  academicResources?:
+    | T
+    | {
+        id?: T;
+        title?: T;
+        description?: T;
+        ctaLabel?: T;
+        href?: T;
+        icon?: T;
+        iconBg?: T;
+        featured?: T;
+      };
+  examPrep?:
+    | T
+    | {
+        id?: T;
+        badge?: T;
+        title?: T;
+        subtitle?: T;
+        description?: T;
+        ctaLabel?: T;
+        href?: T;
+        watermark?: T;
+      };
+  ugcNetAchievers?:
+    | T
+    | {
+        name?: T;
+        title?: T;
+        photo?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;

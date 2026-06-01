@@ -144,7 +144,7 @@ export default async function EventsPage() {
                           </div>
                         )}
                         <Link
-                          href={`/events/${evt.slug}`}
+                          href={evt.registrationOpen === false ? `/events/${evt.slug}` : `/events/${evt.slug}/register`}
                           className={`mt-5 block text-center py-2.5 rounded-xl text-sm font-bold transition ${
                             evt.registrationOpen === false
                               ? 'bg-slate-100 text-slate-500 cursor-not-allowed'
@@ -192,3 +192,5 @@ export default async function EventsPage() {
     </div>
   )
 }
+
+

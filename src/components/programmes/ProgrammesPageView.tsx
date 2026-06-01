@@ -22,6 +22,7 @@ export type ProgrammesPageViewProps = {
   archive: ArchiveItem[]
   gallery: GalleryThumb[]
   totalVisitors: number
+  trainingChecklist: string[]
 }
 
 /**
@@ -36,12 +37,13 @@ export function ProgrammesPageView({
   archive,
   gallery,
   totalVisitors,
+  trainingChecklist,
 }: ProgrammesPageViewProps) {
   return (
     <div className="programmes-page bg-white">
       <ProgrammesHero />
       <AfRsEducationSection programmes={educationProgrammes} />
-      <AfslTrainingSection options={trainingOptions} />
+      <AfslTrainingSection options={trainingOptions} checklist={trainingChecklist} />
       <OnlineEventsHub upcoming={upcomingEvents} ongoing={ongoingEvents} />
       <ResourceArchiveGallery
         resourcePersons={resourcePersons}

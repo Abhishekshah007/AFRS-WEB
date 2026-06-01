@@ -1,95 +1,58 @@
 import type { ExamPrepCardData, ResourceCardData } from '@/components/student-hub/types'
+import { defaultAcademicResources, defaultExamPrep, defaultUgcNetAchievers } from '@/components/student-hub/content.defaults'
+import { getPayloadClient } from '@/lib/payload'
+import { resolveMediaUrl } from '@/lib/cms'
+import type { Media } from '@/payload-types'
 
-/** Default academic resource cards — links point to search/courses until dedicated CMS exists. */
-export const defaultAcademicResources: ResourceCardData[] = [
-  {
-    id: 'articles',
-    title: 'Articles',
-    description: 'Expert-written articles on forensic methods, case analysis, and emerging research.',
-    ctaLabel: 'Browse Library',
-    href: '/student-hub/articles',
-    icon: '📄',
-    iconBg: 'bg-violet-100',
-  },
-  {
-    id: 'papers',
-    title: 'Research Papers',
-    description: 'Peer-reviewed papers and thesis references for academic citation and study.',
-    ctaLabel: 'Browse Papers',
-    href: '/search?q=research',
-    icon: '📑',
-    iconBg: 'bg-blue-100',
-  },
-  {
-    id: 'cases',
-    title: 'Case Studies',
-    description: 'Real-world investigation summaries with learning outcomes and discussion points.',
-    ctaLabel: 'View Cases',
-    href: '/search?q=case+studies',
-    icon: '🔍',
-    iconBg: 'bg-pink-100',
-  },
-  {
-    id: 'blogs',
-    title: 'Blogs',
-    description: 'Updates from AFRS faculty, students, and guest contributors in forensic science.',
-    ctaLabel: 'Read Blogs',
-    href: '/search?q=blog',
-    icon: '✍️',
-    iconBg: 'bg-indigo-100',
-  },
-  {
-    id: 'elibrary',
-    title: 'E-Library',
-    description: 'Digital books, handouts, and reference material available to registered students.',
-    ctaLabel: 'Open E-Library',
-    href: '/search?q=library',
-    icon: '📚',
-    iconBg: 'bg-emerald-100',
-  },
-  {
-    id: 'video',
-    title: 'Video Lectures',
-    description: 'Recorded sessions covering core forensic topics and lab demonstrations.',
-    ctaLabel: 'Watch Lectures',
-    href: '/courses',
-    icon: '🎬',
-    iconBg: 'bg-cyan-100',
-  },
-  {
-    id: 'practical',
-    title: 'Practical Learning',
-    description:
-      'Virtual simulations, lab guides, and step-by-step practical modules for hands-on skill development.',
-    ctaLabel: 'Start Learning',
-    href: '/courses',
-    icon: '🧪',
-    iconBg: 'bg-amber-100',
-    featured: true,
-  },
-]
+export { defaultAcademicResources, defaultExamPrep, defaultUgcNetAchievers }
 
-export const defaultExamPrep: ExamPrepCardData[] = [
-  {
-    id: 'ugc-net',
-    badge: 'Comprehensive Preparation Guidance',
-    title: 'UGC NET',
-    subtitle: 'Forensic Science Paper II & III',
-    description:
-      'Topic-wise notes, previous-year question analysis, mock test series, and mentor support for the National Eligibility Test in forensic science.',
-    ctaLabel: 'View Preparation Resources',
-    href: '/courses',
-    watermark: '🎓',
-  },
-  {
-    id: 'set-exam',
-    badge: 'State Eligibility Track',
-    title: 'SET / SLET',
-    subtitle: 'State-Level Forensic Eligibility',
-    description:
-      'Curated syllabi, practice papers, and revision schedules for state-level eligibility examinations relevant to forensic educators.',
-    ctaLabel: 'Explore Guide',
-    href: '/courses',
-    watermark: '⚗️',
-  },
-]
+type UgcAchiever = {
+  name: string
+  title?: string | null
+  photo?: number | Media | null
+}
+
+type StudentHubContentGlobal = {
+  academicResources?: ResourceCardData[]
+  examPrep?: ExamPrepCardData[]
+  ugcNetAchievers?: UgcAchiever[]
+}
+
+export async function getStudentHubContent() {
+  try {
+    const payload = await getPayloadClient()
+    const global = (await payload.findGlobal({ slug: 'studentHubContent', depth: 0, overrideAccess: false })) as StudentHubContentGlobal
+
+    return {
+      resources: global.academicResources?.length ? global.academicResources : defaultAcademicResources,
+      exams: global.examPrep?.length ? global.examPrep : defaultExamPrep,
+    }
+  } catch {
+    return {
+      resources: defaultAcademicResources,
+      exams: defaultExamPrep,
+    }
+  }
+}
+
+export async function getUgcNetAchievers() {
+  try {
+    const payload = await getPayloadClient()
+    const global = (await payload.findGlobal({ slug: 'studentHubContent', depth: 1, overrideAccess: false })) as StudentHubContentGlobal
+    if (global.ugcNetAchievers?.length) {
+      return global.ugcNetAchievers.map((a, i) => ({
+        id: `a-${i + 1}`,
+        name: a.name,
+        title: a.title || '',
+        photoUrl: resolveMediaUrl(a.photo as number | Media | null | undefined, ''),
+      }))
+    }
+  } catch {}
+
+  return defaultUgcNetAchievers.map((a, i) => ({
+    id: `d-${i + 1}`,
+    name: a.name,
+    title: '',
+    photoUrl: '',
+  }))
+}

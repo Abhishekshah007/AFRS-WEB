@@ -1,5 +1,5 @@
 import { StudentHubView } from '@/components/student-hub/StudentHubView'
-import { defaultAcademicResources, defaultExamPrep } from '@/components/student-hub/content'
+import { getStudentHubContent } from '@/components/student-hub/content'
 import { getPayloadClient } from '@/lib/payload'
 import type { SiteSetting } from '@/payload-types'
 import type { Metadata } from 'next'
@@ -12,12 +12,15 @@ export const metadata: Metadata = {
 
 export default async function StudentHubPage() {
   const payload = await getPayloadClient()
-  const site = (await payload.findGlobal({ slug: 'siteSettings', depth: 0 })) as SiteSetting
+  const [site, content] = await Promise.all([
+    payload.findGlobal({ slug: 'siteSettings', depth: 0 }) as Promise<SiteSetting>,
+    getStudentHubContent(),
+  ])
 
   return (
     <StudentHubView
-      resources={defaultAcademicResources}
-      exams={defaultExamPrep}
+      resources={content.resources}
+      exams={content.exams}
       totalVisitors={site?.totalVisitors ?? 25847}
     />
   )

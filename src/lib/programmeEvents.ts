@@ -1,4 +1,4 @@
-import { defaultHubEvents } from '@/components/programmes/content'
+import { getDefaultHubEvents } from '@/components/programmes/content.server'
 import { mapEventToHubCard, isEventOngoing, isEventUpcoming } from '@/components/programmes/mapEvent'
 import type { HubEventCard } from '@/components/programmes/types'
 import { getPayloadClient } from '@/lib/payload'
@@ -44,8 +44,9 @@ export async function fetchProgrammeHubEvents(query: ProgrammeEventsQuery = {}) 
   let ongoing: HubEventCard[] = toCards(ongoingRaw)
 
   if (upcoming.length === 0 && !query.nature && !query.type) {
-    upcoming = defaultHubEvents
+    upcoming = await getDefaultHubEvents()
   }
 
   return { upcoming, ongoing, all }
 }
+

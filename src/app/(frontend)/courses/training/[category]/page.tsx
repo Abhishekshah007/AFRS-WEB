@@ -1,5 +1,5 @@
 import { CategoryListingView } from '@/components/programmes/CategoryListingView'
-import { getTrainingCategory, trainingCategories } from '@/components/programmes/catalog'
+import { getTrainingCategories, getTrainingCategory } from '@/components/programmes/catalog'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
@@ -7,13 +7,14 @@ type Props = {
   params: Promise<{ category: string }>
 }
 
-export function generateStaticParams() {
-  return trainingCategories.map((c) => ({ category: c.slug }))
+export async function generateStaticParams() {
+  const categories = await getTrainingCategories()
+  return categories.map((c) => ({ category: c.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params
-  const cat = getTrainingCategory(category)
+  const cat = await getTrainingCategory(category)
   if (!cat) return { title: 'Training Not Found' }
   return {
     title: `${cat.title} | AFSL Training`,
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TrainingCategoryPage({ params }: Props) {
   const { category } = await params
-  const cat = getTrainingCategory(category)
+  const cat = await getTrainingCategory(category)
   if (!cat) notFound()
 
   return (

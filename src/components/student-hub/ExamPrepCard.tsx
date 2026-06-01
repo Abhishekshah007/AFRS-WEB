@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import type { ExamPrepCardData } from '@/components/student-hub/types'
-import { studentHubTokens } from '@/components/student-hub/tokens'
 
 export type ExamPrepCardProps = {
   exam: ExamPrepCardData
@@ -25,7 +24,7 @@ export function ExamPrepCard({ exam }: ExamPrepCardProps) {
       <p className="mt-1 text-sm font-semibold text-indigo-300">{exam.subtitle}</p>
       <p className="mt-4 text-sm text-white/65 leading-relaxed flex-1">{exam.description}</p>
       <Link
-        href={exam.href}
+        href={exam.id === 'ugc-net' ? '/student-hub/ugc-net' : exam.href}
         className="mt-6 inline-flex items-center gap-1 text-sm font-bold text-white hover:text-indigo-200 transition"
       >
         {exam.ctaLabel} <span aria-hidden>→</span>
@@ -33,3 +32,5 @@ export function ExamPrepCard({ exam }: ExamPrepCardProps) {
     </article>
   )
 }
+
+

@@ -1,5 +1,5 @@
 import { CategoryIndexView } from '@/components/programmes/CategoryIndexView'
-import { educationCategories } from '@/components/programmes/catalog'
+import { getEducationCategories } from '@/components/programmes/catalog'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -7,7 +7,9 @@ export const metadata: Metadata = {
   description: 'Browse online training, professional courses, certificates, and workshop series at AFRS.',
 }
 
-export default function EducationIndexPage() {
+export default async function EducationIndexPage() {
+  const categories = await getEducationCategories()
+
   return (
     <CategoryIndexView
       breadcrumbs={[
@@ -17,7 +19,7 @@ export default function EducationIndexPage() {
       eyebrow="AFRS Academy"
       title="AFRS Education"
       description="Choose a learning track to view all programmes, durations, and application options."
-      items={educationCategories.map((c) => ({
+      items={categories.map((c) => ({
         slug: c.slug,
         icon: c.icon,
         title: c.title,
