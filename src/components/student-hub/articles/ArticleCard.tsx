@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import type { ArticleListItem } from '@/components/student-hub/articles/types'
 import { getCategoryTagClass } from '@/components/student-hub/articles/categoryStyles'
+import { getArticleHref } from '@/components/student-hub/articles/links'
 import { studentHubTokens } from '@/components/student-hub/tokens'
 
 export type ArticleCardProps = {
@@ -30,7 +31,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
       </div>
       <div className="p-5 flex flex-col flex-1">
         <h3 className="font-extrabold text-slate-900 text-sm leading-snug line-clamp-2">
-          <Link href={`/student-hub/articles/${article.slug}`} className="hover:text-[var(--articles-primary)] transition">
+          <Link href={getArticleHref(article.slug)} className="hover:text-[var(--articles-primary)] transition">
             {article.title}
           </Link>
         </h3>

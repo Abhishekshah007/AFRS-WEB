@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { getArticleHref } from '@/components/student-hub/articles/links'
 import type { FeaturedArticle } from '@/components/student-hub/articles/types'
 import { studentHubTokens } from '@/components/student-hub/tokens'
 
@@ -66,7 +67,7 @@ export function FeaturedArticleCard({ article }: FeaturedArticleCardProps) {
             </div>
           </div>
           <Link
-            href={`/student-hub/articles/${article.slug}`}
+            href={getArticleHref(article.slug)}
             className="text-sm font-bold text-[var(--articles-primary)] hover:underline shrink-0"
           >
             Read More <span aria-hidden>→</span>

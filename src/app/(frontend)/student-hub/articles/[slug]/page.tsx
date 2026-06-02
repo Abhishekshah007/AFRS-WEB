@@ -11,11 +11,12 @@ import type { Metadata } from 'next'
 type Props = { params: Promise<{ slug: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
+  const { slug: encodedSlug } = await params
+  const slug = decodeURIComponent(encodedSlug)
   const payload = await getPayloadClient()
   const result = await payload.find({
     collection: 'articles',
-    where: { slug: { equals: slug }, published: { equals: true } },
+    where: { and: [{ slug: { equals: slug } }, { published: { equals: true } }] },
     limit: 1,
     depth: 0,
     overrideAccess: false,
@@ -26,12 +27,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ArticleDetailPage({ params }: Props) {
-  const { slug } = await params
+  const { slug: encodedSlug } = await params
+  const slug = decodeURIComponent(encodedSlug)
   const payload = await getPayloadClient()
 
   const result = await payload.find({
     collection: 'articles',
-    where: { slug: { equals: slug }, published: { equals: true } },
+    where: { and: [{ slug: { equals: slug } }, { published: { equals: true } }] },
     limit: 1,
     depth: 1,
     overrideAccess: false,

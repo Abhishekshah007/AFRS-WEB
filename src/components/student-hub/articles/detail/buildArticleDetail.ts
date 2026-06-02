@@ -4,9 +4,9 @@ import { mapFeaturedArticle } from '@/components/student-hub/articles/mapArticle
 import { richTextToPlain } from '@/lib/cms'
 
 const defaultFigure = {
-  src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&q=80',
-  caption: 'Figure 1: Neural network layers processing digital evidence for pattern matching.',
-  alt: 'Neural network evidence processing visualization',
+  src: '',
+  caption: '',
+  alt: '',
 }
 
 /** Rich default body when CMS content is empty — matches Student Hub article detail mockup. */
@@ -24,12 +24,7 @@ export function buildArticleDetail(doc: Article): ArticleDetailData {
       cmsTags && cmsTags.length > 0
         ? cmsTags
         : ['#AIinForensics', '#ArtificialIntelligence', '#DigitalForensics', '#CyberCrime', '#Forensics'],
-    sections: [
-      { id: 'evolution', title: 'The Evolution of Digital Evidence' },
-      { id: 'pattern-recognition', title: 'Automated Pattern Recognition' },
-      { id: 'validation', title: 'Validation & Court Admissibility' },
-      { id: 'future', title: 'Future of AI in Forensic Labs' },
-    ],
+    sections: [],
     bodyIntro:
       plain.split('\n\n')[0] ||
       doc.excerpt ||
@@ -37,19 +32,16 @@ export function buildArticleDetail(doc: Article): ArticleDetailData {
     bodyParagraphs: plain
       ? plain.split('\n\n').slice(1)
       : [
-          'Digital forensics once relied on manual keyword searches and linear timeline reconstruction. Today, machine-assisted workflows can surface hidden correlations across devices, cloud accounts, and network logs in minutes rather than weeks.',
-          'At AFRS, we integrate AI as an investigative accelerator — not a replacement for expert judgment. Every automated finding passes through human validation, chain-of-custody review, and documented methodology before it reaches a case file or courtroom.',
-        ],
+        'Digital forensics once relied on manual keyword searches and linear timeline reconstruction. Today, machine-assisted workflows can surface hidden correlations across devices, cloud accounts, and network logs in minutes rather than weeks.',
+        'At AFRS, we integrate AI as an investigative accelerator — not a replacement for expert judgment. Every automated finding passes through human validation, chain-of-custody review, and documented methodology before it reaches a case file or courtroom.',
+      ],
     blockquote: doc.pullQuote?.text
       ? {
-          text: doc.pullQuote.text,
-          attribution: doc.pullQuote.attribution ?? '',
-        }
-      : {
-          text: 'The speed at which AI can correlate seemingly unrelated data points across different devices is transforming how we build timelines in criminal cases…',
-          attribution: 'DR. SARAH MILLER, LEAD FORENSIC ANALYST AT AFRS',
-        },
-    figure: defaultFigure,
+        text: doc.pullQuote.text,
+        attribution: doc.pullQuote.attribution ?? '',
+      }
+      : undefined,
+
     authorBio:
       doc.authorBio ??
       `${doc.authorName} is a ${doc.authorTitle ?? 'forensic specialist'} with extensive experience in cybercrime investigations, digital evidence validation, and academic mentoring at AFRS.`,

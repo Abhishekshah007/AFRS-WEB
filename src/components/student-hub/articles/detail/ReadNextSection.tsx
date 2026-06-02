@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { ArticleListItem } from '@/components/student-hub/articles/types'
 import { formatArticleDate } from '@/components/student-hub/articles/detail/buildArticleDetail'
+import { getArticleHref } from '@/components/student-hub/articles/links'
 import { studentHubTokens } from '@/components/student-hub/tokens'
 
 export type ReadNextSectionProps = {
@@ -27,7 +28,7 @@ export function ReadNextSection({ nextArticle }: ReadNextSectionProps) {
           {nextArticle.readTimeMinutes} min read
         </p>
         <Link
-          href={`/student-hub/articles/${nextArticle.slug}`}
+          href={getArticleHref(nextArticle.slug)}
           className="mt-6 inline-flex h-12 w-full max-w-md items-center justify-center rounded-xl bg-[var(--articles-primary)] hover:bg-[var(--articles-primary-hover)] text-white text-sm font-bold transition shadow-md"
         >
           Read Next Article <span aria-hidden className="ml-1">→</span>

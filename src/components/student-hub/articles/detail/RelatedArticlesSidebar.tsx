@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import type { RelatedArticlePreview } from '@/components/student-hub/articles/detail/types'
 import { getCategoryTagClass } from '@/components/student-hub/articles/categoryStyles'
+import { getArticleHref } from '@/components/student-hub/articles/links'
 
 export type RelatedArticlesSidebarProps = {
   articles: RelatedArticlePreview[]
@@ -42,7 +43,7 @@ export function RelatedArticlesSidebar({ articles }: RelatedArticlesSidebarProps
                 </span>
                 <h3 className="mt-1.5 text-sm font-bold text-slate-900 leading-snug line-clamp-2">{item.title}</h3>
                 <Link
-                  href={`/student-hub/articles/${item.slug}`}
+                  href={getArticleHref(item.slug)}
                   className="mt-1 inline-block text-xs font-bold text-[var(--articles-primary)] hover:underline"
                 >
                   Read more
