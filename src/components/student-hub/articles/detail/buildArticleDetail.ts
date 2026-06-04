@@ -32,19 +32,21 @@ export function buildArticleDetail(doc: Article): ArticleDetailData {
     bodyParagraphs: plain
       ? plain.split('\n\n').slice(1)
       : [
-        'Digital forensics once relied on manual keyword searches and linear timeline reconstruction. Today, machine-assisted workflows can surface hidden correlations across devices, cloud accounts, and network logs in minutes rather than weeks.',
-        'At AFRS, we integrate AI as an investigative accelerator — not a replacement for expert judgment. Every automated finding passes through human validation, chain-of-custody review, and documented methodology before it reaches a case file or courtroom.',
-      ],
+          'Digital forensics once relied on manual keyword searches and linear timeline reconstruction. Today, machine-assisted workflows can surface hidden correlations across devices, cloud accounts, and network logs in minutes rather than weeks.',
+          'At AFRS, we integrate AI as an investigative accelerator — not a replacement for expert judgment. Every automated finding passes through human validation, chain-of-custody review, and documented methodology before it reaches a case file or courtroom.',
+        ],
     blockquote: doc.pullQuote?.text
       ? {
-        text: doc.pullQuote.text,
-        attribution: doc.pullQuote.attribution ?? '',
-      }
+          text: doc.pullQuote.text,
+          attribution: doc.pullQuote.attribution ?? '',
+        }
       : undefined,
 
     authorBio:
       doc.authorBio ??
       `${doc.authorName} is a ${doc.authorTitle ?? 'forensic specialist'} with extensive experience in cybercrime investigations, digital evidence validation, and academic mentoring at AFRS.`,
+
+    richTextBody: doc.content,
   }
 }
 

@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import type { ArticleDetailData } from '@/components/student-hub/articles/detail/types'
@@ -5,12 +7,20 @@ import { studentHubTokens } from '@/components/student-hub/tokens'
 
 export type ArticleBodyProps = {
   article: ArticleDetailData
+  richTextHtml?: string // ← pre-rendered on server, passed as prop
 }
 
-/**
- * Main article prose: intro, sections, blockquote, figure, and hashtag row.
- */
-export function ArticleBody({ article }: ArticleBodyProps) {
+export function ArticleBody({ article, richTextHtml }: ArticleBodyProps) {
+  if (richTextHtml) {
+    return (
+      <div
+        className="article-body prose prose-slate max-w-none"
+        dangerouslySetInnerHTML={{ __html: richTextHtml }}
+      />
+    )
+  }
+
+  // Fallback plain text rendering (unchanged)
   return (
     <div className="article-body">
       <p className={`text-base sm:text-lg ${studentHubTokens.body}`}>{article.bodyIntro}</p>
@@ -39,10 +49,15 @@ export function ArticleBody({ article }: ArticleBodyProps) {
 
       {article.blockquote && (
         <blockquote className="mt-8 rounded-2xl bg-sky-50 border-l-4 border-[var(--articles-primary)] px-6 py-6">
-          <span className="text-4xl text-[var(--articles-primary)]/40 leading-none font-serif" aria-hidden>
+          <span
+            className="text-4xl text-[var(--articles-primary)]/40 leading-none font-serif"
+            aria-hidden
+          >
             &ldquo;
           </span>
-          <p className="mt-2 text-base italic text-slate-700 leading-relaxed">{article.blockquote.text}</p>
+          <p className="mt-2 text-base italic text-slate-700 leading-relaxed">
+            {article.blockquote.text}
+          </p>
           {article.blockquote.attribution && (
             <footer className="mt-4 text-xs font-bold uppercase tracking-wider text-slate-500">
               — {article.blockquote.attribution}
@@ -87,14 +102,23 @@ export function ArticleBody({ article }: ArticleBodyProps) {
 
       {article.sections.slice(2).map((section, idx) => (
         <div key={section.id}>
-          <h2 id={section.id} className="mt-10 text-xl font-extrabold text-[var(--articles-primary)] scroll-mt-28">
+          <h2
+            id={section.id}
+            className="mt-10 text-xl font-extrabold text-[var(--articles-primary)] scroll-mt-28"
+          >
             {section.title}
           </h2>
-          {article.bodyParagraphs.slice(3 + idx).slice(0, 1).map((p, i) => (
-            <p key={`${section.id}-${i}`} className={`mt-4 text-sm sm:text-base ${studentHubTokens.body}`}>
-              {p}
-            </p>
-          ))}
+          {article.bodyParagraphs
+            .slice(3 + idx)
+            .slice(0, 1)
+            .map((p, i) => (
+              <p
+                key={`${section.id}-${i}`}
+                className={`mt-4 text-sm sm:text-base ${studentHubTokens.body}`}
+              >
+                {p}
+              </p>
+            ))}
         </div>
       ))}
 

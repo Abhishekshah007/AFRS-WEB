@@ -16,12 +16,14 @@ import {
   InternshipFeatureSection,
   LatestNewsSection,
   MediaResourcesSection,
+  ForensicTrainingProgram,
   PartnerLogosSection,
   ProgramCtaSection,
   ServicesSection,
   TestimonialsSection,
   TrustedPartnerSection,
   AFRSFeatureCards,
+  InternshipProgramSection,
 } from '@/components/home/sections'
 
 export const metadata: Metadata = {
@@ -127,13 +129,16 @@ export default async function HomePage() {
       <HeroSection heroData={heroData} />
       <AFRSFeatureCards sectionText={sectionText} events={events} />
       {/* <ProgramCtaSection /> */}
-      <InternshipFeatureSection />
-      <ServicesSection sectionText={sectionText} services={services} />
+      <ForensicTrainingProgram />
       <EventsSection sectionText={sectionText} events={events} />
       <AboutSection sectionText={sectionText} />
-      <ImpactSection impactStats={impactStats} />
-      <FutureSection />
       <AchievementsSection />
+      <InternshipProgramSection />
+      <FutureSection />
+      <ImpactSection impactStats={impactStats} />
+      {/* <InternshipFeatureSection /> */}
+      {/* <ServicesSection sectionText={sectionText} services={services} /> */}
+
       <TrustedPartnerSection />
       <ExpertsSection scientists={scientists} />
       <TestimonialsSection testimonials={testimonials} />
