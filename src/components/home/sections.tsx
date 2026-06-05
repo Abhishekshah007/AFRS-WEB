@@ -45,22 +45,7 @@ const SECTION = UI.section
 type SectionText = NonNullable<HomePage['sectionText']>
 type HeroData = NonNullable<HomePage['hero']>
 
-function SectionHeader({
-  title,
-  subtitle,
-  light = false,
-}: {
-  title: string
-  subtitle?: string
-  light?: boolean
-}) {
-  return (
-    <div className="text-center max-w-2xl mx-auto mb-12 lg:mb-14">
-      <h2 className={`${UI.title} ${light ? 'text-white' : 'text-slate-900'}`}>{title}</h2>
-      {subtitle && <p className={`${UI.subtitle} ${light ? 'text-white/80' : ''}`}>{subtitle}</p>}
-    </div>
-  )
-}
+import { SectionHeader } from '@/components/ui/SectionHeader'
 
 const defaultImpactStats = [
   {

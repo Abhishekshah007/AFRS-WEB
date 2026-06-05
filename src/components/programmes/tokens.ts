@@ -1,13 +1,15 @@
+import { DESIGN_SYSTEM } from '@/lib/design-system'
+
 /**
  * Programmes & Events page design tokens.
  */
 export const programmesTokens = {
-  container: 'max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-0',
-  sectionY: 'py-14 md:py-16 lg:py-20',
-  heading: 'text-[var(--prog-text)] font-extrabold tracking-tight',
-  body: 'text-[var(--prog-text-muted)] leading-relaxed',
-  radiusCard: 'rounded-2xl',
-  radiusBtn: 'rounded-xl',
+  container: DESIGN_SYSTEM.container,
+  sectionY: DESIGN_SYSTEM.sectionYSmall,
+  heading: `text-[var(--prog-text)] ${DESIGN_SYSTEM.typography.h2}`,
+  body: `text-[var(--prog-text-muted)] ${DESIGN_SYSTEM.typography.body}`,
+  radiusCard: DESIGN_SYSTEM.radius.card,
+  radiusBtn: DESIGN_SYSTEM.radius.button,
 } as const
 
 export const PROGRAMME_IMAGES = {

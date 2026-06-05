@@ -1,16 +1,18 @@
+import { DESIGN_SYSTEM } from '@/lib/design-system'
+
 /**
  * About page design tokens — align with Figma (375 / 768 / 1440 breakpoints).
  * Prefer these constants over magic numbers in section components.
  */
 export const aboutTokens = {
-  container: 'max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-0',
-  sectionY: 'py-16 md:py-20 lg:py-24',
+  container: DESIGN_SYSTEM.container,
+  sectionY: DESIGN_SYSTEM.sectionY,
   sectionAlt: 'bg-[var(--about-surface-alt)]',
-  heading: 'text-[var(--about-text)] font-extrabold tracking-tight',
-  body: 'text-[var(--about-text-muted)] leading-relaxed',
-  radiusCard: 'rounded-2xl',
-  radiusImage: 'rounded-2xl',
-  radiusBtn: 'rounded-xl',
+  heading: `text-[var(--about-text)] ${DESIGN_SYSTEM.typography.h2}`,
+  body: `text-[var(--about-text-muted)] ${DESIGN_SYSTEM.typography.body}`,
+  radiusCard: DESIGN_SYSTEM.radius.card,
+  radiusImage: DESIGN_SYSTEM.radius.card,
+  radiusBtn: DESIGN_SYSTEM.radius.button,
   primaryBtn:
     'inline-flex items-center justify-center h-12 px-8 text-sm font-bold bg-white text-[var(--about-primary)] hover:bg-blue-50 transition shadow-sm',
   outlineBtn:

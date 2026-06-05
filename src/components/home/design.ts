@@ -1,18 +1,20 @@
+import { DESIGN_SYSTEM } from '@/lib/design-system'
+
 export const UI = {
-  container: 'max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8',
+  container: DESIGN_SYSTEM.container,
 
-  section: 'py-24',
+  section: DESIGN_SYSTEM.sectionY,
 
-  sectionSmall: 'py-16',
+  sectionSmall: DESIGN_SYSTEM.sectionYSmall,
 
   card:
-    'rounded-[24px] bg-white border border-slate-100 shadow-[0_10px_30px_rgba(15,23,42,.08)]',
+    `rounded-[24px] bg-white border border-slate-100 shadow-[0_10px_30px_rgba(15,23,42,.08)]`,
 
   cardSmall:
-    'rounded-[18px] bg-white border border-slate-100 shadow-[0_8px_24px_rgba(15,23,42,.06)]',
+    `rounded-[18px] bg-white border border-slate-100 shadow-[0_8px_24px_rgba(15,23,42,.06)]`,
 
   cardInteractive:
-    'rounded-[24px] bg-white border border-slate-100 shadow-[0_10px_30px_rgba(15,23,42,.08)] hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] transition',
+    `rounded-[24px] bg-white border border-slate-100 shadow-[0_10px_30px_rgba(15,23,42,.08)] hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] transition`,
 
   heroGradient: 'linear-gradient(117.28deg, #6366F1 0%, #3B82F6 100%)',
 
@@ -20,25 +22,23 @@ export const UI = {
 
   quickLinksGradient: 'linear-gradient(135deg, #1d4ed8 0%, #4338ca 100%)',
 
-  title:
-    'text-[32px] lg:text-[40px] font-extrabold tracking-[-0.02em] text-slate-900 leading-[1.15]',
+  title: DESIGN_SYSTEM.typography.h2,
 
-  titleLarge:
-    'text-[48px] lg:text-[56px] font-extrabold tracking-[-0.03em] text-slate-900 leading-[1.08]',
+  titleLarge: DESIGN_SYSTEM.typography.h1,
 
   subtitle:
-    'mt-4 text-[18px] leading-[1.8] text-slate-500',
+    `mt-4 ${DESIGN_SYSTEM.typography.bodyLarge} text-slate-500`,
 
   body:
-    'text-[16px] leading-[1.85] text-slate-600',
+    `${DESIGN_SYSTEM.typography.body} text-slate-600`,
 
   bodyLarge:
-    'text-[18px] leading-[1.85] text-slate-600',
+    `${DESIGN_SYSTEM.typography.bodyLarge} text-slate-600`,
 
   bodySmall:
-    'text-[14px] leading-[1.7] text-slate-500',
+    `${DESIGN_SYSTEM.typography.bodySmall} text-slate-500`,
 
-  labelSmall: 'text-[12px] uppercase tracking-wider font-semibold text-slate-500',
+  labelSmall: `${DESIGN_SYSTEM.typography.label} text-slate-500`,
 
   badge: 'inline-flex items-center justify-center rounded-full px-2 py-1 text-xs font-semibold',
 
@@ -62,23 +62,17 @@ export const GRADIENT = {
 }
 
 export const TYPOGRAPHY = {
-  hero: 'text-[48px] lg:text-[56px] font-extrabold leading-[1.08] tracking-[-0.03em]',
+  hero: DESIGN_SYSTEM.typography.h1,
 
-  sectionTitle:
-    'text-[32px] lg:text-[40px] font-extrabold leading-[1.15] tracking-[-0.02em]',
+  sectionTitle: DESIGN_SYSTEM.typography.h2,
 
-  cardTitle:
-    'text-[18px] lg:text-[20px] font-bold leading-[1.35]',
+  cardTitle: DESIGN_SYSTEM.typography.h3,
 
-  body:
-    'text-[16px] leading-[1.8] text-slate-600',
+  body: DESIGN_SYSTEM.typography.body,
 
-  bodyLarge:
-    'text-[18px] leading-[1.8] text-slate-600',
+  bodyLarge: DESIGN_SYSTEM.typography.bodyLarge,
 
-  small:
-    'text-[14px] leading-[1.7] text-slate-500',
+  small: DESIGN_SYSTEM.typography.bodySmall,
 
-  label:
-    'text-[12px] font-semibold uppercase tracking-[0.12em]',
+  label: DESIGN_SYSTEM.typography.label,
 }

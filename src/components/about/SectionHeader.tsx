@@ -1,3 +1,4 @@
+import { SectionHeader as SharedSectionHeader } from '@/components/ui/SectionHeader'
 import { aboutTokens } from '@/components/about/tokens'
 
 export type SectionHeaderProps = {
@@ -10,6 +11,7 @@ export type SectionHeaderProps = {
 
 /**
  * Reusable section title block used across About page sections.
+ * Now wraps the shared UI component for consistency.
  */
 export function SectionHeader({
   title,
@@ -18,31 +20,16 @@ export function SectionHeader({
   light = false,
   id,
 }: SectionHeaderProps) {
-  const alignClass = align === 'center' ? 'text-center mx-auto' : 'text-left'
-  const maxW = align === 'center' ? 'max-w-2xl' : 'max-w-xl'
-
   return (
-    <header className={`${alignClass} ${maxW} mb-10 md:mb-12 lg:mb-14`} id={id}>
-      {align === 'center' && (
-        <span
-          className="mx-auto mb-4 block h-1 w-12 rounded-full bg-[var(--about-primary)]"
-          aria-hidden
-        />
-      )}
-      <h2
-        className={`${aboutTokens.heading} text-2xl sm:text-[28px] lg:text-[32px] leading-tight ${
-          light ? 'text-white' : ''
-        }`}
-      >
-        {title}
-      </h2>
-      {subtitle && (
-        <p
-          className={`mt-3 text-sm sm:text-base ${aboutTokens.body} ${light ? 'text-white/80' : ''}`}
-        >
-          {subtitle}
-        </p>
-      )}
-    </header>
+    <SharedSectionHeader
+      title={title}
+      subtitle={subtitle}
+      align={align}
+      light={light}
+      className={id}
+      titleClassName={aboutTokens.heading}
+      subtitleClassName={aboutTokens.body}
+      accent={align === 'center'}
+    />
   )
 }
