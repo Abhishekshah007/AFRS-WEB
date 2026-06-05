@@ -13,24 +13,14 @@ import {
   HeroSection,
   heroPanelImage,
   ImpactSection,
-  InternshipFeatureSection,
+  InternshipProgramSection,
   LatestNewsSection,
   MediaResourcesSection,
   ForensicTrainingProgram,
-  PartnerLogosSection,
-  ProgramCtaSection,
-  ServicesSection,
   TestimonialsSection,
   TrustedPartnerSection,
   AFRSFeatureCards,
-  InternshipProgramSection,
 } from '@/components/home/sections'
-
-export const metadata: Metadata = {
-  title: 'Forensic Training, Services, and Research Programs',
-  description:
-    'Explore AFRS forensic services, events, internship programs, expert scientists, and advanced research-led training opportunities.',
-}
 
 export default async function HomePage() {
   const payload = await getPayloadClient()
@@ -128,26 +118,21 @@ export default async function HomePage() {
       />
       <HeroSection heroData={heroData} />
       <AFRSFeatureCards sectionText={sectionText} events={events} />
-      {/* <ProgramCtaSection /> */}
       <ForensicTrainingProgram />
       <EventsSection sectionText={sectionText} events={events} />
       <AboutSection sectionText={sectionText} />
-      <AchievementsSection />
+      <ImpactSection impactStats={impactStats} />
       <InternshipProgramSection />
       <FutureSection />
-      <ImpactSection impactStats={impactStats} />
-      {/* <InternshipFeatureSection /> */}
-      {/* <ServicesSection sectionText={sectionText} services={services} /> */}
-
+      <AchievementsSection />
       <TrustedPartnerSection />
       <ExpertsSection scientists={scientists} />
       <TestimonialsSection testimonials={testimonials} />
-      <PartnerLogosSection />
       <MediaResourcesSection />
       <LatestNewsSection />
-      <FaqSection />
       <CommunityBannerSection totalVisitors={totalVisitors ?? undefined} />
       <GallerySection galleryItems={galleryItems} />
+      <FaqSection />
     </div>
   )
 }
