@@ -15,7 +15,7 @@ export function VisitorCounterBar({ totalVisitors, icon = '👥' }: VisitorCount
       aria-label="Total site visitors"
     >
       <div className="max-w-[1200px] mx-auto px-4 flex flex-col items-center gap-2">
-        <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/85">
+        <span className="flex items-center gap-2 text-2xl font-bold uppercase tracking-widest text-white/85">
           <span className="text-lg" aria-hidden>
             {icon}
           </span>

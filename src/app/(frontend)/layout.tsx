@@ -56,7 +56,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en" className={plusJakarta.variable}>
-      <body className="bg-[#f8f9fc] text-slate-900 antialiased font-sans selection:bg-indigo-500/25 selection:text-indigo-950">
+      <body className="font-sans antialiased">
         <Navbar settings={headerSettings} />
         <AppProviders>
           <main className="relative min-h-[50vh]">{children}</main>

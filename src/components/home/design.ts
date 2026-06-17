@@ -7,6 +7,10 @@ export const UI = {
 
   sectionSmall: DESIGN_SYSTEM.sectionYSmall,
 
+  sectionSurface: 'bg-[#F8FAFC]',
+
+  transition: DESIGN_SYSTEM.transition,
+
   card:
     `rounded-[24px] bg-white border border-slate-100 shadow-[0_10px_30px_rgba(15,23,42,.08)]`,
 
