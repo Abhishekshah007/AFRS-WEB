@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import type { CSSProperties } from 'react'
 import { formatEventDate, formatEventType, resolveMediaUrl, richTextToPlain } from '@/lib/cms'
+import AFRSLogo from '../../../public/assets/afsl-logo.png'
 import type {
   Event as AfrsEvent,
   GalleryItem,
@@ -18,13 +20,22 @@ import {
   Network,
   FileSearch,
   BadgeCheck,
+  LibraryBig,
+  Rss,
+  Landmark,
+  GraduationCap,
+  Briefcase,
+  Search,
+  FlaskConical,
+  ShieldCheck,
+  Binoculars,
 } from 'lucide-react'
 import type { PaginatedDocs } from 'payload'
 import { TYPOGRAPHY, UI } from './design'
 
 /* ─── shared assets & layout ─── */
 export const heroPanelImage =
-  'https://res.cloudinary.com/drrzakkgo/image/upload/v1777273424/WhatsApp_Image_2026-04-18_at_11.31.12_AM_hdi2gq.jpg'
+  'https://res.cloudinary.com/drrzakkgo/image/upload/v1781617023/WhatsApp_Image_2026-06-16_at_6.35.45_PM_jfmudj.jpg'
 export const eventCardImages = [
   'https://www.appliedforensicresearchsciences.in/static/media/carousel-10.6bcf7e5d176fb7d57b28.jpeg',
   'https://www.appliedforensicresearchsciences.in/static/media/carousel-6.37510e2cbc3800979dc5.jpeg',
@@ -46,35 +57,38 @@ type SectionText = NonNullable<HomePage['sectionText']>
 type HeroData = NonNullable<HomePage['hero']>
 
 import { SectionHeader } from '@/components/ui/SectionHeader'
+import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
+import { ForensicBackground } from './ForensicBackground'
+import { VisitorCounterBar } from '../student-hub/VisitorCounterBar'
 
 const defaultImpactStats = [
   {
-    value: '300+',
+    value: '4000+',
     label: 'Students Trained',
     tone: 'blue',
     description: 'Hands-on forensic education across India.',
   },
   {
-    value: '400+',
+    value: '250+',
     label: 'Case Consultations',
-    tone: 'indigo',
+    tone: 'red',
     description: 'Expert support for investigations and reporting.',
   },
   {
     value: '06+',
-    label: 'Specialized Domains',
+    label: 'Book Published',
     tone: 'orange',
     description: 'From crime scene to digital forensics.',
   },
   {
-    value: '1',
-    label: 'National Network',
+    value: '10+',
+    label: 'Research Papers',
     tone: 'emerald',
     description: 'Collaboration with institutions nationwide.',
   },
   {
     value: '100+',
-    label: 'Workshop Sessions',
+    label: 'Expert Sessions',
     tone: 'orange',
     description: 'Regular training and certification programs.',
   },
@@ -94,12 +108,12 @@ const fallbackScientists: Pick<Scientist, 'name' | 'designation' | 'bio'>[] = [
 ]
 
 const serviceIcons = [
-  { label: 'Forensic Investigation', color: 'bg-indigo-100 text-indigo-600' },
-  { label: 'Fingerprint Analysis', color: 'bg-blue-100 text-blue-600' },
-  { label: 'Questioned Documents', color: 'bg-violet-100 text-violet-600' },
-  { label: 'Cyber Forensics', color: 'bg-cyan-100 text-cyan-700' },
-  { label: 'DNA Profiling', color: 'bg-emerald-100 text-emerald-600' },
-  { label: 'Forensic Training', color: 'bg-orange-100 text-orange-600' },
+  { label: 'Forensic Investigation', color: 'bg-indigo-100 text-indigo-600', accent: '#6366f1' },
+  { label: 'Fingerprint Analysis', color: 'bg-blue-100 text-blue-600', accent: '#3b82f6' },
+  { label: 'Questioned Documents', color: 'bg-violet-100 text-violet-600', accent: '#8b5cf6' },
+  { label: 'Cyber Forensics', color: 'bg-cyan-100 text-cyan-700', accent: '#06b6d4' },
+  { label: 'DNA Profiling', color: 'bg-emerald-100 text-emerald-600', accent: '#10b981' },
+  { label: 'Forensic Training', color: 'bg-orange-100 text-orange-600', accent: '#f97316' },
 ]
 
 /* ─── 1. Hero ─── */
@@ -114,20 +128,14 @@ export function HeroSection({ heroData }: { heroData: HeroData }) {
       className="relative overflow-hidden text-white pt-16 pb-20 lg:pt-20 lg:pb-24 forensic-grid"
       style={{ background: UI.heroGradient }}
     >
-      {/* <ForensicBackground
-        trail={0.03}
-        particleCount={55}
-        enableClick
-        clickRadius={120}
-        clickStrength={1}
-      /> */}
+      <ForensicBackground />
       <div className="absolute inset-x-0 bottom-0 h-12 bg-white rounded-t-[2rem]" />
       <div className={`${CONTAINER} relative grid gap-10 lg:grid-cols-2 lg:gap-16 items-center`}>
         <div className="reveal-up">
           <h1 className={UI.titleLarge}>
             {heroData.title || 'Welcome to Applied Forensic Research Sciences'}
           </h1>
-          <p className="mt-6 text-[18px] leading-[1.85] text-white/85 max-w-xl">
+          <p className={`mt-6 ${TYPOGRAPHY.bodyLarge} text-white/85 max-w-xl`}>
             {heroData.description ||
               'Your portal to advanced training, research-led education, and world-class forensic professional services.'}
           </p>
@@ -185,49 +193,51 @@ export function AFRSFeatureCards({
 }) {
   const items = [
     {
-      icon: '📚',
+      icon: GraduationCap,
       label: 'Professional Training Programs',
       href: '/courses',
       description:
         'Structured forensic science courses designed for students and professionals seeking practical skills and certification.',
     },
     {
-      icon: '🔬',
+      icon: Briefcase,
       label: 'Internship Opportunities',
       href: '/courses',
       description:
         'Hands-on forensic internships providing real-world experience in laboratory and field settings under expert mentorship.',
     },
     {
-      icon: '📋',
+      icon: Binoculars,
       label: 'Research Projects',
       href: '/courses',
       description:
         'Engage in cutting-edge forensic research initiatives that contribute to the advancement of the field.',
     },
     {
-      icon: '🔍',
+      icon: Search,
       label: 'Case Consultation',
       href: '/services',
       description:
         'Professional forensic consultation for complex investigations and evidence analysis.',
     },
     {
-      icon: '🧪',
+      icon: FlaskConical,
       label: 'Lab Services',
       href: '/services',
       description: 'Full-spectrum forensic laboratory analysis with certified expert reports.',
     },
     {
-      icon: '🎓',
+      icon: ShieldCheck,
       label: 'Certification',
       href: '/courses',
       description: 'Industry-recognized certifications for forensic professionals and researchers.',
     },
   ]
   return (
-    <section className={`${SECTION} bg-white`}>
-      <div className={CONTAINER}>
+    <section
+      className={`${SECTION} section-aura-services section-glow-top relative overflow-hidden`}
+    >
+      <div className={`${CONTAINER} relative z-10`}>
         <SectionHeader
           title={sectionText.featuredCardsHeading || 'Our Key Services & Programs'}
           subtitle={
@@ -235,27 +245,40 @@ export function AFRSFeatureCards({
             'Comprehensive forensic solutions tailored for academic growth and professional expertise.'
           }
         />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {items.map((item, index) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="group block rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-lg transition"
-            >
-              <div>
-                <div
-                  className={`inline-flex items-center justify-center rounded-lg px-3 py-2 text-xl ${serviceIcons[index % serviceIcons.length].color}`}
-                >
-                  {item.icon}
+        <AnimateOnScroll stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {items.map((item, index) => {
+            const iconStyle = serviceIcons[index % serviceIcons.length]
+
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="elevated-card card-pop group block rounded-2xl p-6"
+                style={{ '--card-accent': iconStyle.accent } as CSSProperties}
+              >
+                <div>
+                  <div
+                    className={`inline-flex items-center justify-center rounded-xl px-3 py-2.5 shadow-sm ${iconStyle.color}`}
+                  >
+                    <item.icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="mt-4 text-base font-bold text-slate-900 leading-snug group-hover:text-indigo-700 transition-colors">
+                    {item.label}
+                  </h3>
+                  <p className="mt-2 text-sm text-slate-500 leading-relaxed">{item.description}</p>
                 </div>
-                <h3 className="mt-4 text-base font-bold text-slate-900 leading-snug">
-                  {item.label}
-                </h3>
-                <p className="mt-2 text-sm text-slate-500 leading-relaxed">{item.description}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
+              </Link>
+            )
+          })}
+        </AnimateOnScroll>
+      </div>
+      <div className="pointer-events-none absolute -bottom-10 -left-8 opacity-[0.035] text-indigo-900">
+        <svg width="220" height="220" viewBox="0 0 260 260" fill="none" aria-hidden>
+          <circle cx="130" cy="130" r="20" stroke="currentColor" strokeWidth="10" />
+          <circle cx="130" cy="130" r="45" stroke="currentColor" strokeWidth="10" />
+          <circle cx="130" cy="130" r="70" stroke="currentColor" strokeWidth="10" />
+          <circle cx="130" cy="130" r="95" stroke="currentColor" strokeWidth="10" />
+        </svg>
       </div>
     </section>
   )
@@ -267,112 +290,121 @@ export function ForensicTrainingProgram() {
     {
       icon: '🎯',
       title: 'Crime Scene Investigation Training',
+      accent: '#6366f1',
     },
     {
       icon: '🌀',
       title: 'Fingerprint Examination Course',
+      accent: '#3b82f6',
     },
     {
       icon: '🧬',
       title: 'Forensic Biology & Serology Training',
+      accent: '#10b981',
     },
     {
       icon: '📄',
       title: 'Questioned Document Examination',
+      accent: '#8b5cf6',
     },
     {
       icon: '💻',
       title: 'Multimedia & Digital Forensics',
+      accent: '#06b6d4',
     },
   ]
   return (
-    <section className={`${SECTION} bg-[#F8FAFC]`}>
-      <div className={CONTAINER}>
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl lg:text-[36px] font-extrabold text-slate-900">
-            Forensic Training Programs
-          </h2>
-          <p className="mt-3 text-slate-500 text-sm sm:text-base">
-            Specialized certification courses for future forensic professionals
-          </p>
-        </div>
+    <section
+      className={`${SECTION} section-aura-training section-glow-top relative overflow-hidden`}
+    >
+      <div className={`${CONTAINER} relative z-10`}>
+        <SectionHeader
+          eyebrow="Specialized Courses"
+          title="Forensic Training Programs"
+          subtitle="Specialized certification courses for future forensic professionals"
+        />
 
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
+        <AnimateOnScroll stagger className="grid gap-5 md:grid-cols-3">
           {trainingPrograms.slice(0, 3).map((program) => (
             <div
               key={program.title}
-              className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 hover:shadow-md transition"
+              className="training-card card-pop flex items-center gap-4 rounded-2xl p-5"
+              style={{ '--card-accent': program.accent } as CSSProperties}
             >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 text-xl">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white text-xl shadow-sm ring-1 ring-slate-100">
                 {program.icon}
               </div>
 
-              <h3 className="text-sm font-semibold text-slate-900 leading-snug">{program.title}</h3>
+              <h3 className={`${TYPOGRAPHY.small} font-semibold text-slate-900 leading-snug`}>
+                {program.title}
+              </h3>
             </div>
           ))}
-        </div>
+        </AnimateOnScroll>
 
-        <div className="mt-5 grid gap-5 md:grid-cols-3">
+        <AnimateOnScroll stagger className="mt-5 grid gap-5 md:grid-cols-3">
           {trainingPrograms.slice(3, 5).map((program) => (
             <div
               key={program.title}
-              className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 hover:shadow-md transition"
+              className="training-card card-pop flex items-center gap-4 rounded-2xl p-5"
+              style={{ '--card-accent': program.accent } as CSSProperties}
             >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 text-xl">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white text-xl shadow-sm ring-1 ring-slate-100">
                 {program.icon}
               </div>
 
-              <h3 className="text-sm font-semibold text-slate-900 leading-snug">{program.title}</h3>
+              <h3 className={`${TYPOGRAPHY.small} font-semibold text-slate-900 leading-snug`}>
+                {program.title}
+              </h3>
             </div>
           ))}
 
           <div className="flex items-center justify-center">
             <Link
               href="/courses"
-              className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-blue-500 px-8 text-sm font-semibold text-white shadow-lg hover:shadow-xl transition"
+              className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-blue-500 px-8 text-sm font-semibold text-white shadow-[0_12px_28px_-8px_rgba(79,70,229,0.45)] hover:shadow-[0_16px_36px_-8px_rgba(79,70,229,0.55)] transition"
             >
               View All Programs
               <span aria-hidden>→</span>
             </Link>
           </div>
-        </div>
+        </AnimateOnScroll>
       </div>
+      <img
+        src="/assets/svg/chemistry-burner.svg"
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute -right-6 top-1/2 h-44 w-44 -translate-y-1/2 opacity-[0.06]"
+      />
     </section>
   )
 }
 
-/* ─── 2. Program CTA banner ─── */
+/* ─── 2. AFSL Get in Touch CTA ─── */
 export function ProgramCtaSection() {
   return (
-    // <section className={`${SECTION} bg-white -mt-6 relative z-10`}>
-    <div className={CONTAINER}>
-      <div className="rounded-3xl bg-[#C8D6FC] px-6 py-10 sm:px-10 sm:py-12 lg:px-14 text-white shadow-xl">
-        <h2 className=" text-black text-xl sm:text-2xl lg:text-[28px] font-extrabold leading-snug max-w-3xl">
-          Forensic Science Training, Internship &amp; Research Programs | AFRS India
-        </h2>
-        <p className="mt-4 text-sm sm:text-base text-black max-w-2xl leading-relaxed">
-          AFSL provides structured internship programs designed to provide students with practical
-          exposure in forensic science disciplines including crime scene investigation, fingerprint
-          analysis, and digital forensics and many more.
-        </p>
-        <div className="mt-8 flex flex-wrap gap-4">
-          <Link
-            href="/courses"
-            className="inline-flex h-12 items-center justify-center rounded-xl bg-violet-600 hover:bg-violet-700 px-6 text-sm font-bold transition"
-          >
-            Explore Our Training Program
-          </Link>
-          <Link
-            href="/courses"
-            className="inline-flex h-12 items-center justify-center rounded-xl border border-white/30 bg-[#FB923C] hover:bg-white/10 px-6 text-sm font-bold transition gap-2"
-          >
-            <span aria-hidden>📋</span>
-            Apply for Forensic Internship
-          </Link>
-        </div>
+    <div className="rounded-3xl bg-[#C8D6FC] px-6 py-10 sm:px-10 sm:py-12 lg:px-14 shadow-xl">
+      <p className={`${TYPOGRAPHY.label} text-violet-700`}>Get In Touch</p>
+      <p className="mt-4 text-sm sm:text-base text-slate-800 max-w-2xl leading-relaxed">
+        Need professional forensic assistance, expert opinion, training opportunities, or research
+        collaboration? Contact AFSL today and connect with our forensic experts.
+      </p>
+      <div className="mt-8 flex flex-wrap gap-4">
+        <Link
+          href="/contact"
+          className="inline-flex h-12 items-center justify-center rounded-xl bg-violet-600 hover:bg-violet-700 px-6 text-sm font-bold text-white transition"
+        >
+          Contact AFSL
+        </Link>
+        <Link
+          href="/services"
+          className="inline-flex h-12 items-center justify-center rounded-xl border border-white/30 bg-[#FB923C] hover:bg-[#EA580C] px-6 text-sm font-bold text-white transition gap-2"
+        >
+          <span aria-hidden>🔬</span>
+          Explore Our Services
+        </Link>
       </div>
     </div>
-    // </section>
   )
 }
 
@@ -442,7 +474,7 @@ export function EventsSection({
   const badgeColors = ['bg-indigo-500', 'bg-violet-600', 'bg-orange-500']
 
   return (
-    <section className={`${SECTION} bg-white`}>
+    <section className={`${SECTION} bg-white section-glow-top`}>
       <div className={CONTAINER}>
         <SectionHeader
           title={sectionText.eventsHeading || 'Upcoming Events'}
@@ -451,7 +483,7 @@ export function EventsSection({
             'Join our forensic science training programs and workshops'
           }
         />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <AnimateOnScroll stagger className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {events.docs.length === 0 && (
             <p className="md:col-span-3 text-center text-slate-400 py-8">
               No upcoming events — add them in the CMS.
@@ -484,7 +516,9 @@ export function EventsSection({
                   >
                     <span className="sr-only">{afrsEvent.eventNature}</span>
                   </div>
-                  <h3 className="mt-4 text-xl font-bold text-slate-900">{afrsEvent.title}</h3>
+                  <h3 className={`mt-4 ${TYPOGRAPHY.cardTitle} text-slate-900`}>
+                    {afrsEvent.title}
+                  </h3>
                   <p className="mt-2 text-xs text-slate-500">
                     {formatEventDate(afrsEvent.startDate)}
                     {afrsEvent.venue ? ` • ${afrsEvent.venue}` : ''}
@@ -505,7 +539,7 @@ export function EventsSection({
               </article>
             )
           })}
-        </div>
+        </AnimateOnScroll>
       </div>
     </section>
   )
@@ -514,10 +548,15 @@ export function EventsSection({
 /* ─── 6. About ─── */
 export function AboutSection({ sectionText }: { sectionText: SectionText }) {
   return (
-    <section className={`${SECTION} bg-[#F8FAFC]`}>
+    <section className={`${SECTION} ${UI.sectionSurface} section-glow-top`}>
       <div className={`${CONTAINER} grid gap-12 lg:grid-cols-2 items-center`}>
-        <div>
-          <h2 className={UI.title}>{sectionText.aboutHeading || 'About AFRS'}</h2>
+        <AnimateOnScroll direction="left">
+          <SectionHeader
+            align="left"
+            accent={false}
+            className="mb-0 max-w-none mx-0"
+            title={sectionText.aboutHeading || 'About AFRS'}
+          />
           <p className={`mt-6 ${UI.body}`}>
             {sectionText.aboutDescription1 ||
               'Applied Forensic Research Sciences (AFRS) is a premier organization established with a vision to revolutionize the forensic science landscape through research, training, and specialized services.'}
@@ -532,26 +571,26 @@ export function AboutSection({ sectionText }: { sectionText: SectionText }) {
           >
             Read More
           </Link>
-        </div>
-        <div className="relative">
-          <div className="rounded-[2rem] border-[10px] border-white shadow-2xl overflow-hidden">
-            <div className="relative aspect-[4/3] w-full">
-              <Image
-                src={aboutImage}
-                alt="AFRS laboratory"
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
+        </AnimateOnScroll>
+        <AnimateOnScroll direction="right">
+          <div className="relative">
+            <div className="rounded-[2rem] border-[10px] border-white shadow-2xl overflow-hidden">
+              <div className="relative aspect-[4/3] w-full">
+                <Image
+                  src={aboutImage}
+                  alt="AFRS laboratory"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
+            </div>
+            <div className="absolute -right-2 -bottom-2 sm:-right-4 sm:-bottom-4 rounded-2xl bg-indigo-600 text-white px-5 py-4 shadow-xl">
+              <p className="text-3xl font-extrabold leading-none">10+</p>
+              <p className={`mt-1 ${TYPOGRAPHY.label} text-white/90`}>Years of Experience</p>
             </div>
           </div>
-          <div className="absolute -right-2 -bottom-2 sm:-right-4 sm:-bottom-4 rounded-2xl bg-indigo-600 text-white px-5 py-4 shadow-xl">
-            <p className="text-3xl font-extrabold leading-none">10+</p>
-            <p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-white/90">
-              Years of Experience
-            </p>
-          </div>
-        </div>
+        </AnimateOnScroll>
       </div>
     </section>
   )
@@ -566,69 +605,57 @@ export function InternshipProgramSection() {
     'Document & Handwriting Analysis',
   ]
   return (
-    <section className="bg-[#F8FAFC] py-[88px] lg:py-[110px]">
+    <section className={`${SECTION} ${UI.sectionSurface} section-glow-top`}>
       <div className={CONTAINER}>
-        <div className="grid items-center gap-[64px] lg:grid-cols-[1fr_460px]">
-          {/* LEFT CONTENT */}
-          <div className="max-w-[560px]">
-            {/* Badge */}
-            <div className="inline-flex items-center rounded-full bg-[#EEF2FF] px-4 py-2">
-              <span className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#6366F1]">
-                Career Catalyst
-              </span>
-            </div>
+        <div className="grid items-center gap-12 lg:grid-cols-[1fr_460px] lg:gap-16">
+          <AnimateOnScroll direction="left">
+            <div className="max-w-[560px]">
+              <SectionHeader
+                align="left"
+                accent={false}
+                eyebrow="Career Catalyst"
+                className="mb-0 max-w-none mx-0"
+                title="Forensic Science Internship Program in India"
+                subtitle="Join our highly structured internship programs designed to provide genuine practical exposure. Gain first-hand experience in professional laboratory settings and field investigations under the supervision of senior scientists."
+              />
 
-            {/* Heading */}
-            <h2 className="mt-7 text-[42px] lg:text-[48px] font-extrabold leading-[1.1] tracking-[-0.03em] text-slate-900">
-              Forensic Science Internship Program in India
-            </h2>
+              <div className="mt-10 grid gap-y-7 gap-x-10 sm:grid-cols-2">
+                {internshipFeatures.map((feature) => (
+                  <div key={feature} className="flex items-start gap-4">
+                    <div className="flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-[10px] bg-[#DDF7E7]">
+                      <BadgeCheck className="h-[18px] w-[18px] text-[#10B981]" strokeWidth={2.2} />
+                    </div>
 
-            {/* Description */}
-            <p className="mt-6 max-w-[560px] text-[18px] leading-[1.85] text-slate-600">
-              Join our highly structured internship programs designed to provide genuine practical
-              exposure. Gain first-hand experience in professional laboratory settings and field
-              investigations under the supervision of senior scientists.
-            </p>
-
-            {/* Features */}
-            <div className="mt-10 grid gap-y-7 gap-x-10 sm:grid-cols-2">
-              {internshipFeatures.map((feature) => (
-                <div key={feature} className="flex items-start gap-4">
-                  <div className="flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-[10px] bg-[#DDF7E7]">
-                    <BadgeCheck className="h-[18px] w-[18px] text-[#10B981]" strokeWidth={2.2} />
+                    <p className={`${TYPOGRAPHY.body} font-semibold text-slate-700`}>{feature}</p>
                   </div>
+                ))}
+              </div>
 
-                  <p className="text-[20px] font-semibold leading-[1.45] text-[#334155]">
-                    {feature}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* CTA */}
-            <div className="mt-12">
-              <Link
-                href="/courses"
-                className="inline-flex h-[72px] min-w-[166px] items-center justify-center rounded-[18px] bg-[#F97316] px-10 text-[28px] font-bold text-white shadow-[0_20px_35px_rgba(249,115,22,0.28)] transition hover:bg-[#EA580C]"
-              >
-                Apply Now
-              </Link>
-            </div>
-          </div>
-
-          {/* RIGHT IMAGE */}
-          <div className="relative">
-            <div className="overflow-hidden rounded-[24px] border-[10px] border-white bg-white shadow-[0_32px_60px_rgba(15,23,42,0.18)]">
-              <div className="relative aspect-[1/1] w-full">
-                <Image
-                  src="https://res.cloudinary.com/drrzakkgo/image/upload/v1777273424/WhatsApp_Image_2026-04-18_at_11.31.12_AM_hdi2gq.jpg"
-                  alt="Forensic Internship Program"
-                  fill
-                  className="object-cover"
-                />
+              <div className="mt-12">
+                <Link
+                  href="/courses"
+                  className="inline-flex h-12 items-center justify-center rounded-xl bg-[#F97316] px-8 text-sm font-bold text-white shadow-[0_20px_35px_rgba(249,115,22,0.28)] transition hover:bg-[#EA580C]"
+                >
+                  Apply Now
+                </Link>
               </div>
             </div>
-          </div>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll direction="right">
+            <div className="relative">
+              <div className="overflow-hidden rounded-[24px] border-[10px] border-white bg-white shadow-[0_32px_60px_rgba(15,23,42,0.18)]">
+                <div className="relative aspect-[1/1] w-full">
+                  <Image
+                    src="https://res.cloudinary.com/drrzakkgo/image/upload/v1781617023/WhatsApp_Image_2026-06-16_at_6.35.45_PM_jfmudj.jpg"
+                    alt="Forensic Internship Program"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+          </AnimateOnScroll>
         </div>
       </div>
     </section>
@@ -641,28 +668,21 @@ export function ImpactSection({ impactStats }: { impactStats: PaginatedDocs<Impa
 
   const cardColors = [
     'bg-[#4F86E8]', // blue
-    'bg-[#4F86E8]', // blue
+    'bg-[#EF4444]', // red
     'bg-[#F97316]', // orange
     'bg-[#10B981]', // emerald (green)
     'bg-[#F97316]', // orange
   ]
 
   return (
-    <section className="bg-[#F8FAFC] py-20 lg:py-24">
+    <section className={`${SECTION} ${UI.sectionSurface} section-glow-top`}>
       <div className={CONTAINER}>
-        {/* Heading */}
-        <div className="mb-14 text-center">
-          <h2 className="text-[42px] font-extrabold tracking-[-0.02em] text-[#0F172A]">
-            Our Achievements
-          </h2>
+        <SectionHeader
+          title="Our Achievements"
+          subtitle="Making a difference in forensic science education"
+        />
 
-          <p className="mt-3 text-[18px] text-slate-500">
-            Making a difference in forensic science education
-          </p>
-        </div>
-
-        {/* Cards */}
-        <div className="grid gap-4 md:grid-cols-5">
+        <AnimateOnScroll stagger className="grid gap-4 md:grid-cols-5">
           {items.map((item, index) => (
             <div
               key={item.label}
@@ -679,14 +699,14 @@ export function ImpactSection({ impactStats }: { impactStats: PaginatedDocs<Impa
                 px-4
               `}
             >
-              <div className="text-[34px] leading-none font-extrabold text-white">{item.value}</div>
-
-              <div className="mt-2 text-[11px] font-semibold tracking-[0.14em] uppercase text-white/95">
-                {item.label}
+              <div className="text-3xl sm:text-4xl leading-none font-extrabold text-white">
+                {item.value}
               </div>
+
+              <div className={`mt-2 ${TYPOGRAPHY.label} text-white/95`}>{item.label}</div>
             </div>
           ))}
-        </div>
+        </AnimateOnScroll>
       </div>
     </section>
   )
@@ -695,45 +715,54 @@ export function ImpactSection({ impactStats }: { impactStats: PaginatedDocs<Impa
 /* ─── 8. Future of forensics ─── */
 export function FutureSection() {
   return (
-    <section className={`${SECTION} bg-[#F8FAFC]`}>
+    <section className={`${SECTION} ${UI.sectionSurface} section-glow-top`}>
       <div className={`${CONTAINER} grid gap-10 lg:grid-cols-2 items-center`}>
-        <div className="relative rounded-3xl overflow-hidden bg-slate-200 aspect-[16/10] lg:min-h-[320px] card-pop">
-          <Image
-            src={aboutImage}
-            alt="Future of forensics"
-            fill
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover opacity-90"
-          />
-          <div className="absolute inset-0 bg-slate-900/25" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <button
-              type="button"
-              aria-label="Play introduction video"
-              className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-white/95 text-indigo-700 text-xl font-bold shadow-xl hover:scale-105 transition"
-            >
-              ►
-            </button>
+        <AnimateOnScroll direction="left">
+          <div className="relative rounded-3xl overflow-hidden bg-slate-200 aspect-[16/10] lg:min-h-[320px] card-pop">
+            <Image
+              src={aboutImage}
+              alt="Future of forensics"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover opacity-90"
+            />
+            <div className="absolute inset-0 bg-slate-900/25" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <button
+                type="button"
+                aria-label="Play introduction video"
+                className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-white/95 text-indigo-700 text-xl font-bold shadow-xl hover:scale-105 transition"
+              >
+                ►
+              </button>
+            </div>
           </div>
-        </div>
-        <div>
-          <h2 className={UI.title}>Exploring the Future of Forensics</h2>
-          <p className={`mt-5 ${UI.body}`}>
-            Explore our latest research breakthroughs and educational highlights. At AFRS, we use
-            state-of-the-art technology to solve complex problems and train the next generation of
-            forensic experts.
-          </p>
-          <p className={`mt-3 ${UI.body}`}>
-            Watch our introductory video to learn more about our mission and the impact we make
-            globally.
-          </p>
-          <Link
-            href="/courses"
-            className="mt-8 inline-flex h-11 items-center justify-center rounded-lg bg-violet-600 hover:bg-violet-700 px-6 text-white text-sm font-bold transition"
-          >
-            Explore Our Courses
-          </Link>
-        </div>
+        </AnimateOnScroll>
+        <AnimateOnScroll direction="right">
+          <div>
+            <SectionHeader
+              align="left"
+              accent={false}
+              className="mb-0 max-w-none mx-0"
+              title="Exploring the Future of Forensics"
+            />
+            <p className={`mt-5 ${UI.body}`}>
+              Explore our latest research breakthroughs and educational highlights. At AFRS, we use
+              state-of-the-art technology to solve complex problems and train the next generation of
+              forensic experts.
+            </p>
+            <p className={`mt-3 ${UI.body}`}>
+              Watch our introductory video to learn more about our mission and the impact we make
+              globally.
+            </p>
+            <Link
+              href="/courses"
+              className="mt-8 inline-flex h-11 items-center justify-center rounded-lg bg-violet-600 hover:bg-violet-700 px-6 text-white text-sm font-bold transition"
+            >
+              Explore Our Courses
+            </Link>
+          </div>
+        </AnimateOnScroll>
       </div>
     </section>
   )
@@ -778,46 +807,46 @@ export function AchievementsSection() {
       bg: 'bg-indigo-100',
       iconColor: 'text-indigo-600',
     },
+    {
+      title: 'Recognition',
+      description: 'Earn industry-recognized certifications.',
+      icon: BadgeCheck,
+      bg: 'bg-pink-100',
+      iconColor: 'text-pink-600',
+    },
   ]
 
   return (
-    <section className="relative overflow-hidden bg-[#F8FAFC] py-20 lg:py-24">
+    <section
+      className={`${SECTION} ${UI.sectionSurface} section-glow-top relative overflow-hidden`}
+    >
       <div className={CONTAINER}>
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-[36px] font-extrabold tracking-tight text-slate-900">
-            The AFRS Impact
-          </h2>
-
-          <p className="mt-4 text-[20px] leading-relaxed text-slate-500">
-            Our holistic approach ensures every student and professional gains more than just
-            knowledge.
-          </p>
-        </div>
-        {/* 3 columns per row */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <SectionHeader
+          title="The AFRS Impact"
+          subtitle="Our holistic approach ensures every student and professional gains more than just knowledge."
+        />
+        <AnimateOnScroll
+          stagger
+          className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
           {items.map((item) => {
             const Icon = item.icon
 
             return (
-              <div
-                key={item.title}
-                className="rounded-[28px] border border-slate-100 bg-white p-8 shadow-[0_4px_20px_rgba(15,23,42,0.03)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-              >
+              <div key={item.title} className={`${UI.cardInteractive} p-8 card-pop`}>
                 <div
                   className={`flex h-14 w-14 items-center justify-center rounded-2xl ${item.bg}`}
                 >
                   <Icon className={`h-7 w-7 ${item.iconColor}`} />
                 </div>
 
-                <h3 className="mt-7 text-[18px] font-bold leading-[1.2] text-slate-900">
-                  {item.title}
-                </h3>
+                <h3 className={`mt-7 ${TYPOGRAPHY.cardTitle} text-slate-900`}>{item.title}</h3>
 
-                <p className="mt-5 text-[15px] leading-8 text-slate-500">{item.description}</p>
+                <p className={`mt-5 ${UI.body} text-slate-500`}>{item.description}</p>
               </div>
             )
           })}
-        </div>
+        </AnimateOnScroll>
       </div>
 
       {/* Decorative fingerprint */}
@@ -842,36 +871,64 @@ export function AchievementsSection() {
 /* ─── 10. Trusted partner ─── */
 export function TrustedPartnerSection() {
   const cards = [
-    { title: 'DNA Analysis', icon: '🧬' },
-    { title: 'Fingerprint Analysis', icon: '🔍' },
-    { title: 'Crime Forensics', icon: '🕵️' },
-    { title: 'Expert Opinion', icon: '📋' },
+    { title: 'Crime Scene Investigation and Management', icon: '🕵️' },
+    { title: 'Fingerprint Examination and Analysis', icon: '🔍' },
+    { title: 'Questioned Document, Handwriting and Signature Analysis', icon: '📄' },
+    { title: 'Multimedia Forensics & Digital Forensics', icon: '💻' },
+    {
+      title: '65B IEA Certificate (63 (4)(C) BSA) for Digital Evidences',
+      icon: '⚖️',
+    },
+    { title: 'Forensic Consultancy & Expert Opinion', icon: '📋' },
   ]
 
   return (
-    <section className={`${SECTION} text-white`} style={{ background: UI.afslGradient }}>
+    <section
+      className={`${SECTION} text-white section-glow-top`}
+      style={{ background: UI.afslGradient }}
+    >
       <div className={CONTAINER}>
+        <div className="mx-auto mb-12">
+          <Image
+            src={AFRSLogo}
+            alt="AFSL Logo"
+            width={200}
+            height={60}
+            className="mx-auto border-2 "
+          />
+        </div>
         <SectionHeader
           light
           title="Applied Forensic Science Laboratory (AFSL)"
-          subtitle="Scientific Assistance Towards Justice"
+          subtitle="Scientific. Reliable. Professional."
         />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <p className="mx-auto -mt-6 mb-12 max-w-3xl text-center text-base sm:text-lg leading-relaxed text-white/85 lg:mb-14">
+          Applied Forensic Science Laboratory (AFSL) is committed to delivering reliable,
+          scientific, and evidence-based forensic solutions that support investigations, legal
+          proceedings, research, and professional development. Our multidisciplinary team provides
+          expert forensic examination, analytical services, consultation, and training across
+          various domains of forensic science.
+        </p>
+        <AnimateOnScroll stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {cards.map((card) => (
             <div
               key={card.title}
-              className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-sm p-6 text-center card-pop min-h-[140px] flex flex-col items-center justify-center"
+              className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-sm p-6 text-center card-pop min-h-[150px] flex flex-col items-center justify-center"
             >
               <span className="text-3xl" aria-hidden>
                 {card.icon}
               </span>
-              <p className="mt-4 text-sm font-bold leading-snug">{card.title}</p>
+              <p className="mt-4 text-xs sm:text-sm font-bold leading-snug text-white/95">
+                {card.title}
+              </p>
             </div>
           ))}
-        </div>
-      </div>
-      <div className="mt-6">
-        <ProgramCtaSection />
+        </AnimateOnScroll>
+        <AnimateOnScroll>
+          <div className="mt-10 lg:mt-14">
+            <ProgramCtaSection />
+          </div>
+        </AnimateOnScroll>
       </div>
     </section>
   )
@@ -882,14 +939,17 @@ export function ExpertsSection({ scientists }: { scientists: PaginatedDocs<Scien
   const experts = scientists.docs.length ? scientists.docs : fallbackScientists
 
   return (
-    <section className={`${SECTION} bg-white`}>
+    <section className={`${SECTION} bg-white section-glow-top`}>
       <div className={`${CONTAINER} grid gap-10 xl:grid-cols-[1fr_340px] items-start`}>
         <div>
-          <h2 className={UI.title}>Our Expert Scientists</h2>
-          <p className="mt-3 text-slate-500">
-            Leading professionals driving forensic innovation and research excellence.
-          </p>
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
+          <SectionHeader
+            align="left"
+            accent={false}
+            className="mb-8 max-w-none mx-0"
+            title="Our Expert Scientists"
+            subtitle="Leading professionals driving forensic innovation and research excellence."
+          />
+          <AnimateOnScroll stagger className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {experts.map((expert, index) => {
               const photoUrl =
                 'photo' in expert
@@ -928,21 +988,23 @@ export function ExpertsSection({ scientists }: { scientists: PaginatedDocs<Scien
                 </div>
               )
             })}
+          </AnimateOnScroll>
+        </div>
+        <AnimateOnScroll direction="right">
+          <div className="rounded-3xl bg-gradient-to-br from-indigo-600 to-blue-600 p-8 text-white shadow-lg">
+            <h3 className={TYPOGRAPHY.cardTitle}>Case Submission</h3>
+            <p className="mt-4 text-sm text-white/85 leading-relaxed">
+              Need professional forensic assistance? Our team is ready to help with specialized
+              investigation and expert reporting for your specific case requirements.
+            </p>
+            <Link
+              href="/contact"
+              className="mt-8 inline-flex w-full h-12 items-center justify-center rounded-xl bg-orange-500 hover:bg-orange-600 text-sm font-bold transition"
+            >
+              Enquire Now
+            </Link>
           </div>
-        </div>
-        <div className="rounded-3xl bg-gradient-to-br from-indigo-600 to-blue-600 p-8 text-white shadow-lg">
-          <h3 className="text-xl font-bold">Case Submission</h3>
-          <p className="mt-4 text-sm text-white/85 leading-relaxed">
-            Need professional forensic assistance? Our team is ready to help with specialized
-            investigation and expert reporting for your specific case requirements.
-          </p>
-          <Link
-            href="/contact"
-            className="mt-8 inline-flex w-full h-12 items-center justify-center rounded-xl bg-orange-500 hover:bg-orange-600 text-sm font-bold transition"
-          >
-            Enquire Now
-          </Link>
-        </div>
+        </AnimateOnScroll>
       </div>
     </section>
   )
@@ -957,13 +1019,13 @@ export function TestimonialsSection({
   if (!testimonials.docs.length) return null
 
   return (
-    <section className={`${SECTION} bg-white`}>
+    <section className={`${SECTION} bg-white section-glow-top`}>
       <div className={CONTAINER}>
         <SectionHeader
           title="Testimonials"
           subtitle="Voices from students and professionals who trained with AFRS."
         />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <AnimateOnScroll stagger className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.docs.map((t) => (
             <div key={t.id} className={`${UI.card} p-8 card-pop text-center`}>
               <div className="mx-auto h-16 w-16 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl font-bold">
@@ -982,7 +1044,7 @@ export function TestimonialsSection({
               </div>
             </div>
           ))}
-        </div>
+        </AnimateOnScroll>
       </div>
     </section>
   )
@@ -1011,15 +1073,20 @@ export function PartnerLogosSection() {
 /* ─── 14. Media & resources ─── */
 export function MediaResourcesSection() {
   const items = [
-    { label: 'E-Library', href: '/articles', icon: '▶' },
-    { label: 'Blog', href: '/articles', icon: '🎙' },
-    { label: 'Virtual Museum', href: '/events', icon: '📡' },
-    { label: 'Youtube Channel', href: '/articles', icon: '📰' },
+    { label: 'Virtual Museum', href: 'https://nfsmuseums.com/s', icon: Landmark },
+
+    {
+      label: 'Youtube Channel',
+      href: 'https://www.youtube.com/@afrs',
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M10.34 15.64L15.27 12L10.34 8.36V15.64ZM21.8 12C21.8 12.78 21.72 13.56 21.56 14.32C21.4 15.08 21.16 15.8 20.84 16.48C20.52 17.16 20.12 17.8 19.64 18.4C19.16 19 18.6 19.56 17.96 20C17.32 20.44 16.62 20.76 15.88 21C15.14 21.24 14.38 21.4 13.62 21.48C12.86 21.56 12.1 21.6 11.34 21.6C10.58 21.6 9.82 21.56 9.08 21.48C8.34 21.4 7.58 21.24 6.84 21C6.1 20.76 5.4 20.44 4.76 20C4.12 19.56 3.56 19,3.08 18.4C2.6 17.8,2,17,1,16C0,15,0,14,1,13C2,12,2,11,3,10C4,9,4,8,5,7C6,6,6,5,7,4C8,3,8,2,9,1C10,0,11,-0,12,-0Z"/></svg>`,
+    },
+    { label: 'E-Library', href: '/articles', icon: LibraryBig },
+    { label: 'Blog', href: 'https://appliedforensicresearchscience.blogspot.com/', icon: Rss },
   ]
 
   return (
     <section
-      className={`${SECTION} text-white`}
+      className={`${SECTION} text-white section-glow-top`}
       style={{ background: 'linear-gradient(117.28deg, #6366F1 0%, #3B82F6 100%)' }}
     >
       <div className={CONTAINER}>
@@ -1028,7 +1095,7 @@ export function MediaResourcesSection() {
           title="Quick Links"
           subtitle="Access our resources and stay updated."
         />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <AnimateOnScroll stagger className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {items.map((item) => (
             <Link
               key={item.label}
@@ -1036,12 +1103,16 @@ export function MediaResourcesSection() {
               className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-sm p-8 text-center card-pop hover:bg-white/15 transition min-h-[120px] flex flex-col items-center justify-center gap-3"
             >
               <span className="text-2xl" aria-hidden>
-                {item.icon}
+                {typeof item.icon === 'string' ? (
+                  <span dangerouslySetInnerHTML={{ __html: item.icon }} />
+                ) : (
+                  <item.icon className="h-8 w-8" />
+                )}
               </span>
               <span className="font-bold text-sm">{item.label}</span>
             </Link>
           ))}
-        </div>
+        </AnimateOnScroll>
       </div>
     </section>
   )
@@ -1068,31 +1139,33 @@ export function LatestNewsSection() {
   ]
 
   return (
-    <section className={`${SECTION} bg-white`}>
+    <section className={`${SECTION} bg-white section-glow-top`}>
       <div className={`${CONTAINER} max-w-3xl`}>
         <SectionHeader
-          title="Latest News & Articles"
+          title="Notice Board"
           subtitle="Stay updated with AFRS announcements and publications."
         />
-        <ul className="divide-y divide-slate-100 border border-slate-100 rounded-2xl overflow-hidden">
-          {items.map((item) => (
-            <li
-              key={item.title}
-              className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-5 hover:bg-slate-50 transition"
-            >
-              <div>
-                <p className="font-semibold text-slate-900 text-sm">{item.title}</p>
-                <p className="text-xs text-slate-400 mt-1">{item.date}</p>
-              </div>
-              <Link
-                href={item.href}
-                className="text-sm font-bold text-indigo-600 hover:text-indigo-700 shrink-0"
+        <AnimateOnScroll>
+          <ul className="divide-y divide-slate-100 border border-slate-100 rounded-2xl overflow-hidden">
+            {items.map((item) => (
+              <li
+                key={item.title}
+                className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-5 hover:bg-slate-50 transition"
               >
-                Read More →
-              </Link>
-            </li>
-          ))}
-        </ul>
+                <div>
+                  <p className="font-semibold text-slate-900 text-sm">{item.title}</p>
+                  <p className="text-xs text-slate-400 mt-1">{item.date}</p>
+                </div>
+                <Link
+                  href={item.href}
+                  className="text-sm font-bold text-indigo-600 hover:text-indigo-700 shrink-0"
+                >
+                  Read More →
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </AnimateOnScroll>
       </div>
     </section>
   )
@@ -1116,13 +1189,13 @@ export function FaqSection() {
   ]
 
   return (
-    <section className={`${SECTION} bg-white`}>
+    <section className={`${SECTION} bg-white section-glow-top`}>
       <div className={`${CONTAINER} max-w-3xl`}>
         <SectionHeader
           title="Frequently Asked Questions"
           subtitle="Quick answers about programs, registration, and services."
         />
-        <div className="space-y-3">
+        <AnimateOnScroll stagger className="space-y-3">
           {faqs.map((faq) => (
             <details
               key={faq.q}
@@ -1137,7 +1210,7 @@ export function FaqSection() {
               <p className="px-5 pb-5 text-sm text-slate-600 leading-relaxed">{faq.a}</p>
             </details>
           ))}
-        </div>
+        </AnimateOnScroll>
       </div>
     </section>
   )
@@ -1147,13 +1220,7 @@ export function FaqSection() {
 export function CommunityBannerSection({ totalVisitors }: { totalVisitors?: number }) {
   const count = typeof totalVisitors === 'number' ? totalVisitors.toLocaleString('en-IN') : '25,000'
 
-  return (
-    <section className={`${SECTION} text-white`} style={{ background: UI.quickLinksGradient }}>
-      <div className={CONTAINER}>
-        <p>Total Visitors: {count}</p>
-      </div>
-    </section>
-  )
+  return <VisitorCounterBar totalVisitors={999} />
 }
 
 /* ─── 18. Gallery ─── */
@@ -1171,13 +1238,13 @@ export function GallerySection({ galleryItems }: { galleryItems: PaginatedDocs<G
       }))
 
   return (
-    <section className={`${SECTION} bg-white`}>
+    <section className={`${SECTION} bg-white section-glow-top`}>
       <div className={CONTAINER}>
         <SectionHeader
           title="AFRS India Gallery"
           subtitle="Explore snapshots from our laboratories, workshops, and field sessions."
         />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <AnimateOnScroll stagger className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {items.map((item) => (
             <div
               key={item.key}
@@ -1198,15 +1265,17 @@ export function GallerySection({ galleryItems }: { galleryItems: PaginatedDocs<G
               </div>
             </div>
           ))}
-        </div>
-        <div className="mt-10 text-center">
-          <Link
-            href="/gallery"
-            className="inline-flex h-12 items-center justify-center rounded-xl border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-10 text-sm font-bold transition"
-          >
-            View More Gallery
-          </Link>
-        </div>
+        </AnimateOnScroll>
+        <AnimateOnScroll>
+          <div className="mt-10 text-center">
+            <Link
+              href="/gallery"
+              className="inline-flex h-12 items-center justify-center rounded-xl border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-10 text-sm font-bold transition"
+            >
+              View More Gallery
+            </Link>
+          </div>
+        </AnimateOnScroll>
       </div>
     </section>
   )
