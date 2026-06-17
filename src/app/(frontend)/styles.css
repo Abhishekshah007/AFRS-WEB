@@ -649,6 +649,73 @@ body {
     radial-gradient(circle at 85% 75%, rgba(139, 92,246,.15), transparent 28%);
 }
 
+.forensic-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.forensic-watermark {
+  position: absolute;
+  left: -10%;
+  top: 10%;
+  z-index: 0;
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.08);
+  font-size: clamp(4rem, 8vw, 10rem);
+  font-weight: 800;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: rotate(-22deg);
+  filter: blur(0.1px);
+}
+
+.forensic-watermark--secondary {
+  top: 60%;
+  left: -8%;
+  opacity: 0.05;
+  font-size: clamp(3rem, 7vw, 8rem);
+  transform: rotate(-18deg);
+}
+
+.forensic-graphic {
+  position: absolute;
+  z-index: 0;
+  opacity: 0.12;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.06));
+}
+
+.forensic-graphic.chemistry-burner {
+  top: 8%;
+  left: 4%;
+  width: min(22vw, 220px);
+}
+
+.forensic-graphic.criminal-posing {
+  bottom: 8%;
+  right: 4%;
+  width: min(24vw, 240px);
+  transform: rotate(6deg);
+}
+
+.forensic-graphic.fingerprint {
+  top: 18%;
+  right: 10%;
+  width: min(30vw, 280px);
+}
+
+.forensic-graphic.knife {
+  bottom: 22%;
+  left: 12%;
+  width: min(18vw, 180px);
+  transform: rotate(-8deg);
+}
+
 /* ── Scan-line on dark hero ── */
 .scanlines::after {
   content: '';

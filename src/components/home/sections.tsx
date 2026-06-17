@@ -33,7 +33,7 @@ import { TYPOGRAPHY, UI } from './design'
 
 /* ─── shared assets & layout ─── */
 export const heroPanelImage =
-  'https://res.cloudinary.com/drrzakkgo/image/upload/v1777273424/WhatsApp_Image_2026-04-18_at_11.31.12_AM_hdi2gq.jpg'
+  'https://res.cloudinary.com/drrzakkgo/image/upload/v1781617023/WhatsApp_Image_2026-06-16_at_6.35.45_PM_jfmudj.jpg'
 export const eventCardImages = [
   'https://www.appliedforensicresearchsciences.in/static/media/carousel-10.6bcf7e5d176fb7d57b28.jpeg',
   'https://www.appliedforensicresearchsciences.in/static/media/carousel-6.37510e2cbc3800979dc5.jpeg',
@@ -55,6 +55,7 @@ type SectionText = NonNullable<HomePage['sectionText']>
 type HeroData = NonNullable<HomePage['hero']>
 
 import { SectionHeader } from '@/components/ui/SectionHeader'
+import { ForensicBackground } from './ForensicBackground'
 
 const defaultImpactStats = [
   {
@@ -123,13 +124,7 @@ export function HeroSection({ heroData }: { heroData: HeroData }) {
       className="relative overflow-hidden text-white pt-16 pb-20 lg:pt-20 lg:pb-24 forensic-grid"
       style={{ background: UI.heroGradient }}
     >
-      {/* <ForensicBackground
-        trail={0.03}
-        particleCount={55}
-        enableClick
-        clickRadius={120}
-        clickStrength={1}
-      /> */}
+      <ForensicBackground />
       <div className="absolute inset-x-0 bottom-0 h-12 bg-white rounded-t-[2rem]" />
       <div className={`${CONTAINER} relative grid gap-10 lg:grid-cols-2 lg:gap-16 items-center`}>
         <div className="reveal-up">
@@ -630,7 +625,7 @@ export function InternshipProgramSection() {
             <div className="overflow-hidden rounded-[24px] border-[10px] border-white bg-white shadow-[0_32px_60px_rgba(15,23,42,0.18)]">
               <div className="relative aspect-[1/1] w-full">
                 <Image
-                  src="https://res.cloudinary.com/drrzakkgo/image/upload/v1777273424/WhatsApp_Image_2026-04-18_at_11.31.12_AM_hdi2gq.jpg"
+                  src="https://res.cloudinary.com/drrzakkgo/image/upload/v1781617023/WhatsApp_Image_2026-06-16_at_6.35.45_PM_jfmudj.jpg"
                   alt="Forensic Internship Program"
                   fill
                   className="object-cover"
