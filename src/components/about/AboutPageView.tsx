@@ -37,9 +37,8 @@ export function AboutPageView({
   uniqueItems,
   activityItems,
   heroImage,
-}: AboutPageViewProps) {
-  const heroTitle =
-    sectionText.aboutHeading || 'Advancing the Frontiers of Forensic Science'
+}: Readonly<AboutPageViewProps>) {
+  const heroTitle = sectionText.aboutHeading || 'Advancing the Frontiers of Forensic Science'
 
   const heroSubtitle =
     sectionText.aboutDescription1 ||
@@ -50,6 +49,7 @@ export function AboutPageView({
       <AboutHeroSection
         title={heroTitle}
         subtitle={heroSubtitle}
+        ctaLabel="Download Programme"
         ctaHref="#vision"
         imageSrc={heroImage}
       />

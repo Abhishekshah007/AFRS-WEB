@@ -12,7 +12,7 @@ export type AwardsGalleryProps = {
  */
 export function AwardsGallery({
   images = [ABOUT_IMAGES.award1, ABOUT_IMAGES.award2, ABOUT_IMAGES.award3],
-}: AwardsGalleryProps) {
+}: Readonly<AwardsGalleryProps>) {
   const [large, topRight, bottomRight] = images
 
   return (
@@ -27,8 +27,8 @@ export function AwardsGallery({
         </AnimateOnScroll>
 
         <AnimateOnScroll>
-          <div className="grid gap-4 md:grid-cols-12 md:grid-rows-2 md:h-[420px]">
-            <div className="relative md:col-span-5 md:row-span-2 min-h-[240px] md:min-h-0 overflow-hidden rounded-2xl">
+          <div className="grid gap-4 md:grid-cols-12 md:grid-rows-2 md:h-110">
+            <div className="relative md:col-span-5 md:row-span-2 min-h-65 md:min-h-0 overflow-hidden rounded-[28px]">
               <Image
                 src={large}
                 alt="AFRS laboratory research"
@@ -38,7 +38,7 @@ export function AwardsGallery({
                 loading="lazy"
               />
             </div>
-            <div className="relative md:col-span-4 min-h-[180px] overflow-hidden rounded-2xl">
+            <div className="relative md:col-span-4 min-h-45 overflow-hidden rounded-[28px]">
               <Image
                 src={topRight}
                 alt="AFRS training session"
@@ -48,12 +48,17 @@ export function AwardsGallery({
                 loading="lazy"
               />
             </div>
-            <div className="relative md:col-span-3 min-h-[180px] overflow-hidden rounded-2xl bg-[var(--about-primary-soft)] hidden md:block">
-              <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
-                <p className="text-sm font-bold text-[var(--about-primary)]">More highlights coming soon</p>
+            <div className="relative md:col-span-3 min-h-45 overflow-hidden rounded-[28px] bg-(--about-primary-soft) border border-dashed border-slate-200">
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 text-center">
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-(--about-primary) text-white text-2xl">
+                  ★
+                </span>
+                <p className="text-sm font-semibold text-(--about-primary)">
+                  Built for award-winning forensic research and training.
+                </p>
               </div>
             </div>
-            <div className="relative md:col-span-7 min-h-[200px] overflow-hidden rounded-2xl">
+            <div className="relative md:col-span-7 min-h-55 overflow-hidden rounded-[28px]">
               <Image
                 src={bottomRight}
                 alt="AFRS team recognition"

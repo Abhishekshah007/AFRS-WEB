@@ -23,11 +23,11 @@ export const ABOUT_IMAGES = {
   hero:
     'https://www.appliedforensicresearchsciences.in/static/media/carousel-10.6bcf7e5d176fb7d57b28.jpeg',
   vision:
-    'https://images.unsplash.com/photo-1559757142-5ebefbbfb79a?w=800&q=80',
+    'https://res.cloudinary.com/drrzakkgo/image/upload/v1771598995/fksf2djlhilr2qbhrivx.jpg',
   mission:
     'https://www.appliedforensicresearchsciences.in/static/media/carousel-6.37510e2cbc3800979dc5.jpeg',
   purpose:
-    'https://images.unsplash.com/photo-1576086213369-97a306d548ae?w=800&q=80',
+    'https://res.cloudinary.com/drrzakkgo/image/upload/v1761223493/WhatsApp_Image_2025-10-18_at_7.02.05_PM_zepm0d.jpg',
   award1:
     'https://res.cloudinary.com/drrzakkgo/image/upload/v1777273424/WhatsApp_Image_2026-04-15_at_11.53.12_PM_u2uvdf.jpg',
   award2:

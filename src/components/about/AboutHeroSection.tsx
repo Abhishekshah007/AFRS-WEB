@@ -16,10 +16,10 @@ export type AboutHeroSectionProps = {
 export function AboutHeroSection({
   title,
   subtitle,
-  ctaLabel = 'Read More',
+  ctaLabel = 'Download Programme',
   ctaHref = '#vision',
   imageSrc = ABOUT_IMAGES.hero,
-}: AboutHeroSectionProps) {
+}: Readonly<AboutHeroSectionProps>) {
   return (
     <section
       className="relative overflow-hidden text-white about-hero"
