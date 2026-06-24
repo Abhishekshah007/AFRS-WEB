@@ -1,5 +1,5 @@
 import React from 'react'
-import { Plus_Jakarta_Sans } from 'next/font/google'
+import { Inter, DM_Sans } from 'next/font/google'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { AppProviders } from '@/components/providers/AppProviders'
@@ -7,9 +7,18 @@ import { getPayloadClient } from '@/lib/payload'
 import type { FooterSetting, HeaderSetting, SiteSetting } from '@/payload-types'
 import './styles.css'
 
-const plusJakarta = Plus_Jakarta_Sans({
+// Body text - clean, readable, professional
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-jakarta',
+  variable: '--font-inter',
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+})
+
+// Headings - strong, scientific, modern
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  variable: '--font-dm-sans',
   display: 'swap',
   weight: ['400', '500', '600', '700', '800'],
 })
@@ -55,7 +64,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   ])
 
   return (
-    <html lang="en" className={plusJakarta.variable}>
+    <html lang="en" className={`${inter.variable} ${dmSans.variable}`}>
       <body className="font-sans antialiased">
         <Navbar settings={headerSettings} />
         <AppProviders>

@@ -81,13 +81,13 @@ const defaultImpactStats = [
     description: 'From crime scene to digital forensics.',
   },
   {
-    value: '10+',
+    value: '150+',
     label: 'Research Papers',
     tone: 'emerald',
     description: 'Collaboration with institutions nationwide.',
   },
   {
-    value: '100+',
+    value: '350+',
     label: 'Expert Sessions',
     tone: 'orange',
     description: 'Regular training and certification programs.',
@@ -133,11 +133,11 @@ export function HeroSection({ heroData }: { heroData: HeroData }) {
       <div className={`${CONTAINER} relative grid gap-10 lg:grid-cols-2 lg:gap-16 items-center`}>
         <div className="reveal-up">
           <h1 className={UI.titleLarge}>
-            {heroData.title || 'Welcome to Applied Forensic Research Sciences'}
+            {heroData.title || 'Where Evidence Speaks. Science Answers.'}
           </h1>
           <p className={`mt-6 ${TYPOGRAPHY.bodyLarge} text-white/85 max-w-xl`}>
             {heroData.description ||
-              'Your portal to advanced training, research-led education, and world-class forensic professional services.'}
+              "India's premier hub for forensic education, research & professional services"}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
@@ -377,34 +377,6 @@ export function ForensicTrainingProgram() {
         className="pointer-events-none absolute -right-6 top-1/2 h-44 w-44 -translate-y-1/2 opacity-[0.06]"
       />
     </section>
-  )
-}
-
-/* ─── 2. AFSL Get in Touch CTA ─── */
-export function ProgramCtaSection() {
-  return (
-    <div className="rounded-3xl bg-[#C8D6FC] px-6 py-10 sm:px-10 sm:py-12 lg:px-14 shadow-xl">
-      <p className={`${TYPOGRAPHY.label} text-violet-700`}>Get In Touch</p>
-      <p className="mt-4 text-sm sm:text-base text-slate-800 max-w-2xl leading-relaxed">
-        Need professional forensic assistance, expert opinion, training opportunities, or research
-        collaboration? Contact AFSL today and connect with our forensic experts.
-      </p>
-      <div className="mt-8 flex flex-wrap gap-4">
-        <Link
-          href="/contact"
-          className="inline-flex h-12 items-center justify-center rounded-xl bg-violet-600 hover:bg-violet-700 px-6 text-sm font-bold text-white transition"
-        >
-          Contact AFSL
-        </Link>
-        <Link
-          href="/services"
-          className="inline-flex h-12 items-center justify-center rounded-xl border border-white/30 bg-[#FB923C] hover:bg-[#EA580C] px-6 text-sm font-bold text-white transition gap-2"
-        >
-          <span aria-hidden>🔬</span>
-          Explore Our Services
-        </Link>
-      </div>
-    </div>
   )
 }
 
@@ -868,64 +840,187 @@ export function AchievementsSection() {
   )
 }
 
-/* ─── 10. Trusted partner ─── */
+/* ─── 10. AFSL SECTION ─── */
+
+export function ProgramCtaSection() {
+  return (
+    <div className="rounded-3xl bg-[#C8D6FC] px-6 py-10 sm:px-10 sm:py-12 lg:px-14 shadow-xl">
+      <p className={`${TYPOGRAPHY.label} text-violet-700`}>Get In Touch</p>
+
+      <p className="mt-4 text-sm sm:text-base text-slate-800 max-w-2xl leading-relaxed">
+        Need professional forensic assistance, expert opinion, training opportunities, or research
+        collaboration? Contact AFSL today and connect with our forensic experts.
+      </p>
+
+      <div className="mt-8 flex flex-wrap gap-4">
+        <Link
+          href="/contact"
+          className="inline-flex h-12 items-center justify-center rounded-xl bg-violet-600 hover:bg-violet-700 px-6 text-sm font-bold text-white transition"
+        >
+          Contact AFSL
+        </Link>
+
+        <Link
+          href="/services"
+          className="inline-flex h-12 items-center justify-center rounded-xl border border-white/30 bg-[#FB923C] hover:bg-[#EA580C] px-6 text-sm font-bold text-white transition gap-2"
+        >
+          <span aria-hidden>🔬</span>
+          Explore Our Services
+        </Link>
+      </div>
+    </div>
+  )
+}
+
+export function AfslOffers() {
+  return (
+    <div>
+      <div className="rounded-3xl bg-[#C8D6FC] px-6 py-10 sm:px-10 sm:py-12 lg:px-14 shadow-xl">
+        {/* Two-column layout */}
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          {/* Left — text */}
+
+          <div>
+            <h2 className="text-slate-900 text-xl sm:text-2xl lg:text-[28px] font-extrabold leading-snug max-w-xl">
+              Forensic Science Training, Internship &amp; Research Programs
+            </h2>
+
+            <p className="mt-4 text-sm sm:text-base text-slate-700 max-w-xl leading-relaxed">
+              AFSL provides structured internship programs designed to give students practical
+              exposure in forensic science disciplines — including crime scene investigation,
+              fingerprint analysis, digital forensics, and more.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/courses"
+                className="inline-flex h-11 items-center justify-center rounded-xl bg-violet-600 hover:bg-violet-700 px-6 text-sm font-bold text-white transition"
+              >
+                Explore Training Programs
+              </Link>
+
+              <Link
+                href="/internship"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-orange-400 hover:bg-orange-500 px-6 text-sm font-bold text-white transition"
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 12h6m-3-3v6m9-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                Apply for Internship
+              </Link>
+            </div>
+          </div>
+
+          {/* Right — image */}
+
+          <div className="relative w-full h-[260px] sm:h-[300px] rounded-xl overflow-hidden">
+            <Image
+              src="https://res.cloudinary.com/drrzakkgo/image/upload/v1763210329/ChatGPT_Image_Nov_15_2025_05_30_55_PM_gicx5y.png"
+              alt="AFRS forensic training session"
+              fill
+              sizes="(max-width: 1024px) 100vw, 400px"
+              className="object-cover"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 export function TrustedPartnerSection() {
   const cards = [
-    { title: 'Crime Scene Investigation and Management', icon: '🕵️' },
-    { title: 'Fingerprint Examination and Analysis', icon: '🔍' },
-    { title: 'Questioned Document, Handwriting and Signature Analysis', icon: '📄' },
-    { title: 'Multimedia Forensics & Digital Forensics', icon: '💻' },
-    {
-      title: '65B IEA Certificate (63 (4)(C) BSA) for Digital Evidences',
-      icon: '⚖️',
-    },
+    { title: 'Crime Scene Investigation & Management', icon: '🕵️' },
+    { title: 'Fingerprint Examination & Analysis', icon: '🔍' },
+    { title: 'Questioned Document & Signature Analysis', icon: '📄' },
+    { title: 'Multimedia & Digital Forensics', icon: '💻' },
+    { title: '65B IEA Certificate (63(4)(C) BSA)', icon: '⚖️' },
     { title: 'Forensic Consultancy & Expert Opinion', icon: '📋' },
   ]
 
   return (
     <section
-      className={`${SECTION} text-white section-glow-top`}
-      style={{ background: UI.afslGradient }}
+      className={`relative py-20 text-white overflow-hidden section-glow-top`} // Replaced ${SECTION} assuming standard padding
+      style={{ background: UI.afslGradient }} // Ensure UI is imported in your actual file
     >
-      <div className={CONTAINER}>
-        <div className="mx-auto mb-12">
-          <Image
-            src={AFRSLogo}
-            alt="AFSL Logo"
-            width={200}
-            height={60}
-            className="mx-auto border-2 "
-          />
+      {/* Huge Background Watermark for the whole section */}
+      <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
+        <svg
+          width="260"
+          height="260"
+          viewBox="0 0 260 260"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="130" cy="130" r="20" stroke="currentColor" strokeWidth="10" />
+          <circle cx="130" cy="130" r="45" stroke="currentColor" strokeWidth="10" />
+          <circle cx="130" cy="130" r="70" stroke="currentColor" strokeWidth="10" />
+          <circle cx="130" cy="130" r="95" stroke="currentColor" strokeWidth="10" />
+        </svg>
+      </div>
+
+      <div className={`relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
+        {' '}
+        {/* Replaced ${CONTAINER} for clarity */}
+        <div className="mx-auto mb-12 flex justify-center">
+          <div className="bg-white/10 p-4 rounded-2xl backdrop-blur-sm border border-white/20 shadow-xl inline-block">
+            <Image
+              src={AFRSLogo} // Ensure AFRSLogo is imported
+              alt="AFSL Logo"
+              width={200}
+              height={60}
+              className="mx-auto"
+            />
+          </div>
         </div>
         <SectionHeader
           light
           title="Applied Forensic Science Laboratory (AFSL)"
           subtitle="Scientific. Reliable. Professional."
         />
-        <p className="mx-auto -mt-6 mb-12 max-w-3xl text-center text-base sm:text-lg leading-relaxed text-white/85 lg:mb-14">
+        <p className="mx-auto mt-4 mb-14 max-w-3xl text-center text-base sm:text-lg leading-relaxed text-white/80">
           Applied Forensic Science Laboratory (AFSL) is committed to delivering reliable,
           scientific, and evidence-based forensic solutions that support investigations, legal
           proceedings, research, and professional development. Our multidisciplinary team provides
           expert forensic examination, analytical services, consultation, and training across
           various domains of forensic science.
         </p>
-        <AnimateOnScroll stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <AnimateOnScroll stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {cards.map((card) => (
             <div
               key={card.title}
-              className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-sm p-6 text-center card-pop min-h-[150px] flex flex-col items-center justify-center"
+              className="group rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 text-center shadow-lg transition-all duration-300 hover:-translate-y-2 hover:bg-white/10 hover:border-white/30 hover:shadow-2xl hover:shadow-white/5 min-h-[160px] flex flex-col items-center justify-center relative overflow-hidden"
             >
-              <span className="text-3xl" aria-hidden>
+              <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              <span
+                className="text-4xl drop-shadow-md transition-transform duration-300 group-hover:scale-110 mb-4"
+                aria-hidden
+              >
                 {card.icon}
               </span>
-              <p className="mt-4 text-xs sm:text-sm font-bold leading-snug text-white/95">
+              <p className="text-sm sm:text-base font-semibold leading-snug text-white/95 tracking-wide">
                 {card.title}
               </p>
             </div>
           ))}
         </AnimateOnScroll>
         <AnimateOnScroll>
-          <div className="mt-10 lg:mt-14">
+          <div className="mt-16 lg:mt-20">
+            <AfslOffers />
+          </div>
+        </AnimateOnScroll>
+        <AnimateOnScroll>
+          <div className="mt-10 lg:mt-12">
             <ProgramCtaSection />
           </div>
         </AnimateOnScroll>
