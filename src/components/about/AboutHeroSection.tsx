@@ -35,7 +35,9 @@ export function AboutHeroSection({
             >
               {title}
             </h1>
-            <p className="mt-5 text-base sm:text-lg text-white/85 leading-relaxed">{subtitle}</p>
+            <p className="mt-5 text-base sm:text-lg text-white/85 leading-relaxe text-justify">
+              {subtitle}
+            </p>
             <Link href={ctaHref} className={`mt-8 ${aboutTokens.primaryBtn}`}>
               {ctaLabel}
             </Link>

@@ -2,10 +2,14 @@ import Link from 'next/link'
 import { aboutTokens } from '@/components/about/tokens'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 
+export type MembershipSectionProps = {
+  reasons?: string[]
+}
+
 /**
  * Individual + corporate membership plan cards.
  */
-export function MembershipSection() {
+export function MembershipSection({ reasons }: MembershipSectionProps) {
   const plans = [
     {
       title: 'Life Time Membership',
@@ -25,12 +29,15 @@ export function MembershipSection() {
     },
   ]
 
-  const benefits = [
-    'Certified forensic training programmes',
-    'Practical case-based learning and lab access',
-    'Expert mentorship from practicing investigators',
-    'Exclusive network of students and law enforcement partners',
-  ]
+  const benefits =
+    reasons && reasons.length > 0
+      ? reasons
+      : [
+          'Certified forensic training programmes',
+          'Practical case-based learning and lab access',
+          'Expert mentorship from practicing investigators',
+          'Exclusive network of students and law enforcement partners',
+        ]
 
   return (
     <section

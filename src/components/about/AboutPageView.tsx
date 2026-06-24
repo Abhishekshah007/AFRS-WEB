@@ -6,6 +6,7 @@ import { LeadershipSection } from '@/components/about/LeadershipSection'
 import { MembershipSection } from '@/components/about/MembershipSection'
 import { ValuesSection } from '@/components/about/ValuesSection'
 import { VisionMissionPurpose } from '@/components/about/VisionMissionPurpose'
+import { SectionHeader } from '@/components/about/SectionHeader'
 import type {
   AboutSectionText,
   AchievementStat,
@@ -13,6 +14,8 @@ import type {
   LeaderProfile,
   ListItem,
 } from '@/components/about/types'
+import { aboutTokens } from '@/components/about/tokens'
+import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 
 export type AboutPageViewProps = {
   sectionText: AboutSectionText
@@ -22,12 +25,119 @@ export type AboutPageViewProps = {
   certifications: CertificationItem[]
   uniqueItems: ListItem[]
   activityItems: ListItem[]
+  expertiseItems: string[]
+  whyChooseItems: string[]
+  qualityEthicsItems: string[]
+  researchItems: string[]
+  partnershipItems: string[]
+  futureRoadmapItems: string[]
+  membershipReasons: string[]
   heroImage?: string
 }
 
-/**
- * Composes all About page sections — server-friendly wrapper around static + CMS props.
- */
+function BulletSection({
+  id,
+  title,
+  subtitle,
+  items,
+}: {
+  id: string
+  title: string
+  subtitle?: string
+  items: string[]
+}) {
+  if (!items?.length) {
+    return null
+  }
+
+  return (
+    <section className={`${aboutTokens.sectionY} bg-white`} aria-labelledby={id}>
+      <div className={aboutTokens.container}>
+        <AnimateOnScroll>
+          <SectionHeader id={id} title={title} subtitle={subtitle} align="left" />
+        </AnimateOnScroll>
+
+        <AnimateOnScroll>
+          <ul className="grid gap-4 sm:grid-cols-2">
+            {items.map((item) => (
+              <li
+                key={item}
+                className="rounded-3xl border border-slate-200 bg-slate-50 p-6 text-sm leading-7 text-slate-700 shadow-sm"
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+        </AnimateOnScroll>
+      </div>
+    </section>
+  )
+}
+
+function DualBulletSection({
+  id,
+  leftTitle,
+  leftItems,
+  rightTitle,
+  rightItems,
+}: {
+  id: string
+  leftTitle: string
+  leftItems: string[]
+  rightTitle: string
+  rightItems: string[]
+}) {
+  if (!leftItems?.length && !rightItems?.length) {
+    return null
+  }
+
+  return (
+    <section className={`${aboutTokens.sectionY} ${aboutTokens.sectionAlt}`} aria-labelledby={id}>
+      <div className={aboutTokens.container}>
+        <AnimateOnScroll>
+          <SectionHeader
+            id={id}
+            title="Research, Quality & Partnerships"
+            subtitle="How AFRS strengthens forensic science through evidence-based research, ethical practice, and collaborative networks."
+            align="left"
+          />
+        </AnimateOnScroll>
+
+        <AnimateOnScroll>
+          <div className="grid gap-8 lg:grid-cols-2">
+            <div>
+              <h3 className="mb-4 text-xl font-semibold text-[var(--about-text)]">{leftTitle}</h3>
+              <ul className="space-y-3">
+                {leftItems.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-slate-700">
+                    <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[var(--about-primary)] text-xs text-white">
+                      ✓
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="mb-4 text-xl font-semibold text-[var(--about-text)]">{rightTitle}</h3>
+              <ul className="space-y-3">
+                {rightItems.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-slate-700">
+                    <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[var(--about-primary)] text-xs text-white">
+                      ✓
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </AnimateOnScroll>
+      </div>
+    </section>
+  )
+}
+
 export function AboutPageView({
   sectionText,
   featuredLeaders,
@@ -36,29 +146,129 @@ export function AboutPageView({
   certifications,
   uniqueItems,
   activityItems,
+  expertiseItems,
+  whyChooseItems,
+  qualityEthicsItems,
+  researchItems,
+  partnershipItems,
+  futureRoadmapItems,
+  membershipReasons,
   heroImage,
 }: Readonly<AboutPageViewProps>) {
   const heroTitle = sectionText.aboutHeading || 'Advancing the Frontiers of Forensic Science'
 
   const heroSubtitle =
     sectionText.aboutDescription1 ||
-    'AFRS is a premier organization established to revolutionize the forensic science landscape through research, training, and specialized laboratory services.'
+    'Applied Forensic Research Sciences (AFRS) is a multidisciplinary organization dedicated to advancing forensic science through education, research, training, and professional development. Recognized by MSME, NITI Aayog, and ISO 9001:2015 certified, AFRS fosters innovation, collaboration, and knowledge exchange in the forensic community.'
+
+  const defaultFounderLeaders: LeaderProfile[] = [
+    {
+      id: 'rakesh',
+      name: 'Mr. Rakesh Mia',
+      designation: 'President, AFRS',
+      initials: 'RM',
+      photoUrl:
+        'https://res.cloudinary.com/drrzakkgo/image/upload/v1762611530/s1bhfnkxkbyor6bhjrnv.jpg',
+      message:
+        '' +
+        (sectionText.rakeshMessage ||
+          'Student and professional development are at the heart of AFRS. We are committed to providing practical, research-driven training that empowers individuals to excel in forensic science and contribute to a safer society.'),
+      bio: 'A visionary leader with over 15 years of experience in forensic education and administration.',
+      socials: {
+        linkedin: 'https://in.linkedin.com/in/rakesh-mia%F0%9F%87%AE%F0%9F%87%B3-2b9787182',
+        instagram: 'https://instagram.com/rakesh_mia?utm_medium=copy_link',
+        facebook: 'https://www.facebook.com/rakesh.mia.144',
+        x: '#',
+      },
+    },
+    {
+      id: 'vijay',
+      name: 'Mr. Vijay',
+      designation: 'Vice President, AFRS',
+      initials: 'V',
+      photoUrl:
+        'https://res.cloudinary.com/drrzakkgo/image/upload/v1762258620/WhatsApp_Image_2025-11-04_at_12.33.03_AM_fywjbh.jpg',
+      message:
+        '' +
+        (sectionText.vijayMessage ||
+          'Strengthening the bridge between academic theory and practical application is our mission. AFRS equips students and professionals with the skills and knowledge necessary to excel in forensic investigation, evidence handling, and court-ready reporting.'),
+      bio: 'An expert in criminal investigation techniques with a passion for student mentorship.',
+      socials: {
+        linkedin: 'https://instagram.com/vijay_panchal9977?utm_medium=copy_link',
+        instagram: 'https://in.linkedin.com/in/vijay-panchal-8631261b0',
+        facebook: 'https://www.facebook.com/profile.php?id=100017360178631',
+        x: '#',
+      },
+    },
+  ]
+
+  const leadershipLeaders =
+    featuredLeaders.length >= 2
+      ? featuredLeaders.slice(0, 2).map((leader, index) => ({
+          ...defaultFounderLeaders[index],
+          ...leader,
+          message: leader.message ?? defaultFounderLeaders[index]?.message,
+          bio: leader.bio ?? defaultFounderLeaders[index]?.bio,
+          photoUrl: leader.photoUrl ?? defaultFounderLeaders[index]?.photoUrl,
+          socials: leader.socials ?? defaultFounderLeaders[index]?.socials,
+        }))
+      : defaultFounderLeaders
 
   return (
     <div className="about-page bg-white">
       <AboutHeroSection
         title={heroTitle}
         subtitle={heroSubtitle}
-        ctaLabel="Download Programme"
+        ctaLabel="Download Society Profile"
         ctaHref="#vision"
         imageSrc={heroImage}
       />
-      <VisionMissionPurpose missionBody={sectionText.aboutDescription2 ?? undefined} />
-      <LeadershipSection featured={featuredLeaders} committee={committee} />
+
+      <VisionMissionPurpose
+        visionBody={sectionText.visionBody ?? undefined}
+        missionBody={sectionText.missionBody ?? undefined}
+        purposeBody={sectionText.purposeBody ?? undefined}
+      />
+
+      <LeadershipSection leaders={leadershipLeaders} committee={committee} />
+
       <CertificationsSection items={certifications} />
+
       <ValuesSection uniqueItems={uniqueItems} activityItems={activityItems} />
+
+      <BulletSection
+        id="expertise-heading"
+        title="Our Expertise"
+        subtitle="Multidisciplinary capabilities across forensic domains."
+        items={expertiseItems}
+      />
+
+      <BulletSection
+        id="why-choose-heading"
+        title="Why Choose AFRS"
+        subtitle="The practical, ethical, and research-driven advantage behind our programmes."
+        items={whyChooseItems}
+      />
+
+      <DualBulletSection
+        id="quality-research-heading"
+        leftTitle="Quality & Ethics"
+        leftItems={qualityEthicsItems}
+        rightTitle="Research & Partnerships"
+        rightItems={[...researchItems, ...partnershipItems]}
+      />
+
       <AchievementsBar stats={achievements} />
-      <MembershipSection />
+
+      <MembershipSection reasons={membershipReasons} />
+
+      <BulletSection
+        id="future-roadmap-heading"
+        title="Future Roadmap"
+        subtitle="What AFRS is building next for forensic education and research."
+        items={futureRoadmapItems}
+      />
+
       <AwardsGallery />
     </div>
   )

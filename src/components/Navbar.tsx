@@ -12,7 +12,7 @@ import { springSnappy } from '@/components/motion/variants'
 const fallbackNavLinks = [
   { label: 'Home', url: '/' },
   { label: 'About AFRS', url: '/about' },
-  { label: 'Forensic Service AFSL', url: '/services' },
+  { label: 'AFSL Forensic Services', url: '/services' },
   { label: 'Student Corner', url: '/student-hub' },
   { label: 'Programmes', url: '/courses' },
   { label: 'Reach Us', url: '/contact' },
@@ -96,13 +96,16 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
 
         <ul className="hidden xl:flex items-center gap-1 lg:gap-2 flex-1 justify-center">
           {navLinks.map((link) => {
-            const active = pathname === link.url || (link.url !== '/' && pathname.startsWith(link.url))
+            const active =
+              pathname === link.url || (link.url !== '/' && pathname.startsWith(link.url))
             return (
               <li key={link.url} className="relative">
                 <Link
                   href={link.url}
                   className={`relative block px-3 py-2 text-[11px] lg:text-xs font-bold whitespace-nowrap transition-colors rounded-lg ${
-                    active ? 'text-indigo-600' : 'text-slate-600 hover:text-indigo-700 hover:bg-indigo-50/80'
+                    active
+                      ? 'text-indigo-600'
+                      : 'text-slate-600 hover:text-indigo-700 hover:bg-indigo-50/80'
                   }`}
                 >
                   {link.label}
@@ -120,13 +123,23 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
         </ul>
 
         <div className="flex items-center gap-2">
-          <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }} transition={springSnappy}>
+          <motion.div
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.95 }}
+            transition={springSnappy}
+          >
             <Link
               href="/search"
               aria-label="Search"
               className="hidden sm:flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/80 text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition"
             >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -142,9 +155,15 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
             className="xl:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition"
             onClick={() => setOpen(!open)}
           >
-            <div className={`w-5 h-0.5 bg-current mb-1.5 transition-transform ${open ? 'rotate-45 translate-y-2' : ''}`} />
-            <div className={`w-5 h-0.5 bg-current mb-1.5 transition-opacity ${open ? 'opacity-0' : ''}`} />
-            <div className={`w-5 h-0.5 bg-current transition-transform ${open ? '-rotate-45 -translate-y-2' : ''}`} />
+            <div
+              className={`w-5 h-0.5 bg-current mb-1.5 transition-transform ${open ? 'rotate-45 translate-y-2' : ''}`}
+            />
+            <div
+              className={`w-5 h-0.5 bg-current mb-1.5 transition-opacity ${open ? 'opacity-0' : ''}`}
+            />
+            <div
+              className={`w-5 h-0.5 bg-current transition-transform ${open ? '-rotate-45 -translate-y-2' : ''}`}
+            />
           </button>
         </div>
       </motion.nav>

@@ -15,12 +15,12 @@ export const HomePage: GlobalConfig = {
       name: 'hero',
       type: 'group',
       fields: [
-        { name: 'title', type: 'text', required: true, defaultValue: 'Welcome to Applied Forensic Research Sciences' },
+        { name: 'title', type: 'text', required: true, defaultValue: "Where Evidence Speaks. Science Answers." },
         {
           name: 'description',
           type: 'textarea',
           defaultValue:
-            'Your portal to advanced training, research-led education, and world-class forensic professional services.',
+            "India's premier hub for forensic education, research & professional services",
         },
         { name: 'primaryCTALabel', type: 'text', defaultValue: 'Explore Now' },
         { name: 'primaryCTAUrl', type: 'text', defaultValue: '/courses' },
