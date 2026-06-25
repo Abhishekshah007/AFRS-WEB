@@ -80,7 +80,10 @@ export default async function ServiceDetailPage({ params }: Props) {
     galleryResult.docs.length > 0
       ? (galleryResult.docs as GalleryItem[]).map((g, i) => ({
           id: String(g.id),
-          src: resolveMediaUrl(g.image as number | Media | null | undefined, defaultGallerySlides()[i]?.src ?? SERVICE_DETAIL_IMAGES.galleryLab),
+          src: resolveMediaUrl(
+            g.image as number | Media | null | undefined,
+            defaultGallerySlides()[i]?.src ?? SERVICE_DETAIL_IMAGES.galleryLab,
+          ),
           alt: g.title ?? g.label,
           caption: g.label ?? g.title ?? 'Investigation',
         }))

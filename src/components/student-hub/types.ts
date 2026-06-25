@@ -1,3 +1,5 @@
+import type { LucideIcon } from 'lucide-react'
+
 export type ResourceCardData = {
   id: string
   title: string
@@ -6,6 +8,7 @@ export type ResourceCardData = {
   href: string
   icon: string
   iconBg: string
+  iconColor: string
   featured?: boolean
 }
 
