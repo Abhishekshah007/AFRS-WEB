@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 
 const fallbackBanners = [
   'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80',
-  'https://images.unsplash.com/photo-1576086213369-97a306d548ae?w=800&q=80',
-  'https://images.unsplash.com/photo-1532187863486-abf9db731754?w=800&q=80',
+  'https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=800&q=80',
+  'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80',
 ]
 
 const fallbackCatalog: CatalogItem[] = [
@@ -42,8 +42,18 @@ const fallbackCatalog: CatalogItem[] = [
 ]
 
 const fallbackDirectors: DirectorateMember[] = [
-  { name: 'Mr. Jaiswal', designation: 'Lab Director', initials: 'MJ', bio: 'Senior forensic scientist with expertise in analytical chemistry.' },
-  { name: 'Mr. Vijay', designation: 'Deputy Director', initials: 'MV', bio: 'Crime scene investigation and evidence documentation specialist.' },
+  {
+    name: 'Mr. Jaiswal',
+    designation: 'Lab Director',
+    initials: 'MJ',
+    bio: 'Senior forensic scientist with expertise in analytical chemistry.',
+  },
+  {
+    name: 'Mr. Vijay',
+    designation: 'Deputy Director',
+    initials: 'MV',
+    bio: 'Crime scene investigation and evidence documentation specialist.',
+  },
 ]
 
 const fallbackTeam: DirectorateMember[] = [
@@ -134,7 +144,7 @@ export default async function ServicesPage() {
         address: site?.address || 'AFRS Campus, India',
         mapEmbedUrl: site?.mapEmbedUrl,
       }}
-      totalVisitors={site?.totalVisitors ?? 25847}
+      totalVisitors={site?.totalVisitors || 2600}
     />
   )
 }

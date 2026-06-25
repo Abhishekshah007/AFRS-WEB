@@ -115,5 +115,5 @@ export async function educationProgrammesForHub(): Promise<EducationProgramme[]>
 }
 
 export async function trainingOptionsForHub(): Promise<TrainingOption[]> {
-  return (await getTrainingCategories()).map((c) => ({ id: c.slug, slug: c.slug, icon: c.icon, title: c.title, tag: c.tag, tagTone: c.tagTone, href: `/courses/training/${c.slug}` }))
+  return (await getTrainingCategories()).map((c) => ({ id: c.slug, slug: c.slug, icon: c.icon, title: c.title, summary: c.summary, tag: c.tag, tagTone: c.tagTone, href: `/courses/training/${c.slug}` }))
 }

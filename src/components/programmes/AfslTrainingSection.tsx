@@ -1,8 +1,10 @@
 import Link from 'next/link'
+import { CheckCircle2 } from 'lucide-react'
 import type { TrainingOption } from '@/components/programmes/types'
 import { tagToneClass } from '@/components/programmes/content'
-import { programmesTokens } from '@/components/programmes/tokens'
+import { iconMap } from '../ui/iconMap'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
+import { BookOpen } from 'lucide-react'
 
 export type AfslTrainingSectionProps = {
   options: TrainingOption[]
@@ -13,40 +15,95 @@ export function AfslTrainingSection({ options, checklist }: AfslTrainingSectionP
   return (
     <section
       id="afsl-training"
-      className={`${programmesTokens.sectionY} bg-slate-50/80 scroll-mt-24`}
+      className="py-12 md:py-16 bg-[#F5F7FB] scroll-mt-24"
       aria-labelledby="afsl-training-heading"
     >
-      <div className={programmesTokens.container}>
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] items-start">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-6 lg:grid-cols-[300px_1fr] items-start">
+          {/* ── Left panel — white card ── */}
           <AnimateOnScroll direction="left">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-[var(--prog-primary)]">Dedicated Training Center</span>
-            <h2 id="afsl-training-heading" className={`mt-3 ${programmesTokens.heading} text-2xl sm:text-[28px]`}>AFSL Training &amp; Internship</h2>
-            <p className={`mt-4 text-sm ${programmesTokens.body}`}>Practical exposure under certified forensic scientists — choose virtual modules, laboratory placements, or academic dissertation support aligned with your career goals.</p>
-            <ul className="mt-6 space-y-3">
-              {checklist.map((item) => (
-                <li key={item} className="flex items-start gap-2.5 text-sm text-slate-700">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white text-[10px]" aria-hidden>✓</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/courses/training" className="inline-flex h-12 items-center justify-center px-8 rounded-xl bg-[var(--prog-primary)] hover:bg-[var(--prog-primary-hover)] text-white text-sm font-bold transition shadow-md">Browse Training Tracks</Link>
-              <Link href="/contact" className="inline-flex h-12 items-center justify-center px-8 rounded-xl border border-slate-200 text-slate-700 hover:bg-white text-sm font-bold transition">Apply for Training</Link>
+            <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-[0_1px_6px_rgba(0,0,0,0.05)] h-full flex flex-col">
+              {/* Eyebrow pill */}
+              <span className="inline-flex w-fit rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.16em] text-indigo-500">
+                Laboratory Division
+              </span>
+
+              {/* Heading */}
+              <h2
+                id="afsl-training-heading"
+                className="mt-4 text-[24px] font-extrabold text-slate-900 leading-[1.2] tracking-tight"
+              >
+                AFSL Training &amp;
+                <br />
+                Internship
+              </h2>
+
+              {/* Body */}
+              <p className="mt-4 text-[13px] text-slate-500 leading-relaxed">
+                Our laboratory division offers hands-on experience and rigorous training in
+                state-of-the-art forensic facilities. Designed for students and professionals
+                looking to gain practical expertise.
+              </p>
+
+              {/* Checklist */}
+              <ul className="mt-5 space-y-3 flex-1">
+                {checklist.map((item) => (
+                  <li key={item} className="flex items-center gap-2.5 text-[13px] text-slate-700">
+                    <CheckCircle2
+                      className="h-4 w-4 shrink-0 text-emerald-500"
+                      strokeWidth={2.2}
+                      aria-hidden
+                    />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+
+              {/* CTA — full width solid blue */}
+              <Link
+                href="/courses/training"
+                className="mt-8 flex h-12 w-full items-center justify-center rounded-xl bg-[#4F75F4] hover:bg-[#3d63e8] text-white text-[13px] font-bold transition-colors shadow-md shadow-indigo-500/20"
+              >
+                Apply for Training
+              </Link>
             </div>
           </AnimateOnScroll>
 
-          <AnimateOnScroll direction="right" stagger>
+          {/* ── Right grid — 3×2 cards ── */}
+          <AnimateOnScroll stagger>
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {options.map((opt) => (
-                <li key={opt.id}>
-                  <Link href={opt.href} className={`relative block ${programmesTokens.radiusCard} border border-slate-100 bg-white p-4 shadow-sm card-pop group`}>
-                    <span className={`absolute top-3 right-3 rounded-full px-2 py-0.5 text-[9px] font-bold ${tagToneClass[opt.tagTone]}`}>{opt.tag}</span>
-                    <span className="text-2xl" aria-hidden>{opt.icon}</span>
-                    <p className="mt-3 text-sm font-bold text-slate-900 leading-snug group-hover:text-[var(--prog-primary)] transition">{opt.title}</p>
-                  </Link>
-                </li>
-              ))}
+              {options.map((opt) => {
+                const Icon = iconMap[opt.icon] ?? BookOpen
+                return (
+                  <li key={opt.id}>
+                    <Link
+                      href={opt.href}
+                      className="relative flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_1px_4px_rgba(0,0,0,0.05)] hover:shadow-md transition-shadow h-full group"
+                    >
+                      {/* Tag pill — top right */}
+                      <span
+                        className={`absolute top-4 right-4 rounded-full px-2.5 py-0.5 text-[10px] font-bold ${tagToneClass[opt.tagTone]}`}
+                      >
+                        {opt.tag}
+                      </span>
+
+                      {/* Icon */}
+                      <span
+                        className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-100"
+                        aria-hidden
+                      >
+                        <Icon className="h-5 w-5 text-slate-400" strokeWidth={1.6} />
+                      </span>
+
+                      {/* Title + subtitle */}
+                      <h3 className="mt-5 text-[14px] font-extrabold text-slate-900 leading-snug group-hover:text-[#4F75F4] transition-colors pr-12">
+                        {opt.title}
+                      </h3>
+                      <p className="mt-1 text-[12px] text-slate-400 leading-snug">{opt.summary}</p>
+                    </Link>
+                  </li>
+                )
+              })}
             </ul>
           </AnimateOnScroll>
         </div>

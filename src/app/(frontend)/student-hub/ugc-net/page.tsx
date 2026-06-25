@@ -7,7 +7,8 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'UGC NET Forensic Science Programme',
-  description: 'Master UGC NET Forensic Science preparation with hybrid learning, achiever mentorship, and event-driven mock tests.',
+  description:
+    'Master UGC NET Paper 1 & 2 with our expert-led online training, mock tests, and personalized guidance for aspiring forensic scientists.',
 }
 
 export default async function UgcNetPage() {

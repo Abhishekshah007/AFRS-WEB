@@ -3,7 +3,7 @@ import type { EducationCategory, TrainingCategory, ArchiveFilterLinks } from '@/
 export const defaultEducationCategories: EducationCategory[] = [
   {
     slug: 'training-online',
-    icon: '💻',
+    icon: 'Monitor',
     title: 'Training Online',
     summary: 'Live and recorded forensic modules accessible from anywhere with mentor support.',
     programmes: [
@@ -15,7 +15,7 @@ export const defaultEducationCategories: EducationCategory[] = [
   },
   {
     slug: 'forensic-professional-course',
-    icon: '🎓',
+    icon: 'Award',
     title: 'Forensic Professional Course',
     summary: 'Structured certification pathways for investigators and laboratory professionals.',
     programmes: [
@@ -26,7 +26,7 @@ export const defaultEducationCategories: EducationCategory[] = [
   },
   {
     slug: 'certificate-programme',
-    icon: '📜',
+    icon: 'Timer',
     title: 'Certificate Programme',
     summary: 'Short-term credentials in document, digital, and biological forensic disciplines.',
     programmes: [
@@ -37,7 +37,7 @@ export const defaultEducationCategories: EducationCategory[] = [
   },
   {
     slug: 'workshop-series',
-    icon: '🔬',
+    icon: 'BookOpen',
     title: 'Workshop Series',
     summary: 'Hands-on sessions led by practicing forensic scientists and guest faculty.',
     programmes: [
@@ -49,30 +49,42 @@ export const defaultEducationCategories: EducationCategory[] = [
 ]
 
 export const defaultTrainingCategories: TrainingCategory[] = [
-  { slug: 'online-training', icon: '🖥', title: 'Online Training', tag: 'Virtual', tagTone: 'blue', summary: 'Instructor-led virtual modules with assessments and mentor feedback.', programmes: [
-    { id: 'ot-1', title: 'Forensic Biology — Online Module', description: 'DNA concepts, sample types, and report interpretation for non-lab staff.', duration: '6 weeks', mode: 'Virtual' },
-    { id: 'ot-2', title: 'Cybercrime Investigation Basics', description: 'Introduction to digital evidence, OSINT, and case documentation.', duration: '8 weeks', mode: 'Virtual' },
-  ]},
-  { slug: 'lab-based-training', icon: '🧪', title: 'Lab Based Training', tag: 'On-site', tagTone: 'green', summary: 'Practical bench work at AFSL under senior scientists.', programmes: [
-    { id: 'lb-1', title: 'Trace Evidence Practical Training', description: 'Microscopy, fiber comparison, and glass fracture analysis.', duration: '4 weeks', mode: 'On-site' },
-    { id: 'lb-2', title: 'Serology & DNA Bench Training', description: 'Presumptive tests, extraction workflows, and contamination control.', duration: '6 weeks', mode: 'On-site' },
-  ]},
-  { slug: 'online-internship', icon: '🌐', title: 'Online Internship', tag: 'Virtual', tagTone: 'blue', summary: 'Remote case reviews and supervised assignments with weekly check-ins.', programmes: [
-    { id: 'oi-1', title: 'Virtual Case File Internship', description: 'Review anonymized case files and draft forensic summaries.', duration: '4–6 weeks', mode: 'Virtual' },
-    { id: 'oi-2', title: 'Research & Literature Internship', description: 'Literature reviews and bibliography support for faculty projects.', duration: '6 weeks', mode: 'Virtual' },
-  ]},
-  { slug: 'lab-based-internship', icon: '🏛', title: 'Lab Based Internship', tag: 'On-site', tagTone: 'green', summary: 'Placement in AFSL laboratories with structured rotation schedule.', programmes: [
-    { id: 'li-1', title: 'AFSL Summer Internship Programme', description: 'Rotations across document, biology, and chemistry units.', duration: '6 weeks', mode: 'On-site' },
-    { id: 'li-2', title: 'Extended Laboratory Internship', description: 'In-depth placement with capstone report and faculty evaluation.', duration: '12 weeks', mode: 'On-site' },
-  ]},
-  { slug: 'dissertation', icon: '📚', title: 'Dissertation', tag: 'Academic', tagTone: 'purple', summary: 'Supervised dissertation support with access to faculty and library resources.', programmes: [
-    { id: 'ds-1', title: 'M.Sc. Dissertation Mentorship', description: 'Topic selection, methodology review, and draft feedback sessions.', duration: '6–12 months', mode: 'Academic' },
-    { id: 'ds-2', title: 'Ph.D. Research Advisory', description: 'Periodic reviews with subject-matter scientists at AFRS.', duration: 'Flexible', mode: 'Academic' },
-  ]},
-  { slug: 'research-articles', icon: '📄', title: 'Research Articles', tag: 'Academic', tagTone: 'orange', summary: 'Co-authorship and publication guidance for forensic research.', programmes: [
-    { id: 'ra-1', title: 'Student Research Publication Track', description: 'From abstract to journal submission with editorial support.', duration: '3–6 months', mode: 'Academic' },
-    { id: 'ra-2', title: 'Collaborative Case Study Papers', description: 'Joint publications with AFRS scientists on anonymized casework.', duration: 'Variable', mode: 'Academic' },
-  ]},
+  {
+    slug: 'online-training',   icon: 'Monitor', title: 'Online Training',   tag: 'Virtual', tagTone: 'blue', summary: 'Instructor-led virtual modules with assessments and mentor feedback.', programmes: [
+      { id: 'ot-1', title: 'Forensic Biology — Online Module', description: 'DNA concepts, sample types, and report interpretation for non-lab staff.', duration: '6 weeks', mode: 'Virtual' },
+      { id: 'ot-2', title: 'Cybercrime Investigation Basics', description: 'Introduction to digital evidence, OSINT, and case documentation.', duration: '8 weeks', mode: 'Virtual' },
+    ]
+  },
+  {
+    slug: 'lab-based-training', icon: 'FlaskConical', title: 'Lab Based Training',    tag: 'On-site', tagTone: 'green', summary: 'Practical bench work at AFSL under senior scientists.', programmes: [
+      { id: 'lb-1', title: 'Trace Evidence Practical Training', description: 'Microscopy, fiber comparison, and glass fracture analysis.', duration: '4 weeks', mode: 'On-site' },
+      { id: 'lb-2', title: 'Serology & DNA Bench Training', description: 'Presumptive tests, extraction workflows, and contamination control.', duration: '6 weeks', mode: 'On-site' },
+    ]
+  },
+  {
+    slug: 'online-internship',icon: 'Laptop', title: 'Online Internship', tag: 'Virtual', tagTone: 'blue', summary: 'Remote case reviews and supervised assignments with weekly check-ins.', programmes: [
+      { id: 'oi-1', title: 'Virtual Case File Internship', description: 'Review anonymized case files and draft forensic summaries.', duration: '4–6 weeks', mode: 'Virtual' },
+      { id: 'oi-2', title: 'Research & Literature Internship', description: 'Literature reviews and bibliography support for faculty projects.', duration: '6 weeks', mode: 'Virtual' },
+    ]
+  },
+  {
+    slug: 'lab-based-internship',  icon: 'Microscope',title: 'Lab Based Internship',summary: 'Full immersion program', tag: 'On-site', tagTone: 'green', programmes: [
+      { id: 'li-1', title: 'AFSL Summer Internship Programme', description: 'Rotations across document, biology, and chemistry units.', duration: '6 weeks', mode: 'On-site' },
+      { id: 'li-2', title: 'Extended Laboratory Internship', description: 'In-depth placement with capstone report and faculty evaluation.', duration: '12 weeks', mode: 'On-site' },
+    ]
+  },
+  {
+    slug: 'dissertation',  icon: 'BookOpen', title: 'Dissertation', tag: 'Academic', tagTone: 'purple', summary: 'Supervised dissertation support with access to faculty and library resources.', programmes: [
+      { id: 'ds-1', title: 'M.Sc. Dissertation Mentorship', description: 'Topic selection, methodology review, and draft feedback sessions.', duration: '6–12 months', mode: 'Academic' },
+      { id: 'ds-2', title: 'Ph.D. Research Advisory', description: 'Periodic reviews with subject-matter scientists at AFRS.', duration: 'Flexible', mode: 'Academic' },
+    ]
+  },
+  {
+    slug: 'research-articles', icon: 'BarChart2', title: 'Research Articles',  summary: 'Innovative forensic studies', tag: 'Academic', tagTone: 'orange', programmes: [
+      { id: 'ra-1', title: 'Student Research Publication Track', description: 'From abstract to journal submission with editorial support.', duration: '3–6 months', mode: 'Academic' },
+      { id: 'ra-2', title: 'Collaborative Case Study Papers', description: 'Joint publications with AFRS scientists on anonymized casework.', duration: 'Variable', mode: 'Academic' },
+    ]
+  },
 ]
 
 export const defaultArchiveFilterLinks: ArchiveFilterLinks = {

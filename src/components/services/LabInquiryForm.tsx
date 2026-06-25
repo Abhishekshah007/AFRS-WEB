@@ -9,7 +9,7 @@ type State =
   | { status: 'error'; message: string }
 
 const inputClass =
-  'mt-2 w-full h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-800 outline-none transition focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20'
+  'mt-2 w-full h-11 rounded-[8px] border border-[#e4ebf4] bg-white px-4 text-[12px] font-semibold text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/15'
 
 export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] }) {
   const [state, setState] = useState<State>({ status: 'idle' })
@@ -49,52 +49,49 @@ export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] })
 
   return (
     <form action={onSubmit} className="space-y-4">
-      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
-        Select Service
-        <select
-          name="serviceType"
-          disabled={disabled}
-          className={inputClass}
-          defaultValue=""
-          required
-        >
-          <option value="" disabled>
-            Choose a forensic service
-          </option>
-          {serviceOptions.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
-      </label>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
+        <label className="block text-[9px] font-black uppercase tracking-[0.15em] text-[#687487]">
           Full Name
           <input name="fullName" disabled={disabled} className={inputClass} placeholder="Your name" required />
         </label>
-        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
-          Email Address
-          <input name="email" type="email" disabled={disabled} className={inputClass} placeholder="you@example.com" required />
+        <label className="block text-[9px] font-black uppercase tracking-[0.15em] text-[#687487]">
+          Case Type
+          <select
+            name="serviceType"
+            disabled={disabled}
+            className={inputClass}
+            defaultValue=""
+            required
+          >
+            <option value="" disabled>
+              Fingerprint Verification
+            </option>
+            {serviceOptions.map((opt) => (
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
 
-      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
-        Mobile (optional)
-        <input name="mobile" type="tel" disabled={disabled} className={inputClass} placeholder="+91 00000 00000" />
+      <label className="block text-[9px] font-black uppercase tracking-[0.15em] text-[#687487]">
+        Email Address
+        <input name="email" type="email" disabled={disabled} className={inputClass} placeholder="official@agency.gov" required />
       </label>
 
-      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
-        Message
+      <label className="block text-[9px] font-black uppercase tracking-[0.15em] text-[#687487]">
+        Brief Message / Report
         <textarea
           name="message"
           disabled={disabled}
-          className={`${inputClass} min-h-[120px] resize-y py-3`}
-          placeholder="Describe your case or inquiry…"
+          className={`${inputClass} min-h-[105px] resize-y py-3`}
+          placeholder="Details of evidence or inquiry..."
           required
         />
       </label>
+
+      <input name="mobile" type="hidden" value="" />
 
       {state.status !== 'idle' && (
         <p
@@ -109,9 +106,9 @@ export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] })
       <button
         type="submit"
         disabled={disabled}
-        className="w-full h-14 rounded-xl bg-[#0f172a] hover:bg-slate-900 disabled:opacity-60 text-white text-sm font-bold tracking-wide transition shadow-lg"
+        className="w-full h-12 rounded-[7px] bg-[#081326] hover:bg-slate-950 disabled:opacity-60 text-white text-[11px] font-black uppercase tracking-[0.12em] transition shadow-lg"
       >
-        {buttonLabel}
+        {buttonLabel} +
       </button>
     </form>
   )

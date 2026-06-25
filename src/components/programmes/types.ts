@@ -11,8 +11,9 @@ export type TrainingOption = {
   slug: string
   icon: string
   title: string
+  summary: string
   tag: string
-  tagTone: 'blue' | 'green' | 'purple' | 'orange'
+  tagTone: 'blue' | 'green' | 'purple' | 'orange' | 'slate'
   href: string
 }
 
