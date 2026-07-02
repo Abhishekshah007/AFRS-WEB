@@ -41,28 +41,27 @@ const sections = [
   },
   {
     title: '9. Contact',
-    body: 'For questions regarding these terms, contact us at info@afrs.org.in.',
+    body: 'For questions regarding these terms, contact us at afrsciences@gmail.com.',
   },
 ]
 
 export default function TermsPage() {
   return (
     <div>
-      <PageHero
-        eyebrow="LEGAL"
-        title="Terms of Service"
-        subtitle="Last updated: January 2026"
-      />
+      <PageHero eyebrow="LEGAL" title="Terms of Service" subtitle="Last updated: January 2026" />
       <div className="max-w-[800px] mx-auto px-4 sm:px-6 py-14 lg:py-20">
         <div className="space-y-10 text-slate-700">
           <p className="text-sm leading-relaxed text-slate-600">
-            Please read these Terms of Service carefully before using the Applied Forensic Research Sciences Institute website.
+            Please read these Terms of Service carefully before using the Applied Forensic Research
+            Sciences Institute website.
           </p>
           {sections.map((s) => (
             <section key={s.title}>
               <h2 className="text-lg font-extrabold text-slate-900 mb-3">{s.title}</h2>
               {s.body.split('\n\n').map((para, i) => (
-                <p key={i} className="text-sm leading-relaxed text-slate-600 mb-3">{para}</p>
+                <p key={i} className="text-sm leading-relaxed text-slate-600 mb-3">
+                  {para}
+                </p>
               ))}
             </section>
           ))}

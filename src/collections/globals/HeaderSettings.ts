@@ -62,7 +62,7 @@ export const HeaderSettings: GlobalConfig = {
       defaultValue: [
         { label: 'Home', url: '/' },
         { label: 'About AFRS', url: '/about' },
-        { label: 'Forensic Service AFSL', url: '/services' },
+        { label: 'AFSL Forensic Services', url: '/services' },
         { label: 'Student Corner', url: '/student-hub' },
         { label: 'Forensic Education & Training', url: '/courses' },
         { label: 'Reach Us', url: '/contact' },

@@ -37,19 +37,49 @@ const defaultCertifications: CertificationItem[] = [
 ]
 
 const defaultUnique = [
-  { text: 'Research-led curriculum mapped to real case workflows' },
-  { text: 'ISO-minded laboratory practices and chain-of-custody focus' },
-  { text: 'Hybrid learning — online theory with offline practicals' },
-  { text: 'Mentorship from practicing forensic scientists' },
-  { text: 'Nationwide network of students and professionals' },
+  {
+    text: 'Research-led curriculum mapped to real case workflows',
+    description: 'Training aligned with investigation, evidence handling, and reporting standards.',
+  },
+  {
+    text: 'ISO-minded laboratory practices and chain-of-custody focus',
+    description: 'Quality processes that support credible and defensible forensic outcomes.',
+  },
+  {
+    text: 'Hybrid learning — online theory with offline practicals',
+    description: 'Flexible delivery without compromising hands-on forensic competency.',
+  },
+  {
+    text: 'Mentorship from practicing forensic scientists',
+    description: 'Guidance from professionals actively engaged in casework and research.',
+  },
+  {
+    text: 'Nationwide network of students and professionals',
+    description: 'A growing community connecting learners, experts, and institutions.',
+  },
 ]
 
 const defaultActivities = [
-  { text: 'Certificate programmes and short-term forensic courses' },
-  { text: 'Crime scene and laboratory internship placements' },
-  { text: 'Forensic consultancy for agencies and legal teams' },
-  { text: 'Workshops, webinars, and national conferences' },
-  { text: 'Published research and collaborative investigations' },
+  {
+    text: 'Certificate programmes and short-term forensic courses',
+    description: 'Structured learning pathways for students and working professionals.',
+  },
+  {
+    text: 'Crime scene and laboratory internship placements',
+    description: 'Practical exposure under supervision in real forensic environments.',
+  },
+  {
+    text: 'Forensic consultancy for agencies and legal teams',
+    description: 'Expert support for investigations, examinations, and case strategy.',
+  },
+  {
+    text: 'Workshops, webinars, and national conferences',
+    description: 'Regular platforms for knowledge exchange and professional networking.',
+  },
+  {
+    text: 'Published research and collaborative investigations',
+    description: 'Contributions to forensic science through applied research and publications.',
+  },
 ]
 
 const defaultAchievements: AchievementStat[] = [
@@ -122,10 +152,9 @@ const defaultSectionText: AboutSectionText = {
   ],
   futureRoadmapItems: [
     'Establishment of advanced research initiatives',
-    'Expansion of international collaborations',
+    'Expansion of national and international collaborations',
     'Development of specialized professional certification programmes',
     'Promotion of interdisciplinary scientific research',
-    'Creation of knowledge and publication platforms',
     'Strengthening forensic capacity-building initiatives',
     'Advancement of technology-driven forensic solutions',
   ],
@@ -200,35 +229,28 @@ const fallbackCommittee: LeaderProfile[] = [
     name: 'Ms. Megha Jain',
     designation: 'Secretary',
     initials: 'MJ',
+    photoUrl:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1763141455/xpvpfqfee6ppp875xdd5.jpg',
     bio: 'Managing administrative excellence and organizational correspondence.',
+  },
+
+  {
+    id: 'shrutika-sagnal',
+    name: 'Dr. Shrutika Singla',
+    designation: 'Joint Secretary',
+    initials: 'SS',
+    photoUrl:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1762258621/WhatsApp_Image_2025-11-04_at_12.37.51_AM_h1kedk.jpg',
+    bio: 'Supporting operations and coordinating departmental activities.',
   },
   {
     id: 'abhishek-shah',
     name: 'Mr. Abhishek Shah',
     designation: 'Treasurer',
     initials: 'AS',
+    photoUrl:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1762611909/b9xixjf0rlnquhherrh5.jpg',
     bio: 'Overseeing financial health and resource allocation for projects.',
-  },
-  {
-    id: 'shrutika-sagnal',
-    name: 'Ms. Shrutika Sagnal',
-    designation: 'Joint Secretary',
-    initials: 'SS',
-    bio: 'Supporting operations and coordinating departmental activities.',
-  },
-  {
-    id: 'ayushi-mittal',
-    name: 'Ms. Ayushi Mittal',
-    designation: 'Executive Member',
-    initials: 'AM',
-    bio: 'Contributing to event planning and student engagement initiatives.',
-  },
-  {
-    id: 'piyush-mishra',
-    name: 'Mr. Piyush K. Mishra',
-    designation: 'Executive Member',
-    initials: 'PM',
-    bio: 'Leading outreach programs and community awareness campaigns.',
   },
 ]
 

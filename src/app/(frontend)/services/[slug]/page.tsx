@@ -95,8 +95,8 @@ export default async function ServiceDetailPage({ params }: Props) {
       helpCards={helpCards.length ? helpCards : defaultHelpCards()}
       gallerySlides={gallerySlides}
       contact={{
-        phone: site?.phone || '+91-0000000000',
-        email: site?.email || 'info@afrs.org.in',
+        phone: site?.phone || '+91-9926692487',
+        email: site?.email || 'afrsciences@gmail.com',
       }}
     />
   )

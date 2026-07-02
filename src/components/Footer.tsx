@@ -46,8 +46,8 @@ export default function Footer({
   ]
 
   const socials = siteSettings?.socialLinks ?? {}
-  const phone = siteSettings?.phone || '+91-0000000000'
-  const email = siteSettings?.email || 'info@afrs.org.in'
+  const phone = siteSettings?.phone || '+91-9926692487'
+  const email = siteSettings?.email || 'afrsciences@gmail.com'
   const address = siteSettings?.address || 'AFRS Campus, India'
   const mapEmbedUrl = (siteSettings as (SiteSetting & { mapEmbedUrl?: string }) | null)?.mapEmbedUrl
   const socialItems = [

@@ -1,4 +1,7 @@
 import { AboutHeroSection } from '@/components/about/AboutHeroSection'
+import { AboutFeatureCards } from '@/components/about/AboutFeatureCards'
+import { AboutPillarsSection } from '@/components/about/AboutPillarsSection'
+import { AboutRoadmapSection } from '@/components/about/AboutRoadmapSection'
 import { AchievementsBar } from '@/components/about/AchievementsBar'
 import { AwardsGallery } from '@/components/about/AwardsGallery'
 import { CertificationsSection } from '@/components/about/CertificationsSection'
@@ -6,7 +9,6 @@ import { LeadershipSection } from '@/components/about/LeadershipSection'
 import { MembershipSection } from '@/components/about/MembershipSection'
 import { ValuesSection } from '@/components/about/ValuesSection'
 import { VisionMissionPurpose } from '@/components/about/VisionMissionPurpose'
-import { SectionHeader } from '@/components/about/SectionHeader'
 import type {
   AboutSectionText,
   AchievementStat,
@@ -14,8 +16,6 @@ import type {
   LeaderProfile,
   ListItem,
 } from '@/components/about/types'
-import { aboutTokens } from '@/components/about/tokens'
-import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 
 export type AboutPageViewProps = {
   sectionText: AboutSectionText
@@ -33,109 +33,6 @@ export type AboutPageViewProps = {
   futureRoadmapItems: string[]
   membershipReasons: string[]
   heroImage?: string
-}
-
-function BulletSection({
-  id,
-  title,
-  subtitle,
-  items,
-}: {
-  id: string
-  title: string
-  subtitle?: string
-  items: string[]
-}) {
-  if (!items?.length) {
-    return null
-  }
-
-  return (
-    <section className={`${aboutTokens.sectionY} bg-white`} aria-labelledby={id}>
-      <div className={aboutTokens.container}>
-        <AnimateOnScroll>
-          <SectionHeader id={id} title={title} subtitle={subtitle} align="left" />
-        </AnimateOnScroll>
-
-        <AnimateOnScroll>
-          <ul className="grid gap-4 sm:grid-cols-2">
-            {items.map((item) => (
-              <li
-                key={item}
-                className="rounded-3xl border border-slate-200 bg-slate-50 p-6 text-sm leading-7 text-slate-700 shadow-sm"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        </AnimateOnScroll>
-      </div>
-    </section>
-  )
-}
-
-function DualBulletSection({
-  id,
-  leftTitle,
-  leftItems,
-  rightTitle,
-  rightItems,
-}: {
-  id: string
-  leftTitle: string
-  leftItems: string[]
-  rightTitle: string
-  rightItems: string[]
-}) {
-  if (!leftItems?.length && !rightItems?.length) {
-    return null
-  }
-
-  return (
-    <section className={`${aboutTokens.sectionY} ${aboutTokens.sectionAlt}`} aria-labelledby={id}>
-      <div className={aboutTokens.container}>
-        <AnimateOnScroll>
-          <SectionHeader
-            id={id}
-            title="Research, Quality & Partnerships"
-            subtitle="How AFRS strengthens forensic science through evidence-based research, ethical practice, and collaborative networks."
-            align="left"
-          />
-        </AnimateOnScroll>
-
-        <AnimateOnScroll>
-          <div className="grid gap-8 lg:grid-cols-2">
-            <div>
-              <h3 className="mb-4 text-xl font-semibold text-[var(--about-text)]">{leftTitle}</h3>
-              <ul className="space-y-3">
-                {leftItems.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-slate-700">
-                    <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[var(--about-primary)] text-xs text-white">
-                      ✓
-                    </span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="mb-4 text-xl font-semibold text-[var(--about-text)]">{rightTitle}</h3>
-              <ul className="space-y-3">
-                {rightItems.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-slate-700">
-                    <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[var(--about-primary)] text-xs text-white">
-                      ✓
-                    </span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </AnimateOnScroll>
-      </div>
-    </section>
-  )
 }
 
 export function AboutPageView({
@@ -236,38 +133,33 @@ export function AboutPageView({
 
       <ValuesSection uniqueItems={uniqueItems} activityItems={activityItems} />
 
-      <BulletSection
+      <AboutFeatureCards
         id="expertise-heading"
         title="Our Expertise"
-        subtitle="Multidisciplinary capabilities across forensic domains."
+        subtitle="Multidisciplinary capabilities across forensic domains — from crime scene to courtroom."
         items={expertiseItems}
+        surface="alt"
       />
 
-      <BulletSection
+      <AboutFeatureCards
         id="why-choose-heading"
         title="Why Choose AFRS"
-        subtitle="The practical, ethical, and research-driven advantage behind our programmes."
+        subtitle="The practical, ethical, and research-driven advantage behind our programmes and consultancy."
         items={whyChooseItems}
+        variant="compact"
       />
 
-      <DualBulletSection
-        id="quality-research-heading"
-        leftTitle="Quality & Ethics"
-        leftItems={qualityEthicsItems}
-        rightTitle="Research & Partnerships"
-        rightItems={[...researchItems, ...partnershipItems]}
+      <AboutPillarsSection
+        qualityEthicsItems={qualityEthicsItems}
+        researchItems={researchItems}
+        partnershipItems={partnershipItems}
       />
 
       <AchievementsBar stats={achievements} />
 
       <MembershipSection reasons={membershipReasons} />
 
-      <BulletSection
-        id="future-roadmap-heading"
-        title="Future Roadmap"
-        subtitle="What AFRS is building next for forensic education and research."
-        items={futureRoadmapItems}
-      />
+      <AboutRoadmapSection items={futureRoadmapItems} />
 
       <AwardsGallery />
     </div>

@@ -27,9 +27,9 @@ export function ServiceDetailHero({ title, description, bannerUrl }: ServiceDeta
       />
 
       {/* Light misty overlay — matches the bright reference image tone */}
-      <div className="absolute inset-0 bg-gradient-to-r from-white/50 via-white/40 to-white/10 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/20 to-white/10 pointer-events-none" />
       {/* Subtle bottom fade for grounding */}
-      <div className="absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-white/10 via-transparent to-transparent pointer-events-none" />
 
       <div className={`${serviceDetailTokens.container} relative z-10 w-full`}>
         <HeroStagger className="max-w-[560px]">

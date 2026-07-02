@@ -6,6 +6,8 @@ import { Quote, UserRound } from 'lucide-react'
 
 import type { LeaderProfile } from '@/components/about/types'
 import { aboutTokens } from '@/components/about/tokens'
+import { SectionHeader } from '@/components/about/SectionHeader'
+import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import { JSX } from 'react/jsx-dev-runtime'
 
 type LeadershipSectionProps = {
@@ -17,74 +19,77 @@ export function LeadershipSection({ leaders, committee }: LeadershipSectionProps
   if (!leaders?.length && !committee?.length) return null
 
   return (
-    <section className={`${aboutTokens.sectionY} ${aboutTokens.sectionAlt}`}>
+    <section className={`${aboutTokens.sectionY} ${aboutTokens.sectionAlt} section-glow-top`}>
       <div className={aboutTokens.container}>
         {leaders?.length > 0 && (
           <>
-            <div className="text-center mb-14">
-              <h2 className="text-3xl font-bold tracking-[-0.02em] text-[#101828] md:text-[46px]">
-                Leadership Team
-              </h2>
-              <p className="mt-3 text-base text-[#667085] md:text-[18px]">
-                Meet the visionaries shaping our future
-              </p>
-            </div>
-            <div className="mb-16 grid gap-6 lg:mb-20 lg:grid-cols-2">
+            <AnimateOnScroll>
+              <SectionHeader
+                title="Leadership Team"
+                subtitle="Meet the visionaries shaping forensic education, research, and professional excellence at AFRS."
+                align="left"
+              />
+            </AnimateOnScroll>
+            <AnimateOnScroll stagger className="mb-16 grid gap-6 lg:mb-20 lg:grid-cols-2">
               {leaders.slice(0, 2).map((leader) => (
                 <LeaderCard key={leader.id} leader={leader} />
               ))}
-            </div>
+            </AnimateOnScroll>
           </>
         )}
 
         {committee?.length > 0 && (
           <>
-            <div className="text-center mb-14">
-              <h2 className="text-3xl font-bold tracking-[-0.02em] text-[#101828] md:text-[46px]">
-                Executive Committee & Members
-              </h2>
-              <p className="mt-3 text-base text-[#667085] md:text-[18px]">
-                The dedicated team driving our operations
-              </p>
-            </div>
+            <AnimateOnScroll>
+              <SectionHeader
+                title="Executive Committee & Members"
+                subtitle="The dedicated team driving operations, governance, and community initiatives."
+                align="left"
+              />
+            </AnimateOnScroll>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            <AnimateOnScroll
+              stagger
+              className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6"
+            >
               {committee.slice(0, 5).map((leader) => (
-                <div
+                <article
                   key={leader.id}
-                  className="min-h-[318px] rounded-[18px] border border-[#e3e8f0] bg-white px-7 py-8 shadow-[0_14px_32px_rgba(15,23,42,0.04)]"
+                  className="about-committee-card card-pop relative min-h-[320px] overflow-hidden rounded-[18px] border border-slate-200/80 px-6 py-8 shadow-[0_14px_32px_rgba(15,23,42,0.06)]"
                 >
                   <div className="flex flex-col items-center text-center">
-                    <div className="flex h-[92px] w-[92px] items-center justify-center rounded-full bg-[#f8fafc] shadow-[inset_0_0_0_1px_rgba(226,232,240,0.8),0_10px_24px_rgba(15,23,42,0.08)]">
-                      {leader.photoUrl ? (
-                        <Image
-                          src={leader.photoUrl}
-                          alt={leader.name}
-                          width={72}
-                          height={72}
-                          className="h-[72px] w-[72px] rounded-full object-cover"
-                        />
-                      ) : (
-                        <UserRound
-                          aria-hidden
-                          className="h-8 w-8 text-[#cbd5e1]"
-                          strokeWidth={1.8}
-                        />
-                      )}
+                    <div className="relative">
+                      <div className="flex h-[96px] w-[96px] items-center justify-center rounded-full bg-gradient-to-br from-indigo-50 to-blue-50 p-1 shadow-[0_10px_24px_rgba(79,70,229,0.12)] ring-1 ring-indigo-100">
+                        {leader.photoUrl ? (
+                          <Image
+                            src={leader.photoUrl}
+                            alt={leader.name}
+                            width={88}
+                            height={88}
+                            className="h-[88px] w-[88px] rounded-full object-cover"
+                          />
+                        ) : (
+                          <UserRound
+                            aria-hidden
+                            className="h-9 w-9 text-indigo-300"
+                            strokeWidth={1.8}
+                          />
+                        )}
+                      </div>
                     </div>
-                    <h3 className="mt-7 text-[20px] font-semibold leading-tight text-[#0f172a]">
+                    <h3 className="mt-8 text-lg font-extrabold leading-tight text-[var(--about-text)]">
                       {leader.name}
                     </h3>
-                    <p className="mt-2 text-[12px] font-semibold uppercase tracking-[0.08em] text-[#3657ff]">
+                    <p className="mt-2 inline-flex rounded-full bg-[var(--about-primary-soft)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.08em] text-[var(--about-primary)]">
                       {leader.designation}
                     </p>
                     {leader.bio && (
-                      <p className="mt-7 text-[12px] leading-6 text-[#1f3b57]">{leader.bio}</p>
+                      <p className="mt-5 text-sm leading-relaxed text-slate-600">{leader.bio}</p>
                     )}
                   </div>
-                </div>
+                </article>
               ))}
-            </div>
+            </AnimateOnScroll>
           </>
         )}
       </div>
