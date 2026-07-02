@@ -6,7 +6,7 @@ import type { Media, Scientist, Service, SiteSetting } from '@/payload-types'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Forensic Service AFSL',
+  title: 'AFSL - Applied Forensic Sciences Laboratory',
   description:
     'Future-ready forensic laboratory services — DNA analysis, cyber forensics, questioned documents, training, and expert legal consultancy.',
 }
@@ -43,26 +43,36 @@ const fallbackCatalog: CatalogItem[] = [
 
 const fallbackDirectors: DirectorateMember[] = [
   {
-    name: 'Mr. Jaiswal',
+    name: 'Mr. Rakesh Mia',
     designation: 'Lab Director',
-    initials: 'MJ',
+    initials: 'RM',
+    photo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1762611530/s1bhfnkxkbyor6bhjrnv.jpg',
     bio: 'Senior forensic scientist with expertise in analytical chemistry.',
   },
   {
-    name: 'Mr. Vijay',
+    name: 'Mr. Vijay Panchal',
     designation: 'Deputy Director',
-    initials: 'MV',
+    initials: 'VP',
+    photo:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1762258620/WhatsApp_Image_2025-11-04_at_12.33.03_AM_fywjbh.jpg',
     bio: 'Crime scene investigation and evidence documentation specialist.',
   },
 ]
 
 const fallbackTeam: DirectorateMember[] = [
-  { name: 'Dr. Sharma', designation: 'Forensic Pathologist', initials: 'DS' },
-  { name: 'Dr. Patel', designation: 'Toxicologist', initials: 'DP' },
-  { name: 'Dr. Khan', designation: 'Digital Forensics', initials: 'DK' },
-  { name: 'Dr. Mehta', designation: 'Document Expert', initials: 'DM' },
-  { name: 'Dr. Singh', designation: 'Ballistics', initials: 'DS' },
-  { name: 'Dr. Rao', designation: 'Odontology', initials: 'DR' },
+  {
+    name: 'Ms. Megha Jain',
+    designation: 'Digital Forensic Expert',
+    initials: 'MJ',
+    photo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1763141455/xpvpfqfee6ppp875xdd5.jpg',
+  },
+  {
+    name: 'Dr. Shrutika Singla',
+    designation: 'Fire & Arson Expert',
+    initials: 'SS',
+    photo:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1762258621/WhatsApp_Image_2025-11-04_at_12.37.51_AM_h1kedk.jpg',
+  },
 ]
 
 function toMember(sci: Scientist): DirectorateMember {
@@ -139,12 +149,16 @@ export default async function ServicesPage() {
       directors={directors.length >= 2 ? directors : fallbackDirectors}
       teamMembers={teamMembers}
       site={{
-        phone: site?.phone || '+91-0000000000',
-        email: site?.email || 'info@afrs.org.in',
-        address: site?.address || 'AFRS Campus, India',
+        phone: site?.phone || '+91-9926692487',
+        email: site?.email || 'afslforensicservices@gmail.com',
+        address:
+          site?.address ||
+          `8/1 2nd floor, Moti Tabela,
+Near Collectorate office, Indore,
+Madhya Pradesh, India`,
         mapEmbedUrl: site?.mapEmbedUrl,
       }}
-      totalVisitors={site?.totalVisitors || 2600}
+      totalVisitors={site?.totalVisitors || 200}
     />
   )
 }

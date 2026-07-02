@@ -1,5 +1,3 @@
-import Image from 'next/image'
-import Link from 'next/link'
 import type { HelpCardItem } from '@/components/service-detail/types'
 import { serviceDetailTokens } from '@/components/service-detail/tokens'
 
@@ -13,20 +11,15 @@ export type HelpCardProps = {
 export function HelpCard({ item }: HelpCardProps) {
   const baseClass = `${serviceDetailTokens.radiusCard} border border-slate-100 bg-white p-6 shadow-sm card-pop h-full flex flex-col`
 
-  if (item.wide) {
-    return (
-      <article className={`${baseClass} lg:col-span-2 lg:flex-row lg:items-center lg:gap-8`}>
-        <div className="flex-1">
-          <CardContent item={item} />
-        </div>
-        {item.imageUrl && (
-          <div className="relative mt-6 lg:mt-0 h-40 w-full lg:h-36 lg:w-44 shrink-0 overflow-hidden rounded-xl">
-            <Image src={item.imageUrl} alt="" fill sizes="176px" className="object-cover" loading="lazy" />
-          </div>
-        )}
-      </article>
-    )
-  }
+  // if (item.wide) {
+  //   return (
+  //     <article className={`${baseClass} lg:col-span-2 lg:flex-row lg:items-center lg:gap-8`}>
+  //       <div className="flex-1">
+  //         <CardContent item={item} />
+  //       </div>
+  //     </article>
+  //   )
+  // }
 
   return (
     <article className={baseClass}>
@@ -53,12 +46,6 @@ function CardContent({ item }: { item: HelpCardItem }) {
           ))}
         </ul>
       )}
-      <Link
-        href="#consult-expert"
-        className="mt-5 inline-flex text-sm font-bold text-[var(--svc-primary)] hover:underline"
-      >
-        View details <span aria-hidden>→</span>
-      </Link>
     </>
   )
 }

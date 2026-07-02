@@ -29,7 +29,7 @@ const sections = [
   },
   {
     title: '6. Your Rights',
-    body: `Under applicable data protection law, you have the right to: access the personal data we hold about you; request correction of inaccurate data; request deletion of your data; object to processing; and request restriction of processing. To exercise these rights, contact us at info@afrs.org.in.`,
+    body: `Under applicable data protection law, you have the right to: access the personal data we hold about you; request correction of inaccurate data; request deletion of your data; object to processing; and request restriction of processing. To exercise these rights, contact us at afrsciences@gmail.com.`,
   },
   {
     title: '7. Changes to This Policy',
@@ -37,23 +37,20 @@ const sections = [
   },
   {
     title: '8. Contact',
-    body: 'For any questions about this Privacy Policy, please contact us at info@afrs.org.in or write to: AFRS Institute, 123 Forensic Lane, Vijay Nagar, Indore, Madhya Pradesh 452010, India.',
+    body: 'For any questions about this Privacy Policy, please contact us at afrsciences@gmail.com or write to: AFRS Institute, 123 Forensic Lane, Vijay Nagar, Indore, Madhya Pradesh 452010, India.',
   },
 ]
 
 export default function PrivacyPage() {
   return (
     <div>
-      <PageHero
-        eyebrow="LEGAL"
-        title="Privacy Policy"
-        subtitle="Last updated: January 2026"
-      />
+      <PageHero eyebrow="LEGAL" title="Privacy Policy" subtitle="Last updated: January 2026" />
       <div className="max-w-[800px] mx-auto px-4 sm:px-6 py-14 lg:py-20">
         <div className="space-y-10 text-slate-700">
           <p className="text-slate-600 leading-relaxed">
-            Applied Forensic Research Sciences Institute (&ldquo;AFRS&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;) is
-            committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information
+            Applied Forensic Research Sciences Institute (&ldquo;AFRS&rdquo;, &ldquo;we&rdquo;,
+            &ldquo;us&rdquo;, or &ldquo;our&rdquo;) is committed to protecting your privacy. This
+            Privacy Policy explains how we collect, use, disclose, and safeguard your information
             when you visit our website.
           </p>
           {sections.map((s) => (

@@ -15,7 +15,10 @@ export default async function ContactPage() {
     { label: 'YouTube', href: socials.youtube },
     { label: 'LinkedIn', href: socials.linkedin },
     { label: 'X', href: socials.twitter },
-  ].filter((x): x is { label: string; href: string } => typeof x.href === 'string' && x.href.startsWith('http'))
+  ].filter(
+    (x): x is { label: string; href: string } =>
+      typeof x.href === 'string' && x.href.startsWith('http'),
+  )
 
   return (
     <div>
@@ -51,7 +54,7 @@ export default async function ContactPage() {
                 </div>
                 <div>
                   <p className="font-bold text-slate-900">Phone Number</p>
-                  <p className="text-slate-500 mt-1">{site?.phone || '+91-0000000000'}</p>
+                  <p className="text-slate-500 mt-1">{site?.phone || '+91-9926692487'}</p>
                 </div>
               </div>
               <div className="flex gap-3">
@@ -60,14 +63,16 @@ export default async function ContactPage() {
                 </div>
                 <div>
                   <p className="font-bold text-slate-900">Email ID</p>
-                  <p className="text-slate-500 mt-1">{site?.email || 'info@afrs.org.in'}</p>
+                  <p className="text-slate-500 mt-1">{site?.email || 'afrsciences@gmail.com'}</p>
                 </div>
               </div>
             </div>
 
             {socialItems.length > 0 && (
               <div className="mt-10">
-                <p className="text-sm font-extrabold text-slate-900 text-center">Connect on Social Media</p>
+                <p className="text-sm font-extrabold text-slate-900 text-center">
+                  Connect on Social Media
+                </p>
                 <p className="text-xs text-slate-500 text-center mt-2">
                   Follow us for updates, workshops, and announcements.
                 </p>
@@ -92,4 +97,3 @@ export default async function ContactPage() {
     </div>
   )
 }
-

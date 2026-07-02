@@ -1,3 +1,6 @@
+'use client'
+
+// import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -19,8 +22,10 @@ import {
   User,
   Users,
 } from 'lucide-react'
+// import { Modal } from '@/components/ui/Modal'
 import { LabInquiryForm } from '@/components/services/LabInquiryForm'
 import type { CatalogItem, DirectorateMember, SiteContact } from '@/components/services/types'
+import AFRSLogo from '../../../public/assets/afsl-logo.png'
 
 const CONTAINER = 'mx-auto w-full max-w-[1120px] px-6 sm:px-8'
 
@@ -30,39 +35,37 @@ const certifications = [
   { label: '24/7', caption: 'Forensic Access' },
 ]
 
-const memberCards = ['Member 01', 'Member 02', 'Member 03', 'Member 04', 'Member 05', 'Member 06']
+const memberCards = ['Member 01', 'Member 02']
 
 const kitCards = [
   {
-    title: 'CSI Investigation Kit',
-    note: 'Complete field processing kit for crime scenes',
+    title: 'Crime Scene Investigation Kit',
     icon: Box,
-    price: 'From 200.00',
   },
   {
-    title: 'Latent FP Kit',
-    note: 'Magnetic and fluorescent powder system',
+    title: 'Latent Fingerprint Development Kit',
     icon: Fingerprint,
-    price: 'After Enquiry',
   },
   {
-    title: 'FP Collection Kit',
-    note: 'Standardized cards and lifting tapes',
+    title: 'Fingerprint Collection Kit',
     icon: ClipboardList,
-    price: 'From 200.00',
   },
   {
-    title: 'GD Analysis Kit',
-    note: 'Magnification and light source document examination',
+    title: 'Questioned Document Examination Kit',
     icon: FileSearch,
-    price: 'Enquiry',
   },
-]
-
-const quickKits = [
-  { title: 'Fire & Arson Kit', icon: FlaskConical, note: 'Evidence cans and sampling tools' },
-  { title: 'ALS Multi-kit', icon: Beaker, note: 'Forensic light source field kit' },
-  { title: 'Biology Collection', icon: Users, note: 'Swab, tube and PPE collection system' },
+  {
+    title: 'Fire and Arson Investigation Kit',
+    icon: FlaskConical,
+  },
+  {
+    title: 'High Intensity Light Source Kit (ALS)',
+    icon: Beaker,
+  },
+  {
+    title: 'Biological Evidence Collection Kit',
+    icon: Users,
+  },
 ]
 
 const legalLinks = [
@@ -77,20 +80,83 @@ const legalLinks = [
 const researchItems = [
   {
     num: '01',
-    title: 'Lorem Ipsum sat',
+    title: 'Guidelines & Protocols',
     desc: 'Advanced evidence operations workbook and investigation protocols',
   },
   {
     num: '02',
-    title: 'Lorem Ipsum sat',
+    title: 'Research & Development',
     desc: 'Research-ready analytical workflows for students and professionals',
   },
   {
     num: '03',
-    title: 'Lorem ipsum',
+    title: 'Case Reporting',
     desc: 'Case reporting guides and court submission documentation',
   },
 ]
+
+// const clientCategories = [
+//   {
+//     id: 'law-enforcement',
+//     label: 'Law Enforcement Agencies',
+//     description: 'State & Central Police Departments, CBI, and investigative bureaus',
+//     icon: ShieldCheck,
+//     count: '15+',
+//     clients: [
+//       { name: 'Mumbai Police', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/mumbai_police_j9k2l3.png' },
+//       { name: 'Delhi Police', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/delhi_police_m5n8o1.png' },
+//       { name: 'Central Bureau of Investigation', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/cbi_p2q5r8.png' },
+//       { name: 'State Police - Maharashatra', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/maharashatra_police_s9t2u5.png' },
+//       { name: 'State Police - Gujarat', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/gujarat_police_v6w3x9.png' },
+//       { name: 'State Police - Rajasthan', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/rajasthan_police_y7z1a4.png' },
+//     ],
+//   },
+//   {
+//     id: 'judiciary',
+//     label: 'Judiciary & Legal Bodies',
+//     description: 'District Courts, High Courts, and legal institutions across India',
+//     icon: Gavel,
+//     count: '50+',
+//     clients: [
+//       { name: 'Supreme Court of India', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/supreme_court_b8c3d6.png' },
+//       { name: 'High Court - Mumbai', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/mumbai_hc_e2f7g1.png' },
+//       { name: 'High Court - Delhi', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/delhi_hc_h5i9j2.png' },
+//       { name: 'District Court - Indore', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/indore_dc_k3l6m8.png' },
+//       { name: 'National Commission for Women', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/ncw_n9o4p7.png' },
+//       { name: 'Law Institute of India', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/law_institute_q5r8s2.png' },
+//     ],
+//   },
+//   {
+//     id: 'insurance-corporate',
+//     label: 'Insurance & Corporate',
+//     description: 'Insurance companies and corporate entities for fraud investigation',
+//     icon: BriefcaseBusiness,
+//     count: '25+',
+//     clients: [
+//       { name: 'HDFC Insurance', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/hdfc_insurance_t1u4v6.png' },
+//       { name: 'ICICI Lombard', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/icici_lombard_w7x2y9.png' },
+//       { name: 'Bajaj Insurance', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/bajaj_insurance_z3a8b5.png' },
+//       { name: 'Reliance Corporation', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/reliance_c6d1e4.png' },
+//       { name: 'TCS', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/tcs_f9g2h7.png' },
+//       { name: 'Infosys', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/infosys_i5j8k3.png' },
+//     ],
+//   },
+//   {
+//     id: 'educational',
+//     label: 'Educational Institutions',
+//     description: 'Universities and forensic science programs for training and research',
+//     icon: GraduationCap,
+//     count: '40+',
+//     clients: [
+//       { name: 'University of Delhi', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/du_l1m4n6.png' },
+//       { name: 'Mumbai University', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/mumbai_uni_o7p2q9.png' },
+//       { name: 'Gujarat University', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/guj_uni_r5s8t3.png' },
+//       { name: 'Rajasthan University', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/raj_uni_u1v4w7.png' },
+//       { name: 'Chandigarh University', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/chandigarh_uni_x9y2z6.png' },
+//       { name: 'Amity University', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/amity_uni_a3b6c1.png' },
+//     ],
+//   },
+// ]
 
 const defaultServices = [
   {
@@ -98,21 +164,143 @@ const defaultServices = [
     title: 'CSI Services',
     slug: 'csi-services',
     desc: 'Comprehensive field processing, evidence documentation, and specialized examination of complex crime scene scenarios using advanced 3D scanning and photography.',
-    banner: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80',
+    banner:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/csi_service_oqxdnf.png',
   },
   {
     id: 'fingerprint',
     title: 'Fingerprint Analysis',
     slug: 'fingerprint-analysis',
     desc: 'Latent print development using chemical and fluorescent methods, international certification procedures, and expert comparison using AFIS-grade standards.',
-    banner: 'https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=800&q=80',
+    banner:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008138/afrs-2026-assets/fingerprint_services_zfjbcd.png',
   },
   {
     id: 'documents',
     title: 'Questioned Documents',
     slug: 'questioned-documents',
     desc: 'Detailed forensic examination of handwriting, signatures, ink, paper, and digital alterations using ESDA and electrostatic detection apparatus for uncompromised accuracy.',
-    banner: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80',
+    banner:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008310/afrs-2026-assets/questionedDocument_services_mudcgv.png',
+  },
+
+  // Audio and Video Examination
+  {
+    id: 'audio-video',
+    title: 'Audio & Video Forensics',
+    slug: 'audio-video-forensics',
+    desc: 'Expert analysis of audio and video evidence, including enhancement, authentication, and forensic reporting for legal proceedings.',
+    banner:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020382/afrs-2026-assets/audioVideo_service_dtefco.png',
+  },
+
+  // Image & Photography Examination
+  {
+    id: 'image-photography',
+    title: 'Image & Photography Forensics',
+    slug: 'image-photography-forensics',
+    desc: 'Forensic examination of digital and analog images, including metadata analysis, image authentication, and enhancement for investigative and legal purposes.',
+    banner:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020383/afrs-2026-assets/image_service_bc6dzv.png',
+  },
+
+  // Digital Forensics
+  {
+    id: 'digital-forensics',
+    title: 'Digital Forensics',
+    slug: 'digital-forensics',
+    desc: 'Comprehensive analysis of digital devices, data recovery, and cyber investigation to support legal cases and corporate security.',
+    banner:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020382/afrs-2026-assets/digitalEvidence_zmscd8.png',
+  },
+
+  // Insurance Forensic Investigation
+
+  {
+    id: 'insurance-forensics',
+    title: 'Insurance Forensic Investigation',
+    slug: 'insurance-forensic-investigation',
+    desc: 'Specialized forensic services for insurance claims, including fraud detection, accident reconstruction, and evidence analysis to support claim validation.',
+    banner:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020382/afrs-2026-assets/insurance_service_c0oydn.png',
+  },
+
+  // Blood Grouping Examination
+  {
+    id: 'blood-grouping',
+    title: 'Blood Grouping Examination',
+    slug: 'blood-grouping-examination',
+    desc: 'Forensic analysis of blood samples for grouping and identification, supporting criminal investigations and legal proceedings.',
+    banner:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020381/afrs-2026-assets/bloodGroupExamination_service_okok85.png',
+  },
+
+  // Cyber Security
+  {
+    id: 'cyber-security',
+    title: 'Cyber Security',
+    slug: 'cyber-security',
+    desc: 'Comprehensive cybersecurity assessments, penetration testing, and digital threat analysis to protect organizational assets and data integrity.',
+    banner:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020380/afrs-2026-assets/cyberSecurity_service_rd8wfx.png',
+  },
+
+  // Forensic Legal Consultancy
+  {
+    id: 'forensic-legal-consultancy',
+    title: 'Forensic Legal Consultancy',
+    slug: 'forensic-legal-consultancy',
+    desc: 'Expert legal consultancy services in forensic matters, providing guidance on evidence handling, case strategy, and courtroom presentation.',
+    banner:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020375/afrs-2026-assets/forensicLegalCounsult_service_icfveh.png',
+  },
+
+  // Medicolegal Consultancy
+  {
+    id: 'medicolegal-consultancy',
+    title: 'Medicolegal Consultancy',
+    slug: 'medicolegal-consultancy',
+    desc: 'Specialized consultancy in medicolegal cases, offering expert opinions, report preparation, and guidance on medico-legal procedures.',
+    banner:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020374/afrs-2026-assets/medicolegalCounsult_service_aojxeq.png',
+  },
+
+  // Forensic Expert Opinion (Under 39 BSA)
+  {
+    id: 'forensic-expert-opinion',
+    title: 'Forensic Expert Opinion (Under 39 BSA)',
+    slug: 'forensic-expert-opinion',
+    desc: 'Provision of expert forensic opinions in accordance with Section 39 of the BSA, supporting legal proceedings and investigative processes.',
+    banner:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020374/afrs-2026-assets/expertOpinion_service_x9bmqo.png',
+  },
+  // Cross Examination
+  {
+    id: 'cross-examination',
+    title: 'Cross Examination Training',
+    slug: 'cross-examination-training',
+    desc: 'Training programs focused on effective cross-examination techniques for forensic experts, enhancing courtroom performance and credibility.',
+    banner:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020373/afrs-2026-assets/crossExamination_service_jrqu4i.png',
+  },
+  // Training and Internship Program
+  {
+    id: 'training-internship',
+    title: 'Training and Internship Program',
+    slug: 'training-internship-program',
+    desc: 'Structured training and internship opportunities in forensic science, providing hands-on experience and professional development for students and early-career professionals.',
+    banner:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020373/afrs-2026-assets/trainingInternship_service_dsyhmw.png',
+  },
+
+  // Research and Project
+  {
+    id: 'research-project',
+    title: 'Research and Project',
+    slug: 'research-and-project',
+    desc: 'Collaborative research initiatives and project-based learning in forensic science, fostering innovation and practical application of forensic methodologies.',
+    banner:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020373/afrs-2026-assets/research_service_em2lja.png',
   },
 ] satisfies CatalogItem[]
 
@@ -163,6 +351,7 @@ export function ServicesPageView({
   site,
   totalVisitors,
 }: Props) {
+  // const [selectedCategory, setSelectedCategory] = useState<typeof clientCategories[0] | null>(null)
   const services = defaultServices
   const serviceOptions = services.map((c) => c.title)
   const people = teamMembers.length ? teamMembers.slice(0, 6) : directors
@@ -170,13 +359,13 @@ export function ServicesPageView({
   return (
     <div className="afsl-page bg-white text-[#071329]">
       <section className="afsl-hero-ui relative overflow-hidden text-white">
-        <div className="afsl-diagonal-lines absolute inset-0" aria-hidden />
+        <div className=" absolute inset-0" aria-hidden />
         <div
           className={`${CONTAINER} grid min-h-[520px] items-center gap-10 py-16 lg:grid-cols-[1fr_470px]`}
         >
           <div className="max-w-[570px]">
             <p className="text-[10px] font-extrabold uppercase tracking-[0.28em] text-white/55">
-              Internal Evidence, AFSL
+              Scientific Assistance Towards Justice
             </p>
             <h1 className="mt-5 text-[44px] font-black leading-[0.98] tracking-[-0.01em] sm:text-[64px] lg:text-[76px]">
               Future-Ready <span className="block text-[#ffbd18]">Forensic</span>
@@ -226,13 +415,21 @@ export function ServicesPageView({
                     About AFSL Laboratory
                   </h2>
                   <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176]">
-                    Applied Forensic Science Laboratory (AFSL) functions as the specialized
-                    scientific arm of the AFRS. We are dedicated to the pursuit of objective truth
-                    through meticulous evidence examination and innovative research.
+                    Applied Forensic Science Laboratory (AFSL Services India LLP) is registered with
+                    the Ministry of Corporate Affairs (MCA) and MSME, Government of India, and is an
+                    ISO 9001:2015 Certified Forensic Science Laboratory. Our training programs
+                    bridge the gap between theoretical knowledge and practical forensic application
+                    through hands-on, offline learning using advanced forensic instruments in
+                    fingerprint analysis, multimedia forensics, questioned document examination, and
+                    trace evidence analysis.
                   </p>
                   <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176]">
-                    Equipped with state-of-the-art instrumentation and led by veteran experts, AFSL
-                    provides a bridge between crime scene realities and courtroom conclusions.
+                    Participants gain real-world exposure through supervised autopsy visits,
+                    simulated and actual crime scene visits, field investigations, evidence
+                    collection, documentation, scientific report writing, and investigative
+                    procedures under expert guidance. Our mission is to build practical skills,
+                    professional confidence, and industry-ready forensic professionals who can
+                    effectively contribute to justice and society.
                   </p>
                   <div className="mt-8 grid max-w-[420px] grid-cols-3 gap-4">
                     {certifications.map((stat) => (
@@ -248,7 +445,8 @@ export function ServicesPageView({
                     ))}
                   </div>
                 </div>
-                <div className="relative min-h-[330px] rounded-[14px] bg-white shadow-[0_24px_50px_rgba(24,31,43,0.16)]">
+                <div className="relative min-h-[330px] rounded-[14px] bg-white shadow-[0_16px_40px_rgba(24,31,43,0.16)]">
+                  <Image src={AFRSLogo} alt="AFSL Logo" className="h-full w-full contain-content" />
                   <div className="absolute right-[-16px] top-[-18px] flex h-16 w-16 items-center justify-center rounded-[14px] bg-[#5b1eb2] text-white shadow-xl">
                     <Award className="h-6 w-6" />
                   </div>
@@ -269,9 +467,12 @@ export function ServicesPageView({
                 </div>
                 <h3 className="mt-8 text-[21px] font-black">Laboratory Vision</h3>
                 <p className="mt-4 max-w-[420px] text-[13px] font-medium leading-6 text-white/65">
-                  To redefine forensic diagnostics through computational intelligence and absolute
-                  scientific neutrality, becoming the premier global destination for high-complexity
-                  evidence analysis.
+                  To be a leading forensic science training and research centre, delivering
+                  industry-oriented, hands-on education that bridges academic learning with
+                  real-world forensic practice. We strive to develop skilled, ethical, and
+                  investigation-ready forensic professionals through advanced laboratory training,
+                  crime scene exposure, and experiential learning, contributing to excellence in the
+                  justice system.
                 </p>
                 <div className="mt-7 h-1 w-10 rounded-full bg-[#7434d3]" />
               </article>
@@ -283,9 +484,12 @@ export function ServicesPageView({
                 </div>
                 <h3 className="mt-8 text-[21px] font-black">Our Mission</h3>
                 <p className="mt-4 max-w-[420px] text-[13px] font-medium leading-6 text-[#5e6978]">
-                  Equipping justice stakeholders with robust, peer-reviewed forensic data using
-                  advanced technology, uncompromised integrity, and standardized scientific
-                  protocols.
+                  To provide high-quality, practical forensic education through state-of-the-art
+                  laboratory facilities, expert mentorship, autopsy exposure, field investigations,
+                  and crime scene training. Our mission is to equip students and professionals with
+                  technical expertise, scientific thinking, evidence-handling skills, and
+                  professional ethics, preparing them to meet the evolving demands of forensic
+                  science and the criminal justice system..
                 </p>
                 <div className="mt-7 h-1 w-10 rounded-full bg-[#7434d3]" />
               </article>
@@ -294,54 +498,168 @@ export function ServicesPageView({
         </div>
       </section>
 
-      <section className="bg-[#eef3f9] py-20">
+      <section className="bg-white py-24">
         <div className={CONTAINER}>
-          <div>
-            <div className="text-center">
-              <Eyebrow>The Experts</Eyebrow>
-              <h2 className="mt-3 text-[29px] font-black">Laboratory Directorate</h2>
+          {/* Directorate Section */}
+          <div className="mb-24">
+            <div className="mb-12 text-center">
+              <Eyebrow>Leadership & Expertise</Eyebrow>
+              <h2 className="mt-3 text-[36px] font-black leading-tight text-[#071329]">
+                Laboratory Directorate
+              </h2>
+              <p className="mx-auto mt-4 max-w-[600px] text-[14px] font-medium text-[#687487]">
+                Meet the visionary leaders and scientific experts directing the laboratory&apos;s
+                operations and research initiatives.
+              </p>
             </div>
-          </div>
-          <div className="mx-auto mt-10 grid max-w-[900px] gap-8 md:grid-cols-2">
-            {directors.slice(0, 2).map((person) => (
-              <div key={person.name}>
-                <article className="flex min-h-[170px] items-center gap-8 rounded-[18px] bg-white px-8 shadow-sm">
-                  <PersonPhoto member={person} large />
-                  <div>
-                    <h3 className="text-[17px] font-black">{person.name}</h3>
-                    <p className="mt-1 text-[9px] font-black uppercase tracking-[0.14em] text-[#6d28d9]">
-                      {person.designation}
-                    </p>
-                    <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.12em] text-[#a0aab8]">
-                      Credentials +
-                    </p>
-                  </div>
-                </article>
-              </div>
-            ))}
-          </div>
-          <div>
-            <p className="mt-14 text-center text-[10px] font-black uppercase tracking-[0.45em] text-[#9ba8ba]">
-              Laboratory Members
-            </p>
-          </div>
-          <div className="mt-10 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-6">
-            {memberCards.map((fallback, index) => {
-              const person = people[index]
-              return (
-                <div key={person?.name || fallback}>
-                  <article className="rounded-[8px] bg-white px-4 py-5 text-center shadow-[0_8px_22px_rgba(35,45,62,0.08)]">
-                    <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-[#edf3fa] text-[#a9b6c6]">
-                      {person ? <PersonPhoto member={person} /> : <User className="h-4 w-4" />}
+
+            <div className="grid gap-8 lg:grid-cols-2">
+              {directors.slice(0, 2).map((person) => (
+                <div key={person.name}>
+                  <article className="group overflow-hidden rounded-[20px] border border-[#e5ebf4] bg-gradient-to-br from-white to-[#f8fafd] shadow-[0_12px_32px_rgba(15,23,42,0.08)] transition hover:shadow-[0_20px_48px_rgba(109,40,217,0.15)] hover:-translate-y-1">
+                    {/* Top gradient bar */}
+                    <div className="h-1 w-full bg-gradient-to-r from-[#6d28d9] via-[#8b5cf6] to-[#6d28d9]" />
+
+                    {/* Content */}
+                    <div className="p-8">
+                      <div className="flex items-start gap-6">
+                        {/* Photo */}
+                        <div className="relative flex-shrink-0">
+                          <div className="absolute inset-0 rounded-[16px] bg-gradient-to-br from-[#6d28d9] to-[#8b5cf6] opacity-0 transition group-hover:opacity-20" />
+                          <div className="relative h-24 w-24 overflow-hidden rounded-[16px] border-2 border-[#e5ebf4] bg-[#f8fafd] shadow-md">
+                            {person.photo ? (
+                              <Image
+                                src={person.photo}
+                                alt={person.name}
+                                fill
+                                className="object-cover transition group-hover:scale-105"
+                              />
+                            ) : (
+                              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#6d28d9]/10 to-[#8b5cf6]/10 text-2xl font-black text-[#6d28d9]">
+                                {person.initials}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Info */}
+                        <div className="flex-1">
+                          <h3 className="text-[18px] font-black text-[#071329]">{person.name}</h3>
+                          <p className="mt-2 text-[12px] font-black uppercase tracking-[0.16em] text-[#6d28d9]">
+                            {person.designation}
+                          </p>
+                          <div className="mt-4 flex flex-wrap gap-2">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#6d28d9]/10 px-3 py-1 text-[11px] font-bold text-[#6d28d9]">
+                              <Award className="h-3 w-3" />
+                              Expert Certified
+                            </span>
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-[11px] font-bold text-emerald-700">
+                              <ShieldCheck className="h-3 w-3" />
+                              Active
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* CTA */}
+                      {/* <div className="mt-6 border-t border-[#e5ebf4] pt-6">
+                        <button className="w-full rounded-[10px] border border-[#6d28d9] bg-white px-4 py-2.5 text-center text-[12px] font-black text-[#6d28d9] transition hover:bg-[#6d28d9] hover:text-white">
+                          View Credentials
+                        </button>
+                      </div> */}
                     </div>
-                    <p className="mt-4 text-[11px] font-black">{person?.name || fallback}</p>
-                    <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.12em] text-[#9ba8ba]">
-                      {person?.designation || 'Forensic Unit'}
-                    </p>
                   </article>
                 </div>
-              )
-            })}
+              ))}
+            </div>
+          </div>
+
+          {/* Members Section */}
+          <div>
+            <div className="mb-12 text-center">
+              <Eyebrow>Scientific Team</Eyebrow>
+              <h2 className="mt-3 text-[36px] font-black leading-tight text-[#071329]">
+                Laboratory Members
+              </h2>
+              <p className="mx-auto mt-4 max-w-[600px] text-[14px] font-medium text-[#687487]">
+                Dedicated forensic scientists and specialists committed to advancing forensic
+                science and justice.
+              </p>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+              {memberCards.map((fallback, index) => {
+                const person = people[index]
+                return (
+                  <div key={person?.name || fallback}>
+                    <article className="group h-full overflow-hidden rounded-[14px] border border-[#e5ebf4] bg-gradient-to-b from-white to-[#f8fafd] shadow-[0_8px_20px_rgba(15,23,42,0.06)] transition hover:shadow-[0_12px_32px_rgba(109,40,217,0.12)] hover:-translate-y-0.5">
+                      {/* Top accent line */}
+                      <div className="h-0.5 w-full bg-gradient-to-r from-[#6d28d9] via-[#8b5cf6] to-transparent" />
+
+                      <div className="p-4 text-center">
+                        {/* Photo */}
+                        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-[10px] border border-[#e5ebf4] bg-white overflow-hidden shadow-sm transition group-hover:shadow-md">
+                          {person ? (
+                            person.photo ? (
+                              <Image
+                                src={person.photo}
+                                alt={person.name}
+                                width={56}
+                                height={56}
+                                className="h-full w-full object-cover"
+                              />
+                            ) : (
+                              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#6d28d9]/10 to-[#8b5cf6]/10 text-sm font-black text-[#6d28d9]">
+                                {person.initials}
+                              </div>
+                            )
+                          ) : (
+                            <User className="h-5 w-5 text-[#a9b6c6]" />
+                          )}
+                        </div>
+
+                        {/* Name */}
+                        <h4 className="text-[11px] font-black text-[#071329] line-clamp-2">
+                          {person?.name || fallback}
+                        </h4>
+
+                        {/* Designation */}
+                        <p className="mt-2 text-[8px] font-bold uppercase tracking-[0.12em] text-[#9ba8ba] line-clamp-2">
+                          {person?.designation || 'Forensic Unit'}
+                        </p>
+
+                        {/* Badge */}
+                        <div className="mt-3 inline-block rounded-full bg-[#6d28d9]/10 px-2 py-1 text-[7px] font-black uppercase tracking-[0.08em] text-[#6d28d9]">
+                          Active
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* Team Stats */}
+            <div className="mt-12 grid gap-4 rounded-[18px] bg-gradient-to-r from-[#6d28d9]/5 to-[#8b5cf6]/5 border border-[#e5ebf4] p-8 sm:grid-cols-3">
+              <div className="text-center">
+                <p className="text-[28px] font-black text-[#6d28d9]">{people.length}+</p>
+                <p className="mt-2 text-[12px] font-bold uppercase tracking-[0.12em] text-[#687487]">
+                  Team Members
+                </p>
+              </div>
+              <div className="text-center">
+                <p className="text-[28px] font-black text-[#8b5cf6]">2+</p>
+                <p className="mt-2 text-[12px] font-bold uppercase tracking-[0.12em] text-[#687487]">
+                  Years Experience
+                </p>
+              </div>
+              <div className="text-center">
+                <p className="text-[28px] font-black text-[#6d28d9]">10+</p>
+                <p className="mt-2 text-[12px] font-bold uppercase tracking-[0.12em] text-[#687487]">
+                  Cases Handled
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -432,60 +750,88 @@ export function ServicesPageView({
           </div>
         </div>
       </section>
+      {/* 
+      <section className="bg-white py-20">
+        <div className={CONTAINER}>
+          <div className="text-center">
+            <Eyebrow>Trusted Partners</Eyebrow>
+            <h2 className="mt-2 text-[34px] font-black">Our Clients & Stakeholders</h2>
+            <p className="mx-auto mt-4 max-w-[620px] text-[14px] font-medium leading-6 text-[#687487]">
+              AFSL partners with leading law enforcement agencies, judiciary, corporate institutions, and educational organizations across India. Our clients trust our scientific rigor and professional excellence.
+            </p>
+          </div>
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {clientCategories.map((category) => {
+              const Icon = category.icon
+              return (
+                <button
+                  key={category.label}
+                  onClick={() => setSelectedCategory(category)}
+                  className="group rounded-[16px] border border-[#dce4ef] bg-[#f8fafd] p-7 shadow-sm transition hover:shadow-lg hover:-translate-y-1 text-left cursor-pointer hover:bg-white"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-[10px] bg-[#6d28d9] text-white shadow-md">
+                      <Icon className="h-6 w-6" strokeWidth={1.8} />
+                    </div>
+                    <span className="rounded-full bg-[#6d28d9]/10 px-3 py-1 text-[11px] font-black text-[#6d28d9]">
+                      {category.count}
+                    </span>
+                  </div>
+                  <h3 className="mt-6 text-[14px] font-black leading-snug text-[#071329] group-hover:text-[#6d28d9] transition">
+                    {category.label}
+                  </h3>
+                  <p className="mt-3 text-[12px] font-medium leading-5 text-[#687487]">
+                    {category.description}
+                  </p>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      </section> */}
 
-      <section className="bg-[#eef3f9] py-20">
+      <section className="bg-[#eef3f9] py-24">
         <div className={CONTAINER}>
           <div className="mx-auto max-w-[740px] text-center">
             <Eyebrow>Proprietary Equipment</Eyebrow>
-            <h2 className="mt-2 text-[34px] font-black">AFSL Professional Kits</h2>
+            <h2 className="mt-2 text-[36px] font-black leading-tight text-[#071329]">
+              AFSL Professional Kits
+            </h2>
             <p className="mt-4 text-[14px] font-medium leading-6 text-[#687487]">
               Engineered for field professionals and academic researchers. Each kit conforms to
-              international forensic standards.
+              international forensic standards and is ready for deployment.
             </p>
           </div>
-          <div className="mt-12 grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {kitCards.map((kit) => {
               const Icon = kit.icon
               return (
                 <div key={kit.title}>
-                  <article className="min-h-[280px] rounded-[15px] border border-[#dfe7f2] bg-white p-8 shadow-sm">
-                    <Icon className="h-10 w-10 text-[#d4c8ee]" strokeWidth={1.8} />
-                    <h3 className="mt-14 text-[13px] font-black uppercase tracking-[0.03em]">
-                      {kit.title}
-                    </h3>
-                    <p className="mt-3 min-h-[40px] text-[11px] font-medium leading-5 text-[#7b8799]">
-                      {kit.note}
-                    </p>
-                    <div className="mt-6 flex items-center justify-between text-[9px] font-black uppercase tracking-[0.12em]">
-                      <span className="text-[#a5afbd]">{kit.price}</span>
-                      <Link href="/contact" className="text-[#6d28d9]">
-                        Order
+                  <article className="group h-full overflow-hidden rounded-[16px] border border-[#dfe7f2] bg-white shadow-[0_8px_20px_rgba(15,23,42,0.06)] transition hover:shadow-[0_16px_40px_rgba(109,40,217,0.12)] hover:-translate-y-1">
+                    {/* Top gradient bar */}
+                    <div className="h-1 w-full bg-gradient-to-r from-[#6d28d9] to-[#8b5cf6]" />
+
+                    {/* Content */}
+                    <div className="flex h-full flex-col p-7">
+                      {/* Icon */}
+                      <div className="flex h-16 w-16 items-center justify-center rounded-[12px] bg-gradient-to-br from-[#6d28d9]/10 to-[#8b5cf6]/10 text-[#6d28d9] shadow-sm transition group-hover:shadow-md">
+                        <Icon className="h-7 w-7" strokeWidth={1.8} />
+                      </div>
+
+                      {/* Title */}
+                      <h3 className="mt-6 flex-1 text-[14px] font-black leading-snug text-[#071329]">
+                        {kit.title}
+                      </h3>
+
+                      {/* CTA */}
+                      <Link
+                        href="/contact"
+                        className="mt-6 inline-flex items-center justify-center rounded-[10px] border border-[#6d28d9] bg-white px-4 py-3 text-center text-[12px] font-black text-[#6d28d9] transition hover:bg-[#6d28d9] hover:text-white w-full"
+                      >
+                        Request Enquiry
                       </Link>
                     </div>
                   </article>
-                </div>
-              )
-            })}
-          </div>
-          <div className="mt-8 grid gap-5 lg:grid-cols-3">
-            {quickKits.map((kit) => {
-              const Icon = kit.icon
-              return (
-                <div key={kit.title}>
-                  <Link
-                    href="/contact"
-                    className="flex h-[86px] items-center gap-5 rounded-[12px] bg-[#081326] px-7 text-white shadow-sm"
-                  >
-                    <Icon className="h-5 w-5 text-[#ffbd18]" />
-                    <span>
-                      <span className="block text-[13px] font-black uppercase tracking-[0.04em]">
-                        {kit.title}
-                      </span>
-                      <span className="mt-1 block text-[10px] font-medium text-white/55">
-                        {kit.note}
-                      </span>
-                    </span>
-                  </Link>
                 </div>
               )
             })}
@@ -645,6 +991,39 @@ export function ServicesPageView({
           </div>
         </div>
       </section>
+      {/* 
+      <Modal
+        isOpen={!!selectedCategory}
+        onClose={() => setSelectedCategory(null)}
+        title={selectedCategory?.label || ''}
+      >
+        <div className="space-y-4">
+          <p className="text-[13px] font-medium text-[#687487]">
+            {selectedCategory?.description}
+          </p>
+          <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3">
+            {selectedCategory?.clients.map((client) => (
+              <div
+                key={client.name}
+                className="flex flex-col items-center gap-3 rounded-[12px] border border-[#e5ebf4] bg-[#f8fafd] p-6 text-center transition hover:shadow-md"
+              >
+                <div className="relative h-16 w-16 overflow-hidden rounded-lg bg-white">
+                  <Image
+                    src={client.logo}
+                    alt={client.name}
+                    fill
+                    className="object-contain p-2"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none'
+                    }}
+                  />
+                </div>
+                <p className="text-[12px] font-bold text-[#071329]">{client.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Modal> */}
     </div>
   )
 }

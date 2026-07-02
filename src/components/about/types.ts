@@ -50,4 +50,5 @@ export type CertificationItem = {
 
 export type ListItem = {
   text: string
+  description?: string
 }
