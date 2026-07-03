@@ -46,6 +46,44 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
   const brandTitle = settings?.brandTitle || 'Applied Forensic Research Sciences'
   const topLeftText = settings?.topBarLeftText || '+91-9926692487'
   const topLeftText2 = settings?.topBarLeftText2 || 'afrsciences@gmail.com'
+  const topLeftText3 = settings?.topBarLeftText3 || [
+    {
+      icon: 9,
+      label: 'Facebook',
+      url: 'https://www.facebook.com/share/1BiD8xBRKc/',
+    },
+    {
+      icon: 10,
+      label: 'Instagram',
+      url: 'https://instagram.com/afrsciences',
+    },
+    {
+      icon: 11,
+      label: 'LinkedIn',
+      url: 'https://www.linkedin.com/company/afrsciences',
+    },
+    {
+      icon: 12,
+      label: 'Twitter',
+      url: 'https://twitter.com/afrsciences',
+    },
+    {
+      icon: 13,
+      label: 'YouTube',
+      url: 'https://www.youtube.com/c/AppliedforensicscienceforjusticeStudentGroup/videos',
+    },
+    {
+      icon: 14,
+      label: 'WhatsApp',
+      url: 'https://api.whatsapp.com/send/?phone=9926692487&text&type=phone_number&app_absent=0',
+    },
+    {
+      icon: 15,
+      label: 'Telegram',
+      url: 'https://t.me/afsjstudent',
+    },
+  ]
+
   const topBarEnabled = settings?.topBarEnabled ?? true
 
   return (
@@ -56,6 +94,24 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
             <div className="flex flex-wrap gap-x-5 gap-y-1">
               <span className="hover:text-white transition-colors">{topLeftText}</span>
               <span className="hover:text-white transition-colors">{topLeftText2}</span>
+              <div className="flex gap-2">
+                {topLeftText3.map((item) => {
+                  if (typeof item.icon === 'number') {
+                    // Not populated yet
+                    return null
+                  }
+
+                  if (!item.icon.url) {
+                    return null
+                  }
+
+                  return (
+                    <Link key={item.url} href={item.url} target="_blank" rel="noopener noreferrer">
+                      <Image src={item.icon.url} alt={item.label ?? ''} width={16} height={16} />
+                    </Link>
+                  )
+                })}
+              </div>
             </div>
             <div className="flex flex-wrap gap-4">
               {topLinks.map((link) => (
@@ -88,9 +144,15 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
             <Image src={logo} alt="AFRS Logo" width={44} height={44} className="rounded-full" />
           </motion.div>
           <div className="hidden sm:block">
-            <p className="font-extrabold text-sm text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors">
-              {brandTitle}
-            </p>
+            {pathname === '/services' ? (
+              <p className="font-extrabold text-sm text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors">
+                Applied Forensic Science Laboratory
+              </p>
+            ) : (
+              <p className="font-extrabold text-sm text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors">
+                {brandTitle}
+              </p>
+            )}
           </div>
         </Link>
 

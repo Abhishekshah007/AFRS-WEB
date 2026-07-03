@@ -942,6 +942,14 @@ export interface HeaderSetting {
   topBarEnabled?: boolean | null;
   topBarLeftText?: string | null;
   topBarLeftText2?: string | null;
+  topBarLeftText3?:
+    | {
+        icon: number | Media;
+        url: string;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   topBarLinks?:
     | {
         label: string;
@@ -1178,6 +1186,14 @@ export interface HeaderSettingsSelect<T extends boolean = true> {
   topBarEnabled?: T;
   topBarLeftText?: T;
   topBarLeftText2?: T;
+  topBarLeftText3?:
+    | T
+    | {
+        icon?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
   topBarLinks?:
     | T
     | {

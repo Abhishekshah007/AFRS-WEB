@@ -58,7 +58,7 @@ export async function generateMetadata(): Promise<import('next').Metadata> {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const payload = await getPayloadClient()
   const [headerSettings, footerSettings, siteSettings] = await Promise.all([
-    payload.findGlobal({ slug: 'headerSettings', depth: 0 }) as Promise<HeaderSetting>,
+    payload.findGlobal({ slug: 'headerSettings', depth: 1 }) as Promise<HeaderSetting>,
     payload.findGlobal({ slug: 'footerSettings', depth: 0 }) as Promise<FooterSetting>,
     payload.findGlobal({ slug: 'siteSettings', depth: 0 }) as Promise<SiteSetting>,
   ])

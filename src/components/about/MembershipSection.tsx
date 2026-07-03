@@ -11,17 +11,24 @@ export type MembershipSectionProps = {
 export function MembershipSection({ reasons }: Readonly<MembershipSectionProps>) {
   const plans = [
     {
-      title: 'Life Time Membership',
+      title: 'Professional Membership ',
       description:
-        'Unlimited access to AFRS resources, accredited training, and community support with a single one-time fee.',
+        'Annual membership for professionals seeking to enhance their forensic expertise and stay updated with the latest advancements in the field.',
       href: '/contact',
       badge: 'Best Value',
       dark: true,
     },
     {
-      title: 'One Year Membership',
+      title: 'Senior Membership',
       description:
-        'Flexible annual membership for professionals and students seeking a structured forensic development pathway.',
+        'Annual membership for professionals and students seeking a structured forensic development pathway.',
+      href: '/contact',
+      badge: 'Popular',
+      dark: false,
+    },
+    {
+      title: 'Academic Department Membership ',
+      description: '',
       href: '/contact',
       badge: 'Popular',
       dark: false,
@@ -48,7 +55,10 @@ export function MembershipSection({ reasons }: Readonly<MembershipSectionProps>)
           <SectionHeader
             id="membership-heading"
             title="Membership Plans"
-            subtitle="Join a national forensic community built for learning, collaboration, and professional growth."
+            subtitle="AFRS Membership is designed to create a vibrant community of students, researchers, professionals, academicians, and institutions committed to the advancement of forensic science.
+Membership provides opportunities for professional networking, knowledge sharing, collaborative research, leadership development, and continued engagement with emerging trends and best practices.
+AFRS provides the following types of membership: 
+"
             align="left"
           />
         </AnimateOnScroll>

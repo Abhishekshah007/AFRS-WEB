@@ -60,9 +60,9 @@ export function CertificationsSection({ items }: Readonly<CertificationsSectionP
                     <p className={`mt-3 flex-1 text-sm leading-relaxed ${aboutTokens.body}`}>
                       {item.description}
                     </p>
-                    <p className="mt-5 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-[0.14em] text-[var(--about-primary)]">
+                    {/* <p className="mt-5 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-[0.14em] text-[var(--about-primary)]">
                       Verified Standard <span aria-hidden>→</span>
-                    </p>
+                    </p> */}
                   </article>
                 </li>
               )

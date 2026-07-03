@@ -531,7 +531,7 @@ export function AboutSection({ sectionText }: { sectionText: SectionText }) {
           />
           <p className={`mt-6 ${UI.body}`}>
             {sectionText.aboutDescription1 ||
-              'Applied Forensic Research Sciences (AFRS) is a premier organization established with a vision to revolutionize the forensic science landscape through research, training, and specialized services.'}
+              'Applied Forensic Research Sciences (AFRS) is a dedicated platform committed to advancing education, research and professional development in the field of Forensic Science. Registered under the Madhya Pradesh Society Registration Act 1973, Ministry of Micro, Small & Medium Enterprises (MSME), NITI Aayog and accredited with ISO 9001:2015, Government of India, AFRS functions as a multidisciplinary organization focused on fostering collaboration, innovation and knowledge exchange.'}
           </p>
           <p className={`mt-4 ${UI.body}`}>
             {sectionText.aboutDescription2 ||
