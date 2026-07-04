@@ -3,38 +3,56 @@ import { BadgeCheck, CheckCircle2, Crown, Sparkles } from 'lucide-react'
 import { aboutTokens } from '@/components/about/tokens'
 import { SectionHeader } from '@/components/about/SectionHeader'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
+import type { MembershipPlan } from '@/components/about/types'
 
 export type MembershipSectionProps = {
   reasons?: string[]
+  title?: string
+  subtitle?: string
+  plans?: MembershipPlan[]
+  ctaLabel?: string
+  advantageEyebrow?: string
+  advantageTitle?: string
 }
 
-export function MembershipSection({ reasons }: Readonly<MembershipSectionProps>) {
-  const plans = [
-    {
-      title: 'Professional Membership ',
-      description:
-        'Annual membership for professionals seeking to enhance their forensic expertise and stay updated with the latest advancements in the field.',
-      href: '/contact',
-      badge: 'Best Value',
-      dark: true,
-    },
-    {
-      title: 'Senior Membership',
-      description:
-        'Annual membership for professionals and students seeking a structured forensic development pathway.',
-      href: '/contact',
-      badge: 'Popular',
-      dark: false,
-    },
-    {
-      title: 'Academic Department Membership ',
-      description: '',
-      href: '/contact',
-      badge: 'Popular',
-      dark: false,
-    },
-  ]
+const defaultPlans: MembershipPlan[] = [
+  {
+    title: 'Professional Membership ',
+    description:
+      'Annual membership for professionals seeking to enhance their forensic expertise and stay updated with the latest advancements in the field.',
+    href: '/contact',
+    badge: 'Best Value',
+    dark: true,
+  },
+  {
+    title: 'Senior Membership',
+    description:
+      'Annual membership for professionals and students seeking a structured forensic development pathway.',
+    href: '/contact',
+    badge: 'Popular',
+    dark: false,
+  },
+  {
+    title: 'Academic Department Membership ',
+    description:
+      'Annual membership for academic departments and institutions committed to advancing forensic science education and research.',
+    href: '/contact',
+    badge: 'Popular',
+    dark: false,
+  },
+]
 
+export function MembershipSection({
+  reasons,
+  title = 'Membership Plans',
+  subtitle = `AFRS Membership is designed to create a vibrant community of students, researchers, professionals, academicians, and institutions committed to the advancement of forensic science.
+Membership provides opportunities for professional networking, knowledge sharing, collaborative research, leadership development, and continued engagement with emerging trends and best practices.
+AFRS provides the following types of membership:`,
+  plans = defaultPlans,
+  ctaLabel = 'Get Started',
+  advantageEyebrow = 'Why AFRS?',
+  advantageTitle = 'The membership advantage',
+}: Readonly<MembershipSectionProps>) {
   const benefits =
     reasons && reasons.length > 0
       ? reasons
@@ -52,15 +70,7 @@ export function MembershipSection({ reasons }: Readonly<MembershipSectionProps>)
     >
       <div className={aboutTokens.container}>
         <AnimateOnScroll>
-          <SectionHeader
-            id="membership-heading"
-            title="Membership Plans"
-            subtitle="AFRS Membership is designed to create a vibrant community of students, researchers, professionals, academicians, and institutions committed to the advancement of forensic science.
-Membership provides opportunities for professional networking, knowledge sharing, collaborative research, leadership development, and continued engagement with emerging trends and best practices.
-AFRS provides the following types of membership: 
-"
-            align="left"
-          />
+          <SectionHeader id="membership-heading" title={title} subtitle={subtitle} align="left" />
         </AnimateOnScroll>
 
         <AnimateOnScroll stagger>
@@ -106,7 +116,7 @@ AFRS provides the following types of membership:
                       plan.dark ? 'text-white' : 'text-[var(--about-primary)]'
                     }`}
                   >
-                    Get Started <span aria-hidden>→</span>
+                    {ctaLabel} <span aria-hidden>→</span>
                   </span>
                 </Link>
               ))}
@@ -123,10 +133,10 @@ AFRS provides the following types of membership:
                 </span>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--about-primary)]">
-                    Why AFRS?
+                    {advantageEyebrow}
                   </p>
                   <h3 className="mt-1 text-xl font-extrabold text-[var(--about-text)]">
-                    The membership advantage
+                    {advantageTitle}
                   </h3>
                 </div>
               </div>

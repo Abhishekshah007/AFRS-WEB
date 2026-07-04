@@ -31,6 +31,7 @@ type Props = {
     registrationOpen?: boolean | null
   } | null
   events: EventCard[]
+  content?: Partial<UgcNetExperienceContent>
 }
 
 const floatTransition = {
@@ -54,7 +55,71 @@ const offlineFeatures = [
   'Simulated Exam Center Experience',
 ]
 
-export function UgcNetExperience({ achievers, featured, events }: Props) {
+type UgcNetExperienceContent = {
+  heroEyebrow: string
+  heroTitlePrefix: string
+  heroTitleHighlight: string
+  heroDescription: string
+  heroCtaLabel: string
+  heroMetricEyebrow: string
+  heroMetricValue: string
+  achieversEyebrow: string
+  achieversTitle: string
+  statsValue: string
+  statsDescription: string
+  ecosystemEyebrow: string
+  ecosystemTitle: string
+  onlineTitle: string
+  onlineDescription: string
+  onlineCtaLabel: string
+  offlineTitle: string
+  offlineDescription: string
+  offlineCtaLabel: string
+  eventTitle: string
+  eventDescription: string
+  eventDateLabel: string
+  eventTimeLabel: string
+  eventVenueLabel: string
+  eventCtaLabel: string
+  emptyEventText: string
+}
+
+const defaultContent: UgcNetExperienceContent = {
+  heroEyebrow: 'Providing Knowledge Since 2022',
+  heroTitlePrefix: 'Master Paper 1 & 2 of',
+  heroTitleHighlight: 'UGC NET Forensic Science',
+  heroDescription:
+    'Join our expert-led online and offline training programs, mock tests, and personalized guidance for forensic science aspirants.',
+  heroCtaLabel: 'Join Batch',
+  heroMetricEyebrow: 'Upcoming Exam',
+  heroMetricValue: '120 Days Remaining',
+  achieversEyebrow: 'The Hall of Fame',
+  achieversTitle: 'Our Qualified Achievers',
+  statsValue: '2+',
+  statsDescription: 'Batches every year with consistent results',
+  ecosystemEyebrow: 'Choose Your Path',
+  ecosystemTitle: 'Hybrid Learning Ecosystem',
+  onlineTitle: 'Online Live Classes',
+  onlineDescription:
+    'Access world-class forensic coaching from anywhere with interactive live sessions with recorded backups.',
+  onlineCtaLabel: 'Enroll Online',
+  offlineTitle: 'Offline Classroom Program',
+  offlineDescription:
+    'Immersive face-to-face instruction at our state-of-the-art Delhi & Chandigarh centers.',
+  offlineCtaLabel: 'Visit Center',
+  eventTitle: 'All-India Mock Test Series',
+  eventDescription:
+    'The ultimate diagnostic tool. Mirroring the exact difficulty and interface of the NTA UGC NET exam. Join 10k+ aspirants this Sunday.',
+  eventDateLabel: 'Next Test Date',
+  eventTimeLabel: 'Standard Time',
+  eventVenueLabel: 'Venue',
+  eventCtaLabel: 'Register for Test',
+  emptyEventText: 'New events will be published shortly.',
+}
+
+export function UgcNetExperience({ achievers, featured, events: _events, content }: Props) {
+  const page = { ...defaultContent, ...content }
+
   return (
     <>
       {/* ── HERO ── */}
@@ -78,21 +143,22 @@ export function UgcNetExperience({ achievers, featured, events }: Props) {
           >
             {/* Eyebrow — matches screenshot exactly */}
             <p className="inline-flex rounded-full border border-white/30 bg-white/15 text-[11px] uppercase tracking-widest font-bold px-4 py-1.5 text-white/90">
-              Providing Knowledge Since 2022
+              {page.heroEyebrow}
             </p>
 
             <h1 className="mt-5 text-[40px] sm:text-[52px] leading-[1.05] font-extrabold tracking-tight">
-              Master Paper 1 & 2 of <span className="text-cyan-300"> UGC NET Forensic Science</span>
+              {page.heroTitlePrefix}{' '}
+              <span className="text-cyan-300"> {page.heroTitleHighlight}</span>
             </h1>
             <p className="mt-5 text-white/85 max-w-xl leading-relaxed text-[15px]">
-              Join our expert-led online and offline training programs, mock tests, and personalized
+              {page.heroDescription}
             </p>
             <div className="mt-8 flex gap-3 flex-wrap">
               <Link
                 href="#events"
                 className="h-11 px-6 rounded-xl bg-white text-indigo-700 text-sm font-bold inline-flex items-center shadow-lg shadow-indigo-900/20 hover:bg-white/90 transition"
               >
-                Join Batch →
+                {page.heroCtaLabel} →
               </Link>
             </div>
           </motion.div>
@@ -128,9 +194,9 @@ export function UgcNetExperience({ achievers, featured, events }: Props) {
                 className="absolute bottom-4 left-4 right-4 rounded-lg bg-[#0B1F4E]/90 border border-white/10 p-4"
               >
                 <p className="text-[10px] uppercase tracking-[0.16em] text-blue-200">
-                  Upcoming Exam
+                  {page.heroMetricEyebrow}
                 </p>
-                <p className="mt-1 text-2xl font-extrabold text-white">120 Days Remaining</p>
+                <p className="mt-1 text-2xl font-extrabold text-white">{page.heroMetricValue}</p>
               </motion.div>
             </div>
           </motion.div>
@@ -140,10 +206,10 @@ export function UgcNetExperience({ achievers, featured, events }: Props) {
       {/* ── ACHIEVERS ── */}
       <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 py-14">
         <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-bold">
-          The Hall of Fame
+          {page.achieversEyebrow}
         </p>
         <h2 className="mt-2 text-[36px] font-extrabold text-slate-900 tracking-tight">
-          Our Qualified Achievers
+          {page.achieversTitle}
         </h2>
         <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {achievers.map((achiever, idx) => (
@@ -187,10 +253,8 @@ export function UgcNetExperience({ achievers, featured, events }: Props) {
             className="rounded-xl bg-[#192B57] text-white min-h-[230px] flex items-center justify-center p-6 shadow-md"
           >
             <div className="text-center">
-              <p className="text-5xl font-extrabold">2+</p>
-              <p className="text-sm text-white/75 mt-3 leading-snug">
-                Batches every year with consistent results
-              </p>
+              <p className="text-5xl font-extrabold">{page.statsValue}</p>
+              <p className="text-sm text-white/75 mt-3 leading-snug">{page.statsDescription}</p>
             </div>
           </motion.article>
         </div>
@@ -200,10 +264,10 @@ export function UgcNetExperience({ achievers, featured, events }: Props) {
       <section className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 pb-16">
         <div className="text-center mb-10">
           <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-bold">
-            Choose Your Path
+            {page.ecosystemEyebrow}
           </p>
           <h2 className="mt-2 text-[34px] font-extrabold text-slate-900 tracking-tight">
-            Hybrid Learning Ecosystem
+            {page.ecosystemTitle}
           </h2>
         </div>
 
@@ -217,11 +281,8 @@ export function UgcNetExperience({ achievers, featured, events }: Props) {
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 mb-6">
               <Monitor className="h-5 w-5 text-blue-300" />
             </div>
-            <h3 className="text-[20px] font-extrabold mb-3">Online Live Classes</h3>
-            <p className="text-white/65 text-sm leading-relaxed mb-6">
-              Access world-class forensic coaching from anywhere with interactive live sessions with
-              recorded backups.
-            </p>
+            <h3 className="text-[20px] font-extrabold mb-3">{page.onlineTitle}</h3>
+            <p className="text-white/65 text-sm leading-relaxed mb-6">{page.onlineDescription}</p>
             <ul className="space-y-2.5 mb-8">
               {onlineFeatures.map((f) => (
                 <li key={f} className="flex items-center gap-2.5 text-sm text-white/80">
@@ -234,7 +295,7 @@ export function UgcNetExperience({ achievers, featured, events }: Props) {
               href="/contact"
               className="inline-flex items-center text-sm font-bold text-blue-300 hover:text-white transition"
             >
-              Enroll Online →
+              {page.onlineCtaLabel} →
             </Link>
           </motion.div>
 
@@ -247,10 +308,8 @@ export function UgcNetExperience({ achievers, featured, events }: Props) {
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 mb-6">
               <Building2 className="h-5 w-5 text-blue-300" />
             </div>
-            <h3 className="text-[20px] font-extrabold mb-3">Offline Classroom Program</h3>
-            <p className="text-white/65 text-sm leading-relaxed mb-6">
-              Immersive face-to-face instruction at our state-of-the-art Delhi & Chandigarh centers.
-            </p>
+            <h3 className="text-[20px] font-extrabold mb-3">{page.offlineTitle}</h3>
+            <p className="text-white/65 text-sm leading-relaxed mb-6">{page.offlineDescription}</p>
             <ul className="space-y-2.5 mb-8">
               {offlineFeatures.map((f) => (
                 <li key={f} className="flex items-center gap-2.5 text-sm text-white/80">
@@ -263,7 +322,7 @@ export function UgcNetExperience({ achievers, featured, events }: Props) {
               href="/contact"
               className="inline-flex items-center text-sm font-bold text-blue-300 hover:text-white transition"
             >
-              Visit Center →
+              {page.offlineCtaLabel} →
             </Link>
           </motion.div>
         </div>
@@ -298,13 +357,12 @@ export function UgcNetExperience({ achievers, featured, events }: Props) {
                   <path strokeLinecap="round" d="M12 6v6l3.5 2" />
                 </svg>
                 <h2 className="text-[22px] sm:text-[26px] font-extrabold tracking-tight text-white">
-                  All-India Mock Test Series
+                  {page.eventTitle}
                 </h2>
               </div>
 
               <p className="text-[14px] text-white/60 leading-relaxed max-w-lg">
-                The ultimate diagnostic tool. Mirroring the exact difficulty and interface of the
-                NTA UGC NET exam. Join 10k+ aspirants this Sunday.
+                {page.eventDescription}
               </p>
 
               {/* Date + Time labels */}
@@ -315,7 +373,7 @@ export function UgcNetExperience({ achievers, featured, events }: Props) {
                       {featured.startDateLabel}
                     </p>
                     <p className="mt-1.5 text-[9px] font-extrabold uppercase tracking-[0.2em] text-white/40">
-                      Next Test Date
+                      {page.eventDateLabel}
                     </p>
                   </div>
                   {featured.startTime && (
@@ -324,7 +382,7 @@ export function UgcNetExperience({ achievers, featured, events }: Props) {
                         {featured.startTime}
                       </p>
                       <p className="mt-1.5 text-[9px] font-extrabold uppercase tracking-[0.2em] text-white/40">
-                        Standard Time
+                        {page.eventTimeLabel}
                       </p>
                     </div>
                   )}
@@ -334,13 +392,13 @@ export function UgcNetExperience({ achievers, featured, events }: Props) {
                         {featured.venue}
                       </p>
                       <p className="mt-1.5 text-[9px] font-extrabold uppercase tracking-[0.2em] text-white/40">
-                        Venue
+                        {page.eventVenueLabel}
                       </p>
                     </div>
                   )}
                 </div>
               ) : (
-                <p className="mt-5 text-sm text-white/50">New events will be published shortly.</p>
+                <p className="mt-5 text-sm text-white/50">{page.emptyEventText}</p>
               )}
             </div>
 
@@ -354,7 +412,7 @@ export function UgcNetExperience({ achievers, featured, events }: Props) {
                 }
                 className="shrink-0 inline-flex items-center gap-3 rounded-xl bg-white/95 hover:bg-white px-7 h-[52px] text-[13px] font-bold text-slate-800 shadow-lg transition-all hover:shadow-xl"
               >
-                Register for Test
+                {page.eventCtaLabel}
                 {/* Dots/grid icon matching screenshot */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

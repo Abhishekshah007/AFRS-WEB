@@ -1,5 +1,10 @@
 import { getDefaultHubEvents } from '@/components/programmes/content.server'
-import { mapEventToHubCard, isEventOngoing, isEventUpcoming } from '@/components/programmes/mapEvent'
+import {
+  isEventCompleted,
+  isEventOngoing,
+  isEventUpcoming,
+  mapEventToHubCard,
+} from '@/components/programmes/mapEvent'
 import type { HubEventCard } from '@/components/programmes/types'
 import { getPayloadClient } from '@/lib/payload'
 import type { Event as AfrsEvent } from '@/payload-types'
@@ -37,16 +42,17 @@ export async function fetchProgrammeHubEvents(query: ProgrammeEventsQuery = {}) 
   const all = docs as AfrsEvent[]
   const upcomingRaw = all.filter((e) => isEventUpcoming(e, now))
   const ongoingRaw = all.filter((e) => isEventOngoing(e, now))
+  const completedRaw = all.filter((e) => isEventCompleted(e, now)).reverse()
 
   const toCards = (list: AfrsEvent[]) => list.map((e, i) => mapEventToHubCard(e, i))
 
   let upcoming: HubEventCard[] = toCards(upcomingRaw)
   let ongoing: HubEventCard[] = toCards(ongoingRaw)
+  const completed: HubEventCard[] = toCards(completedRaw)
 
   if (upcoming.length === 0 && !query.nature && !query.type) {
     upcoming = await getDefaultHubEvents()
   }
 
-  return { upcoming, ongoing, all }
+  return { upcoming, ongoing, completed, all }
 }
-

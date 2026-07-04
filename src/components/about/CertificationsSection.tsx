@@ -7,6 +7,8 @@ import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 
 export type CertificationsSectionProps = {
   items: CertificationItem[]
+  title?: string
+  subtitle?: string
 }
 
 const certIconCycle = [BadgeCheck, Award, Shield, CheckCircle2]
@@ -17,7 +19,11 @@ const certAccents = [
   { bg: 'bg-emerald-50', text: 'text-emerald-600', bar: '#10b981' },
 ]
 
-export function CertificationsSection({ items }: Readonly<CertificationsSectionProps>) {
+export function CertificationsSection({
+  items,
+  title = 'Professional Certifications',
+  subtitle = 'AFRS maintains rigorous standards through accredited programmes, laboratory protocols, and professional memberships recognized across the forensic science community.',
+}: Readonly<CertificationsSectionProps>) {
   return (
     <section
       className={`${aboutTokens.sectionY} ${aboutTokens.sectionAlt} section-glow-top`}
@@ -25,12 +31,7 @@ export function CertificationsSection({ items }: Readonly<CertificationsSectionP
     >
       <div className={aboutTokens.container}>
         <AnimateOnScroll>
-          <SectionHeader
-            id="certs-heading"
-            title="Professional Certifications"
-            subtitle="AFRS maintains rigorous standards through accredited programmes, laboratory protocols, and professional memberships recognized across the forensic science community."
-            align="left"
-          />
+          <SectionHeader id="certs-heading" title={title} subtitle={subtitle} align="left" />
         </AnimateOnScroll>
 
         <AnimateOnScroll stagger>

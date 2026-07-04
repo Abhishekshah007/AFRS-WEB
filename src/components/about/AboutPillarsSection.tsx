@@ -49,12 +49,34 @@ type AboutPillarsSectionProps = {
   qualityEthicsItems: string[]
   researchItems: string[]
   partnershipItems: string[]
+  title?: string
+  subtitle?: string
+  qualityEthicsTitle?: string
+  qualityEthicsEyebrow?: string
+  researchTitle?: string
+  researchEyebrow?: string
+  partnershipsTitle?: string
+  partnershipsEyebrow?: string
+  proofLabels?: string[]
 }
 
 export function AboutPillarsSection({
   qualityEthicsItems,
   researchItems,
   partnershipItems,
+  title = 'Research, Quality & Partnerships',
+  subtitle = 'How AFRS strengthens forensic science through evidence-based research, ethical practice, and collaborative networks.',
+  qualityEthicsTitle = 'Quality & Ethics',
+  qualityEthicsEyebrow = 'Standards',
+  researchTitle = 'Research Focus',
+  researchEyebrow = 'Innovation',
+  partnershipsTitle = 'Partnerships',
+  partnershipsEyebrow = 'Collaboration',
+  proofLabels = [
+    'Evidence-based decisions',
+    'Continuous improvement',
+    'National & global outreach',
+  ],
 }: AboutPillarsSectionProps) {
   if (!qualityEthicsItems?.length && !researchItems?.length && !partnershipItems?.length) {
     return null
@@ -69,8 +91,8 @@ export function AboutPillarsSection({
         <AnimateOnScroll>
           <SectionHeader
             id="quality-research-heading"
-            title="Research, Quality & Partnerships"
-            subtitle="How AFRS strengthens forensic science through evidence-based research, ethical practice, and collaborative networks."
+            title={title}
+            subtitle={subtitle}
             align="left"
           />
         </AnimateOnScroll>
@@ -78,8 +100,8 @@ export function AboutPillarsSection({
         <AnimateOnScroll stagger className="grid gap-6 lg:grid-cols-3 lg:items-start ">
           {qualityEthicsItems.length > 0 && (
             <PillarPanel
-              title="Quality & Ethics"
-              eyebrow="Standards"
+              title={qualityEthicsTitle}
+              eyebrow={qualityEthicsEyebrow}
               items={qualityEthicsItems}
               icon={<ShieldCheck className="h-6 w-6" strokeWidth={2.2} />}
               gradient="bg-gradient-to-r from-indigo-500 to-violet-500"
@@ -87,8 +109,8 @@ export function AboutPillarsSection({
           )}
           {researchItems.length > 0 && (
             <PillarPanel
-              title="Research Focus"
-              eyebrow="Innovation"
+              title={researchTitle}
+              eyebrow={researchEyebrow}
               items={researchItems}
               icon={<FlaskConical className="h-6 w-6" strokeWidth={2.2} />}
               gradient="bg-gradient-to-r from-blue-500 to-cyan-500"
@@ -96,8 +118,8 @@ export function AboutPillarsSection({
           )}
           {partnershipItems.length > 0 && (
             <PillarPanel
-              title="Partnerships"
-              eyebrow="Collaboration"
+              title={partnershipsTitle}
+              eyebrow={partnershipsEyebrow}
               items={partnershipItems}
               icon={<Handshake className="h-6 w-6" strokeWidth={2.2} />}
               gradient="bg-gradient-to-r from-emerald-500 to-teal-500"
@@ -107,21 +129,21 @@ export function AboutPillarsSection({
 
         <AnimateOnScroll>
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
-            {[
-              { icon: Scale, label: 'Evidence-based decisions' },
-              { icon: Sparkles, label: 'Continuous improvement' },
-              { icon: Users, label: 'National & global outreach' },
-            ].map(({ icon: Icon, label }) => (
-              <div
-                key={label}
-                className="flex items-center gap-3 rounded-2xl border border-indigo-100 bg-white/80 px-4 py-3 shadow-sm"
-              >
-                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--about-primary-soft)] text-[var(--about-primary)]">
-                  <Icon className="h-4 w-4" strokeWidth={2.2} />
-                </span>
-                <span className="text-sm font-semibold text-slate-700">{label}</span>
-              </div>
-            ))}
+            {proofLabels.slice(0, 3).map((label, index) => {
+              const icons = [Scale, Sparkles, Users]
+              const Icon = icons[index % icons.length]
+              return (
+                <div
+                  key={label}
+                  className="flex items-center gap-3 rounded-2xl border border-indigo-100 bg-white/80 px-4 py-3 shadow-sm"
+                >
+                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--about-primary-soft)] text-[var(--about-primary)]">
+                    <Icon className="h-4 w-4" strokeWidth={2.2} />
+                  </span>
+                  <span className="text-sm font-semibold text-slate-700">{label}</span>
+                </div>
+              )
+            })}
           </div>
         </AnimateOnScroll>
       </div>

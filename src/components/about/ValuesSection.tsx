@@ -7,6 +7,12 @@ import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 export type ValuesSectionProps = {
   uniqueItems: ListItem[]
   activityItems: ListItem[]
+  title?: string
+  subtitle?: string
+  uniqueTitle?: string
+  uniqueSubtitle?: string
+  activitiesTitle?: string
+  activitiesSubtitle?: string
 }
 
 const uniqueIcons = [Sparkles, BookOpen, Users, Activity, CheckCircle2]
@@ -69,7 +75,16 @@ function ValuePanel({
   )
 }
 
-export function ValuesSection({ uniqueItems, activityItems }: Readonly<ValuesSectionProps>) {
+export function ValuesSection({
+  uniqueItems,
+  activityItems,
+  title = 'What Sets AFRS Apart',
+  subtitle = 'Our unique strengths and core activities that define how we serve students, professionals, and institutions.',
+  uniqueTitle = 'What Makes Us Unique',
+  uniqueSubtitle = 'Differentiators that shape our forensic education and research ecosystem.',
+  activitiesTitle = 'Our Core Activities',
+  activitiesSubtitle = 'Programmes and services that translate forensic science into real-world impact.',
+}: Readonly<ValuesSectionProps>) {
   return (
     <section
       className={`${aboutTokens.sectionY} bg-white section-glow-top`}
@@ -77,25 +92,20 @@ export function ValuesSection({ uniqueItems, activityItems }: Readonly<ValuesSec
     >
       <div className={aboutTokens.container}>
         <AnimateOnScroll>
-          <SectionHeader
-            id="values-heading"
-            title="What Sets AFRS Apart"
-            subtitle="Our unique strengths and core activities that define how we serve students, professionals, and institutions."
-            align="left"
-          />
+          <SectionHeader id="values-heading" title={title} subtitle={subtitle} align="left" />
         </AnimateOnScroll>
 
         <AnimateOnScroll stagger className="grid gap-8 lg:grid-cols-2">
           <ValuePanel
-            title="What Makes Us Unique"
-            subtitle="Differentiators that shape our forensic education and research ecosystem."
+            title={uniqueTitle}
+            subtitle={uniqueSubtitle}
             items={uniqueItems}
             icons={uniqueIcons}
             accent="indigo"
           />
           <ValuePanel
-            title="Our Core Activities"
-            subtitle="Programmes and services that translate forensic science into real-world impact."
+            title={activitiesTitle}
+            subtitle={activitiesSubtitle}
             items={activityItems}
             icons={activityIcons}
             accent="blue"

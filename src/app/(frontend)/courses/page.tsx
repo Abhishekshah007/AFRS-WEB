@@ -1,13 +1,22 @@
 import { ProgrammesPageView } from '@/components/programmes/ProgrammesPageView'
 import { defaultArchive } from '@/components/programmes/content'
-import { getDefaultGallery, getDefaultResourcePersons, getTrainingChecklist } from '@/components/programmes/content.server'
-import { educationProgrammesForHub, getArchiveFilterLinks, trainingOptionsForHub } from '@/components/programmes/catalog'
+import {
+  getDefaultGallery,
+  getDefaultResourcePersons,
+  getTrainingChecklist,
+} from '@/components/programmes/content.server'
+import {
+  educationProgrammesForHub,
+  getArchiveFilterLinks,
+  trainingOptionsForHub,
+} from '@/components/programmes/catalog'
 import type { ArchiveItem, GalleryThumb, ResourcePerson } from '@/components/programmes/types'
 import { getPayloadClient } from '@/lib/payload'
 import { fetchProgrammeHubEvents } from '@/lib/programmeEvents'
 import { resolveMediaUrl } from '@/lib/cms'
 import type { Media, Scientist, SiteSetting } from '@/payload-types'
 import type { Metadata } from 'next'
+import type { Where } from 'payload'
 
 export const metadata: Metadata = {
   title: 'Forensic Programmes & Events',
@@ -16,11 +25,49 @@ export const metadata: Metadata = {
 }
 
 function initialsFromName(name: string): string {
-  return name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]?.toUpperCase() ?? '').join('')
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? '')
+    .join('')
 }
 
 function formatArchiveCount(count: number): string {
   return `${String(count).padStart(2, '0')} Nos`
+}
+
+function archiveHref(href: string): string {
+  const [path, query = ''] = href.split('?')
+  const params = new URLSearchParams(query)
+  params.set('schedule', 'completed')
+  return `${path}?${params.toString()}`
+}
+
+function completedEventWhere(extra: Where): Where {
+  const now = new Date().toISOString()
+
+  return {
+    and: [
+      { published: { equals: true } },
+      extra,
+      {
+        or: [
+          { endDate: { less_than: now } },
+          {
+            and: [
+              { endDate: { exists: false } },
+              {
+                startDate: {
+                  less_than: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  }
 }
 
 export default async function CoursesPage() {
@@ -44,12 +91,42 @@ export default async function CoursesPage() {
   ] = await Promise.all([
     payload.findGlobal({ slug: 'siteSettings', depth: 0 }) as Promise<SiteSetting>,
     fetchProgrammeHubEvents({ limit: 24 }),
-    payload.find({ collection: 'scientists', where: { published: { equals: true } }, sort: 'order', limit: 4, depth: 1, overrideAccess: false }),
-    payload.find({ collection: 'galleryItems', where: { published: { equals: true } }, sort: 'order', limit: 6, depth: 1, overrideAccess: false }),
-    payload.count({ collection: 'events', where: { and: [{ published: { equals: true } }, { eventNature: { equals: 'national' } }] }, overrideAccess: false }),
-    payload.count({ collection: 'events', where: { and: [{ published: { equals: true } }, { eventNature: { equals: 'international' } }] }, overrideAccess: false }),
-    payload.count({ collection: 'events', where: { and: [{ published: { equals: true } }, { eventType: { equals: 'workshop' } }] }, overrideAccess: false }),
-    payload.count({ collection: 'events', where: { and: [{ published: { equals: true } }, { eventType: { equals: 'webinar' } }] }, overrideAccess: false }),
+    payload.find({
+      collection: 'scientists',
+      where: { published: { equals: true } },
+      sort: 'order',
+      limit: 4,
+      depth: 1,
+      overrideAccess: false,
+    }),
+    payload.find({
+      collection: 'galleryItems',
+      where: { published: { equals: true } },
+      sort: 'order',
+      limit: 6,
+      depth: 1,
+      overrideAccess: false,
+    }),
+    payload.count({
+      collection: 'events',
+      where: completedEventWhere({ eventNature: { equals: 'national' } }),
+      overrideAccess: false,
+    }),
+    payload.count({
+      collection: 'events',
+      where: completedEventWhere({ eventNature: { equals: 'international' } }),
+      overrideAccess: false,
+    }),
+    payload.count({
+      collection: 'events',
+      where: completedEventWhere({ eventType: { equals: 'workshop' } }),
+      overrideAccess: false,
+    }),
+    payload.count({
+      collection: 'events',
+      where: completedEventWhere({ eventType: { equals: 'webinar' } }),
+      overrideAccess: false,
+    }),
     getArchiveFilterLinks(),
     educationProgrammesForHub(),
     trainingOptionsForHub(),
@@ -66,6 +143,7 @@ export default async function CoursesPage() {
           title: s.designation,
           photoUrl: s.photo && typeof s.photo === 'object' && s.photo.url ? s.photo.url : undefined,
           initials: initialsFromName(s.name),
+          bio: s.bio,
         }))
       : fallbackResourcePersons
 
@@ -73,16 +151,35 @@ export default async function CoursesPage() {
     galleryResult.docs.length > 0
       ? galleryResult.docs.map((item, i) => ({
           id: String(item.id),
-          src: resolveMediaUrl(item.image as number | Media | null | undefined, fallbackGallery[i % fallbackGallery.length]?.src || fallbackGallery[0].src),
+          src: resolveMediaUrl(
+            item.image as number | Media | null | undefined,
+            fallbackGallery[i % fallbackGallery.length]?.src || fallbackGallery[0].src,
+          ),
           alt: item.title,
         }))
       : fallbackGallery
 
   const archive: ArchiveItem[] = [
-    { label: 'National Events', count: formatArchiveCount(nationalCount.totalDocs), href: links.nationalEvents },
-    { label: 'International Events', count: formatArchiveCount(intlCount.totalDocs), href: links.internationalEvents },
-    { label: 'Workshops', count: formatArchiveCount(workshopCount.totalDocs), href: links.workshops },
-    { label: 'Webinars', count: formatArchiveCount(webinarCount.totalDocs), href: links.webinars },
+    {
+      label: 'National Events',
+      count: formatArchiveCount(nationalCount.totalDocs),
+      href: archiveHref(links.nationalEvents),
+    },
+    {
+      label: 'International Events',
+      count: formatArchiveCount(intlCount.totalDocs),
+      href: archiveHref(links.internationalEvents),
+    },
+    {
+      label: 'Workshops',
+      count: formatArchiveCount(workshopCount.totalDocs),
+      href: archiveHref(links.workshops),
+    },
+    {
+      label: 'Webinars',
+      count: formatArchiveCount(webinarCount.totalDocs),
+      href: archiveHref(links.webinars),
+    },
   ]
 
   const hasArchiveData = archive.some((a) => !a.count.startsWith('00'))

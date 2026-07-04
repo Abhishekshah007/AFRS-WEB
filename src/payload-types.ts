@@ -77,6 +77,7 @@ export interface Config {
     contactMessages: ContactMessage;
     articles: Article;
     eventRegistrations: EventRegistration;
+    courseRegistrations: CourseRegistration;
     media: Media;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -95,6 +96,7 @@ export interface Config {
     contactMessages: ContactMessagesSelect<false> | ContactMessagesSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     eventRegistrations: EventRegistrationsSelect<false> | EventRegistrationsSelect<true>;
+    courseRegistrations: CourseRegistrationsSelect<false> | CourseRegistrationsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -477,7 +479,44 @@ export interface EventRegistration {
   totalAmount: number;
   paymentStatus: 'pending' | 'paid' | 'failed';
   registrationStatus: 'initiated' | 'confirmed' | 'cancelled';
+  paymentProvider?: ('stripe' | 'manual') | null;
   paymentReference?: string | null;
+  stripeCheckoutSessionId?: string | null;
+  stripePaymentIntentId?: string | null;
+  paymentConfirmedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "courseRegistrations".
+ */
+export interface CourseRegistration {
+  id: number;
+  programmeType: 'education' | 'training' | 'other';
+  categorySlug?: string | null;
+  categoryTitle?: string | null;
+  programmeId?: string | null;
+  programmeTitle: string;
+  programmeDuration?: string | null;
+  programmeMode?: string | null;
+  fullName: string;
+  email: string;
+  countryCode?: string | null;
+  mobileNumber: string;
+  organization?: string | null;
+  designation?: string | null;
+  qualification?: string | null;
+  experienceLevel?: ('student' | 'beginner' | 'professional' | 'faculty') | null;
+  preferredBatch?: string | null;
+  message?: string | null;
+  totalAmount?: number | null;
+  paymentProvider?: ('stripe' | 'manual') | null;
+  paymentStatus: 'pending' | 'paid' | 'failed' | 'notRequired';
+  registrationStatus: 'initiated' | 'confirmed' | 'contacted' | 'cancelled';
+  paymentReference?: string | null;
+  stripeCheckoutSessionId?: string | null;
+  stripePaymentIntentId?: string | null;
   paymentConfirmedAt?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -545,6 +584,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'eventRegistrations';
         value: number | EventRegistration;
+      } | null)
+    | ({
+        relationTo: 'courseRegistrations';
+        value: number | CourseRegistration;
       } | null)
     | ({
         relationTo: 'media';
@@ -804,7 +847,43 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
   totalAmount?: T;
   paymentStatus?: T;
   registrationStatus?: T;
+  paymentProvider?: T;
   paymentReference?: T;
+  stripeCheckoutSessionId?: T;
+  stripePaymentIntentId?: T;
+  paymentConfirmedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "courseRegistrations_select".
+ */
+export interface CourseRegistrationsSelect<T extends boolean = true> {
+  programmeType?: T;
+  categorySlug?: T;
+  categoryTitle?: T;
+  programmeId?: T;
+  programmeTitle?: T;
+  programmeDuration?: T;
+  programmeMode?: T;
+  fullName?: T;
+  email?: T;
+  countryCode?: T;
+  mobileNumber?: T;
+  organization?: T;
+  designation?: T;
+  qualification?: T;
+  experienceLevel?: T;
+  preferredBatch?: T;
+  message?: T;
+  totalAmount?: T;
+  paymentProvider?: T;
+  paymentStatus?: T;
+  registrationStatus?: T;
+  paymentReference?: T;
+  stripeCheckoutSessionId?: T;
+  stripePaymentIntentId?: T;
   paymentConfirmedAt?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1016,6 +1095,148 @@ export interface HomePage {
     aboutHeading?: string | null;
     aboutDescription1?: string | null;
     aboutDescription2?: string | null;
+    heroEyebrow?: string | null;
+    heroCtaLabel?: string | null;
+    heroCtaHref?: string | null;
+    heroImageAlt?: string | null;
+    rakeshMessage?: string | null;
+    vijayMessage?: string | null;
+    founderMessage?: string | null;
+    visionBadge?: string | null;
+    visionTitle?: string | null;
+    visionBody?: string | null;
+    visionHighlight?: string | null;
+    visionImageAlt?: string | null;
+    missionBadge?: string | null;
+    missionTitle?: string | null;
+    missionBody?: string | null;
+    missionHighlight?: string | null;
+    missionImageAlt?: string | null;
+    purposeBadge?: string | null;
+    purposeTitle?: string | null;
+    purposeBody?: string | null;
+    purposeHighlight?: string | null;
+    purposeImageAlt?: string | null;
+    leadershipTitle?: string | null;
+    leadershipSubtitle?: string | null;
+    committeeTitle?: string | null;
+    committeeSubtitle?: string | null;
+    certificationsTitle?: string | null;
+    certificationsSubtitle?: string | null;
+    certifications?:
+      | {
+          icon?: string | null;
+          title: string;
+          description: string;
+          id?: string | null;
+        }[]
+      | null;
+    valuesTitle?: string | null;
+    valuesSubtitle?: string | null;
+    uniqueTitle?: string | null;
+    uniqueSubtitle?: string | null;
+    uniqueItems?:
+      | {
+          text: string;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    activitiesTitle?: string | null;
+    activitiesSubtitle?: string | null;
+    activityItems?:
+      | {
+          text: string;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    expertiseTitle?: string | null;
+    expertiseSubtitle?: string | null;
+    expertiseItems?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    whyChooseTitle?: string | null;
+    whyChooseSubtitle?: string | null;
+    whyChooseItems?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    pillarsTitle?: string | null;
+    pillarsSubtitle?: string | null;
+    qualityEthicsTitle?: string | null;
+    qualityEthicsEyebrow?: string | null;
+    qualityEthicsItems?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    researchTitle?: string | null;
+    researchEyebrow?: string | null;
+    researchItems?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    partnershipsTitle?: string | null;
+    partnershipsEyebrow?: string | null;
+    partnershipItems?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    pillarProofLabels?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    membershipTitle?: string | null;
+    membershipSubtitle?: string | null;
+    membershipPlans?:
+      | {
+          title: string;
+          description: string;
+          href?: string | null;
+          badge?: string | null;
+          dark?: boolean | null;
+          id?: string | null;
+        }[]
+      | null;
+    membershipCtaLabel?: string | null;
+    membershipAdvantageEyebrow?: string | null;
+    membershipAdvantageTitle?: string | null;
+    membershipReasons?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    roadmapTitle?: string | null;
+    roadmapSubtitle?: string | null;
+    roadmapEyebrow?: string | null;
+    roadmapCardTitle?: string | null;
+    roadmapCardBody?: string | null;
+    futureRoadmapItems?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    awardsTitle?: string | null;
+    awardsSubtitle?: string | null;
+    awardsCallout?: string | null;
+    awardsImageAlt1?: string | null;
+    awardsImageAlt2?: string | null;
+    awardsImageAlt3?: string | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1266,6 +1487,148 @@ export interface HomePageSelect<T extends boolean = true> {
         aboutHeading?: T;
         aboutDescription1?: T;
         aboutDescription2?: T;
+        heroEyebrow?: T;
+        heroCtaLabel?: T;
+        heroCtaHref?: T;
+        heroImageAlt?: T;
+        rakeshMessage?: T;
+        vijayMessage?: T;
+        founderMessage?: T;
+        visionBadge?: T;
+        visionTitle?: T;
+        visionBody?: T;
+        visionHighlight?: T;
+        visionImageAlt?: T;
+        missionBadge?: T;
+        missionTitle?: T;
+        missionBody?: T;
+        missionHighlight?: T;
+        missionImageAlt?: T;
+        purposeBadge?: T;
+        purposeTitle?: T;
+        purposeBody?: T;
+        purposeHighlight?: T;
+        purposeImageAlt?: T;
+        leadershipTitle?: T;
+        leadershipSubtitle?: T;
+        committeeTitle?: T;
+        committeeSubtitle?: T;
+        certificationsTitle?: T;
+        certificationsSubtitle?: T;
+        certifications?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+        valuesTitle?: T;
+        valuesSubtitle?: T;
+        uniqueTitle?: T;
+        uniqueSubtitle?: T;
+        uniqueItems?:
+          | T
+          | {
+              text?: T;
+              description?: T;
+              id?: T;
+            };
+        activitiesTitle?: T;
+        activitiesSubtitle?: T;
+        activityItems?:
+          | T
+          | {
+              text?: T;
+              description?: T;
+              id?: T;
+            };
+        expertiseTitle?: T;
+        expertiseSubtitle?: T;
+        expertiseItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        whyChooseTitle?: T;
+        whyChooseSubtitle?: T;
+        whyChooseItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        pillarsTitle?: T;
+        pillarsSubtitle?: T;
+        qualityEthicsTitle?: T;
+        qualityEthicsEyebrow?: T;
+        qualityEthicsItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        researchTitle?: T;
+        researchEyebrow?: T;
+        researchItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        partnershipsTitle?: T;
+        partnershipsEyebrow?: T;
+        partnershipItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        pillarProofLabels?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        membershipTitle?: T;
+        membershipSubtitle?: T;
+        membershipPlans?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              href?: T;
+              badge?: T;
+              dark?: T;
+              id?: T;
+            };
+        membershipCtaLabel?: T;
+        membershipAdvantageEyebrow?: T;
+        membershipAdvantageTitle?: T;
+        membershipReasons?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        roadmapTitle?: T;
+        roadmapSubtitle?: T;
+        roadmapEyebrow?: T;
+        roadmapCardTitle?: T;
+        roadmapCardBody?: T;
+        futureRoadmapItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        awardsTitle?: T;
+        awardsSubtitle?: T;
+        awardsCallout?: T;
+        awardsImageAlt1?: T;
+        awardsImageAlt2?: T;
+        awardsImageAlt3?: T;
       };
   updatedAt?: T;
   createdAt?: T;

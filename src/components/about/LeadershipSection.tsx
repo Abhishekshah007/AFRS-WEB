@@ -13,9 +13,20 @@ import { JSX } from 'react/jsx-dev-runtime'
 type LeadershipSectionProps = {
   leaders: LeaderProfile[]
   committee: LeaderProfile[]
+  leadershipTitle?: string
+  leadershipSubtitle?: string
+  committeeTitle?: string
+  committeeSubtitle?: string
 }
 
-export function LeadershipSection({ leaders, committee }: LeadershipSectionProps) {
+export function LeadershipSection({
+  leaders,
+  committee,
+  leadershipTitle = 'Leadership Team',
+  leadershipSubtitle = 'Meet the visionaries shaping forensic education, research, and professional excellence at AFRS.',
+  committeeTitle = 'Executive Committee & Members',
+  committeeSubtitle = 'The dedicated team driving operations, governance, and community initiatives.',
+}: LeadershipSectionProps) {
   if (!leaders?.length && !committee?.length) return null
 
   return (
@@ -24,11 +35,7 @@ export function LeadershipSection({ leaders, committee }: LeadershipSectionProps
         {leaders?.length > 0 && (
           <>
             <AnimateOnScroll>
-              <SectionHeader
-                title="Leadership Team"
-                subtitle="Meet the visionaries shaping forensic education, research, and professional excellence at AFRS."
-                align="left"
-              />
+              <SectionHeader title={leadershipTitle} subtitle={leadershipSubtitle} align="left" />
             </AnimateOnScroll>
             <AnimateOnScroll stagger className="mb-16 grid gap-6 lg:mb-20 lg:grid-cols-2">
               {leaders.slice(0, 2).map((leader) => (
@@ -41,11 +48,7 @@ export function LeadershipSection({ leaders, committee }: LeadershipSectionProps
         {committee?.length > 0 && (
           <>
             <AnimateOnScroll>
-              <SectionHeader
-                title="Executive Committee & Members"
-                subtitle="The dedicated team driving operations, governance, and community initiatives."
-                align="left"
-              />
+              <SectionHeader title={committeeTitle} subtitle={committeeSubtitle} align="left" />
             </AnimateOnScroll>
 
             <AnimateOnScroll

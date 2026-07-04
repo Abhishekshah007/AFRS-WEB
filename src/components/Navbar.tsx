@@ -8,6 +8,7 @@ import type { HeaderSetting } from '@/payload-types'
 import Image from 'next/image'
 import logo from '../../public/assets/logo.png'
 import { springSnappy } from '@/components/motion/variants'
+import SocialMediaIcons from './social/SocialMediaIcons'
 
 const fallbackNavLinks = [
   { label: 'Home', url: '/' },
@@ -95,22 +96,7 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
               <span className="hover:text-white transition-colors">{topLeftText}</span>
               <span className="hover:text-white transition-colors">{topLeftText2}</span>
               <div className="flex gap-2">
-                {topLeftText3.map((item) => {
-                  if (typeof item.icon === 'number') {
-                    // Not populated yet
-                    return null
-                  }
-
-                  if (!item.icon.url) {
-                    return null
-                  }
-
-                  return (
-                    <Link key={item.url} href={item.url} target="_blank" rel="noopener noreferrer">
-                      <Image src={item.icon.url} alt={item.label ?? ''} width={16} height={16} />
-                    </Link>
-                  )
-                })}
+                <SocialMediaIcons icons={settings?.topBarLeftText3} />
               </div>
             </div>
             <div className="flex flex-wrap gap-4">

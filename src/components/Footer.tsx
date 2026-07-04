@@ -2,13 +2,16 @@ import Link from 'next/link'
 import type { FooterSetting, SiteSetting } from '@/payload-types'
 import Image from 'next/image'
 import logo from '../../public/assets/logo.png'
-
+import SocialMediaIcons from './social/SocialMediaIcons'
+import type { HeaderSetting } from '@/payload-types'
 export default function Footer({
+  socialMediaLinks,
   settings,
   siteSettings,
 }: {
   settings?: FooterSetting | null
   siteSettings?: SiteSetting | null
+  socialMediaLinks?: HeaderSetting | null
 }) {
   const aboutTitle = settings?.aboutTitle || 'AFRS Institute'
   const aboutDescription =
@@ -45,22 +48,9 @@ export default function Footer({
     },
   ]
 
-  const socials = siteSettings?.socialLinks ?? {}
   const phone = siteSettings?.phone || '+91-9926692487'
   const email = siteSettings?.email || 'afrsciences@gmail.com'
   const address = siteSettings?.address || 'AFRS Campus, India'
-  const mapEmbedUrl = (siteSettings as (SiteSetting & { mapEmbedUrl?: string }) | null)?.mapEmbedUrl
-  const socialItems = [
-    { key: 'facebook', url: socials.facebook, label: 'Facebook' },
-    { key: 'instagram', url: socials.instagram, label: 'Instagram' },
-    { key: 'linkedin', url: socials.linkedin, label: 'LinkedIn' },
-    { key: 'twitter', url: socials.twitter, label: 'X' },
-    { key: 'youtube', url: socials.youtube, label: 'YouTube' },
-  ].filter(
-    (item): item is { key: string; url: string; label: string } =>
-      typeof item.url === 'string' && item.url.length > 0,
-  )
-
   return (
     <footer className="bg-[#0a0f1a] text-slate-400">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 pt-16 pb-8">
@@ -75,22 +65,11 @@ export default function Footer({
               <h4 className="text-white text-base font-bold">{aboutTitle}</h4>
             </div>
             <p className="text-sm leading-relaxed text-slate-400 max-w-xs">{aboutDescription}</p>
-            {socialItems.length > 0 && (
-              <div className="mt-5 flex flex-wrap gap-3">
-                {socialItems.map((item) => (
-                  <Link
-                    key={item.key}
-                    href={item.url}
-                    aria-label={item.label}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="h-9 w-9 rounded-full bg-slate-800 hover:bg-indigo-600 text-slate-200 transition flex items-center justify-center text-xs font-bold"
-                  >
-                    {item.label[0]}
-                  </Link>
-                ))}
-              </div>
-            )}
+            {/* {socialItems.length > 0 && ( */}
+            <div className="mt-5 flex flex-wrap gap-3">
+              <SocialMediaIcons icons={socialMediaLinks?.topBarLeftText3} />
+            </div>
+            {/* )} */}
           </div>
 
           {/* Link columns */}

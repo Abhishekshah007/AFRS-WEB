@@ -44,3 +44,12 @@ export function isEventOngoing(evt: AfrsEvent, now = new Date()): boolean {
   weekAgo.setDate(weekAgo.getDate() - 7)
   return start >= weekAgo
 }
+
+export function isEventCompleted(evt: AfrsEvent, now = new Date()): boolean {
+  const start = new Date(evt.startDate)
+  if (evt.endDate) return new Date(evt.endDate) < now
+
+  const weekAgo = new Date(now)
+  weekAgo.setDate(weekAgo.getDate() - 7)
+  return start < weekAgo
+}

@@ -5,9 +5,21 @@ import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 
 type AboutRoadmapSectionProps = {
   items: string[]
+  title?: string
+  subtitle?: string
+  eyebrow?: string
+  cardTitle?: string
+  cardBody?: string
 }
 
-export function AboutRoadmapSection({ items }: AboutRoadmapSectionProps) {
+export function AboutRoadmapSection({
+  items,
+  title = 'Future Roadmap',
+  subtitle = 'What AFRS is building next for forensic education, research, and professional excellence.',
+  eyebrow = '2026 & Beyond',
+  cardTitle = 'Building the next generation of forensic science',
+  cardBody = 'Our roadmap focuses on research depth, international collaboration, and technology-led forensic capacity building across India.',
+}: AboutRoadmapSectionProps) {
   if (!items?.length) return null
 
   return (
@@ -19,8 +31,8 @@ export function AboutRoadmapSection({ items }: AboutRoadmapSectionProps) {
         <AnimateOnScroll>
           <SectionHeader
             id="future-roadmap-heading"
-            title="Future Roadmap"
-            subtitle="What AFRS is building next for forensic education, research, and professional excellence."
+            title={title}
+            subtitle={subtitle}
             align="left"
           />
         </AnimateOnScroll>
@@ -36,19 +48,16 @@ export function AboutRoadmapSection({ items }: AboutRoadmapSectionProps) {
 
               {/* Eyebrow */}
               <p className="mt-6 text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#4F75F4]">
-                2026 &amp; Beyond
+                {eyebrow}
               </p>
 
               {/* Title */}
               <h3 className="mt-2 text-[22px] font-extrabold text-slate-900 leading-[1.25] tracking-tight">
-                Building the next generation of forensic science
+                {cardTitle}
               </h3>
 
               {/* Body */}
-              <p className="mt-4 text-[13px] text-slate-500 leading-relaxed">
-                Our roadmap focuses on research depth, international collaboration, and
-                technology-led forensic capacity building across India.
-              </p>
+              <p className="mt-4 text-[13px] text-slate-500 leading-relaxed">{cardBody}</p>
             </div>
           </AnimateOnScroll>
 

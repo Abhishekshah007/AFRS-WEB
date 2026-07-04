@@ -1,12 +1,3 @@
-import {
-  FileText,
-  FlaskConical,
-  FolderOpen,
-  Rss,
-  BookCopy,
-  PlayCircle,
-  Microscope,
-} from 'lucide-react'
 import type { ExamPrepCardData, ResourceCardData } from '@/components/student-hub/types'
 
 export const defaultAcademicResources: ResourceCardData[] = [
@@ -84,10 +75,29 @@ export const defaultAcademicResources: ResourceCardData[] = [
 ]
 
 export const defaultExamPrep: ExamPrepCardData[] = [
-  { id: 'ugc-net', badge: 'Comprehensive Preparation Guidance', title: 'UGC NET', subtitle: 'Forensic Science Paper II & III', description: 'Topic-wise notes, previous-year question analysis, mock test series, and mentor support for the National Eligibility Test in forensic science.', ctaLabel: 'View Preparation Resources', href: '/student-hub/ugc-net', watermark: '🎓' },
-  { id: 'set-exam', badge: 'State Eligibility Track', title: 'SET / SLET', subtitle: 'State-Level Forensic Eligibility', description: 'Curated syllabi, practice papers, and revision schedules for state-level eligibility examinations relevant to forensic educators.', ctaLabel: 'Explore Guide', href: '/student-hub/ugc-net', watermark: '⚗️' },
+  {
+    id: 'ugc-net',
+    badge: 'Comprehensive Preparation Guidance',
+    title: 'UGC NET',
+    subtitle: 'Forensic Science Paper II & III',
+    description:
+      'Topic-wise notes, previous-year question analysis, mock test series, and mentor support for the National Eligibility Test in forensic science.',
+    ctaLabel: 'View Preparation Resources',
+    href: '/student-hub/ugc-net',
+    watermark: '🎓',
+  },
+  {
+    id: 'set-exam',
+    badge: 'Forensic Knowledge Track',
+    title: 'FACT',
+    subtitle: 'Forensic Aptitude and Caliber Test',
+    description:
+      'A structured aptitude and forensic reasoning preparation track for students building scientific observation, analytical thinking, and domain readiness.',
+    ctaLabel: 'Explore FACT Resources',
+    href: '/student-hub/fact',
+    watermark: '⚗️',
+  },
 ]
-
 
 export const defaultUgcNetAchievers = [
   { name: 'Dr. Ananya S.' },
@@ -98,4 +108,3 @@ export const defaultUgcNetAchievers = [
   { name: 'Neha Kapur' },
   { name: 'Vikram Rao' },
 ]
-

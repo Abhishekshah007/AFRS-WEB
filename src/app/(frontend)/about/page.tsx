@@ -1,7 +1,13 @@
 import { AboutPageView } from '@/components/about/AboutPageView'
 import { ABOUT_IMAGES } from '@/components/about/tokens'
-import type { AchievementStat, CertificationItem, LeaderProfile } from '@/components/about/types'
-import type { AboutSectionText } from '@/components/about/types'
+import type {
+  AboutSectionText,
+  AchievementStat,
+  CertificationItem,
+  LeaderProfile,
+  ListItem,
+  MembershipPlan,
+} from '@/components/about/types'
 import { resolveMediaUrl } from '@/lib/cms'
 import { getPayloadClient } from '@/lib/payload'
 import type { HomePage, ImpactStat, Media, Scientist } from '@/payload-types'
@@ -91,6 +97,7 @@ const defaultAchievements: AchievementStat[] = [
 ]
 
 const defaultSectionText: AboutSectionText = {
+  heroEyebrow: 'About AFRS',
   aboutHeading: 'About AFRS',
   aboutDescription1:
     'Applied Forensic Research Sciences (AFRS) is a multidisciplinary organization dedicated to advancing forensic science through education, research, training, and professional development. Recognized by MSME, NITI Aayog, and ISO 9001:2015 certified, AFRS fosters innovation, collaboration, and knowledge exchange in the forensic community.',
@@ -104,6 +111,41 @@ const defaultSectionText: AboutSectionText = {
     'At Applied Forensic Research Sciences (AFRS), our mission is to empower individuals with a comprehensive and practical understanding of forensic science while increasing meaningful awareness of the diverse and continuously evolving nature of crime globally. We are dedicated to bridging the gap between education, research and real-world practice by fostering a collaborative platform where students, professionals, academicians, industries and other stakeholders can engage, share knowledge, and contribute to the advancement of forensic science and justice.',
   purposeBody:
     'As India’s first registered student-centered organization dedicated exclusively to Forensic Science, Applied Forensic Research Sciences (AFRS) was established with the vision of building a vibrant, inclusive, and dynamic learning ecosystem for students and professionals in the field. Our purpose is to create meaningful pathways for academic growth, practical exposure and professional development.',
+  heroCtaLabel: 'Download Society Profile',
+  heroCtaHref: '#vision',
+  heroImageAlt: 'AFRS forensic research laboratory',
+  visionBadge: 'Vision',
+  visionTitle: 'Our Vision',
+  visionHighlight: 'Science-led justice through rigorous forensic methodology.',
+  visionImageAlt: 'Digital forensic analysis concept',
+  missionBadge: 'Mission',
+  missionTitle: 'Our Mission',
+  missionHighlight: 'Practical training aligned with real investigation workflows.',
+  missionImageAlt: 'Forensic investigators at a crime scene',
+  purposeBadge: 'Purpose',
+  purposeTitle: 'Our Purpose',
+  purposeHighlight: 'Ethical practice and transparency in every examination.',
+  purposeImageAlt: 'Forensic laboratory precision',
+  leadershipTitle: 'Leadership Team',
+  leadershipSubtitle:
+    'Meet the visionaries shaping forensic education, research, and professional excellence at AFRS.',
+  committeeTitle: 'Executive Committee & Members',
+  committeeSubtitle:
+    'The dedicated team driving operations, governance, and community initiatives.',
+  certificationsTitle: 'Professional Certifications',
+  certificationsSubtitle:
+    'AFRS maintains rigorous standards through accredited programmes, laboratory protocols, and professional memberships recognized across the forensic science community.',
+  valuesTitle: 'What Sets AFRS Apart',
+  valuesSubtitle:
+    'Our unique strengths and core activities that define how we serve students, professionals, and institutions.',
+  uniqueTitle: 'What Makes Us Unique',
+  uniqueSubtitle: 'Differentiators that shape our forensic education and research ecosystem.',
+  activitiesTitle: 'Our Core Activities',
+  activitiesSubtitle:
+    'Programmes and services that translate forensic science into real-world impact.',
+  expertiseTitle: 'Our Expertise',
+  expertiseSubtitle:
+    'Multidisciplinary capabilities across forensic domains — from crime scene to courtroom.',
   expertiseItems: [
     'Digital & Cyber Forensics',
     'Audio and Video Forensics',
@@ -127,6 +169,14 @@ const defaultSectionText: AboutSectionText = {
     'Commitment to ethical and evidence-based practices',
     'Regular educational activities aimed at skill development and professional growth',
   ],
+  whyChooseTitle: 'Why Choose AFRS',
+  whyChooseSubtitle:
+    'The practical, ethical, and research-driven advantage behind our programmes and consultancy.',
+  pillarsTitle: 'Research, Quality & Partnerships',
+  pillarsSubtitle:
+    'How AFRS strengthens forensic science through evidence-based research, ethical practice, and collaborative networks.',
+  qualityEthicsTitle: 'Quality & Ethics',
+  qualityEthicsEyebrow: 'Standards',
   qualityEthicsItems: [
     'Upholding academic integrity and ethical conduct',
     'Promoting evidence-based and scientifically sound practices',
@@ -151,6 +201,10 @@ const defaultSectionText: AboutSectionText = {
     'Encouragement of ethical and responsible research practices. ',
     'Exchange of ideas among researchers, academicians, and forensic professionals',
   ],
+  researchTitle: 'Research Focus',
+  researchEyebrow: 'Innovation',
+  partnershipsTitle: 'Partnerships',
+  partnershipsEyebrow: 'Collaboration',
   partnershipItems: [
     'Universities and academic institutions',
     'Research organizations',
@@ -159,6 +213,17 @@ const defaultSectionText: AboutSectionText = {
     'Industry stakeholders',
     'International collaborators',
   ],
+  pillarProofLabels: [
+    'Evidence-based decisions',
+    'Continuous improvement',
+    'National & global outreach',
+  ],
+  membershipTitle: 'Membership Plans',
+  membershipSubtitle:
+    'AFRS Membership is designed to create a vibrant community of students, researchers, professionals, academicians, and institutions committed to the advancement of forensic science.\nMembership provides opportunities for professional networking, knowledge sharing, collaborative research, leadership development, and continued engagement with emerging trends and best practices.\nAFRS provides the following types of membership:',
+  membershipCtaLabel: 'Get Started',
+  membershipAdvantageEyebrow: 'Why AFRS?',
+  membershipAdvantageTitle: 'The membership advantage',
   futureRoadmapItems: [
     'Establishment of advanced research initiatives',
     'Expansion of national and international collaborations',
@@ -167,12 +232,54 @@ const defaultSectionText: AboutSectionText = {
     'Strengthening forensic capacity-building initiatives',
     'Advancement of technology-driven forensic solutions',
   ],
+  roadmapTitle: 'Future Roadmap',
+  roadmapSubtitle:
+    'What AFRS is building next for forensic education, research, and professional excellence.',
+  roadmapEyebrow: '2026 & Beyond',
+  roadmapCardTitle: 'Building the next generation of forensic science',
+  roadmapCardBody:
+    'Our roadmap focuses on research depth, international collaboration, and technology-led forensic capacity building across India.',
+  awardsTitle: 'Awards & Recognition',
+  awardsSubtitle: 'Celebrating excellence in forensic education, research, and community impact.',
+  awardsCallout: 'Built for award-winning forensic research and training.',
+  awardsImageAlt1: 'AFRS laboratory research',
+  awardsImageAlt2: 'AFRS training session',
+  awardsImageAlt3: 'AFRS team recognition',
   membershipReasons: [
     'Conduct national/international workshops monthly to grow knowledge and exchange views.',
     'Run research/review paper competitions, workshops, and publication support for UGC & ISBN resources.',
     'Enable members to organize events, seminars, and courses under their own name with certificates and expert signatures.',
     'Offer career guidance, counselling, and college recommendations tailored to individual interests.',
     'Provide expert mentorship from professors, laboratory scientists, and advisory committee members.',
+  ],
+  certifications: defaultCertifications,
+  uniqueItems: defaultUnique,
+  activityItems: defaultActivities,
+  membershipPlans: [
+    {
+      title: 'Professional Membership',
+      description:
+        'Annual membership for professionals seeking to enhance their forensic expertise and stay updated with the latest advancements in the field.',
+      href: '/contact',
+      badge: 'Best Value',
+      dark: true,
+    },
+    {
+      title: 'Senior Membership',
+      description:
+        'Annual membership for professionals and students seeking a structured forensic development pathway.',
+      href: '/contact',
+      badge: 'Popular',
+      dark: false,
+    },
+    {
+      title: 'Academic Department Membership',
+      description:
+        'Annual membership for academic departments and institutions committed to advancing forensic science education and research.',
+      href: '/contact',
+      badge: 'Popular',
+      dark: false,
+    },
   ],
 }
 
@@ -263,6 +370,124 @@ const fallbackCommittee: LeaderProfile[] = [
   },
 ]
 
+type CmsTextRow = { text?: string | null }
+type CmsListRow = CmsTextRow & { description?: string | null }
+type CmsCertificationRow = {
+  icon?: string | null
+  title?: string | null
+  description?: string | null
+}
+type CmsMembershipPlanRow = {
+  title?: string | null
+  description?: string | null
+  href?: string | null
+  badge?: string | null
+  dark?: boolean | null
+}
+
+type CmsAboutSectionText = Omit<
+  AboutSectionText,
+  | 'expertiseItems'
+  | 'whyChooseItems'
+  | 'qualityEthicsItems'
+  | 'researchItems'
+  | 'partnershipItems'
+  | 'futureRoadmapItems'
+  | 'membershipReasons'
+  | 'pillarProofLabels'
+  | 'certifications'
+  | 'uniqueItems'
+  | 'activityItems'
+  | 'membershipPlans'
+> & {
+  expertiseItems?: (string | CmsTextRow)[] | null
+  whyChooseItems?: (string | CmsTextRow)[] | null
+  qualityEthicsItems?: (string | CmsTextRow)[] | null
+  researchItems?: (string | CmsTextRow)[] | null
+  partnershipItems?: (string | CmsTextRow)[] | null
+  futureRoadmapItems?: (string | CmsTextRow)[] | null
+  membershipReasons?: (string | CmsTextRow)[] | null
+  pillarProofLabels?: (string | CmsTextRow)[] | null
+  certifications?: CmsCertificationRow[] | null
+  uniqueItems?: CmsListRow[] | null
+  activityItems?: CmsListRow[] | null
+  membershipPlans?: CmsMembershipPlanRow[] | null
+}
+
+function toTextArray(items: unknown): string[] | undefined {
+  if (!Array.isArray(items)) return undefined
+  const normalized = items
+    .map((item) =>
+      typeof item === 'string' ? item : (item as CmsTextRow | null | undefined)?.text,
+    )
+    .filter((item): item is string => Boolean(item?.trim()))
+  return normalized.length > 0 ? normalized : undefined
+}
+
+function toListItems(items: CmsListRow[] | null | undefined): ListItem[] | undefined {
+  if (!Array.isArray(items)) return undefined
+  const normalized = items
+    .map((item) => ({
+      text: item.text?.trim() ?? '',
+      description: item.description?.trim() || undefined,
+    }))
+    .filter((item) => item.text)
+  return normalized.length > 0 ? normalized : undefined
+}
+
+function toCertifications(
+  items: CmsCertificationRow[] | null | undefined,
+): CertificationItem[] | undefined {
+  if (!Array.isArray(items)) return undefined
+  const normalized = items
+    .map((item) => ({
+      icon: item.icon?.trim() || '✓',
+      title: item.title?.trim() ?? '',
+      description: item.description?.trim() ?? '',
+    }))
+    .filter((item) => item.title && item.description)
+  return normalized.length > 0 ? normalized : undefined
+}
+
+function toMembershipPlans(
+  items: CmsMembershipPlanRow[] | null | undefined,
+): MembershipPlan[] | undefined {
+  if (!Array.isArray(items)) return undefined
+  const normalized = items
+    .map((item) => ({
+      title: item.title?.trim() ?? '',
+      description: item.description?.trim() ?? '',
+      href: item.href?.trim() || '/contact',
+      badge: item.badge?.trim() || 'Popular',
+      dark: Boolean(item.dark),
+    }))
+    .filter((item) => item.title && item.description)
+  return normalized.length > 0 ? normalized : undefined
+}
+
+function buildAboutSectionText(cmsSectionText?: HomePage['sectionText']): AboutSectionText {
+  const cms = (cmsSectionText ?? {}) as CmsAboutSectionText
+
+  return {
+    ...defaultSectionText,
+    ...cms,
+    expertiseItems: toTextArray(cms.expertiseItems) ?? defaultSectionText.expertiseItems,
+    whyChooseItems: toTextArray(cms.whyChooseItems) ?? defaultSectionText.whyChooseItems,
+    qualityEthicsItems:
+      toTextArray(cms.qualityEthicsItems) ?? defaultSectionText.qualityEthicsItems,
+    researchItems: toTextArray(cms.researchItems) ?? defaultSectionText.researchItems,
+    partnershipItems: toTextArray(cms.partnershipItems) ?? defaultSectionText.partnershipItems,
+    futureRoadmapItems:
+      toTextArray(cms.futureRoadmapItems) ?? defaultSectionText.futureRoadmapItems,
+    membershipReasons: toTextArray(cms.membershipReasons) ?? defaultSectionText.membershipReasons,
+    pillarProofLabels: toTextArray(cms.pillarProofLabels) ?? defaultSectionText.pillarProofLabels,
+    certifications: toCertifications(cms.certifications) ?? defaultSectionText.certifications,
+    uniqueItems: toListItems(cms.uniqueItems) ?? defaultSectionText.uniqueItems,
+    activityItems: toListItems(cms.activityItems) ?? defaultSectionText.activityItems,
+    membershipPlans: toMembershipPlans(cms.membershipPlans) ?? defaultSectionText.membershipPlans,
+  }
+}
+
 export default async function AboutPage() {
   const payload = await getPayloadClient()
 
@@ -287,10 +512,7 @@ export default async function AboutPage() {
   ])
 
   const home = homePage as HomePage
-  const sectionText = {
-    ...defaultSectionText,
-    ...(home?.sectionText ?? {}),
-  }
+  const sectionText = buildAboutSectionText(home?.sectionText)
   const heroImage = resolveMediaUrl(
     (home?.hero as { heroImage?: number | Media | null })?.heroImage,
     ABOUT_IMAGES.hero,
@@ -323,9 +545,9 @@ export default async function AboutPage() {
       featuredLeaders={featuredLeaders.length >= 2 ? featuredLeaders : fallbackLeaders}
       committee={committee}
       achievements={achievements}
-      certifications={defaultCertifications}
-      uniqueItems={defaultUnique}
-      activityItems={defaultActivities}
+      certifications={sectionText.certifications ?? defaultCertifications}
+      uniqueItems={sectionText.uniqueItems ?? defaultUnique}
+      activityItems={sectionText.activityItems ?? defaultActivities}
       expertiseItems={sectionText.expertiseItems ?? []}
       whyChooseItems={sectionText.whyChooseItems ?? []}
       qualityEthicsItems={sectionText.qualityEthicsItems ?? []}

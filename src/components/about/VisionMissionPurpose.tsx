@@ -2,18 +2,42 @@ import { StoryBlock } from '@/components/about/StoryBlock'
 import { ABOUT_IMAGES, aboutTokens } from '@/components/about/tokens'
 
 export type VisionMissionPurposeProps = {
+  visionBadge?: string
+  visionTitle?: string
   visionBody?: string
+  visionHighlight?: string
+  visionImageAlt?: string
+  missionBadge?: string
+  missionTitle?: string
   missionBody?: string
+  missionHighlight?: string
+  missionImageAlt?: string
+  purposeBadge?: string
+  purposeTitle?: string
   purposeBody?: string
+  purposeHighlight?: string
+  purposeImageAlt?: string
 }
 
 /**
  * Three alternating story sections: Vision, Mission, Purpose.
  */
 export function VisionMissionPurpose({
+  visionBadge = 'Vision',
+  visionTitle = 'Our Vision',
   visionBody,
+  visionHighlight = 'Science-led justice through rigorous forensic methodology.',
+  visionImageAlt = 'Digital forensic analysis concept',
+  missionBadge = 'Mission',
+  missionTitle = 'Our Mission',
   missionBody,
+  missionHighlight = 'Practical training aligned with real investigation workflows.',
+  missionImageAlt = 'Forensic investigators at a crime scene',
+  purposeBadge = 'Purpose',
+  purposeTitle = 'Our Purpose',
   purposeBody,
+  purposeHighlight = 'Ethical practice and transparency in every examination.',
+  purposeImageAlt = 'Forensic laboratory precision',
 }: VisionMissionPurposeProps) {
   const defaultVision =
     visionBody ||
@@ -32,44 +56,44 @@ export function VisionMissionPurpose({
       <div className={aboutTokens.container}>
         <StoryBlock
           id="vision"
-          badge="Vision"
+          badge={visionBadge}
           badgeVariant="violet"
-          title="Our Vision"
+          title={visionTitle}
           body={defaultVision}
           highlight={{
             icon: '🔭',
-            text: 'Science-led justice through rigorous forensic methodology.',
+            text: visionHighlight,
           }}
           imageSrc={ABOUT_IMAGES.vision}
-          imageAlt="Digital forensic analysis concept"
+          imageAlt={visionImageAlt}
           imageRight
         />
         <StoryBlock
           id="mission"
-          badge="Mission"
+          badge={missionBadge}
           badgeVariant="blue"
-          title="Our Mission"
+          title={missionTitle}
           body={defaultMission}
           highlight={{
             icon: '🎯',
-            text: 'Practical training aligned with real investigation workflows.',
+            text: missionHighlight,
           }}
           imageSrc={ABOUT_IMAGES.mission}
-          imageAlt="Forensic investigators at a crime scene"
+          imageAlt={missionImageAlt}
           imageRight={false}
         />
         <StoryBlock
           id="purpose"
-          badge="Purpose"
+          badge={purposeBadge}
           badgeVariant="violet"
-          title="Our Purpose"
+          title={purposeTitle}
           body={defaultPurpose}
           highlight={{
             icon: '⚖️',
-            text: 'Ethical practice and transparency in every examination.',
+            text: purposeHighlight,
           }}
           imageSrc={ABOUT_IMAGES.purpose}
-          imageAlt="Forensic laboratory precision"
+          imageAlt={purposeImageAlt}
           imageRight
         />
       </div>

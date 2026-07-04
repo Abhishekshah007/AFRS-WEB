@@ -13,11 +13,11 @@ const quickLinks = [
     href: '#afsl-training',
     icon: FlaskConical,
   },
-  {
-    label: 'Online Events',
-    href: '/courses/events',
-    icon: CalendarDays,
-  },
+  // {
+  //   label: 'Online Events',
+  //   href: '/courses/events',
+  //   icon: CalendarDays,
+  // },
 ]
 
 export function ProgrammesHero() {
