@@ -1093,7 +1093,7 @@ export function ExpertsSection({ scientists }: { scientists: PaginatedDocs<Scien
               investigation and expert reporting for your specific case requirements.
             </p>
             <Link
-              href="/contact"
+              href="/services#lab-inquiry-form"
               className="mt-8 inline-flex w-full h-12 items-center justify-center rounded-xl bg-orange-500 hover:bg-orange-600 text-sm font-bold transition"
             >
               Enquire Now

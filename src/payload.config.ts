@@ -16,6 +16,7 @@ import { ImpactStats } from './collections/ImpactStats'
 import { ContactMessages } from './collections/ContactMessages'
 import { Articles } from './collections/Articles'
 import { EventRegistrations } from './collections/EventRegistrations'
+import { CourseRegistrations } from './collections/CourseRegistrations'
 import { SiteSettings } from './collections/globals/SiteSettings'
 import { HeaderSettings } from './collections/globals/HeaderSettings'
 import { FooterSettings } from './collections/globals/FooterSettings'
@@ -44,9 +45,17 @@ export default buildConfig({
     ContactMessages,
     Articles,
     EventRegistrations,
+    CourseRegistrations,
     Media,
   ],
-  globals: [SiteSettings, HeaderSettings, FooterSettings, HomePage, ProgrammesCatalog, StudentHubContent],
+  globals: [
+    SiteSettings,
+    HeaderSettings,
+    FooterSettings,
+    HomePage,
+    ProgrammesCatalog,
+    StudentHubContent,
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

@@ -4,7 +4,8 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Online Events Hub',
-  description: 'Register for national and international forensic workshops, conferences, and faculty development programmes.',
+  description:
+    'Register for national and international forensic workshops, conferences, and faculty development programmes.',
 }
 
 type Props = {
@@ -18,11 +19,16 @@ type Props = {
 export default async function ProgrammeEventsPage({ searchParams }: Props) {
   const { schedule, nature, type } = await searchParams
 
-  const initialSchedule = schedule === 'ongoing' ? 'ongoing' : 'upcoming'
+  const initialSchedule =
+    schedule === 'ongoing'
+      ? 'ongoing'
+      : schedule === 'completed' || schedule === 'archive'
+        ? 'completed'
+        : 'upcoming'
   const initialNature =
     nature === 'national' || nature === 'international' ? nature : ('all' as const)
 
-  const { upcoming, ongoing } = await fetchProgrammeHubEvents({
+  const { upcoming, ongoing, completed } = await fetchProgrammeHubEvents({
     nature: initialNature === 'all' ? undefined : initialNature,
     type: type || undefined,
   })
@@ -31,6 +37,7 @@ export default async function ProgrammeEventsPage({ searchParams }: Props) {
     <EventsListingView
       upcoming={upcoming}
       ongoing={ongoing}
+      completed={completed}
       initialSchedule={initialSchedule}
       initialNature={initialNature}
       initialType={type}

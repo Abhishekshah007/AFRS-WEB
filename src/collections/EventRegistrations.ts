@@ -11,7 +11,14 @@ export const EventRegistrations: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'fullName',
-    defaultColumns: ['fullName', 'email', 'eventSlug', 'totalAmount', 'paymentStatus', 'registrationStatus'],
+    defaultColumns: [
+      'fullName',
+      'email',
+      'eventSlug',
+      'totalAmount',
+      'paymentStatus',
+      'registrationStatus',
+    ],
   },
   fields: [
     { name: 'event', type: 'relationship', relationTo: 'events', required: true },
@@ -58,7 +65,18 @@ export const EventRegistrations: CollectionConfig = {
       ],
       required: true,
     },
+    {
+      name: 'paymentProvider',
+      type: 'select',
+      defaultValue: 'stripe',
+      options: [
+        { label: 'Stripe', value: 'stripe' },
+        { label: 'Manual / Offline', value: 'manual' },
+      ],
+    },
     { name: 'paymentReference', type: 'text' },
+    { name: 'stripeCheckoutSessionId', type: 'text' },
+    { name: 'stripePaymentIntentId', type: 'text' },
     { name: 'paymentConfirmedAt', type: 'date' },
   ],
 }

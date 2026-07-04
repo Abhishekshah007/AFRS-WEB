@@ -19,7 +19,6 @@ import {
   Microscope,
   Phone,
   ShieldCheck,
-  User,
   Users,
 } from 'lucide-react'
 // import { Modal } from '@/components/ui/Modal'
@@ -34,8 +33,6 @@ const certifications = [
   { label: 'ISO', caption: 'ISO Certified' },
   { label: '24/7', caption: 'Forensic Access' },
 ]
-
-const memberCards = ['Member 01', 'Member 02']
 
 const kitCards = [
   {
@@ -225,12 +222,12 @@ const defaultServices = [
       'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020382/afrs-2026-assets/insurance_service_c0oydn.png',
   },
 
-  // Blood Grouping Examination
+  // Forensic Biology & Serology Examination
   {
-    id: 'blood-grouping',
-    title: 'Blood Grouping Examination',
-    slug: 'blood-grouping-examination',
-    desc: 'Forensic analysis of blood samples for grouping and identification, supporting criminal investigations and legal proceedings.',
+    id: 'forensic-biology-serology',
+    title: 'Forensic Biology & Serology Examination',
+    slug: 'forensic-biology-serology-examination',
+    desc: 'Biological evidence analysis, including DNA profiling, serological testing, and forensic pathology to support criminal investigations and legal proceedings.',
     banner:
       'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020381/afrs-2026-assets/bloodGroupExamination_service_okok85.png',
   },
@@ -320,39 +317,15 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   )
 }
 
-function PersonPhoto({ member, large = false }: { member: DirectorateMember; large?: boolean }) {
-  return (
-    <div
-      className={`shrink-0 overflow-hidden rounded-[10px] border border-[#edf1f8] bg-white ${
-        large ? 'h-[80px] w-[80px]' : 'h-10 w-10'
-      }`}
-    >
-      {member.photo ? (
-        <Image
-          src={member.photo}
-          alt={member.name}
-          width={large ? 80 : 40}
-          height={large ? 80 : 40}
-          className="h-full w-full object-cover"
-        />
-      ) : (
-        <div className="flex h-full w-full items-center justify-center text-[11px] font-black text-[#6d28d9]">
-          {member.initials}
-        </div>
-      )}
-    </div>
-  )
-}
-
 export function ServicesPageView({
-  catalogItems: _catalogItems,
+  catalogItems,
   directors,
   teamMembers,
   site,
   totalVisitors,
 }: Props) {
   // const [selectedCategory, setSelectedCategory] = useState<typeof clientCategories[0] | null>(null)
-  const services = defaultServices
+  const services = catalogItems.length > 0 ? catalogItems : defaultServices
   const serviceOptions = services.map((c) => c.title)
   const people = teamMembers.length ? teamMembers.slice(0, 6) : directors
 
@@ -588,10 +561,9 @@ export function ServicesPageView({
             </div>
 
             <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-              {memberCards.map((fallback, index) => {
-                const person = people[index]
+              {people.map((person) => {
                 return (
-                  <div key={person?.name || fallback}>
+                  <div key={person.name}>
                     <article className="group h-full overflow-hidden rounded-[14px] border border-[#e5ebf4] bg-gradient-to-b from-white to-[#f8fafd] shadow-[0_8px_20px_rgba(15,23,42,0.06)] transition hover:shadow-[0_12px_32px_rgba(109,40,217,0.12)] hover:-translate-y-0.5">
                       {/* Top accent line */}
                       <div className="h-0.5 w-full bg-gradient-to-r from-[#6d28d9] via-[#8b5cf6] to-transparent" />
@@ -599,33 +571,29 @@ export function ServicesPageView({
                       <div className="p-4 text-center">
                         {/* Photo */}
                         <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-[10px] border border-[#e5ebf4] bg-white overflow-hidden shadow-sm transition group-hover:shadow-md">
-                          {person ? (
-                            person.photo ? (
-                              <Image
-                                src={person.photo}
-                                alt={person.name}
-                                width={56}
-                                height={56}
-                                className="h-full w-full object-cover"
-                              />
-                            ) : (
-                              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#6d28d9]/10 to-[#8b5cf6]/10 text-sm font-black text-[#6d28d9]">
-                                {person.initials}
-                              </div>
-                            )
+                          {person.photo ? (
+                            <Image
+                              src={person.photo}
+                              alt={person.name}
+                              width={56}
+                              height={56}
+                              className="h-full w-full object-cover"
+                            />
                           ) : (
-                            <User className="h-5 w-5 text-[#a9b6c6]" />
+                            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#6d28d9]/10 to-[#8b5cf6]/10 text-sm font-black text-[#6d28d9]">
+                              {person.initials}
+                            </div>
                           )}
                         </div>
 
                         {/* Name */}
                         <h4 className="text-[11px] font-black text-[#071329] line-clamp-2">
-                          {person?.name || fallback}
+                          {person.name}
                         </h4>
 
                         {/* Designation */}
                         <p className="mt-2 text-[8px] font-bold uppercase tracking-[0.12em] text-[#9ba8ba] line-clamp-2">
-                          {person?.designation || 'Forensic Unit'}
+                          {person.designation}
                         </p>
 
                         {/* Badge */}

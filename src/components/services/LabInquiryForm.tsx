@@ -41,18 +41,30 @@ export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] })
         body: JSON.stringify({ fullName, mobile, email, subject, message }),
       })
       if (!res.ok) throw new Error(await res.text().catch(() => 'Failed to send'))
-      setState({ status: 'success', message: 'Inquiry received. Our lab team will contact you within 24 hours.' })
+      setState({
+        status: 'success',
+        message: 'Inquiry received. Our lab team will contact you within 24 hours.',
+      })
     } catch (e) {
-      setState({ status: 'error', message: e instanceof Error ? e.message : 'Something went wrong' })
+      setState({
+        status: 'error',
+        message: e instanceof Error ? e.message : 'Something went wrong',
+      })
     }
   }
 
   return (
-    <form action={onSubmit} className="space-y-4">
+    <form action={onSubmit} className="space-y-4" id="lab-inquiry-form">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <label className="block text-[9px] font-black uppercase tracking-[0.15em] text-[#687487]">
           Full Name
-          <input name="fullName" disabled={disabled} className={inputClass} placeholder="Your name" required />
+          <input
+            name="fullName"
+            disabled={disabled}
+            className={inputClass}
+            placeholder="Your name"
+            required
+          />
         </label>
         <label className="block text-[9px] font-black uppercase tracking-[0.15em] text-[#687487]">
           Case Type
@@ -77,7 +89,14 @@ export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] })
 
       <label className="block text-[9px] font-black uppercase tracking-[0.15em] text-[#687487]">
         Email Address
-        <input name="email" type="email" disabled={disabled} className={inputClass} placeholder="official@agency.gov" required />
+        <input
+          name="email"
+          type="email"
+          disabled={disabled}
+          className={inputClass}
+          placeholder="official@agency.gov"
+          required
+        />
       </label>
 
       <label className="block text-[9px] font-black uppercase tracking-[0.15em] text-[#687487]">
@@ -96,7 +115,11 @@ export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] })
       {state.status !== 'idle' && (
         <p
           className={`text-sm ${
-            state.status === 'success' ? 'text-emerald-600' : state.status === 'error' ? 'text-rose-600' : 'text-slate-500'
+            state.status === 'success'
+              ? 'text-emerald-600'
+              : state.status === 'error'
+                ? 'text-rose-600'
+                : 'text-slate-500'
           }`}
         >
           {state.message}

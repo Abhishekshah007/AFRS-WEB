@@ -36,6 +36,7 @@ export type ResourcePerson = {
   title: string
   photoUrl?: string
   initials: string
+  bio?: string | null
 }
 
 export type ArchiveItem = {

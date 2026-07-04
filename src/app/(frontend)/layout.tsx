@@ -70,7 +70,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <AppProviders>
           <main className="relative min-h-[50vh]">{children}</main>
         </AppProviders>
-        <Footer settings={footerSettings} siteSettings={siteSettings} />
+        <Footer
+          settings={footerSettings}
+          siteSettings={siteSettings}
+          socialMediaLinks={headerSettings}
+        />
       </body>
     </html>
   )
