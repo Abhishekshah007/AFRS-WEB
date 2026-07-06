@@ -21,7 +21,7 @@ export default function SocialMediaIcons({ icons }: Props) {
 
         return (
           <Link key={item.url} href={item.url} target="_blank" rel="noopener noreferrer">
-            <Image src={item.icon.url} alt={item.label ?? ''} width={16} height={16} />
+            <Image src={item.icon.url} alt={item.label ?? ''} width={16} height={16} unoptimized />
           </Link>
         )
       })}

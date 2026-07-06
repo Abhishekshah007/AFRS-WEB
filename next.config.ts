@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'afrs-web.vercel.app',
+      },
+      {
+        protocol: 'https',
         hostname: 'www.figma.com',
         pathname: '/api/mcp/asset/**',
       },
