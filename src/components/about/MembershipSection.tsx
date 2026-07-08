@@ -49,7 +49,7 @@ export function MembershipSection({
 Membership provides opportunities for professional networking, knowledge sharing, collaborative research, leadership development, and continued engagement with emerging trends and best practices.
 AFRS provides the following types of membership:`,
   plans = defaultPlans,
-  ctaLabel = 'Get Started',
+  ctaLabel = `Let's Talk 💬`,
   advantageEyebrow = 'Why AFRS?',
   advantageTitle = 'The membership advantage',
 }: Readonly<MembershipSectionProps>) {

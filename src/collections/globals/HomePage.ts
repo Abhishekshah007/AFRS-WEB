@@ -202,7 +202,7 @@ export const HomePage: GlobalConfig = {
         { name: 'membershipTitle', type: 'text', defaultValue: 'Membership Plans' },
         { name: 'membershipSubtitle', type: 'textarea' },
         { name: 'membershipPlans', type: 'array', fields: membershipPlanFields },
-        { name: 'membershipCtaLabel', type: 'text', defaultValue: 'Get Started' },
+        { name: 'membershipCtaLabel', type: 'text', defaultValue: 'Let\'s Talk 💬' },
         { name: 'membershipAdvantageEyebrow', type: 'text', defaultValue: 'Why AFRS?' },
         {
           name: 'membershipAdvantageTitle',
