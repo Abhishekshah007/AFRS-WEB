@@ -221,7 +221,7 @@ const defaultSectionText: AboutSectionText = {
   membershipTitle: 'Membership Plans',
   membershipSubtitle:
     'AFRS Membership is designed to create a vibrant community of students, researchers, professionals, academicians, and institutions committed to the advancement of forensic science.\nMembership provides opportunities for professional networking, knowledge sharing, collaborative research, leadership development, and continued engagement with emerging trends and best practices.\nAFRS provides the following types of membership:',
-  membershipCtaLabel: 'Get Started',
+  membershipCtaLabel: "Let's Talk 💬",
   membershipAdvantageEyebrow: 'Why AFRS?',
   membershipAdvantageTitle: 'The membership advantage',
   futureRoadmapItems: [
@@ -260,7 +260,7 @@ const defaultSectionText: AboutSectionText = {
       title: 'Professional Membership',
       description:
         'Annual membership for professionals seeking to enhance their forensic expertise and stay updated with the latest advancements in the field.',
-      href: '/contact',
+      href: 'https://wa.me/91xxxxxxxxx?text=Hello%20AFRS%20Team,%20I%20am%20interested%20in%20joining%20the%20Professional%20Membership.',
       badge: 'Best Value',
       dark: true,
     },
@@ -268,7 +268,7 @@ const defaultSectionText: AboutSectionText = {
       title: 'Senior Membership',
       description:
         'Annual membership for professionals and students seeking a structured forensic development pathway.',
-      href: '/contact',
+      href: 'https://wa.me/91xxxxxxxxx?text=Hello%20AFRS%20Team,%20I%20am%20interested%20in%20joining%20the%20Senior%20Membership.',
       badge: 'Popular',
       dark: false,
     },
@@ -276,7 +276,7 @@ const defaultSectionText: AboutSectionText = {
       title: 'Academic Department Membership',
       description:
         'Annual membership for academic departments and institutions committed to advancing forensic science education and research.',
-      href: '/contact',
+      href: 'https://wa.me/91xxxxxxxxx?text=Hello%20AFRS%20Team,%20I%20am%20interested%20in%20joining%20the%20Academic%20Department%20Membership.',
       badge: 'Popular',
       dark: false,
     },
@@ -457,7 +457,9 @@ function toMembershipPlans(
     .map((item) => ({
       title: item.title?.trim() ?? '',
       description: item.description?.trim() ?? '',
-      href: item.href?.trim() || '/contact',
+      href:
+        item.href?.trim() ||
+        'https://wa.me/91xxxxxxxxx?text=Hello%20AFRS%20Team,%20I%20am%20interested%20in%20joining%20the%20membership.',
       badge: item.badge?.trim() || 'Popular',
       dark: Boolean(item.dark),
     }))
