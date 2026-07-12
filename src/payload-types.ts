@@ -232,6 +232,17 @@ export interface Media {
   id: number;
   alt: string;
   caption?: string | null;
+  /**
+   * Cloudinary public ID for the original asset.
+   */
+  cloudinaryPublicId?: string | null;
+  cloudinaryResourceType?: ('image' | 'video' | 'raw') | null;
+  cloudinaryVersion?: number | null;
+  /**
+   * Direct Cloudinary delivery URL for the original asset.
+   */
+  cloudinaryUrl?: string | null;
+  cloudinaryMigratedAt?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -895,6 +906,11 @@ export interface CourseRegistrationsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  cloudinaryPublicId?: T;
+  cloudinaryResourceType?: T;
+  cloudinaryVersion?: T;
+  cloudinaryUrl?: T;
+  cloudinaryMigratedAt?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

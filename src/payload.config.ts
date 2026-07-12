@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { cloudStoragePlugin } from '@payloadcms/plugin-cloud-storage'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -23,10 +24,12 @@ import { FooterSettings } from './collections/globals/FooterSettings'
 import { HomePage } from './collections/globals/HomePage'
 import { ProgrammesCatalog } from './collections/globals/ProgrammesCatalog'
 import { StudentHubContent } from './collections/globals/StudentHubContent'
+import { cloudinaryStorageAdapter } from './storage/cloudinary/adapter'
+import { isCloudinaryConfigured } from './storage/cloudinary/shared'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-
+const isMigration = process.env.MEDIA_MIGRATION === 'true'
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -67,5 +70,19 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [],
+  plugins: isMigration
+    ? []
+    : [
+      cloudStoragePlugin({
+        alwaysInsertFields: true,
+        enabled: isCloudinaryConfigured(),
+        collections: {
+          media: {
+            adapter: cloudinaryStorageAdapter,
+            disableLocalStorage: true,
+            disablePayloadAccessControl: true,
+          },
+        },
+      }),
+    ],
 })
