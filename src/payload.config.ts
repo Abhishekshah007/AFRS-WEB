@@ -1,6 +1,7 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
+import { cloudStoragePlugin } from '@payloadcms/plugin-cloud-storage'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
@@ -23,6 +24,7 @@ import { FooterSettings } from './collections/globals/FooterSettings'
 import { HomePage } from './collections/globals/HomePage'
 import { ProgrammesCatalog } from './collections/globals/ProgrammesCatalog'
 import { StudentHubContent } from './collections/globals/StudentHubContent'
+import { cloudinaryStorageAdapter } from './storage/cloudinary/adapter'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -66,5 +68,15 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [],
+  plugins: [
+    cloudStoragePlugin({
+      collections: {
+        media: {
+          adapter: cloudinaryStorageAdapter,
+          disableLocalStorage: true,
+          disablePayloadAccessControl: true,
+        },
+      }
+    }),
+  ],
 })
