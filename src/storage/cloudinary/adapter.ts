@@ -1,10 +1,8 @@
 import type { Adapter } from '@payloadcms/plugin-cloud-storage/types'
 import type { UploadApiResponse } from 'cloudinary'
-import type { FileData, TypeWithID } from 'payload'
 import { Readable } from 'stream'
 
 import { getCloudinaryClient } from './client'
-import type { CloudinaryMigrationMetadata } from './shared'
 import { buildCloudinaryDeliveryUrl, buildCloudinaryPublicId } from './shared'
 
 type UploadData = {
@@ -52,22 +50,14 @@ export const cloudinaryStorageAdapter: Adapter = ({ prefix }) => ({
   },
   handleUpload: async ({ data, file }) => {
     const publicId = buildCloudinaryPublicId(file.filename, prefix)
-    const result = await uploadBuffer(file.buffer, publicId)
+    await uploadBuffer(file.buffer, publicId)
     const uploadData = data as UploadData
 
     if (uploadData.filename !== file.filename) {
       return {}
     }
 
-    const metadata: Partial<FileData & TypeWithID> & CloudinaryMigrationMetadata = {
-      cloudinaryMigratedAt: new Date().toISOString(),
-      cloudinaryPublicId: result.public_id,
-      cloudinaryResourceType: 'image',
-      cloudinaryUrl: result.secure_url,
-      cloudinaryVersion: result.version,
-    }
-
-    return metadata
+    return {}
   },
   staticHandler: async (_req, { params }) => {
     return Response.redirect(buildCloudinaryDeliveryUrl(params.filename, params.prefix), 302)

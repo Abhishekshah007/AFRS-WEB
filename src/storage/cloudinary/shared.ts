@@ -2,16 +2,6 @@ import path from 'path'
 
 export const CLOUDINARY_MEDIA_PREFIX = process.env.CLOUDINARY_MEDIA_PREFIX || 'afrs/payload/media'
 
-export type CloudinaryResourceType = 'image' | 'raw' | 'video'
-
-export type CloudinaryMigrationMetadata = {
-  cloudinaryMigratedAt?: string | null
-  cloudinaryPublicId?: string | null
-  cloudinaryResourceType?: CloudinaryResourceType | null
-  cloudinaryUrl?: string | null
-  cloudinaryVersion?: number | null
-}
-
 export function isCloudinaryConfigured(): boolean {
   return Boolean(
     process.env.CLOUDINARY_CLOUD_NAME &&

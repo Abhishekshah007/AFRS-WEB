@@ -21,47 +21,5 @@ export const Media: CollectionConfig = {
   fields: [
     { name: 'alt', type: 'text', required: true },
     { name: 'caption', type: 'text' },
-    {
-      name: 'cloudinaryPublicId',
-      type: 'text',
-      admin: {
-        description: 'Cloudinary public ID for the original asset.',
-        readOnly: true,
-      },
-    },
-    {
-      name: 'cloudinaryResourceType',
-      type: 'select',
-      admin: {
-        readOnly: true,
-      },
-      options: [
-        { label: 'Image', value: 'image' },
-        { label: 'Video', value: 'video' },
-        { label: 'Raw', value: 'raw' },
-      ],
-    },
-    {
-      name: 'cloudinaryVersion',
-      type: 'number',
-      admin: {
-        readOnly: true,
-      },
-    },
-    {
-      name: 'cloudinaryUrl',
-      type: 'text',
-      admin: {
-        description: 'Direct Cloudinary delivery URL for the original asset.',
-        readOnly: true,
-      },
-    },
-    {
-      name: 'cloudinaryMigratedAt',
-      type: 'date',
-      admin: {
-        readOnly: true,
-      },
-    },
   ],
 }
