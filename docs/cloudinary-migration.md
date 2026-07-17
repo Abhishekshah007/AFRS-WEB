@@ -60,7 +60,7 @@ corepack pnpm migrate:cloudinary -- --dry-run
 corepack pnpm migrate:cloudinary
 ```
 
-7. Re-run the same command if it is interrupted. Existing Cloudinary assets and already-updated Media records are skipped.
+7. Re-run the same command if it is interrupted. Media records whose `url` already points at Cloudinary are skipped.
 8. Run validation:
 
 ```bash
@@ -75,7 +75,7 @@ Do not delete local files immediately after migration. Rollback is:
 
 1. Remove or unset Cloudinary environment variables.
 2. Redeploy. The cloud storage plugin disables itself when credentials are absent.
-3. Restore the database backup if you want to remove Cloudinary metadata fields from records.
+3. Restore the database backup if you need to revert Media document URLs.
 4. Keep `media/` in place so `/api/media/file/...` URLs can continue to resolve locally.
 
 Cloudinary assets are not deleted by rollback. Delete them manually only after confirming the local rollback is healthy.

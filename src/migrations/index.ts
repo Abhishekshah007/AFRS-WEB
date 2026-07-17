@@ -1,9 +1,9 @@
-import * as migration_20260712_154700_cloudinary_media_fields from './20260712_154700_cloudinary_media_fields';
+import * as migration_20260717_000000_drop_cloudinary_media_metadata from './20260717_000000_drop_cloudinary_media_metadata'
 
 export const migrations = [
   {
-    up: migration_20260712_154700_cloudinary_media_fields.up,
-    down: migration_20260712_154700_cloudinary_media_fields.down,
-    name: '20260712_154700_cloudinary_media_fields'
+    up: migration_20260717_000000_drop_cloudinary_media_metadata.up,
+    down: migration_20260717_000000_drop_cloudinary_media_metadata.down,
+    name: '20260717_000000_drop_cloudinary_media_metadata',
   },
-];
+]
