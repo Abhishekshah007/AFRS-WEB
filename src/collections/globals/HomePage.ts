@@ -70,7 +70,7 @@ export const HomePage: GlobalConfig = {
         {
           name: 'aboutHeading',
           type: 'text',
-          defaultValue: 'About Applied Forensic Research Sciences',
+          defaultValue: 'Advancing Forensic Excellence Through Research, Education and Innovation.',
         },
         {
           name: 'aboutDescription1',
@@ -136,7 +136,7 @@ export const HomePage: GlobalConfig = {
           defaultValue:
             'The dedicated team driving operations, governance, and community initiatives.',
         },
-        { name: 'certificationsTitle', type: 'text', defaultValue: 'Professional Certifications' },
+        { name: 'certificationsTitle', type: 'text', defaultValue: 'Certification and Recognition' },
         {
           name: 'certificationsSubtitle',
           type: 'textarea',

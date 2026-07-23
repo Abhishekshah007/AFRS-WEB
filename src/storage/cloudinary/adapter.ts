@@ -37,29 +37,33 @@ function uploadBuffer(buffer: Buffer, publicId: string): Promise<UploadApiRespon
   })
 }
 
-export const cloudinaryStorageAdapter: Adapter = ({ prefix }) => ({
-  name: 'cloudinary',
-  generateURL: ({ filename }) => buildCloudinaryDeliveryUrl(filename, prefix),
-  handleDelete: async ({ filename }) => {
-    const publicId = buildCloudinaryPublicId(filename, prefix)
+export const cloudinaryStorageAdapter: Adapter = ({ prefix }) => (
 
-    await getCloudinaryClient().uploader.destroy(publicId, {
-      invalidate: true,
-      resource_type: 'image',
-    })
-  },
-  handleUpload: async ({ data, file }) => {
-    const publicId = buildCloudinaryPublicId(file.filename, prefix)
-    await uploadBuffer(file.buffer, publicId)
-    const uploadData = data as UploadData
+  {
 
-    if (uploadData.filename !== file.filename) {
+    name: 'cloudinary',
+    generateURL: ({ filename }) => buildCloudinaryDeliveryUrl(filename, prefix),
+    handleDelete: async ({ filename }) => {
+      const publicId = buildCloudinaryPublicId(filename, prefix)
+
+      await getCloudinaryClient().uploader.destroy(publicId, {
+        invalidate: true,
+        resource_type: 'image',
+      })
+    },
+    handleUpload: async ({ data, file }) => {
+      const publicId = buildCloudinaryPublicId(file.filename, prefix)
+      await uploadBuffer(file.buffer, publicId)
+      const uploadData = data as UploadData
+
+      if (uploadData.filename !== file.filename) {
+        return {}
+      }
+
       return {}
-    }
-
-    return {}
-  },
-  staticHandler: async (_req, { params }) => {
-    return Response.redirect(buildCloudinaryDeliveryUrl(params.filename, params.prefix), 302)
-  },
-})
+    },
+    staticHandler: async (_req, { params }) => {
+      console.log('Cloudinary staticHandler', params)
+      return Response.redirect(buildCloudinaryDeliveryUrl(params.filename, params.prefix), 302)
+    },
+  })
