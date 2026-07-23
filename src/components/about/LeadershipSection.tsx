@@ -53,41 +53,41 @@ export function LeadershipSection({
 
             <AnimateOnScroll
               stagger
-              className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6"
+              className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3"
             >
               {committee.slice(0, 5).map((leader) => (
                 <article
                   key={leader.id}
-                  className="about-committee-card card-pop relative min-h-[320px] overflow-hidden rounded-[18px] border border-slate-200/80 px-6 py-8 shadow-[0_14px_32px_rgba(15,23,42,0.06)]"
+                  className="about-committee-card card-pop relative flex min-h-[390px] h-full overflow-hidden rounded-[18px] border border-slate-200/80 px-8 py-10 shadow-[0_14px_32px_rgba(15,23,42,0.06)]"
                 >
-                  <div className="flex flex-col items-center text-center">
+                  <div className="flex h-full w-full flex-col items-center text-center">
                     <div className="relative">
-                      <div className="flex h-[96px] w-[96px] items-center justify-center rounded-full bg-gradient-to-br from-indigo-50 to-blue-50 p-1 shadow-[0_10px_24px_rgba(79,70,229,0.12)] ring-1 ring-indigo-100">
+                      <div className="flex h-[120px] w-[120px] items-center justify-center rounded-full bg-gradient-to-br from-indigo-50 to-blue-50 p-1.5 shadow-[0_10px_24px_rgba(79,70,229,0.12)] ring-1 ring-indigo-100">
                         {leader.photoUrl ? (
                           <Image
                             src={leader.photoUrl}
                             alt={leader.name}
-                            width={88}
-                            height={88}
-                            className="h-[88px] w-[88px] rounded-full object-cover"
+                            width={108}
+                            height={108}
+                            className="h-[108px] w-[108px] rounded-full object-cover"
                           />
                         ) : (
                           <UserRound
                             aria-hidden
-                            className="h-9 w-9 text-indigo-300"
+                            className="h-11 w-11 text-indigo-300"
                             strokeWidth={1.8}
                           />
                         )}
                       </div>
                     </div>
-                    <h3 className="mt-8 text-lg font-extrabold leading-tight text-[var(--about-text)]">
+                    <h3 className="mt-8 text-xl font-extrabold leading-tight text-[var(--about-text)]">
                       {leader.name}
                     </h3>
-                    <p className="mt-2 inline-flex rounded-full bg-[var(--about-primary-soft)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.08em] text-[var(--about-primary)]">
+                    <p className="mt-3 inline-flex rounded-full bg-[var(--about-primary-soft)] px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-[var(--about-primary)]">
                       {leader.designation}
                     </p>
                     {leader.bio && (
-                      <p className="mt-5 text-sm leading-relaxed text-slate-600">{leader.bio}</p>
+                      <p className="mt-6 flex-1 text-sm leading-relaxed text-slate-600">{leader.bio}</p>
                     )}
                   </div>
                 </article>

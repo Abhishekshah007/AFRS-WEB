@@ -41,7 +41,7 @@ export function StoryBlock({
         {badge}
       </span>
       <h2 className={`mt-4 ${aboutTokens.heading} text-2xl sm:text-[28px] leading-tight`}>{title}</h2>
-      <p className={`mt-4 text-sm sm:text-base ${aboutTokens.body}`}>{body}</p>
+      <p className={`mt-4 text-justify text-sm sm:text-base ${aboutTokens.body}`}>{body}</p>
       <div
         className={`mt-6 flex items-start gap-3 ${aboutTokens.radiusCard} border border-slate-100 bg-white p-4 shadow-sm max-w-md`}
       >

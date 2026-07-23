@@ -21,7 +21,7 @@ const certAccents = [
 
 export function CertificationsSection({
   items,
-  title = 'Professional Certifications',
+  title = 'Certification and Recognition',
   subtitle = 'AFRS maintains rigorous standards through accredited programmes, laboratory protocols, and professional memberships recognized across the forensic science community.',
 }: Readonly<CertificationsSectionProps>) {
   return (
@@ -31,7 +31,7 @@ export function CertificationsSection({
     >
       <div className={aboutTokens.container}>
         <AnimateOnScroll>
-          <SectionHeader id="certs-heading" title={title} subtitle={subtitle} align="left" />
+          <SectionHeader id="certs-heading" title={title} align="left" />
         </AnimateOnScroll>
 
         <AnimateOnScroll stagger>
@@ -58,9 +58,7 @@ export function CertificationsSection({
                     <h3 className="mt-5 text-base font-extrabold leading-snug text-[var(--about-text)] group-hover:text-[var(--about-primary)] transition-colors">
                       {item.title}
                     </h3>
-                    <p className={`mt-3 flex-1 text-sm leading-relaxed ${aboutTokens.body}`}>
-                      {item.description}
-                    </p>
+
                     {/* <p className="mt-5 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-[0.14em] text-[var(--about-primary)]">
                       Verified Standard <span aria-hidden>→</span>
                     </p> */}
@@ -69,6 +67,16 @@ export function CertificationsSection({
               )
             })}
           </ul>
+          <p className="mt-8 text-justify text-sm sm:text-base text-[var(--about-text)]">
+            AFRS recognizes the importance of quality assurance, professional recognition, and
+            institutional credibility.
+          </p>
+          <p className="mt-4 text-justify text-sm sm:text-base text-[var(--about-text)]">
+            The organization continuously strives to align its activities with recognized standards,
+            professional guidelines, and best practices through relevant certifications,
+            affiliations, registrations, and strategic partnerships that strengthen trust and
+            accountability.
+          </p>
         </AnimateOnScroll>
       </div>
     </section>

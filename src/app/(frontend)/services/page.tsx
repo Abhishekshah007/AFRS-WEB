@@ -46,7 +46,8 @@ const fallbackDirectors: DirectorateMember[] = [
     name: 'Mr. Rakesh Mia',
     designation: 'Lab Director',
     initials: 'RM',
-    photo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1762611530/s1bhfnkxkbyor6bhjrnv.jpg',
+    photo:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1784833177/afrs/payload/media/WhatsApp_Image_2026-07-22_at_10.07.28_PM_rop83x.jpg',
     bio: 'Senior forensic scientist with expertise in analytical chemistry.',
   },
   {

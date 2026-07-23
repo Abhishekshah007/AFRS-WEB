@@ -105,7 +105,6 @@ export type AchievementStat = {
 
 export type CertificationItem = {
   title: string
-  description: string
   icon: string
 }
 

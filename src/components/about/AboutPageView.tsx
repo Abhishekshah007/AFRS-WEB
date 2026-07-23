@@ -65,7 +65,7 @@ export function AboutPageView({
       designation: 'President, AFRS',
       initials: 'RM',
       photoUrl:
-        'https://res.cloudinary.com/drrzakkgo/image/upload/v1762611530/s1bhfnkxkbyor6bhjrnv.jpg',
+        'https://res.cloudinary.com/drrzakkgo/image/upload/v1784833177/afrs/payload/media/WhatsApp_Image_2026-07-22_at_10.07.28_PM_rop83x.jpg',
       message:
         '' +
         (sectionText.rakeshMessage ||

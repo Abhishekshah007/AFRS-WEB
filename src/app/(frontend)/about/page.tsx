@@ -21,24 +21,24 @@ export const metadata: Metadata = {
 
 const defaultCertifications: CertificationItem[] = [
   {
-    icon: '🔬',
-    title: 'AFPS Team',
-    description: 'Applied Forensic Professional Standards aligned training and assessment.',
+    icon: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1784837302/afrs/payload/media/AFRS%20certification/1280px-Emblem_of_Madhya_Pradesh.svg_yngo8m.png',
+    title: 'Madhya Pradesh Society Registration Act, 1973 ',
   },
   {
-    icon: '📋',
-    title: 'ISO Protocols',
-    description: 'Laboratory workflows following international quality management principles.',
+    icon: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1784837592/afrs/payload/media/AFRS%20certification/MSME_Logo_ucxp1h.svg',
+    title: 'MSME Registration',
   },
   {
-    icon: '🏛',
-    title: 'Academic MoUs',
-    description: 'Partnerships with universities for research and internship programmes.',
+    icon: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1784837670/afrs/payload/media/AFRS%20certification/NITI_Aayog_logo.svg_glpk2y.webp',
+    title: 'NITI Aayog Recognition',
   },
   {
-    icon: '⚖️',
-    title: 'Legal Expert Panel',
-    description: 'Court-qualified experts for testimony and case consultancy.',
+    icon: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1784838157/afrs/payload/media/AFRS%20certification/Ministry_of_Corporate_Affairs_India.svg_rsgp4g.webp',
+    title: 'LLP Registered',
+  },
+  {
+    icon: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1784838269/afrs/payload/media/AFRS%20certification/what-is-iso-9001-compliance_kwgwue.png',
+    title: 'ISO 9001:2015 Certified',
   },
 ]
 
@@ -132,7 +132,7 @@ const defaultSectionText: AboutSectionText = {
   committeeTitle: 'Executive Committee & Members',
   committeeSubtitle:
     'The dedicated team driving operations, governance, and community initiatives.',
-  certificationsTitle: 'Professional Certifications',
+  certificationsTitle: 'Certification and Recognition',
   certificationsSubtitle:
     'AFRS maintains rigorous standards through accredited programmes, laboratory protocols, and professional memberships recognized across the forensic science community.',
   valuesTitle: 'What Sets AFRS Apart',
@@ -367,6 +367,24 @@ const fallbackCommittee: LeaderProfile[] = [
     photoUrl:
       'https://res.cloudinary.com/drrzakkgo/image/upload/v1762611909/b9xixjf0rlnquhherrh5.jpg',
     bio: 'Overseeing financial health and resource allocation for projects.',
+  },
+  {
+    id: 'ayushi-mittal',
+    name: 'Ms. Ayushi Mittal',
+    designation: 'Member',
+    initials: 'AM',
+    photoUrl:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1784832632/afrs/payload/media/ChatGPT_Image_Jul_23_2026_11_18_28_PM_jtafxd.png',
+    bio: 'Contributing to research initiatives and academic collaborations.',
+  },
+  {
+    id: 'sanskriti-rani-sharma',
+    name: 'Ms. Sanskriti Rani Sharma',
+    designation: 'Member',
+    initials: 'SRS',
+    photoUrl:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1784832850/afrs/payload/media/WhatsApp_Image_2026-07-22_at_10.08.07_PM_prkqs8.jpg',
+    bio: 'Engaging in community outreach and educational programme development.',
   },
 ]
 
