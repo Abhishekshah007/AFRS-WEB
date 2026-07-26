@@ -1,8 +1,13 @@
 import type { CollectionConfig } from 'payload'
+
 import { isAdmin, isAdminOrEditor, isPublic } from '../access'
+import { ADMIN_GROUPS } from '../config/adminGroups'
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  admin: {
+    group: ADMIN_GROUPS.SYSTEM,
+  },
   access: {
     read: isPublic,
     create: isAdminOrEditor,

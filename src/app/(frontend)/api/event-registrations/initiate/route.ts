@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { hasRequiredFields, jsonError } from '@/lib/apiResponses'
 import { getPayloadClient } from '@/lib/payload'
 import type { Event as AfrsEvent } from '@/payload-types'
 
@@ -22,8 +23,19 @@ export async function POST(req: Request) {
     const body = (await req.json()) as InitiatePayload
     const payload = await getPayloadClient()
 
-    if (!body.eventSlug || !body.fullName || !body.email || !body.mobileNumber || !body.organization || !body.designation || !body.areaOfInterest || !body.registrationCategoryId) {
-      return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 })
+    if (
+      !hasRequiredFields(body, [
+        'eventSlug',
+        'fullName',
+        'email',
+        'mobileNumber',
+        'organization',
+        'designation',
+        'areaOfInterest',
+        'registrationCategoryId',
+      ])
+    ) {
+      return jsonError('Missing required fields.', 400)
     }
 
     const eventResult = await payload.find({
@@ -35,12 +47,14 @@ export async function POST(req: Request) {
     })
 
     const evt = eventResult.docs[0] as AfrsEvent | undefined
-    if (!evt) return NextResponse.json({ error: 'Event not found.' }, { status: 404 })
-    if (evt.registrationOpen === false) return NextResponse.json({ error: 'Registration is closed for this event.' }, { status: 400 })
+    if (!evt) return jsonError('Event not found.', 404)
+    if (evt.registrationOpen === false) {
+      return jsonError('Registration is closed for this event.', 400)
+    }
 
     const categories = evt.registrationCategories || []
     const selected = categories.find((cat) => String(cat.id) === body.registrationCategoryId)
-    if (!selected) return NextResponse.json({ error: 'Invalid registration category.' }, { status: 400 })
+    if (!selected) return jsonError('Invalid registration category.', 400)
 
     const basePrice = Number(selected.price || 0)
     const kitPrice = body.includeKit && evt.includeKitOption ? Number(evt.kitPrice || 0) : 0
@@ -80,6 +94,6 @@ export async function POST(req: Request) {
       totalAmount,
     })
   } catch {
-    return NextResponse.json({ error: 'Unable to initiate registration.' }, { status: 500 })
+    return jsonError('Unable to initiate registration.', 500)
   }
 }

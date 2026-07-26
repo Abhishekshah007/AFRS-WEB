@@ -1,15 +1,14 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, isAdminOrEditor, publishedRead } from '../access'
+
+import { editorManagedPublishedAccess } from '../access'
+import { ADMIN_GROUPS } from '../config/adminGroups'
+import { publishedField } from '../fields/publishing'
 
 export const Testimonials: CollectionConfig = {
   slug: 'testimonials',
-  access: {
-    create: isAdminOrEditor,
-    read: publishedRead,
-    update: isAdminOrEditor,
-    delete: isAdmin,
-  },
+  access: editorManagedPublishedAccess,
   admin: {
+    group: ADMIN_GROUPS.CONTENT,
     useAsTitle: 'name',
   },
   fields: [
@@ -25,6 +24,6 @@ export const Testimonials: CollectionConfig = {
       defaultValue: 5,
     },
     { name: 'image', type: 'upload', relationTo: 'media' },
-    { name: 'published', type: 'checkbox', defaultValue: false },
+    publishedField(),
   ],
 }

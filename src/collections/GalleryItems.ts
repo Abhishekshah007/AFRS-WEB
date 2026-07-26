@@ -1,15 +1,14 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, isAdminOrEditor, publishedRead } from '../access'
+
+import { editorManagedPublishedAccess } from '../access'
+import { ADMIN_GROUPS } from '../config/adminGroups'
+import { featuredField, orderField, publishedField } from '../fields/publishing'
 
 export const GalleryItems: CollectionConfig = {
   slug: 'galleryItems',
-  access: {
-    create: isAdminOrEditor,
-    read: publishedRead,
-    update: isAdminOrEditor,
-    delete: isAdmin,
-  },
+  access: editorManagedPublishedAccess,
   admin: {
+    group: ADMIN_GROUPS.CONTENT,
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'featured', 'published', 'order'],
   },
@@ -23,13 +22,8 @@ export const GalleryItems: CollectionConfig = {
       options: ['lab', 'training', 'tech', 'events', 'other'],
       defaultValue: 'other',
     },
-    { name: 'published', type: 'checkbox', defaultValue: true },
-    {
-      name: 'featured',
-      type: 'checkbox',
-      defaultValue: false,
-      admin: { description: 'Show on home page gallery.' },
-    },
-    { name: 'order', type: 'number', defaultValue: 0 },
+    publishedField({ defaultValue: true }),
+    featuredField({ description: 'Show on home page gallery.' }),
+    orderField(),
   ],
 }

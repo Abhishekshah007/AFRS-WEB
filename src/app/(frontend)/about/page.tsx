@@ -10,7 +10,7 @@ import type {
 } from '@/components/about/types'
 import { resolveMediaUrl } from '@/lib/cms'
 import { getPayloadClient } from '@/lib/payload'
-import type { HomePage, ImpactStat, Media, Scientist } from '@/payload-types'
+import type { AboutCertification, HomePage, ImpactStat, Media, Scientist } from '@/payload-types'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -461,10 +461,22 @@ function toCertifications(
     .map((item) => ({
       icon: item.icon?.trim() || '✓',
       title: item.title?.trim() ?? '',
-      description: item.description?.trim() ?? '',
+      description: item.description?.trim() || undefined,
     }))
-    .filter((item) => item.title && item.description)
+    .filter((item) => item.title)
   return normalized.length > 0 ? normalized : undefined
+}
+
+function toCertificationItem(cert: AboutCertification): CertificationItem {
+  const icon = resolveMediaUrl(cert.logo as number | Media | null | undefined, '')
+
+  return {
+    title: cert.title,
+    icon: icon || undefined,
+    description: cert.description || undefined,
+    issuer: cert.issuer || undefined,
+    href: cert.certificateUrl || undefined,
+  }
 }
 
 function toMembershipPlans(
@@ -511,7 +523,7 @@ function buildAboutSectionText(cmsSectionText?: HomePage['sectionText']): AboutS
 export default async function AboutPage() {
   const payload = await getPayloadClient()
 
-  const [homePage, scientists, impactStats] = await Promise.all([
+  const [homePage, scientists, impactStats, certificationsResult] = await Promise.all([
     payload.findGlobal({ slug: 'homePage', depth: 1 }),
     payload.find({
       collection: 'scientists',
@@ -527,6 +539,14 @@ export default async function AboutPage() {
       sort: 'order',
       limit: 5,
       depth: 0,
+      overrideAccess: false,
+    }),
+    payload.find({
+      collection: 'aboutCertifications',
+      where: { published: { equals: true } },
+      sort: 'order',
+      limit: 50,
+      depth: 1,
       overrideAccess: false,
     }),
   ])
@@ -559,13 +579,18 @@ export default async function AboutPage() {
         })
       : defaultAchievements
 
+  const cmsCertifications =
+    certificationsResult.docs.length > 0
+      ? (certificationsResult.docs as AboutCertification[]).map(toCertificationItem)
+      : undefined
+
   return (
     <AboutPageView
       sectionText={sectionText}
       featuredLeaders={featuredLeaders.length >= 2 ? featuredLeaders : fallbackLeaders}
       committee={committee}
       achievements={achievements}
-      certifications={sectionText.certifications ?? defaultCertifications}
+      certifications={cmsCertifications ?? sectionText.certifications ?? defaultCertifications}
       uniqueItems={sectionText.uniqueItems ?? defaultUnique}
       activityItems={sectionText.activityItems ?? defaultActivities}
       expertiseItems={sectionText.expertiseItems ?? []}

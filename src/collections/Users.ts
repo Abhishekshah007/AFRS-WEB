@@ -1,10 +1,13 @@
 import type { CollectionConfig } from 'payload'
+
 import { isAdmin, isSelfOrAdmin } from '../access'
+import { ADMIN_GROUPS } from '../config/adminGroups'
 
 export const Users: CollectionConfig = {
   slug: 'users',
   auth: true,
   admin: {
+    group: ADMIN_GROUPS.SYSTEM,
     useAsTitle: 'email',
   },
   access: {

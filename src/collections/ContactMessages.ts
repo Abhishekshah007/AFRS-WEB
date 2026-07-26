@@ -1,10 +1,12 @@
 import type { CollectionConfig } from 'payload'
 
 import { isAdmin, isAdminOrEditor, isPublic } from '../access'
+import { ADMIN_GROUPS } from '../config/adminGroups'
 
 export const ContactMessages: CollectionConfig = {
   slug: 'contactMessages',
   admin: {
+    group: ADMIN_GROUPS.INBOX,
     useAsTitle: 'fullName',
     defaultColumns: ['fullName', 'email', 'mobile', 'status', 'createdAt'],
   },
@@ -15,29 +17,11 @@ export const ContactMessages: CollectionConfig = {
     delete: isAdmin,
   },
   fields: [
-    {
-      name: 'fullName',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'mobile',
-      type: 'text',
-    },
-    {
-      name: 'email',
-      type: 'email',
-      required: true,
-    },
-    {
-      name: 'subject',
-      type: 'text',
-    },
-    {
-      name: 'message',
-      type: 'textarea',
-      required: true,
-    },
+    { name: 'fullName', type: 'text', required: true },
+    { name: 'mobile', type: 'text' },
+    { name: 'email', type: 'email', required: true },
+    { name: 'subject', type: 'text' },
+    { name: 'message', type: 'textarea', required: true },
     {
       name: 'status',
       type: 'select',
@@ -51,4 +35,3 @@ export const ContactMessages: CollectionConfig = {
   ],
   timestamps: true,
 }
-

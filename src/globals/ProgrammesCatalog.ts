@@ -1,21 +1,28 @@
 import type { GlobalConfig } from 'payload'
-import { isAdminOrEditor, isPublic } from '../../access'
+
+import { editorManagedGlobalAccess } from '../access'
 import {
   defaultArchiveFilterLinks,
   defaultEducationCategories,
   defaultTrainingCategories,
-} from '../../components/programmes/catalog.defaults'
+} from '../components/programmes/catalog.defaults'
 import {
   defaultGallery,
   defaultHubEvents,
   defaultResourcePersons,
   defaultTrainingChecklist,
-} from '../../components/programmes/content.defaults'
+} from '../components/programmes/content.defaults'
+import { ADMIN_GROUPS } from '../config/adminGroups'
+import { eventNatureField } from '../fields'
+import { programmeItemFields } from '../fields/programmes'
 
 export const ProgrammesCatalog: GlobalConfig = {
   slug: 'programmesCatalog',
-  access: { read: isPublic, update: isAdminOrEditor },
-  admin: { group: 'Site' },
+  access: editorManagedGlobalAccess,
+  admin: {
+    group: ADMIN_GROUPS.PROGRAMMES,
+    description: 'Education and training programme categories and fallbacks.',
+  },
   fields: [
     {
       name: 'educationCategories',
@@ -26,18 +33,7 @@ export const ProgrammesCatalog: GlobalConfig = {
         { name: 'icon', type: 'text', required: true },
         { name: 'title', type: 'text', required: true },
         { name: 'summary', type: 'textarea', required: true },
-        {
-          name: 'programmes',
-          type: 'array',
-          fields: [
-            { name: 'id', type: 'text', required: true },
-            { name: 'title', type: 'text', required: true },
-            { name: 'description', type: 'textarea', required: true },
-            { name: 'duration', type: 'text', required: true },
-            { name: 'mode', type: 'text', required: true },
-            { name: 'level', type: 'text' },
-          ],
-        },
+        { name: 'programmes', type: 'array', fields: programmeItemFields },
       ],
     },
     {
@@ -61,28 +57,37 @@ export const ProgrammesCatalog: GlobalConfig = {
           ],
         },
         { name: 'summary', type: 'textarea', required: true },
-        {
-          name: 'programmes',
-          type: 'array',
-          fields: [
-            { name: 'id', type: 'text', required: true },
-            { name: 'title', type: 'text', required: true },
-            { name: 'description', type: 'textarea', required: true },
-            { name: 'duration', type: 'text', required: true },
-            { name: 'mode', type: 'text', required: true },
-            { name: 'level', type: 'text' },
-          ],
-        },
+        { name: 'programmes', type: 'array', fields: programmeItemFields },
       ],
     },
     {
       name: 'archiveFilterLinks',
       type: 'group',
       fields: [
-        { name: 'nationalEvents', type: 'text', required: true, defaultValue: defaultArchiveFilterLinks.nationalEvents },
-        { name: 'internationalEvents', type: 'text', required: true, defaultValue: defaultArchiveFilterLinks.internationalEvents },
-        { name: 'workshops', type: 'text', required: true, defaultValue: defaultArchiveFilterLinks.workshops },
-        { name: 'webinars', type: 'text', required: true, defaultValue: defaultArchiveFilterLinks.webinars },
+        {
+          name: 'nationalEvents',
+          type: 'text',
+          required: true,
+          defaultValue: defaultArchiveFilterLinks.nationalEvents,
+        },
+        {
+          name: 'internationalEvents',
+          type: 'text',
+          required: true,
+          defaultValue: defaultArchiveFilterLinks.internationalEvents,
+        },
+        {
+          name: 'workshops',
+          type: 'text',
+          required: true,
+          defaultValue: defaultArchiveFilterLinks.workshops,
+        },
+        {
+          name: 'webinars',
+          type: 'text',
+          required: true,
+          defaultValue: defaultArchiveFilterLinks.webinars,
+        },
       ],
     },
     {
@@ -102,9 +107,18 @@ export const ProgrammesCatalog: GlobalConfig = {
         { name: 'description', type: 'textarea', required: true },
         { name: 'eventType', type: 'text', required: true },
         { name: 'eventTypeLabel', type: 'text', required: true },
-        { name: 'eventNature', type: 'select', required: true, options: [{ label: 'National', value: 'national' }, { label: 'International', value: 'international' }] },
+        eventNatureField({ required: true }),
         { name: 'startDate', type: 'date', required: true },
-        { name: 'visualTone', type: 'select', required: true, options: [{ label: 'Blue', value: 'blue' }, { label: 'Orange', value: 'orange' }, { label: 'Purple', value: 'purple' }] },
+        {
+          name: 'visualTone',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'Blue', value: 'blue' },
+            { label: 'Orange', value: 'orange' },
+            { label: 'Purple', value: 'purple' },
+          ],
+        },
         { name: 'visualIcon', type: 'text', required: true },
       ],
     },

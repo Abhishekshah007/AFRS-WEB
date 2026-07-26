@@ -67,17 +67,18 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
+    articles: Article;
+    aboutCertifications: AboutCertification;
     services: Service;
-    events: Event;
+    galleryItems: GalleryItem;
     testimonials: Testimonial;
     scientists: Scientist;
-    galleryItems: GalleryItem;
     impactStats: ImpactStat;
-    contactMessages: ContactMessage;
-    articles: Article;
+    events: Event;
     eventRegistrations: EventRegistration;
     courseRegistrations: CourseRegistration;
+    contactMessages: ContactMessage;
+    users: User;
     media: Media;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -86,17 +87,18 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    aboutCertifications: AboutCertificationsSelect<false> | AboutCertificationsSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
-    events: EventsSelect<false> | EventsSelect<true>;
+    galleryItems: GalleryItemsSelect<false> | GalleryItemsSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     scientists: ScientistsSelect<false> | ScientistsSelect<true>;
-    galleryItems: GalleryItemsSelect<false> | GalleryItemsSelect<true>;
     impactStats: ImpactStatsSelect<false> | ImpactStatsSelect<true>;
-    contactMessages: ContactMessagesSelect<false> | ContactMessagesSelect<true>;
-    articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    events: EventsSelect<false> | EventsSelect<true>;
     eventRegistrations: EventRegistrationsSelect<false> | EventRegistrationsSelect<true>;
     courseRegistrations: CourseRegistrationsSelect<false> | CourseRegistrationsSelect<true>;
+    contactMessages: ContactMessagesSelect<false> | ContactMessagesSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -153,30 +155,139 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "articles".
  */
-export interface User {
+export interface Article {
   id: number;
-  name: string;
-  role: 'superAdmin' | 'contentEditor' | 'eventManager' | 'student';
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
+  title: string;
+  slug: string;
+  /**
+   * Short summary shown in cards and listings.
+   */
+  excerpt: string;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  category: 'toxicology' | 'ballistics' | 'psychology' | 'dna' | 'digitalForensics' | 'odontology' | 'general';
+  coverImage?: (number | null) | Media;
+  authorName: string;
+  authorTitle?: string | null;
+  authorAvatar?: (number | null) | Media;
+  readTimeMinutes?: number | null;
+  publishedDate?: string | null;
+  /**
+   * Optional second category pill (e.g. AI in Forensics).
+   */
+  secondaryTag?: string | null;
+  tags?:
     | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
+        tag: string;
+        id?: string | null;
       }[]
     | null;
-  password?: string | null;
-  collection: 'users';
+  pullQuote?: {
+    text?: string | null;
+    attribution?: string | null;
+  };
+  authorBio?: string | null;
+  /**
+   * Show as Editor's Choice
+   */
+  featured?: boolean | null;
+  published?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  alt: string;
+  caption?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * Certifications and recognitions shown on the About page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aboutCertifications".
+ */
+export interface AboutCertification {
+  id: number;
+  title: string;
+  /**
+   * Optional issuing authority, ministry, or institution.
+   */
+  issuer?: string | null;
+  /**
+   * Upload the certification logo or emblem. Stored through Media.
+   */
+  logo: number | Media;
+  /**
+   * Optional short note shown on the About page card.
+   */
+  description?: string | null;
+  /**
+   * Optional public URL to a certificate PDF, verification page, or proof.
+   */
+  certificateUrl?: string | null;
+  published?: boolean | null;
+  /**
+   * Lower numbers appear first.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -226,49 +337,76 @@ export interface Service {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
+ * via the `definition` "galleryItems".
  */
-export interface Media {
+export interface GalleryItem {
   id: number;
-  alt: string;
-  caption?: string | null;
+  title: string;
+  label: string;
+  image: number | Media;
+  category?: ('lab' | 'training' | 'tech' | 'events' | 'other') | null;
+  published?: boolean | null;
+  /**
+   * Show on home page gallery.
+   */
+  featured?: boolean | null;
+  /**
+   * Lower numbers appear first.
+   */
+  order?: number | null;
   updatedAt: string;
   createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    card?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    hero?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  name: string;
+  title: string;
+  testimonial: string;
+  rating: number;
+  image?: (number | null) | Media;
+  published?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "scientists".
+ */
+export interface Scientist {
+  id: number;
+  name: string;
+  designation: string;
+  bio?: string | null;
+  photo?: (number | null) | Media;
+  published?: boolean | null;
+  /**
+   * Lower numbers appear first.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "impactStats".
+ */
+export interface ImpactStat {
+  id: number;
+  label: string;
+  value: string;
+  description?: string | null;
+  tone?: ('indigo' | 'blue' | 'purple' | 'emerald' | 'orange') | null;
+  published?: boolean | null;
+  /**
+   * Lower numbers appear first.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -322,139 +460,6 @@ export interface Event {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "testimonials".
- */
-export interface Testimonial {
-  id: number;
-  name: string;
-  title: string;
-  testimonial: string;
-  rating: number;
-  image?: (number | null) | Media;
-  published?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "scientists".
- */
-export interface Scientist {
-  id: number;
-  name: string;
-  designation: string;
-  bio?: string | null;
-  photo?: (number | null) | Media;
-  published?: boolean | null;
-  order?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "galleryItems".
- */
-export interface GalleryItem {
-  id: number;
-  title: string;
-  label: string;
-  image: number | Media;
-  category?: ('lab' | 'training' | 'tech' | 'events' | 'other') | null;
-  published?: boolean | null;
-  /**
-   * Show on home page gallery.
-   */
-  featured?: boolean | null;
-  order?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "impactStats".
- */
-export interface ImpactStat {
-  id: number;
-  label: string;
-  value: string;
-  description?: string | null;
-  tone?: ('indigo' | 'blue' | 'purple' | 'emerald' | 'orange') | null;
-  published?: boolean | null;
-  order?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "contactMessages".
- */
-export interface ContactMessage {
-  id: number;
-  fullName: string;
-  mobile?: string | null;
-  email: string;
-  subject?: string | null;
-  message: string;
-  status?: ('new' | 'inProgress' | 'resolved') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "articles".
- */
-export interface Article {
-  id: number;
-  title: string;
-  slug: string;
-  excerpt: string;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  category: 'toxicology' | 'ballistics' | 'psychology' | 'dna' | 'digitalForensics' | 'odontology' | 'general';
-  coverImage?: (number | null) | Media;
-  authorName: string;
-  authorTitle?: string | null;
-  authorAvatar?: (number | null) | Media;
-  readTimeMinutes?: number | null;
-  publishedDate?: string | null;
-  /**
-   * Optional second category pill (e.g. AI in Forensics).
-   */
-  secondaryTag?: string | null;
-  tags?:
-    | {
-        tag: string;
-        id?: string | null;
-      }[]
-    | null;
-  pullQuote?: {
-    text?: string | null;
-    attribution?: string | null;
-  };
-  authorBio?: string | null;
-  /**
-   * Show as Editor’s Choice
-   */
-  featured?: boolean | null;
-  published?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "eventRegistrations".
  */
 export interface EventRegistration {
@@ -477,9 +482,9 @@ export interface EventRegistration {
   includeKit?: boolean | null;
   kitPrice?: number | null;
   totalAmount: number;
+  paymentProvider?: ('stripe' | 'manual') | null;
   paymentStatus: 'pending' | 'paid' | 'failed';
   registrationStatus: 'initiated' | 'confirmed' | 'cancelled';
-  paymentProvider?: ('stripe' | 'manual') | null;
   paymentReference?: string | null;
   stripeCheckoutSessionId?: string | null;
   stripePaymentIntentId?: string | null;
@@ -513,13 +518,55 @@ export interface CourseRegistration {
   totalAmount?: number | null;
   paymentProvider?: ('stripe' | 'manual') | null;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'notRequired';
-  registrationStatus: 'initiated' | 'confirmed' | 'contacted' | 'cancelled';
+  registrationStatus: 'initiated' | 'confirmed' | 'cancelled' | 'contacted';
   paymentReference?: string | null;
   stripeCheckoutSessionId?: string | null;
   stripePaymentIntentId?: string | null;
   paymentConfirmedAt?: string | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contactMessages".
+ */
+export interface ContactMessage {
+  id: number;
+  fullName: string;
+  mobile?: string | null;
+  email: string;
+  subject?: string | null;
+  message: string;
+  status?: ('new' | 'inProgress' | 'resolved') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name: string;
+  role: 'superAdmin' | 'contentEditor' | 'eventManager' | 'student';
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -546,16 +593,20 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'articles';
+        value: number | Article;
+      } | null)
+    | ({
+        relationTo: 'aboutCertifications';
+        value: number | AboutCertification;
       } | null)
     | ({
         relationTo: 'services';
         value: number | Service;
       } | null)
     | ({
-        relationTo: 'events';
-        value: number | Event;
+        relationTo: 'galleryItems';
+        value: number | GalleryItem;
       } | null)
     | ({
         relationTo: 'testimonials';
@@ -566,20 +617,12 @@ export interface PayloadLockedDocument {
         value: number | Scientist;
       } | null)
     | ({
-        relationTo: 'galleryItems';
-        value: number | GalleryItem;
-      } | null)
-    | ({
         relationTo: 'impactStats';
         value: number | ImpactStat;
       } | null)
     | ({
-        relationTo: 'contactMessages';
-        value: number | ContactMessage;
-      } | null)
-    | ({
-        relationTo: 'articles';
-        value: number | Article;
+        relationTo: 'events';
+        value: number | Event;
       } | null)
     | ({
         relationTo: 'eventRegistrations';
@@ -588,6 +631,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'courseRegistrations';
         value: number | CourseRegistration;
+      } | null)
+    | ({
+        relationTo: 'contactMessages';
+        value: number | ContactMessage;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null)
     | ({
         relationTo: 'media';
@@ -637,27 +688,53 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "articles_select".
  */
-export interface UsersSelect<T extends boolean = true> {
-  name?: T;
-  role?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
+export interface ArticlesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  excerpt?: T;
+  content?: T;
+  category?: T;
+  coverImage?: T;
+  authorName?: T;
+  authorTitle?: T;
+  authorAvatar?: T;
+  readTimeMinutes?: T;
+  publishedDate?: T;
+  secondaryTag?: T;
+  tags?:
     | T
     | {
+        tag?: T;
         id?: T;
-        createdAt?: T;
-        expiresAt?: T;
       };
+  pullQuote?:
+    | T
+    | {
+        text?: T;
+        attribution?: T;
+      };
+  authorBio?: T;
+  featured?: T;
+  published?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aboutCertifications_select".
+ */
+export interface AboutCertificationsSelect<T extends boolean = true> {
+  title?: T;
+  issuer?: T;
+  logo?: T;
+  description?: T;
+  certificateUrl?: T;
+  published?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -679,6 +756,63 @@ export interface ServicesSelect<T extends boolean = true> {
         featureIcon?: T;
         id?: T;
       };
+  published?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galleryItems_select".
+ */
+export interface GalleryItemsSelect<T extends boolean = true> {
+  title?: T;
+  label?: T;
+  image?: T;
+  category?: T;
+  published?: T;
+  featured?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  name?: T;
+  title?: T;
+  testimonial?: T;
+  rating?: T;
+  image?: T;
+  published?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "scientists_select".
+ */
+export interface ScientistsSelect<T extends boolean = true> {
+  name?: T;
+  designation?: T;
+  bio?: T;
+  photo?: T;
+  published?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "impactStats_select".
+ */
+export interface ImpactStatsSelect<T extends boolean = true> {
+  label?: T;
+  value?: T;
+  description?: T;
+  tone?: T;
   published?: T;
   order?: T;
   updatedAt?: T;
@@ -718,112 +852,6 @@ export interface EventsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "testimonials_select".
- */
-export interface TestimonialsSelect<T extends boolean = true> {
-  name?: T;
-  title?: T;
-  testimonial?: T;
-  rating?: T;
-  image?: T;
-  published?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "scientists_select".
- */
-export interface ScientistsSelect<T extends boolean = true> {
-  name?: T;
-  designation?: T;
-  bio?: T;
-  photo?: T;
-  published?: T;
-  order?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "galleryItems_select".
- */
-export interface GalleryItemsSelect<T extends boolean = true> {
-  title?: T;
-  label?: T;
-  image?: T;
-  category?: T;
-  published?: T;
-  featured?: T;
-  order?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "impactStats_select".
- */
-export interface ImpactStatsSelect<T extends boolean = true> {
-  label?: T;
-  value?: T;
-  description?: T;
-  tone?: T;
-  published?: T;
-  order?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "contactMessages_select".
- */
-export interface ContactMessagesSelect<T extends boolean = true> {
-  fullName?: T;
-  mobile?: T;
-  email?: T;
-  subject?: T;
-  message?: T;
-  status?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "articles_select".
- */
-export interface ArticlesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  excerpt?: T;
-  content?: T;
-  category?: T;
-  coverImage?: T;
-  authorName?: T;
-  authorTitle?: T;
-  authorAvatar?: T;
-  readTimeMinutes?: T;
-  publishedDate?: T;
-  secondaryTag?: T;
-  tags?:
-    | T
-    | {
-        tag?: T;
-        id?: T;
-      };
-  pullQuote?:
-    | T
-    | {
-        text?: T;
-        attribution?: T;
-      };
-  authorBio?: T;
-  featured?: T;
-  published?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "eventRegistrations_select".
  */
 export interface EventRegistrationsSelect<T extends boolean = true> {
@@ -845,9 +873,9 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
   includeKit?: T;
   kitPrice?: T;
   totalAmount?: T;
+  paymentProvider?: T;
   paymentStatus?: T;
   registrationStatus?: T;
-  paymentProvider?: T;
   paymentReference?: T;
   stripeCheckoutSessionId?: T;
   stripePaymentIntentId?: T;
@@ -887,6 +915,44 @@ export interface CourseRegistrationsSelect<T extends boolean = true> {
   paymentConfirmedAt?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contactMessages_select".
+ */
+export interface ContactMessagesSelect<T extends boolean = true> {
+  fullName?: T;
+  mobile?: T;
+  email?: T;
+  subject?: T;
+  message?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -982,6 +1048,8 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
+ * Core site identity, contact details, and social links.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "siteSettings".
  */
@@ -1000,6 +1068,9 @@ export interface SiteSetting {
    * Google Maps embed src URL for the footer and contact page.
    */
   mapEmbedUrl?: string | null;
+  /**
+   * Social profile URLs — used across footer and contact page.
+   */
   socialLinks?: {
     facebook?: string | null;
     instagram?: string | null;
@@ -1013,14 +1084,25 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
+ * Top bar, branding, and main navigation.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "headerSettings".
  */
 export interface HeaderSetting {
   id: number;
   topBarEnabled?: boolean | null;
+  /**
+   * Phone shown in top bar. Keep in sync with Site Settings → phone.
+   */
   topBarLeftText?: string | null;
+  /**
+   * Email shown in top bar. Keep in sync with Site Settings → email.
+   */
   topBarLeftText2?: string | null;
+  /**
+   * Social icon links in the top bar.
+   */
   topBarLeftText3?:
     | {
         icon: number | Media;
@@ -1047,6 +1129,8 @@ export interface HeaderSetting {
   createdAt?: string | null;
 }
 /**
+ * Footer about text, link columns, and copyright.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footerSettings".
  */
@@ -1072,6 +1156,8 @@ export interface FooterSetting {
   createdAt?: string | null;
 }
 /**
+ * Home page hero and section copy.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "homePage".
  */
@@ -1086,6 +1172,9 @@ export interface HomePage {
     secondaryCTAUrl?: string | null;
     heroImage?: (number | null) | Media;
   };
+  /**
+   * Headings and body copy for home page sections.
+   */
   sectionText?: {
     featuredCardsHeading?: string | null;
     servicesHeading?: string | null;
@@ -1242,6 +1331,8 @@ export interface HomePage {
   createdAt?: string | null;
 }
 /**
+ * Education and training programme categories and fallbacks.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "programmesCatalog".
  */
@@ -1332,6 +1423,8 @@ export interface ProgrammesCatalog {
   createdAt?: string | null;
 }
 /**
+ * Student hub resources, exam prep cards, and achievers.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "studentHubContent".
  */

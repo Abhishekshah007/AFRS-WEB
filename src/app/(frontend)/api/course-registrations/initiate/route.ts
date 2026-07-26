@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { hasRequiredFields, jsonError } from '@/lib/apiResponses'
 import { getPayloadClient } from '@/lib/payload'
 
 type CourseRegistrationPayload = {
@@ -25,8 +26,8 @@ export async function POST(req: Request) {
   try {
     const body = (await req.json()) as CourseRegistrationPayload
 
-    if (!body.programmeTitle || !body.fullName || !body.email || !body.mobileNumber) {
-      return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 })
+    if (!hasRequiredFields(body, ['programmeTitle', 'fullName', 'email', 'mobileNumber'])) {
+      return jsonError('Missing required fields.', 400)
     }
 
     const payload = await getPayloadClient()
@@ -64,6 +65,6 @@ export async function POST(req: Request) {
       paymentStatus: created.paymentStatus,
     })
   } catch {
-    return NextResponse.json({ error: 'Unable to initiate course registration.' }, { status: 500 })
+    return jsonError('Unable to initiate course registration.', 500)
   }
 }

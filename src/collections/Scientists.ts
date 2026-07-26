@@ -1,15 +1,14 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, isAdminOrEditor, publishedRead } from '../access'
+
+import { editorManagedPublishedAccess } from '../access'
+import { ADMIN_GROUPS } from '../config/adminGroups'
+import { orderField, publishedField } from '../fields/publishing'
 
 export const Scientists: CollectionConfig = {
   slug: 'scientists',
-  access: {
-    create: isAdminOrEditor,
-    read: publishedRead,
-    update: isAdminOrEditor,
-    delete: isAdmin,
-  },
+  access: editorManagedPublishedAccess,
   admin: {
+    group: ADMIN_GROUPS.CONTENT,
     useAsTitle: 'name',
   },
   fields: [
@@ -17,7 +16,7 @@ export const Scientists: CollectionConfig = {
     { name: 'designation', type: 'text', required: true },
     { name: 'bio', type: 'textarea' },
     { name: 'photo', type: 'upload', relationTo: 'media' },
-    { name: 'published', type: 'checkbox', defaultValue: true },
-    { name: 'order', type: 'number', defaultValue: 0 },
+    publishedField({ defaultValue: true }),
+    orderField(),
   ],
 }

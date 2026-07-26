@@ -1,30 +1,26 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, isAdminOrEditor, isAdminOrEventManager, publishedRead } from '../access'
+
+import { eventManagedPublishedAccess } from '../access'
+import { ADMIN_GROUPS } from '../config/adminGroups'
+import { contentRichTextField, excerptField, slugField } from '../fields'
+import { eventNatureField } from '../fields/options'
+import { publishedField } from '../fields/publishing'
 
 export const Events: CollectionConfig = {
   slug: 'events',
-  access: {
-    create: isAdminOrEventManager,
-    read: publishedRead,
-    update: isAdminOrEventManager,
-    delete: isAdmin,
-  },
+  access: eventManagedPublishedAccess,
   admin: {
+    group: ADMIN_GROUPS.EVENTS,
     useAsTitle: 'title',
     defaultColumns: ['title', 'eventType', 'startDate', 'registrationOpen', 'published'],
   },
   fields: [
     { name: 'title', type: 'text', required: true },
-    { name: 'slug', type: 'text', required: true, unique: true, index: true },
+    slugField(),
     { name: 'banner', type: 'upload', relationTo: 'media' },
-    { name: 'excerpt', type: 'textarea', admin: { description: 'Short summary shown in cards and listings.' } },
-    { name: 'description', type: 'richText' },
-    {
-      name: 'eventNature', type: 'select', options: [
-        { label: 'National', value: 'national' },
-        { label: 'International', value: 'international' },
-      ]
-    },
+    excerptField(),
+    contentRichTextField('description'),
+    eventNatureField(),
     {
       name: 'eventType',
       type: 'select',
@@ -60,6 +56,6 @@ export const Events: CollectionConfig = {
     { name: 'includeKitOption', type: 'checkbox', defaultValue: false },
     { name: 'kitPrice', type: 'number' },
     { name: 'registrationOpen', type: 'checkbox', defaultValue: true },
-    { name: 'published', type: 'checkbox', defaultValue: false },
+    publishedField(),
   ],
 }

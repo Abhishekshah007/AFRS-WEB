@@ -1,15 +1,14 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, isAdminOrEventManager, isPublic } from '../access'
+
+import { eventRegistrationAccess } from '../access'
+import { ADMIN_GROUPS } from '../config/adminGroups'
+import { registrationContactFields, registrationPaymentFields } from '../fields'
 
 export const CourseRegistrations: CollectionConfig = {
   slug: 'courseRegistrations',
-  access: {
-    create: isPublic,
-    read: isAdminOrEventManager,
-    update: isAdminOrEventManager,
-    delete: isAdmin,
-  },
+  access: eventRegistrationAccess,
   admin: {
+    group: ADMIN_GROUPS.EVENTS,
     useAsTitle: 'fullName',
     defaultColumns: [
       'fullName',
@@ -38,13 +37,8 @@ export const CourseRegistrations: CollectionConfig = {
     { name: 'programmeDuration', type: 'text' },
     { name: 'programmeMode', type: 'text' },
 
-    { name: 'fullName', type: 'text', required: true },
-    { name: 'email', type: 'email', required: true },
-    { name: 'countryCode', type: 'text', defaultValue: '+91' },
-    { name: 'mobileNumber', type: 'text', required: true },
-    { name: 'organization', type: 'text' },
+    ...registrationContactFields(),
 
-    { name: 'designation', type: 'text' },
     { name: 'qualification', type: 'text' },
     {
       name: 'experienceLevel',
@@ -59,43 +53,26 @@ export const CourseRegistrations: CollectionConfig = {
     { name: 'preferredBatch', type: 'text' },
     { name: 'message', type: 'textarea' },
 
-    { name: 'totalAmount', type: 'number', defaultValue: 0 },
-    {
-      name: 'paymentProvider',
-      type: 'select',
-      defaultValue: 'stripe',
-      options: [
-        { label: 'Stripe', value: 'stripe' },
-        { label: 'Manual / Offline', value: 'manual' },
-      ],
-    },
-    {
-      name: 'paymentStatus',
-      type: 'select',
-      defaultValue: 'pending',
-      required: true,
-      options: [
-        { label: 'Pending', value: 'pending' },
-        { label: 'Paid', value: 'paid' },
-        { label: 'Failed', value: 'failed' },
-        { label: 'Not Required', value: 'notRequired' },
-      ],
-    },
-    {
-      name: 'registrationStatus',
-      type: 'select',
-      defaultValue: 'initiated',
-      required: true,
-      options: [
-        { label: 'Initiated', value: 'initiated' },
-        { label: 'Confirmed', value: 'confirmed' },
-        { label: 'Contacted', value: 'contacted' },
-        { label: 'Cancelled', value: 'cancelled' },
-      ],
-    },
-    { name: 'paymentReference', type: 'text' },
-    { name: 'stripeCheckoutSessionId', type: 'text' },
-    { name: 'stripePaymentIntentId', type: 'text' },
-    { name: 'paymentConfirmedAt', type: 'date' },
+    ...registrationPaymentFields.map((field) => {
+      if ('name' in field && field.name === 'paymentStatus' && field.type === 'select') {
+        return {
+          ...field,
+          options: [
+            ...(field.options ?? []),
+            { label: 'Not Required', value: 'notRequired' },
+          ],
+        }
+      }
+      if ('name' in field && field.name === 'registrationStatus' && field.type === 'select') {
+        return {
+          ...field,
+          options: [
+            ...(field.options ?? []),
+            { label: 'Contacted', value: 'contacted' },
+          ],
+        }
+      }
+      return field
+    }),
   ],
 }

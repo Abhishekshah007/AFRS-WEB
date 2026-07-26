@@ -1,4 +1,6 @@
 import type { CSSProperties } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
 import { Award, BadgeCheck, CheckCircle2, Shield } from 'lucide-react'
 import type { CertificationItem } from '@/components/about/types'
 import { aboutTokens } from '@/components/about/tokens'
@@ -31,38 +33,68 @@ export function CertificationsSection({
     >
       <div className={aboutTokens.container}>
         <AnimateOnScroll>
-          <SectionHeader id="certs-heading" title={title} align="left" />
+          <SectionHeader id="certs-heading" title={title} subtitle={subtitle} align="left" />
         </AnimateOnScroll>
 
         <AnimateOnScroll stagger>
-          <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
             {items.map((item, index) => {
               const Icon = certIconCycle[index % certIconCycle.length]
               const accent = certAccents[index % certAccents.length]
+              const cardBody = (
+                <article
+                  className="about-feature-card card-pop group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white p-5 shadow-[0_10px_28px_rgba(15,23,42,0.07)] transition hover:shadow-lg hover:-translate-y-1"
+                  style={{ '--card-accent': accent.bar } as CSSProperties}
+                >
+                  <span
+                    className="absolute inset-x-0 top-0 h-1.5"
+                    style={{ background: accent.bar }}
+                    aria-hidden
+                  />
+                  <div className="flex min-h-20 items-center justify-center">
+                    {item.icon ? (
+                      <Image
+                        src={item.icon}
+                        alt={`${item.title} logo`}
+                        width={112}
+                        height={72}
+                        className="max-h-16 w-auto object-contain transition duration-300 group-hover:scale-105"
+                        sizes="112px"
+                        unoptimized={item.icon.endsWith('.svg')}
+                      />
+                    ) : (
+                      <div
+                        className={`inline-flex h-14 w-14 items-center justify-center rounded-2xl ${accent.bg} ${accent.text} shadow-sm ring-1 ring-white/80`}
+                      >
+                        <Icon className="h-7 w-7" strokeWidth={2.2} aria-hidden />
+                      </div>
+                    )}
+                  </div>
+                  <h3 className="mt-5 text-center text-sm font-extrabold leading-snug text-[var(--about-text)] transition-colors group-hover:text-[var(--about-primary)]">
+                    {item.title}
+                  </h3>
+                  {item.issuer && (
+                    <p className="mt-2 text-center text-xs font-semibold uppercase tracking-wide text-slate-500">
+                      {item.issuer}
+                    </p>
+                  )}
+                  {item.description && (
+                    <p className="mt-3 text-center text-xs leading-relaxed text-slate-600">
+                      {item.description}
+                    </p>
+                  )}
+                </article>
+              )
+
               return (
                 <li key={item.title}>
-                  <article
-                    className="about-feature-card card-pop group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white p-6 shadow-[0_10px_28px_rgba(15,23,42,0.07)] transition hover:shadow-lg hover:-translate-y-1"
-                    style={{ '--card-accent': accent.bar } as CSSProperties}
-                  >
-                    <span
-                      className="absolute inset-x-0 top-0 h-1.5"
-                      style={{ background: accent.bar }}
-                      aria-hidden
-                    />
-                    <div
-                      className={`inline-flex h-14 w-14 items-center justify-center rounded-2xl ${accent.bg} ${accent.text} shadow-sm ring-1 ring-white/80`}
-                    >
-                      <Icon className="h-7 w-7" strokeWidth={2.2} aria-hidden />
-                    </div>
-                    <h3 className="mt-5 text-base font-extrabold leading-snug text-[var(--about-text)] group-hover:text-[var(--about-primary)] transition-colors">
-                      {item.title}
-                    </h3>
-
-                    {/* <p className="mt-5 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-[0.14em] text-[var(--about-primary)]">
-                      Verified Standard <span aria-hidden>→</span>
-                    </p> */}
-                  </article>
+                  {item.href ? (
+                    <Link href={item.href} target="_blank" rel="noreferrer" className="block h-full">
+                      {cardBody}
+                    </Link>
+                  ) : (
+                    cardBody
+                  )}
                 </li>
               )
             })}
