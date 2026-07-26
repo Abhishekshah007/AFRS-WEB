@@ -1,25 +1,25 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, isAdminOrEditor, publishedRead } from '../access'
+
+import { editorManagedPublishedAccess } from '../access'
+import { ADMIN_GROUPS } from '../config/adminGroups'
+import { contentRichTextField, excerptField, slugField } from '../fields'
+import { orderField, publishedField } from '../fields/publishing'
 
 export const Services: CollectionConfig = {
   slug: 'services',
-  access: {
-    create: isAdminOrEditor,
-    read: publishedRead,
-    update: isAdminOrEditor,
-    delete: isAdmin,
-  },
+  access: editorManagedPublishedAccess,
   admin: {
+    group: ADMIN_GROUPS.CONTENT,
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'published', 'order'],
   },
   fields: [
     { name: 'title', type: 'text', required: true },
-    { name: 'slug', type: 'text', required: true, unique: true, index: true },
+    slugField(),
     { name: 'icon', type: 'upload', relationTo: 'media' },
     { name: 'banner', type: 'upload', relationTo: 'media' },
-    { name: 'excerpt', type: 'textarea', admin: { description: 'Short summary shown in cards.' } },
-    { name: 'content', type: 'richText' },
+    excerptField({ description: 'Short summary shown in cards.' }),
+    contentRichTextField(),
     {
       name: 'category',
       type: 'select',
@@ -39,7 +39,7 @@ export const Services: CollectionConfig = {
         { name: 'featureIcon', type: 'upload', relationTo: 'media' },
       ],
     },
-    { name: 'published', type: 'checkbox', defaultValue: false },
-    { name: 'order', type: 'number', defaultValue: 0, admin: { description: 'Lower numbers appear first.' } },
+    publishedField(),
+    orderField(),
   ],
 }

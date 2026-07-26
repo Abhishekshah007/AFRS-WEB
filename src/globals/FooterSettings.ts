@@ -1,14 +1,15 @@
 import type { GlobalConfig } from 'payload'
-import { isAdminOrEditor, isPublic } from '../../access'
+
+import { editorManagedGlobalAccess } from '../access'
+import { ADMIN_GROUPS } from '../config/adminGroups'
+import { linkItemFields } from '../fields'
 
 export const FooterSettings: GlobalConfig = {
   slug: 'footerSettings',
-  access: {
-    read: isPublic,
-    update: isAdminOrEditor,
-  },
+  access: editorManagedGlobalAccess,
   admin: {
-    group: 'Site',
+    group: ADMIN_GROUPS.SITE_SETTINGS,
+    description: 'Footer about text, link columns, and copyright.',
   },
   fields: [
     {
@@ -29,14 +30,7 @@ export const FooterSettings: GlobalConfig = {
       type: 'array',
       fields: [
         { name: 'title', type: 'text', required: true },
-        {
-          name: 'links',
-          type: 'array',
-          fields: [
-            { name: 'label', type: 'text', required: true },
-            { name: 'url', type: 'text', required: true },
-          ],
-        },
+        { name: 'links', type: 'array', fields: linkItemFields },
       ],
       defaultValue: [
         {

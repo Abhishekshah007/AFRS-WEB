@@ -1,11 +1,20 @@
 import type { GlobalConfig } from 'payload'
-import { isAdminOrEditor, isPublic } from '../../access'
-import { defaultAcademicResources, defaultExamPrep, defaultUgcNetAchievers } from '../../components/student-hub/content.defaults'
+
+import { editorManagedGlobalAccess } from '../access'
+import {
+  defaultAcademicResources,
+  defaultExamPrep,
+  defaultUgcNetAchievers,
+} from '../components/student-hub/content.defaults'
+import { ADMIN_GROUPS } from '../config/adminGroups'
 
 export const StudentHubContent: GlobalConfig = {
   slug: 'studentHubContent',
-  access: { read: isPublic, update: isAdminOrEditor },
-  admin: { group: 'Site' },
+  access: editorManagedGlobalAccess,
+  admin: {
+    group: ADMIN_GROUPS.STUDENT_HUB,
+    description: 'Student hub resources, exam prep cards, and achievers.',
+  },
   fields: [
     {
       name: 'academicResources',

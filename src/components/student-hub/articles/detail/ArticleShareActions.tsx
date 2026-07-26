@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 export type ArticleShareActionsProps = {
   articleSlug: string
@@ -12,16 +12,16 @@ export type ArticleShareActionsProps = {
  */
 export function ArticleShareActions({ articleSlug, title }: ArticleShareActionsProps) {
   const storageKey = `afrs-saved-article-${articleSlug}`
-  const [saved, setSaved] = useState(false)
-  const [shareMsg, setShareMsg] = useState<string | null>(null)
+  const [saved, setSaved] = useState(() => {
+    if (typeof window === 'undefined') return false
 
-  useEffect(() => {
     try {
-      setSaved(localStorage.getItem(storageKey) === '1')
+      return localStorage.getItem(storageKey) === '1'
     } catch {
-      /* private browsing */
+      return false
     }
-  }, [storageKey])
+  })
+  const [shareMsg, setShareMsg] = useState<string | null>(null)
 
   const toggleSave = useCallback(() => {
     try {

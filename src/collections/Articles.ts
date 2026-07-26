@@ -1,23 +1,23 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, isAdminOrEditor, publishedRead } from '../access'
+
+import { editorManagedPublishedAccess } from '../access'
+import { ADMIN_GROUPS } from '../config/adminGroups'
+import { contentRichTextField, excerptField, slugField } from '../fields'
+import { featuredField, publishedField } from '../fields/publishing'
 
 export const Articles: CollectionConfig = {
   slug: 'articles',
-  access: {
-    create: isAdminOrEditor,
-    read: publishedRead,
-    update: isAdminOrEditor,
-    delete: isAdmin,
-  },
+  access: editorManagedPublishedAccess,
   admin: {
+    group: ADMIN_GROUPS.CONTENT,
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'featured', 'published', 'publishedDate'],
   },
   fields: [
     { name: 'title', type: 'text', required: true },
-    { name: 'slug', type: 'text', required: true, unique: true, index: true },
-    { name: 'excerpt', type: 'textarea', required: true },
-    { name: 'content', type: 'richText' },
+    slugField(),
+    excerptField({ required: true }),
+    contentRichTextField(),
     {
       name: 'category',
       type: 'select',
@@ -58,8 +58,8 @@ export const Articles: CollectionConfig = {
       ],
     },
     { name: 'authorBio', type: 'textarea' },
-    { name: 'featured', type: 'checkbox', defaultValue: false, admin: { description: 'Show as Editor’s Choice' } },
-    { name: 'published', type: 'checkbox', defaultValue: false },
+    featuredField({ description: "Show as Editor's Choice" }),
+    publishedField(),
   ],
   timestamps: true,
 }

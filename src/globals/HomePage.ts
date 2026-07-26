@@ -1,29 +1,20 @@
 import type { GlobalConfig } from 'payload'
-import { isAdminOrEditor, isPublic } from '../../access'
 
-const textItemField = { name: 'text', type: 'text' as const, required: true }
-const listItemFields = [textItemField, { name: 'description', type: 'textarea' as const }]
-const certificationFields = [
-  { name: 'icon', type: 'text' as const, defaultValue: '✓' },
-  { name: 'title', type: 'text' as const, required: true },
-  { name: 'description', type: 'textarea' as const, required: true },
-]
-const membershipPlanFields = [
-  { name: 'title', type: 'text' as const, required: true },
-  { name: 'description', type: 'textarea' as const, required: true },
-  { name: 'href', type: 'text' as const, defaultValue: '/contact' },
-  { name: 'badge', type: 'text' as const, defaultValue: 'Popular' },
-  { name: 'dark', type: 'checkbox' as const, defaultValue: false },
-]
+import { editorManagedGlobalAccess } from '../access'
+import { ADMIN_GROUPS } from '../config/adminGroups'
+import {
+  certificationFields,
+  listItemFields,
+  membershipPlanFields,
+  textItemField,
+} from '../fields'
 
 export const HomePage: GlobalConfig = {
   slug: 'homePage',
-  access: {
-    read: isPublic,
-    update: isAdminOrEditor,
-  },
+  access: editorManagedGlobalAccess,
   admin: {
-    group: 'Site',
+    group: ADMIN_GROUPS.PAGES,
+    description: 'Home page hero and section copy.',
   },
   fields: [
     {
@@ -52,6 +43,7 @@ export const HomePage: GlobalConfig = {
     {
       name: 'sectionText',
       type: 'group',
+      admin: { description: 'Headings and body copy for home page sections.' },
       fields: [
         { name: 'featuredCardsHeading', type: 'text', defaultValue: 'Our Key Services & Programs' },
         { name: 'servicesHeading', type: 'text', defaultValue: 'Our Key Services & Programs' },
@@ -202,13 +194,9 @@ export const HomePage: GlobalConfig = {
         { name: 'membershipTitle', type: 'text', defaultValue: 'Membership Plans' },
         { name: 'membershipSubtitle', type: 'textarea' },
         { name: 'membershipPlans', type: 'array', fields: membershipPlanFields },
-        { name: 'membershipCtaLabel', type: 'text', defaultValue: 'Let\'s Talk 💬' },
+        { name: 'membershipCtaLabel', type: 'text', defaultValue: "Let's Talk 💬" },
         { name: 'membershipAdvantageEyebrow', type: 'text', defaultValue: 'Why AFRS?' },
-        {
-          name: 'membershipAdvantageTitle',
-          type: 'text',
-          defaultValue: 'The membership advantage',
-        },
+        { name: 'membershipAdvantageTitle', type: 'text', defaultValue: 'The membership advantage' },
         { name: 'membershipReasons', type: 'array', fields: [textItemField] },
         { name: 'roadmapTitle', type: 'text', defaultValue: 'Future Roadmap' },
         {
