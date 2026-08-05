@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useMemo, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { resolveMediaUrl } from '@/lib/cms'
+import type { Media } from '@/payload-types'
 
 type DynamicField = {
   name: string
@@ -25,7 +26,7 @@ type Section = {
 type PaymentMethod = {
   title: string
   description?: string
-  qrCode?: number | { url?: string }
+  qrCode?: number | Media
   link?: string
 }
 
