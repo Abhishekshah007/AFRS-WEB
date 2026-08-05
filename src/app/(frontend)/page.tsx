@@ -20,6 +20,7 @@ import {
   TestimonialsSection,
   TrustedPartnerSection,
   AFRSFeatureCards,
+  PartnerLogosSection,
 } from '@/components/home/sections'
 
 export default async function HomePage() {
@@ -33,6 +34,7 @@ export default async function HomePage() {
     scientists,
     galleryItems,
     impactStats,
+    partnerLogos,
     homePage,
     siteSettings,
   ] = await Promise.all([
@@ -84,6 +86,14 @@ export default async function HomePage() {
       sort: 'order',
       overrideAccess: false,
     }),
+    payload.find({
+      collection: 'partnersLogo',
+      where: { published: { equals: true } },
+      limit: 50,
+      sort: 'order',
+      depth: 1,
+      overrideAccess: false,
+    }),
     payload.findGlobal({ slug: 'homePage', depth: 1 }),
     payload.findGlobal({ slug: 'siteSettings' }),
   ])
@@ -132,6 +142,7 @@ export default async function HomePage() {
       <LatestNewsSection />
       <CommunityBannerSection totalVisitors={totalVisitors ?? undefined} />
       <GallerySection galleryItems={galleryItems} />
+      <PartnerLogosSection partnerLogos={partnerLogos} />
       <FaqSection />
     </div>
   )

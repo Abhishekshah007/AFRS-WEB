@@ -15,7 +15,6 @@ import {
   FlaskConical,
   Gavel,
   GraduationCap,
-  MapPin,
   Microscope,
   Phone,
   ShieldCheck,
@@ -23,6 +22,7 @@ import {
 } from 'lucide-react'
 // import { Modal } from '@/components/ui/Modal'
 import { LabInquiryForm } from '@/components/services/LabInquiryForm'
+import { VisitorCounterBar } from '@/components/student-hub/VisitorCounterBar'
 import type { CatalogItem, DirectorateMember, SiteContact } from '@/components/services/types'
 import AFRSLogo from '../../../public/assets/afsl-logo.png'
 
@@ -477,10 +477,10 @@ export function ServicesPageView({
           <div className="mb-24">
             <div className="mb-12 text-center">
               <Eyebrow>Leadership & Expertise</Eyebrow>
-              <h2 className="mt-3 text-[36px] font-black leading-tight text-[#071329]">
+              <h2 className="mt-3 text-[42px] sm:text-[46px] font-black tracking-[-0.02em] leading-tight text-[#071329]">
                 Laboratory Directorate
               </h2>
-              <p className="mx-auto mt-4 max-w-[600px] text-[14px] font-medium text-[#687487]">
+              <p className="mx-auto mt-4 max-w-[600px] text-[15px] font-medium text-[#687487]">
                 Meet the visionary leaders and scientific experts directing the laboratory&apos;s
                 operations and research initiatives.
               </p>
@@ -495,20 +495,20 @@ export function ServicesPageView({
 
                     {/* Content */}
                     <div className="p-8">
-                      <div className="flex items-start gap-6">
+                      <div className="flex flex-col gap-6 lg:flex-row lg:items-center">
                         {/* Photo */}
-                        <div className="relative flex-shrink-0">
-                          <div className="absolute inset-0 rounded-[16px] bg-gradient-to-br from-[#6d28d9] to-[#8b5cf6] opacity-0 transition group-hover:opacity-20" />
-                          <div className="relative h-24 w-24 overflow-hidden rounded-[16px] border-2 border-[#e5ebf4] bg-[#f8fafd] shadow-md">
+                        <div className="relative flex-shrink-0 mx-auto lg:mx-0">
+                          <div className="absolute inset-0 rounded-[24px] bg-gradient-to-br from-[#6d28d9] to-[#8b5cf6] opacity-0 transition group-hover:opacity-20" />
+                          <div className="relative h-36 w-36 overflow-hidden rounded-[24px] border-2 border-[#e5ebf4] bg-[#f8fafd] shadow-xl">
                             {person.photo ? (
                               <Image
                                 src={person.photo}
                                 alt={person.name}
                                 fill
-                                className="object-cover transition group-hover:scale-105"
+                                className="object-cover transition duration-500 group-hover:scale-105"
                               />
                             ) : (
-                              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#6d28d9]/10 to-[#8b5cf6]/10 text-2xl font-black text-[#6d28d9]">
+                              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#6d28d9]/10 to-[#8b5cf6]/10 text-4xl font-black text-[#6d28d9]">
                                 {person.initials}
                               </div>
                             )}
@@ -516,17 +516,19 @@ export function ServicesPageView({
                         </div>
 
                         {/* Info */}
-                        <div className="flex-1">
-                          <h3 className="text-[18px] font-black text-[#071329]">{person.name}</h3>
-                          <p className="mt-2 text-[12px] font-black uppercase tracking-[0.16em] text-[#6d28d9]">
+                        <div className="flex-1 text-center lg:text-left">
+                          <h3 className="text-[24px] sm:text-[26px] font-black text-[#071329]">
+                            {person.name}
+                          </h3>
+                          <p className="mt-3 text-[14px] font-black uppercase tracking-[0.16em] text-[#6d28d9]">
                             {person.designation}
                           </p>
-                          <div className="mt-4 flex flex-wrap gap-2">
-                            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#6d28d9]/10 px-3 py-1 text-[11px] font-bold text-[#6d28d9]">
+                          <div className="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#6d28d9]/10 px-3 py-1 text-[12px] font-bold text-[#6d28d9]">
                               <Award className="h-3 w-3" />
                               Expert Certified
                             </span>
-                            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-[11px] font-bold text-emerald-700">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-[12px] font-bold text-emerald-700">
                               <ShieldCheck className="h-3 w-3" />
                               Active
                             </span>
@@ -551,53 +553,53 @@ export function ServicesPageView({
           <div>
             <div className="mb-12 text-center">
               <Eyebrow>Scientific Team</Eyebrow>
-              <h2 className="mt-3 text-[36px] font-black leading-tight text-[#071329]">
+              <h2 className="mt-3 text-[42px] sm:text-[46px] font-black tracking-[-0.02em] leading-tight text-[#071329]">
                 Laboratory Members
               </h2>
-              <p className="mx-auto mt-4 max-w-[600px] text-[14px] font-medium text-[#687487]">
+              <p className="mx-auto mt-4 max-w-[600px] text-[15px] font-medium text-[#687487]">
                 Dedicated forensic scientists and specialists committed to advancing forensic
                 science and justice.
               </p>
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+            <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {people.map((person) => {
                 return (
                   <div key={person.name}>
-                    <article className="group h-full overflow-hidden rounded-[14px] border border-[#e5ebf4] bg-gradient-to-b from-white to-[#f8fafd] shadow-[0_8px_20px_rgba(15,23,42,0.06)] transition hover:shadow-[0_12px_32px_rgba(109,40,217,0.12)] hover:-translate-y-0.5">
+                    <article className="group h-full overflow-hidden rounded-[18px] border border-[#e5ebf4] bg-gradient-to-b from-white to-[#f8fafd] shadow-[0_10px_24px_rgba(15,23,42,0.08)] transition hover:shadow-[0_14px_32px_rgba(109,40,217,0.12)] hover:-translate-y-0.5">
                       {/* Top accent line */}
                       <div className="h-0.5 w-full bg-gradient-to-r from-[#6d28d9] via-[#8b5cf6] to-transparent" />
 
-                      <div className="p-4 text-center">
+                      <div className="p-7 text-center">
                         {/* Photo */}
-                        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-[10px] border border-[#e5ebf4] bg-white overflow-hidden shadow-sm transition group-hover:shadow-md">
+                        <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-[14px] border border-[#e5ebf4] bg-white overflow-hidden shadow-sm transition group-hover:shadow-md">
                           {person.photo ? (
                             <Image
                               src={person.photo}
                               alt={person.name}
-                              width={56}
-                              height={56}
+                              width={88}
+                              height={88}
                               className="h-full w-full object-cover"
                             />
                           ) : (
-                            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#6d28d9]/10 to-[#8b5cf6]/10 text-sm font-black text-[#6d28d9]">
+                            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#6d28d9]/10 to-[#8b5cf6]/10 text-lg font-black text-[#6d28d9]">
                               {person.initials}
                             </div>
                           )}
                         </div>
 
                         {/* Name */}
-                        <h4 className="text-[11px] font-black text-[#071329] line-clamp-2">
+                        <h4 className="text-[14px] font-black text-[#071329] line-clamp-2">
                           {person.name}
                         </h4>
 
                         {/* Designation */}
-                        <p className="mt-2 text-[8px] font-bold uppercase tracking-[0.12em] text-[#9ba8ba] line-clamp-2">
+                        <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#9ba8ba] line-clamp-2">
                           {person.designation}
                         </p>
 
                         {/* Badge */}
-                        <div className="mt-3 inline-block rounded-full bg-[#6d28d9]/10 px-2 py-1 text-[7px] font-black uppercase tracking-[0.08em] text-[#6d28d9]">
+                        <div className="mt-4 inline-block rounded-full bg-[#6d28d9]/10 px-3 py-1 text-[9px] font-black uppercase tracking-[0.08em] text-[#6d28d9]">
                           Active
                         </div>
                       </div>
@@ -921,43 +923,7 @@ export function ServicesPageView({
       </section>
 
       <section className="bg-[#eef3f9] py-12">
-        <div className={`${CONTAINER} grid gap-8 lg:grid-cols-[1fr_360px]`}>
-          <div>
-            <div className="overflow-hidden rounded-[16px] border border-[#d4deea] bg-white shadow-sm">
-              <div className="afsl-static-map relative h-[255px]">
-                <div className="absolute left-[45%] top-[42%] flex -translate-x-1/2 -translate-y-1/2 flex-col items-center">
-                  <MapPin className="h-8 w-8 fill-[#ef4444] text-[#ef4444] drop-shadow" />
-                  <span className="mt-1 rounded bg-white/90 px-2 py-1 text-[10px] font-black text-[#071329] shadow-sm">
-                    Indore
-                  </span>
-                </div>
-                <span className="absolute bottom-4 left-4 rounded bg-white/95 px-3 py-2 text-[10px] font-bold text-[#4d5a6d] shadow-sm">
-                  Open in Map +
-                </span>
-              </div>
-            </div>
-          </div>
-          <div>
-            <article className="flex min-h-[255px] flex-col justify-center rounded-[18px] bg-[#5b1eb2] p-9 text-white shadow-[0_18px_45px_rgba(74,29,150,0.28)]">
-              <p className="text-[11px] font-black uppercase tracking-[0.24em] text-white/58">
-                Total Laboratory Visitors
-              </p>
-              <p className="mt-5 text-[48px] font-black tabular-nums">
-                {totalVisitors.toLocaleString('en-IN')}
-              </p>
-              <div className="mt-8 flex gap-3">
-                {[MapPin, GraduationCap].map((Icon, index) => (
-                  <span
-                    key={index}
-                    className="flex h-9 w-9 items-center justify-center rounded-full bg-white/12"
-                  >
-                    <Icon className="h-4 w-4" />
-                  </span>
-                ))}
-              </div>
-            </article>
-          </div>
-        </div>
+        <VisitorCounterBar totalVisitors={totalVisitors} icon="📈" />
       </section>
       {/* 
       <Modal

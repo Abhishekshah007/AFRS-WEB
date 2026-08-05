@@ -52,6 +52,10 @@ export const CourseRegistrations: CollectionConfig = {
     },
     { name: 'preferredBatch', type: 'text' },
     { name: 'message', type: 'textarea' },
+    { name: 'transactionId', type: 'text' },
+    { name: 'transactionDate', type: 'date' },
+    { name: 'transactionTime', type: 'text' },
+    { name: 'transactionProof', type: 'upload', relationTo: 'media' },
 
     ...registrationPaymentFields.map((field) => {
       if ('name' in field && field.name === 'paymentStatus' && field.type === 'select') {

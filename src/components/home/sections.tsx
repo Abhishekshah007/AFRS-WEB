@@ -32,6 +32,7 @@ import {
 } from 'lucide-react'
 import type { PaginatedDocs } from 'payload'
 import { TYPOGRAPHY, UI } from './design'
+import PartnerLogosCarousel from './PartnerLogosCarousel'
 
 /* ─── shared assets & layout ─── */
 export const heroPanelImage =
@@ -553,7 +554,6 @@ export function AboutSection({ sectionText }: { sectionText: SectionText }) {
                   alt="AFRS laboratory"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
                 />
               </div>
             </div>
@@ -619,7 +619,7 @@ export function InternshipProgramSection() {
               <div className="overflow-hidden rounded-[24px] border-[10px] border-white bg-white shadow-[0_32px_60px_rgba(15,23,42,0.18)]">
                 <div className="relative aspect-[1/1] w-full">
                   <Image
-                    src="https://res.cloudinary.com/drrzakkgo/image/upload/v1781617023/WhatsApp_Image_2026-06-16_at_6.35.45_PM_jfmudj.jpg"
+                    src="https://res.cloudinary.com/drrzakkgo/image/upload/v1785958676/afrs/payload/media/Screenshot_2026-08-06_010405_y8knu5.png"
                     alt="Forensic Internship Program"
                     fill
                     className="object-cover"
@@ -691,15 +691,22 @@ export function FutureSection() {
       <div className={`${CONTAINER} grid gap-10 lg:grid-cols-2 items-center`}>
         <AnimateOnScroll direction="left">
           <div className="relative rounded-3xl overflow-hidden bg-slate-200 aspect-[16/10] lg:min-h-[320px] card-pop">
-            <Image
-              src={aboutImage}
-              alt="Future of forensics"
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover opacity-90"
-            />
+            {/* https://res.cloudinary.com/drrzakkgo/video/upload/v1785948666/afrs-prev_ub9leo.mp4 */}
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 h-full w-full object-cover"
+            >
+              <source
+                src="https://res.cloudinary.com/drrzakkgo/video/upload/v1785948666/afrs-prev_ub9leo.mp4"
+                type="video/mp4"
+              />
+            </video>
+
             <div className="absolute inset-0 bg-slate-900/25" />
-            <div className="absolute inset-0 flex items-center justify-center">
+            {/* <div className="absolute inset-0 flex items-center justify-center">
               <button
                 type="button"
                 aria-label="Play introduction video"
@@ -707,7 +714,7 @@ export function FutureSection() {
               >
                 ►
               </button>
-            </div>
+            </div> */}
           </div>
         </AnimateOnScroll>
         <AnimateOnScroll direction="right">
@@ -1146,20 +1153,32 @@ export function TestimonialsSection({
 }
 
 /* ─── 13. Partner logos ─── */
-export function PartnerLogosSection() {
+export function PartnerLogosSection({
+  partnerLogos,
+}: {
+  partnerLogos?: PaginatedDocs<unknown> | { docs?: unknown[] }
+}) {
+  const items =
+    (partnerLogos && 'docs' in (partnerLogos as any)
+      ? (partnerLogos as any).docs
+      : Array.isArray(partnerLogos as any)
+        ? partnerLogos
+        : []) || []
+
   return (
     <section className="py-12 bg-slate-50 border-y border-slate-100">
       <div className={CONTAINER}>
-        <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 opacity-50">
-          {['Partner', 'University', 'Institute', 'Lab', 'Research'].map((name) => (
-            <div
-              key={name}
-              className="h-10 w-28 rounded-lg bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-400 uppercase tracking-wider"
-            >
-              {name}
-            </div>
-          ))}
-        </div>
+        <SectionHeader
+          align="center"
+          accent={false}
+          className="mb-10 max-w-none mx-0"
+          title="Trusted by Leading Institutions"
+          subtitle="We collaborate with renowned organizations to advance forensic science education and research."
+        />
+
+        <AnimateOnScroll stagger>
+          <PartnerLogosCarousel items={items as any} />
+        </AnimateOnScroll>
       </div>
     </section>
   )

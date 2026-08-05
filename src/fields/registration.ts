@@ -16,13 +16,14 @@ export const registrationContactFields = ({
   organizationRequired = false,
   designationRequired = false,
 }: RegistrationContactOptions = {}): Field[] => [
-  { name: 'fullName', type: 'text', required: true },
-  { name: 'email', type: 'email', required: true },
-  { name: 'countryCode', type: 'text', defaultValue: '+91' },
-  { name: 'mobileNumber', type: 'text', required: true },
-  { name: 'organization', type: 'text', required: organizationRequired },
-  { name: 'designation', type: 'text', required: designationRequired },
-]
+    { name: 'fullName', type: 'text', required: true },
+    { name: 'email', type: 'email', required: true },
+    { name: 'countryCode', type: 'text', defaultValue: '+91' },
+    { name: 'mobileNumber', type: 'text', required: true },
+    { name: 'address', type: 'text' },
+    { name: 'organization', type: 'text', required: organizationRequired },
+    { name: 'designation', type: 'text', required: designationRequired },
+  ]
 
 /** Shared payment tracking fields for registrations. */
 export const registrationPaymentFields: Field[] = [

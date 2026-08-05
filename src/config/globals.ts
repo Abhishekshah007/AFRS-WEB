@@ -2,6 +2,7 @@ import { FooterSettings } from '../globals/FooterSettings'
 import { HeaderSettings } from '../globals/HeaderSettings'
 import { HomePage } from '../globals/HomePage'
 import { ProgrammesCatalog } from '../globals/ProgrammesCatalog'
+import { RegistrationForm } from '../globals/RegistrationForm'
 import { SiteSettings } from '../globals/SiteSettings'
 import { StudentHubContent } from '../globals/StudentHubContent'
 
@@ -15,6 +16,7 @@ export const globals = [
   HomePage,
   // Programmes
   ProgrammesCatalog,
+  RegistrationForm,
   // Student Hub
   StudentHubContent,
 ]
