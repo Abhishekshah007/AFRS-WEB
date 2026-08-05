@@ -74,6 +74,7 @@ export interface Config {
     testimonials: Testimonial;
     scientists: Scientist;
     impactStats: ImpactStat;
+    partnersLogo: PartnersLogo;
     events: Event;
     eventRegistrations: EventRegistration;
     courseRegistrations: CourseRegistration;
@@ -94,6 +95,7 @@ export interface Config {
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     scientists: ScientistsSelect<false> | ScientistsSelect<true>;
     impactStats: ImpactStatsSelect<false> | ImpactStatsSelect<true>;
+    partnersLogo: PartnersLogoSelect<false> | PartnersLogoSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     eventRegistrations: EventRegistrationsSelect<false> | EventRegistrationsSelect<true>;
     courseRegistrations: CourseRegistrationsSelect<false> | CourseRegistrationsSelect<true>;
@@ -115,6 +117,7 @@ export interface Config {
     footerSettings: FooterSetting;
     homePage: HomePage;
     programmesCatalog: ProgrammesCatalog;
+    registrationForm: RegistrationForm;
     studentHubContent: StudentHubContent;
   };
   globalsSelect: {
@@ -123,6 +126,7 @@ export interface Config {
     footerSettings: FooterSettingsSelect<false> | FooterSettingsSelect<true>;
     homePage: HomePageSelect<false> | HomePageSelect<true>;
     programmesCatalog: ProgrammesCatalogSelect<false> | ProgrammesCatalogSelect<true>;
+    registrationForm: RegistrationFormSelect<false> | RegistrationFormSelect<true>;
     studentHubContent: StudentHubContentSelect<false> | StudentHubContentSelect<true>;
   };
   locale: null;
@@ -410,6 +414,22 @@ export interface ImpactStat {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "partnersLogo".
+ */
+export interface PartnersLogo {
+  id: number;
+  name: string;
+  logo?: (number | null) | Media;
+  published?: boolean | null;
+  /**
+   * Lower numbers appear first.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "events".
  */
 export interface Event {
@@ -471,6 +491,7 @@ export interface EventRegistration {
   email: string;
   countryCode?: string | null;
   mobileNumber: string;
+  address?: string | null;
   organization: string;
   designation: string;
   areaOfInterest: string;
@@ -509,12 +530,17 @@ export interface CourseRegistration {
   email: string;
   countryCode?: string | null;
   mobileNumber: string;
+  address?: string | null;
   organization?: string | null;
   designation?: string | null;
   qualification?: string | null;
   experienceLevel?: ('student' | 'beginner' | 'professional' | 'faculty') | null;
   preferredBatch?: string | null;
   message?: string | null;
+  transactionId?: string | null;
+  transactionDate?: string | null;
+  transactionTime?: string | null;
+  transactionProof?: (number | null) | Media;
   totalAmount?: number | null;
   paymentProvider?: ('stripe' | 'manual') | null;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'notRequired';
@@ -619,6 +645,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'impactStats';
         value: number | ImpactStat;
+      } | null)
+    | ({
+        relationTo: 'partnersLogo';
+        value: number | PartnersLogo;
       } | null)
     | ({
         relationTo: 'events';
@@ -820,6 +850,18 @@ export interface ImpactStatsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "partnersLogo_select".
+ */
+export interface PartnersLogoSelect<T extends boolean = true> {
+  name?: T;
+  logo?: T;
+  published?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "events_select".
  */
 export interface EventsSelect<T extends boolean = true> {
@@ -862,6 +904,7 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
   email?: T;
   countryCode?: T;
   mobileNumber?: T;
+  address?: T;
   organization?: T;
   designation?: T;
   areaOfInterest?: T;
@@ -899,12 +942,17 @@ export interface CourseRegistrationsSelect<T extends boolean = true> {
   email?: T;
   countryCode?: T;
   mobileNumber?: T;
+  address?: T;
   organization?: T;
   designation?: T;
   qualification?: T;
   experienceLevel?: T;
   preferredBatch?: T;
   message?: T;
+  transactionId?: T;
+  transactionDate?: T;
+  transactionTime?: T;
+  transactionProof?: T;
   totalAmount?: T;
   paymentProvider?: T;
   paymentStatus?: T;
@@ -1423,6 +1471,67 @@ export interface ProgrammesCatalog {
   createdAt?: string | null;
 }
 /**
+ * Configure the course registration form fields and payment instructions.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "registrationForm".
+ */
+export interface RegistrationForm {
+  id: number;
+  formTitle: string;
+  formSubtitle?: string | null;
+  sections?:
+    | {
+        title: string;
+        description?: string | null;
+        fields?:
+          | {
+              name: string;
+              label: string;
+              fieldType: 'text' | 'email' | 'tel' | 'textarea' | 'select' | 'date' | 'time' | 'file' | 'number';
+              required?: boolean | null;
+              placeholder?: string | null;
+              /**
+               * Comma-separated options for select fields.
+               */
+              options?: string | null;
+              /**
+               * Rows for textarea fields.
+               */
+              rows?: number | null;
+              /**
+               * Accept attribute for file inputs.
+               */
+              accept?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  paymentInstructions?: {
+    title?: string | null;
+    accountName?: string | null;
+    accountNumber?: string | null;
+    ifsc?: string | null;
+    swift?: string | null;
+    branchAddress?: string | null;
+    upiId?: string | null;
+    note?: string | null;
+  };
+  paymentMethods?:
+    | {
+        title: string;
+        description?: string | null;
+        qrCode?: (number | null) | Media;
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * Student hub resources, exam prep cards, and achievers.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1813,6 +1922,58 @@ export interface ProgrammesCatalogSelect<T extends boolean = true> {
     | {
         image?: T;
         alt?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "registrationForm_select".
+ */
+export interface RegistrationFormSelect<T extends boolean = true> {
+  formTitle?: T;
+  formSubtitle?: T;
+  sections?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        fields?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              fieldType?: T;
+              required?: T;
+              placeholder?: T;
+              options?: T;
+              rows?: T;
+              accept?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  paymentInstructions?:
+    | T
+    | {
+        title?: T;
+        accountName?: T;
+        accountNumber?: T;
+        ifsc?: T;
+        swift?: T;
+        branchAddress?: T;
+        upiId?: T;
+        note?: T;
+      };
+  paymentMethods?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        qrCode?: T;
+        link?: T;
         id?: T;
       };
   updatedAt?: T;
