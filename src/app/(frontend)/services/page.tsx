@@ -63,13 +63,13 @@ const fallbackDirectors: DirectorateMember[] = [
 const fallbackTeam: DirectorateMember[] = [
   {
     name: 'Ms. Megha Jain',
-    designation: 'Digital Forensic Expert',
+    designation: 'Forensic Expert',
     initials: 'MJ',
     photo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1763141455/xpvpfqfee6ppp875xdd5.jpg',
   },
   {
     name: 'Dr. Shrutika Singla',
-    designation: 'Fire & Arson Expert',
+    designation: 'Forensic Expert',
     initials: 'SS',
     photo:
       'https://res.cloudinary.com/drrzakkgo/image/upload/v1762258621/WhatsApp_Image_2025-11-04_at_12.37.51_AM_h1kedk.jpg',

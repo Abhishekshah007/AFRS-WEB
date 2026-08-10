@@ -69,7 +69,7 @@ const legalLinks = [
   'Medico Legal Property Report',
   'Cross Examination Training',
   'Research & Lab Projects',
-  'Expert Opinion (CrPC 45A)',
+  'Expert Opinion (39 of BSA)',
   'Internship & Training',
   'Insurance Forensics Panel',
 ]
@@ -618,13 +618,13 @@ export function ServicesPageView({
                 </p>
               </div>
               <div className="text-center">
-                <p className="text-[28px] font-black text-[#8b5cf6]">2+</p>
+                <p className="text-[28px] font-black text-[#8b5cf6]">5+</p>
                 <p className="mt-2 text-[12px] font-bold uppercase tracking-[0.12em] text-[#687487]">
                   Years Experience
                 </p>
               </div>
               <div className="text-center">
-                <p className="text-[28px] font-black text-[#6d28d9]">10+</p>
+                <p className="text-[28px] font-black text-[#6d28d9]">200+</p>
                 <p className="mt-2 text-[12px] font-bold uppercase tracking-[0.12em] text-[#687487]">
                   Cases Handled
                 </p>
@@ -675,12 +675,12 @@ export function ServicesPageView({
                         <Microscope className="h-4 w-4" />
                       )}
                     </span>
-                    <h3 className="absolute bottom-5 left-16 right-5 text-[16px] font-black text-white">
+                    <h3 className="absolute bottom-5 left-16 right-5 text-[18px] font-black text-white">
                       {item.title}
                     </h3>
                   </div>
                   <div className="p-6">
-                    <p className="min-h-[92px] text-[12px] font-medium leading-6 text-[#627086]">
+                    <p className="min-h-[92px] text-[14px] font-medium leading-6 text-[#627086]">
                       {item.desc}
                     </p>
                     <span className="mt-5 flex h-10 items-center justify-center rounded-[5px] border border-[#6d28d9] text-[10px] font-black uppercase tracking-[0.12em] text-[#4f1aa0]">
@@ -821,7 +821,7 @@ export function ServicesPageView({
                   'View Modules +',
                 ],
                 [
-                  'Student & Internships',
+                  'Internship Program',
                   'Hands-on laboratory experience for aspiring forensic scientists. Accredited programs covering 12 scientific disciplines.',
                   'Apply Now +',
                 ],

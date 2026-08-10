@@ -7,6 +7,7 @@ import { AwardsGallery } from '@/components/about/AwardsGallery'
 import { CertificationsSection } from '@/components/about/CertificationsSection'
 import { LeadershipSection } from '@/components/about/LeadershipSection'
 import { MembershipSection } from '@/components/about/MembershipSection'
+import { TargetAudienceTable } from '@/components/about/TargetAudience'
 import { ValuesSection } from '@/components/about/ValuesSection'
 import { VisionMissionPurpose } from '@/components/about/VisionMissionPurpose'
 import type {
@@ -188,6 +189,8 @@ export function AboutPageView({
         items={whyChooseItems}
         variant="compact"
       />
+
+      <TargetAudienceTable />
 
       <AboutPillarsSection
         qualityEthicsItems={qualityEthicsItems}

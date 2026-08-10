@@ -6,6 +6,9 @@ export const topicFilters: TopicFilter[] = [
   { id: 'toxicology', label: 'Toxicology', value: 'toxicology' },
   { id: 'dna', label: 'DNA', value: 'dna' },
   { id: 'digitalForensics', label: 'Digital Forensics', value: 'digitalForensics' },
+  { id: 'ballistics', label: 'Ballistics', value: 'ballistics', icon: '🎯' },
+  { id: 'psychology', label: 'Psychology', value: 'psychology', icon: '🧠' },
+  { id: 'general', label: 'General', value: 'general', icon: '📘' },
 ]
 
 export const defaultFeatured: FeaturedArticle = {
