@@ -44,24 +44,44 @@ const defaultCertifications: CertificationItem[] = [
 
 const defaultUnique = [
   {
-    text: 'Research-led curriculum mapped to real case workflows',
-    description: 'Training aligned with investigation, evidence handling, and reporting standards.',
+    text: 'AFRS integrates forensic research, real casework, and professional training under one platform to provide end-to-end forensic solutions.  ',
+    description:
+      'AFRS bridges the gap between academic research, practical casework, and professional development, offering a comprehensive approach to forensic science education and practice.',
   },
   {
-    text: 'ISO-minded laboratory practices and chain-of-custody focus',
-    description: 'Quality processes that support credible and defensible forensic outcomes.',
+    text: 'We deliver multi-disciplinary expertise across Fingerprint Science, Questioned Document Examination, Crime Scene Management, Forensic Photography & Videography, and Medico-Legal Correlation.',
+    description:
+      'AFRS provides a holistic approach to forensic science, combining multiple disciplines to ensure comprehensive understanding and application in real-world scenarios.',
   },
   {
-    text: 'Hybrid learning — online theory with offline practicals',
-    description: 'Flexible delivery without compromising hands-on forensic competency.',
+    text: 'All our programs and services are based on real case studies, simulated crime scenes, and practical exposure to medico-legal investigations.',
+    description:
+      'AFRS emphasizes experiential learning, allowing students and professionals to engage with authentic forensic scenarios, enhancing their practical skills and investigative acumen.',
   },
   {
-    text: 'Mentorship from practicing forensic scientists',
-    description: 'Guidance from professionals actively engaged in casework and research.',
+    text: 'Our procedures strictly adhere to BNS, BNSS, BSA and focus on scientific documentation, chain of custody, and court-admissible evidence.',
+    description:
+      'AFRS maintains rigorous standards in forensic practice, ensuring that all procedures comply with established scientific and legal protocols, thereby enhancing the credibility and admissibility of evidence in judicial proceedings.',
   },
   {
-    text: 'Nationwide network of students and professionals',
-    description: 'A growing community connecting learners, experts, and institutions.',
+    text: 'We follow advanced crime scene protocols including scene securing, evidence mapping, trace evidence collection, and contamination control as per ISO/IEC 17025 standards.',
+    description:
+      'AFRS implements internationally recognized standards for crime scene investigation, ensuring meticulous handling of evidence and adherence to best practices in forensic science.',
+  },
+  {
+    text: 'AFRS emphasises research, method validation, and application of core forensic principles to ensure technically sound and legally defensible analysis.',
+    description:
+      'AFRS is committed to advancing forensic science through rigorous research, validation of methods, and application of core principles to ensure that all analyses are technically sound and legally defensible.',
+  },
+  {
+    text: 'We act as a knowledge bridge between academia, law enforcement, and the judiciary through expert sessions, workshops, and capacity building.',
+    description:
+      'AFRS facilitates collaboration and knowledge exchange among academic institutions, law enforcement agencies, and the judiciary, fostering a well-informed and competent forensic community.',
+  },
+  {
+    text: 'We maintain NABL-aligned SOPs with quality assurance and proficiency testing to uphold technical accuracy and legal integrity in every case.',
+    description:
+      'AFRS ensures that all procedures meet the highest standards of quality and accuracy, maintaining compliance with NABL requirements and promoting legal integrity in forensic analysis.',
   },
 ]
 
@@ -79,12 +99,30 @@ const defaultActivities = [
     description: 'Expert support for investigations, examinations, and case strategy.',
   },
   {
-    text: 'Workshops, webinars, and national conferences',
+    text: 'Workshops, webinars, national and  international conferences',
     description: 'Regular platforms for knowledge exchange and professional networking.',
   },
   {
     text: 'Published research and collaborative investigations',
     description: 'Contributions to forensic science through applied research and publications.',
+  },
+  {
+    text: 'Refresher Courses/Training on Forensic Perspectives to Investigation officers of State Police, Public Prosecutors/Lawyers, Vigilance officers of Banks and PSUs.',
+    description: 'Specialized training sessions to enhance investigative and legal competencies.',
+  },
+  {
+    text: 'Forensic Science Internship & Training Programmes (Online & Offline Mode)',
+    description:
+      'Hands-on training opportunities for students and professionals in forensic science.',
+  },
+  {
+    text: 'Dissertation for UG & PG Students',
+    description: 'Support for academic research projects and thesis work in forensic science.',
+  },
+  {
+    text: 'Ambassadors, Volunteership and Membership Programs',
+    description:
+      'Engagement opportunities for students and professionals to contribute to AFRS initiatives.',
   },
 ]
 
@@ -178,28 +216,22 @@ const defaultSectionText: AboutSectionText = {
   qualityEthicsTitle: 'Quality & Ethics',
   qualityEthicsEyebrow: 'Standards',
   qualityEthicsItems: [
-    'Upholding academic integrity and ethical conduct',
-    'Promoting evidence-based and scientifically sound practices',
-    'Maintaining professionalism, transparency, and accountability',
-    'Ensuring quality and relevance in educational activities',
-    'Encouraging responsible research and publication practices',
-    'Respecting confidentiality and privacy where applicable',
-    'Fostering an inclusive and collaborative learning environment',
-    'Pursuing continuous improvement through feedback and innovation',
-    'Delivering programs with integrity, credibility, and professional responsibility',
+    'AFRS adheres to ISO/IEC 17025 standards and follows NABL-aligned SOPs to ensure technical competence, traceability, and reproducibility of all forensic analyses.',
+    'Strict chain of custody protocols are maintained from evidence collection to final reporting to preserve integrity and ensure legal admissibility under BSA and BNSS.',
+    'All casework follows principles of contamination control, documentation, and peer review to minimize error rates and uphold scientific defensibility in court.',
+    'AFRS operates on the highest standards of forensic ethics, including objectivity, impartiality, confidentiality, and avoidance of bias or conflict of interest.',
+    'Our experts are committed to scientific integrity and provide opinions based solely on empirical data, observation, and validated methodology without external influence.',
+    'We ensure data security and privacy of all case materials and reports, with restricted access and secure storage as per legal and professional guidelines.',
+    'Continuous training, competency assessment, and adherence to a code of conduct ensure that all personnel uphold professional accountability and ethical responsibility.',
   ],
   researchItems: [
-    'Research awareness and scientific inquiry among students and professionals. ',
-
-    'Scientific writing and publication-related guidance.',
-    'Review articles, case-based discussions, and academic communication. ',
-    'Exposure to emerging technologies and contemporary developments in forensic science. ',
-    'Interdisciplinary interaction and collaborative learning opportunities. ',
-    'Knowledge dissemination through webinars, workshops, conferences and educational resources. ',
-    'Critical thinking and evidence-based approaches to problem-solving. ',
-    'Development of research skills and academic competencies. ',
-    'Encouragement of ethical and responsible research practices. ',
-    'Exchange of ideas among researchers, academicians, and forensic professionals',
+    'Cultivating research awareness and scientific inquiry among students and forensic professionals to promote evidence-based practice.',
+    'Providing mentorship in scientific writing, peer-reviewed publication, and technical documentation aligned with court-admissible standards.',
+    'Facilitating critical review of case studies, research articles, and medico-legal discussions to strengthen analytical and interpretive skills.',
+    'Ensuring exposure to emerging forensic technologies including digital forensics, 3D crime scene reconstruction, AI-driven pattern analysis, and advanced instrumental techniques in trace evidence.',
+    'Promoting interdisciplinary collaboration and knowledge exchange across Fingerprint Science, Questioned Document Examination, Medico-Legal Sciences, and Criminalistics for innovative research outcomes.',
+    'Conducting method validation, proficiency testing, and quality assurance studies to ensure reliability, reproducibility, and legal defensibility of forensic procedures as per ISO/IEC 17025 standards.',
+    'Exploring the impact of BNS, BNSS, and BSA on scientific evidence handling, chain of custody, and admissibility to align research with contemporary legal frameworks.',
   ],
   researchTitle: 'Research Focus',
   researchEyebrow: 'Innovation',
@@ -214,9 +246,9 @@ const defaultSectionText: AboutSectionText = {
     'International collaborators',
   ],
   pillarProofLabels: [
-    'Evidence-based decisions',
-    'Continuous improvement',
-    'National & global outreach',
+    'AFRS - Science in Service of Justice',
+    'AFRS - Committed to Quality, Guided by Ethics, Driven by Science',
+    'AFRS - Advancing Forensic Science Through Research and Innovation',
   ],
   membershipTitle: 'Membership Plans',
   membershipSubtitle:

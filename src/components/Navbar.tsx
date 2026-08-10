@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import type { HeaderSetting } from '@/payload-types'
 import Image from 'next/image'
 import logo from '../../public/assets/logo.png'
+import afslLogo from '../../public/assets/afsl-logo.png'
 import { springSnappy } from '@/components/motion/variants'
 import SocialMediaIcons from './social/SocialMediaIcons'
 
@@ -127,7 +128,17 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
             transition={springSnappy}
             className="w-11 h-11 bg-gradient-to-br from-indigo-500 via-violet-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-indigo-500/25"
           >
-            <Image src={logo} alt="AFRS Logo" width={44} height={44} className="rounded-full" />
+            {pathname === '/services' ? (
+              <Image
+                src={afslLogo}
+                alt="AFSL Logo"
+                width={44}
+                height={44}
+                className="rounded-full"
+              />
+            ) : (
+              <Image src={logo} alt="AFRS Logo" width={44} height={44} className="rounded-full" />
+            )}
           </motion.div>
           <div className="hidden sm:block">
             {pathname === '/services' ? (

@@ -1,9 +1,8 @@
 'use client'
 
+import React, { useEffect, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { FormEvent, useState } from 'react'
 import type { TopicFilter } from '@/components/student-hub/articles/types'
-import { studentHubTokens } from '@/components/student-hub/tokens'
 
 export type ArticlesHeroProps = {
   filters: TopicFilter[]
@@ -14,10 +13,35 @@ export type ArticlesHeroProps = {
 /**
  * Blue hero with search and topic pills — updates URL search params.
  */
-export function ArticlesHero({ filters, activeTopic, initialQuery = '' }: ArticlesHeroProps) {
+export function ArticlesHero({
+  filters,
+  activeTopic,
+  initialQuery = '',
+}: Readonly<ArticlesHeroProps>) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [query, setQuery] = useState(initialQuery)
+  const [openMore, setOpenMore] = useState(false)
+  const moreRef = useRef<HTMLDivElement | null>(null)
+
+  const visibleFilters = filters.filter((filter) =>
+    ['all', 'odontology', 'toxicology', 'dna', 'digitalForensics'].includes(filter.value),
+  )
+  const moreFilters = filters.filter(
+    (filter) =>
+      !['all', 'odontology', 'toxicology', 'dna', 'digitalForensics'].includes(filter.value),
+  )
+
+  useEffect(() => {
+    function handleOutside(event: MouseEvent) {
+      if (moreRef.current && !moreRef.current.contains(event.target as Node)) {
+        setOpenMore(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleOutside)
+    return () => document.removeEventListener('mousedown', handleOutside)
+  }, [])
 
   function buildUrl(overrides: { q?: string; topic?: string; page?: string }) {
     const params = new URLSearchParams(searchParams.toString())
@@ -31,11 +55,11 @@ export function ArticlesHero({ filters, activeTopic, initialQuery = '' }: Articl
     }
     params.delete('page')
     const qs = params.toString()
-    return `/student-hub/articles${qs ? `?${qs}` : ''}`
+    return qs ? '/student-hub/articles?' + qs : '/student-hub/articles'
   }
 
-  function onSearch(e: FormEvent) {
-    e.preventDefault()
+  function onSearch(event: React.SyntheticEvent<HTMLFormElement>) {
+    event.preventDefault()
     router.push(buildUrl({ q: query.trim() }))
   }
 
@@ -60,8 +84,8 @@ export function ArticlesHero({ filters, activeTopic, initialQuery = '' }: Articl
 
       {/* Subtitle */}
       <p className="mt-4 max-w-xl mx-auto text-sm sm:text-base text-white/85 leading-relaxed">
-        Explore curated forensic science articles, research summaries, and expert commentary for students and
-        professionals.
+        Explore curated forensic science articles, research summaries, and expert commentary for
+        students and professionals.
       </p>
 
       {/* Search bar */}
@@ -75,8 +99,18 @@ export function ArticlesHero({ filters, activeTopic, initialQuery = '' }: Articl
           Search topics, authors, or keywords
         </label>
         <span className="pl-4 text-slate-400" aria-hidden>
-          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z" />
+          <svg
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"
+            />
           </svg>
         </span>
         <input
@@ -89,34 +123,76 @@ export function ArticlesHero({ filters, activeTopic, initialQuery = '' }: Articl
         />
         <button
           type="submit"
-          className="shrink-0 h-11 px-6 sm:px-8 rounded-full bg-[var(--articles-accent)] hover:bg-[var(--articles-accent-hover)] text-white text-xs sm:text-sm font-bold uppercase tracking-wide transition"
+          className="shrink-0 h-11 px-6 sm:px-8 rounded-full bg-(--articles-accent) hover:bg-(--articles-accent-hover) text-white text-xs sm:text-sm font-bold uppercase tracking-wide transition"
         >
           Search
         </button>
       </form>
 
       {/* Topic filter pills */}
-      <div className="mt-6 flex flex-wrap justify-center gap-3" role="group" aria-label="Filter by topic">
-        {filters.map((filter) => {
-          const isActive =
-            filter.value === 'all' ? !activeTopic || activeTopic === 'all' : activeTopic === filter.value
+      <div className="mt-6 flex flex-wrap justify-center gap-3">
+        {visibleFilters.map((filter) => {
+          const isActive = activeTopic === filter.value
           return (
             <button
               key={filter.id}
               type="button"
-              onClick={() => onTopic(filter.value === 'all' ? 'all' : filter.value)}
-              className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
+              onClick={() => onTopic(filter.value)}
+              className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
                 isActive
-                  ? 'bg-white text-[var(--articles-accent)] shadow-md'
+                  ? 'bg-white text-(--articles-accent) shadow-md'
                   : 'bg-white/15 text-white border border-white/30 hover:bg-white/25'
               }`}
               aria-pressed={isActive}
             >
-              {filter.icon && <span aria-hidden>{filter.icon}</span>}
+              {filter.icon && <span aria-hidden="true">{filter.icon}</span>}
               {filter.label}
             </button>
           )
         })}
+
+        <div ref={moreRef} className="relative">
+          <button
+            type="button"
+            onClick={() => setOpenMore((prev) => !prev)}
+            className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
+              moreFilters.some((filter) => filter.value === activeTopic)
+                ? 'bg-white text-(--articles-accent) shadow-md'
+                : 'bg-white/15 text-white border border-white/30 hover:bg-white/25'
+            }`}
+            aria-expanded={openMore}
+          >
+            More{' '}
+            <span aria-hidden="true" className="text-xs">
+              ▼
+            </span>
+          </button>
+
+          {openMore && (
+            <div className="absolute right-0 z-10 mt-3 w-56 rounded-[20px] border border-white/20 bg-white/95 p-3 shadow-[0_18px_32px_rgba(15,23,42,0.18)] backdrop-blur-sm">
+              <div className="space-y-2">
+                {moreFilters.map((filter) => (
+                  <button
+                    key={filter.id}
+                    type="button"
+                    onClick={() => {
+                      onTopic(filter.value)
+                      setOpenMore(false)
+                    }}
+                    className="w-full rounded-[18px] px-4 py-2 text-left text-sm font-semibold text-[#071329] transition hover:bg-[#eef3f9]"
+                  >
+                    {filter.icon && (
+                      <span className="mr-2" aria-hidden="true">
+                        {filter.icon}
+                      </span>
+                    )}
+                    {filter.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
