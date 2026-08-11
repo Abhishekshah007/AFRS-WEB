@@ -4,6 +4,8 @@ import { useMemo, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { PaymentInstructionsPanel } from '@/components/forms/PaymentInstructionsPanel'
+import type { RegistrationPaymentConfig } from '@/domain/registration/types'
 
 type EventCategory = {
   id: string
@@ -27,13 +29,24 @@ type EventRegistrationData = {
   categories: EventCategory[]
 }
 
-type Props = { event: EventRegistrationData }
+type Props = {
+  event: EventRegistrationData
+  paymentConfig: RegistrationPaymentConfig
+}
 
-export function EventRegistrationFlow({ event }: Props) {
+const inputClass = 'w-full h-11 rounded-xl border border-slate-200 px-3 text-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100'
+
+export function EventRegistrationFlow({ event, paymentConfig }: Props) {
   const router = useRouter()
-  const [step, setStep] = useState<1 | 2 | 3>(1)
+  const [step, setStep] = useState<1 | 2>(1)
   const [loading, setLoading] = useState(false)
-  const [registrationId, setRegistrationId] = useState<string>('')
+  const [registrationId, setRegistrationId] = useState('')
+  const [paymentForm, setPaymentForm] = useState({
+    transactionId: '',
+    transactionDate: '',
+    transactionTime: '',
+    transactionProof: null as File | null,
+  })
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -67,7 +80,7 @@ export function EventRegistrationFlow({ event }: Props) {
     }))
   }
 
-  const validate = () => {
+  const validateStepOne = () => {
     if (
       !form.fullName ||
       !form.email ||
@@ -85,7 +98,7 @@ export function EventRegistrationFlow({ event }: Props) {
   }
 
   const initiateRegistration = async () => {
-    if (!validate()) return
+    if (!validateStepOne()) return
     setLoading(true)
     try {
       const res = await fetch('/api/event-registrations/initiate', {
@@ -108,18 +121,29 @@ export function EventRegistrationFlow({ event }: Props) {
     }
   }
 
-  const confirmPayment = async () => {
+  const submitPaymentDetails = async () => {
     if (!registrationId) return
+    if (!paymentForm.transactionId.trim()) {
+      setError('Please enter your UPI / bank transaction reference.')
+      return
+    }
+
     setLoading(true)
+    setError('')
     try {
-      const res = await fetch('/api/event-registrations/confirm-payment', {
+      const body = new FormData()
+      body.set('registrationId', registrationId)
+      body.set('transactionId', paymentForm.transactionId.trim())
+      if (paymentForm.transactionDate) body.set('transactionDate', paymentForm.transactionDate)
+      if (paymentForm.transactionTime) body.set('transactionTime', paymentForm.transactionTime)
+      if (paymentForm.transactionProof) body.set('transactionProof', paymentForm.transactionProof)
+
+      const res = await fetch('/api/event-registrations/complete', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ registrationId }),
+        body,
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Payment failed')
-      setStep(3)
+      if (!res.ok) throw new Error(data.error || 'Unable to submit payment details')
       router.push(data.redirectTo)
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Something went wrong')
@@ -168,14 +192,14 @@ export function EventRegistrationFlow({ event }: Props) {
 
         <main className="space-y-5">
           <div className="flex items-center gap-3 text-xs">
-            {[1, 2, 3].map((s) => (
+            {[1, 2].map((s) => (
               <div key={s} className="flex items-center gap-3 flex-1">
                 <div
                   className={`h-7 w-7 rounded-full border text-center leading-7 font-bold ${step >= s ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white border-slate-300 text-slate-500'}`}
                 >
                   {s}
                 </div>
-                <div className="h-[2px] bg-slate-200 flex-1" />
+                {s < 2 ? <div className="h-[2px] bg-slate-200 flex-1" /> : null}
               </div>
             ))}
           </div>
@@ -185,14 +209,14 @@ export function EventRegistrationFlow({ event }: Props) {
               <section className="rounded-2xl border border-slate-200 bg-white p-5 space-y-4 shadow-sm">
                 <h3 className="font-extrabold text-slate-900">Personal Information</h3>
                 <input
-                  className="w-full h-11 rounded-xl border border-slate-200 px-3 text-sm"
+                  className={inputClass}
                   placeholder="Full Name *"
                   value={form.fullName}
                   onChange={(e) => setForm((p) => ({ ...p, fullName: e.target.value }))}
                 />
                 <div className="grid gap-3 sm:grid-cols-2">
                   <input
-                    className="h-11 rounded-xl border border-slate-200 px-3 text-sm"
+                    className={inputClass}
                     placeholder="Email *"
                     value={form.email}
                     onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
@@ -212,7 +236,7 @@ export function EventRegistrationFlow({ event }: Props) {
                   </div>
                 </div>
                 <input
-                  className="w-full h-11 rounded-xl border border-slate-200 px-3 text-sm"
+                  className={inputClass}
                   placeholder="University / Organization *"
                   value={form.organization}
                   onChange={(e) => setForm((p) => ({ ...p, organization: e.target.value }))}
@@ -223,13 +247,13 @@ export function EventRegistrationFlow({ event }: Props) {
                 <h3 className="font-extrabold text-slate-900">Professional Details</h3>
                 <div className="grid gap-3 sm:grid-cols-2">
                   <input
-                    className="h-11 rounded-xl border border-slate-200 px-3 text-sm"
+                    className={inputClass}
                     placeholder="Designation *"
                     value={form.designation}
                     onChange={(e) => setForm((p) => ({ ...p, designation: e.target.value }))}
                   />
                   <select
-                    className="h-11 rounded-xl border border-slate-200 px-3 text-sm"
+                    className={inputClass}
                     value={form.areaOfInterest}
                     onChange={(e) => setForm((p) => ({ ...p, areaOfInterest: e.target.value }))}
                   >
@@ -303,7 +327,7 @@ export function EventRegistrationFlow({ event }: Props) {
                     disabled={loading}
                     className="h-12 px-8 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold disabled:opacity-60"
                   >
-                    {loading ? 'Processing...' : 'Proceed to Payment →'}
+                    {loading ? 'Processing...' : 'Continue to Payment →'}
                   </button>
                 </div>
               </section>
@@ -311,31 +335,74 @@ export function EventRegistrationFlow({ event }: Props) {
           )}
 
           {step === 2 && (
-            <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h3 className="font-extrabold text-slate-900 text-xl">Payment</h3>
-              <p className="mt-2 text-sm text-slate-600">
-                Review details before continuing. This step is ready for Stripe checkout; the
-                current confirmation action keeps the registration flow testable until Stripe keys
-                and webhooks are configured.
-              </p>
-              <div className="mt-5 rounded-xl bg-slate-50 border border-slate-200 p-4 text-sm space-y-2">
-                <p>
-                  <span className="text-slate-500">Registration ID:</span>{' '}
-                  <span className="font-semibold">{registrationId}</span>
-                </p>
-                <p>
-                  <span className="text-slate-500">Category:</span>{' '}
-                  <span className="font-semibold">{selectedCategory?.categoryName}</span>
-                </p>
-                <p>
-                  <span className="text-slate-500">Total:</span>{' '}
-                  <span className="font-extrabold text-indigo-700">
-                    ₹{total.toLocaleString('en-IN')}
-                  </span>
+            <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-6">
+              <div>
+                <h3 className="font-extrabold text-slate-900 text-xl">Payment</h3>
+                <p className="mt-2 text-sm text-slate-600">
+                  Pay using the QR code or UPI link below, then submit your transaction details for
+                  verification.
                 </p>
               </div>
-              {error && <p className="text-sm text-rose-600 mt-3">{error}</p>}
-              <div className="mt-6 flex gap-3">
+
+              <PaymentInstructionsPanel
+                config={paymentConfig}
+                amount={total}
+                registrationId={registrationId}
+              />
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <label className="text-xs font-bold uppercase tracking-wide text-slate-500 sm:col-span-2">
+                  Transaction / UPI reference *
+                  <input
+                    className={`${inputClass} mt-2`}
+                    value={paymentForm.transactionId}
+                    onChange={(e) =>
+                      setPaymentForm((p) => ({ ...p, transactionId: e.target.value }))
+                    }
+                    placeholder="e.g. 123456789012"
+                  />
+                </label>
+                <label className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                  Transaction date
+                  <input
+                    type="date"
+                    className={`${inputClass} mt-2`}
+                    value={paymentForm.transactionDate}
+                    onChange={(e) =>
+                      setPaymentForm((p) => ({ ...p, transactionDate: e.target.value }))
+                    }
+                  />
+                </label>
+                <label className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                  Transaction time
+                  <input
+                    type="time"
+                    className={`${inputClass} mt-2`}
+                    value={paymentForm.transactionTime}
+                    onChange={(e) =>
+                      setPaymentForm((p) => ({ ...p, transactionTime: e.target.value }))
+                    }
+                  />
+                </label>
+                <label className="text-xs font-bold uppercase tracking-wide text-slate-500 sm:col-span-2">
+                  Payment screenshot
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    className={`${inputClass} mt-2`}
+                    onChange={(e) =>
+                      setPaymentForm((p) => ({
+                        ...p,
+                        transactionProof: e.target.files?.[0] || null,
+                      }))
+                    }
+                  />
+                </label>
+              </div>
+
+              {error && <p className="text-sm text-rose-600">{error}</p>}
+
+              <div className="flex gap-3">
                 <button
                   type="button"
                   onClick={() => setStep(1)}
@@ -345,11 +412,11 @@ export function EventRegistrationFlow({ event }: Props) {
                 </button>
                 <button
                   type="button"
-                  onClick={confirmPayment}
+                  onClick={submitPaymentDetails}
                   disabled={loading}
                   className="h-11 px-7 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold disabled:opacity-60"
                 >
-                  {loading ? 'Confirming...' : 'Confirm Test Payment'}
+                  {loading ? 'Submitting...' : 'Submit payment details'}
                 </button>
               </div>
             </section>

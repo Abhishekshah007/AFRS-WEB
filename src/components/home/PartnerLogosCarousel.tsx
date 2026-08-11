@@ -2,13 +2,15 @@
 
 import React, { useEffect, useRef } from 'react'
 import Image from 'next/image'
+import { FALLBACK_LOGO_IMAGE } from '@/lib/constants/assets'
 import { resolveMediaUrl } from '@/lib/cms'
+import type { MediaRef } from '@/lib/media'
 import type { Media } from '@/payload-types'
 
 type Item = {
   id?: number | string
   name?: string
-  logo?: number | Media | null
+  logo?: MediaRef
 }
 
 export default function PartnerLogosCarousel({ items }: { items: Item[] }) {
@@ -50,7 +52,7 @@ export default function PartnerLogosCarousel({ items }: { items: Item[] }) {
         }}
       >
         {rendered.map((it, i) => {
-          const src = resolveMediaUrl(it.logo as any, '/assets/svg/afsl-logo.png')
+          const src = resolveMediaUrl(it.logo, FALLBACK_LOGO_IMAGE)
           return (
             <div
               key={`${String(it.id ?? it.name)}-${i}`}

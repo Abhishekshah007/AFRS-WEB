@@ -74,6 +74,7 @@ export interface Config {
     testimonials: Testimonial;
     scientists: Scientist;
     impactStats: ImpactStat;
+    notices: Notice;
     partnersLogo: PartnersLogo;
     events: Event;
     eventRegistrations: EventRegistration;
@@ -95,6 +96,7 @@ export interface Config {
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     scientists: ScientistsSelect<false> | ScientistsSelect<true>;
     impactStats: ImpactStatsSelect<false> | ImpactStatsSelect<true>;
+    notices: NoticesSelect<false> | NoticesSelect<true>;
     partnersLogo: PartnersLogoSelect<false> | PartnersLogoSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     eventRegistrations: EventRegistrationsSelect<false> | EventRegistrationsSelect<true>;
@@ -116,6 +118,8 @@ export interface Config {
     headerSettings: HeaderSetting;
     footerSettings: FooterSetting;
     homePage: HomePage;
+    aboutPage: AboutPage;
+    servicesPage: ServicesPage;
     programmesCatalog: ProgrammesCatalog;
     registrationForm: RegistrationForm;
     studentHubContent: StudentHubContent;
@@ -125,6 +129,8 @@ export interface Config {
     headerSettings: HeaderSettingsSelect<false> | HeaderSettingsSelect<true>;
     footerSettings: FooterSettingsSelect<false> | FooterSettingsSelect<true>;
     homePage: HomePageSelect<false> | HomePageSelect<true>;
+    aboutPage: AboutPageSelect<false> | AboutPageSelect<true>;
+    servicesPage: ServicesPageSelect<false> | ServicesPageSelect<true>;
     programmesCatalog: ProgrammesCatalogSelect<false> | ProgrammesCatalogSelect<true>;
     registrationForm: RegistrationFormSelect<false> | RegistrationFormSelect<true>;
     studentHubContent: StudentHubContentSelect<false> | StudentHubContentSelect<true>;
@@ -413,6 +419,30 @@ export interface ImpactStat {
   createdAt: string;
 }
 /**
+ * Official announcements shown on the Notice Board page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notices".
+ */
+export interface Notice {
+  id: number;
+  title: string;
+  tag: 'Admission' | 'Service' | 'Results' | 'Partnership' | 'Event' | 'General';
+  noticeDate: string;
+  summary?: string | null;
+  /**
+   * Optional link for more details.
+   */
+  href?: string | null;
+  published?: boolean | null;
+  /**
+   * Lower numbers appear first.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "partnersLogo".
  */
@@ -502,10 +532,20 @@ export interface EventRegistration {
   registrationCategoryPrice: number;
   includeKit?: boolean | null;
   kitPrice?: number | null;
+  /**
+   * UPI / bank transaction reference.
+   */
+  transactionId?: string | null;
+  transactionDate?: string | null;
+  /**
+   * e.g. 14:30
+   */
+  transactionTime?: string | null;
+  transactionProof?: (number | null) | Media;
   totalAmount: number;
-  paymentProvider?: ('stripe' | 'manual') | null;
-  paymentStatus: 'pending' | 'paid' | 'failed';
-  registrationStatus: 'initiated' | 'confirmed' | 'cancelled';
+  paymentProvider?: ('manual' | 'stripe') | null;
+  paymentStatus: 'pending' | 'paid' | 'failed' | 'notRequired';
+  registrationStatus: 'initiated' | 'confirmed' | 'cancelled' | 'contacted';
   paymentReference?: string | null;
   stripeCheckoutSessionId?: string | null;
   stripePaymentIntentId?: string | null;
@@ -537,12 +577,18 @@ export interface CourseRegistration {
   experienceLevel?: ('student' | 'beginner' | 'professional' | 'faculty') | null;
   preferredBatch?: string | null;
   message?: string | null;
+  /**
+   * UPI / bank transaction reference.
+   */
   transactionId?: string | null;
   transactionDate?: string | null;
+  /**
+   * e.g. 14:30
+   */
   transactionTime?: string | null;
   transactionProof?: (number | null) | Media;
   totalAmount?: number | null;
-  paymentProvider?: ('stripe' | 'manual') | null;
+  paymentProvider?: ('manual' | 'stripe') | null;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'notRequired';
   registrationStatus: 'initiated' | 'confirmed' | 'cancelled' | 'contacted';
   paymentReference?: string | null;
@@ -645,6 +691,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'impactStats';
         value: number | ImpactStat;
+      } | null)
+    | ({
+        relationTo: 'notices';
+        value: number | Notice;
       } | null)
     | ({
         relationTo: 'partnersLogo';
@@ -850,6 +900,21 @@ export interface ImpactStatsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notices_select".
+ */
+export interface NoticesSelect<T extends boolean = true> {
+  title?: T;
+  tag?: T;
+  noticeDate?: T;
+  summary?: T;
+  href?: T;
+  published?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "partnersLogo_select".
  */
 export interface PartnersLogoSelect<T extends boolean = true> {
@@ -915,6 +980,10 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
   registrationCategoryPrice?: T;
   includeKit?: T;
   kitPrice?: T;
+  transactionId?: T;
+  transactionDate?: T;
+  transactionTime?: T;
+  transactionProof?: T;
   totalAmount?: T;
   paymentProvider?: T;
   paymentStatus?: T;
@@ -1221,7 +1290,7 @@ export interface HomePage {
     heroImage?: (number | null) | Media;
   };
   /**
-   * Headings and body copy for home page sections.
+   * Headings and body copy for home page sections only.
    */
   sectionText?: {
     featuredCardsHeading?: string | null;
@@ -1229,6 +1298,28 @@ export interface HomePage {
     servicesDescription?: string | null;
     eventsHeading?: string | null;
     eventsDescription?: string | null;
+    aboutHeading?: string | null;
+    aboutDescription1?: string | null;
+    aboutDescription2?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * About page hero image and all section copy.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aboutPage".
+ */
+export interface AboutPage {
+  id: number;
+  hero?: {
+    heroImage?: (number | null) | Media;
+  };
+  /**
+   * Headings, body copy, and lists for the About page.
+   */
+  sectionText?: {
     aboutHeading?: string | null;
     aboutDescription1?: string | null;
     aboutDescription2?: string | null;
@@ -1374,6 +1465,96 @@ export interface HomePage {
     awardsImageAlt1?: string | null;
     awardsImageAlt2?: string | null;
     awardsImageAlt3?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Services (AFSL) page section copy and static lists.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "servicesPage".
+ */
+export interface ServicesPage {
+  id: number;
+  /**
+   * Headings and body copy for the Services page.
+   */
+  sectionText?: {
+    heroEyebrow?: string | null;
+    heroTitle?: string | null;
+    heroHighlight?: string | null;
+    heroDescription?: string | null;
+    heroCtaLabel?: string | null;
+    labStatusLabel?: string | null;
+    labStatusValue?: string | null;
+    labCardCtaLabel?: string | null;
+    infrastructureEyebrow?: string | null;
+    infrastructureTitle?: string | null;
+    infrastructureBody1?: string | null;
+    infrastructureBody2?: string | null;
+    visionTitle?: string | null;
+    visionBody?: string | null;
+    missionTitle?: string | null;
+    missionBody?: string | null;
+    directorateEyebrow?: string | null;
+    directorateTitle?: string | null;
+    directorateSubtitle?: string | null;
+    teamEyebrow?: string | null;
+    teamTitle?: string | null;
+    teamSubtitle?: string | null;
+    catalogEyebrow?: string | null;
+    catalogTitle?: string | null;
+    legalTitle?: string | null;
+    legalDescription?: string | null;
+    legalCtaLabel?: string | null;
+    kitsEyebrow?: string | null;
+    kitsTitle?: string | null;
+    kitsDescription?: string | null;
+    trainingTitle?: string | null;
+    researchTitle?: string | null;
+    inquiryEyebrow?: string | null;
+    inquiryTitle?: string | null;
+    inquiryDescription?: string | null;
+    priorityHelplineLabel?: string | null;
+    reportVerificationLabel?: string | null;
+    certificationStats?:
+      | {
+          label: string;
+          caption: string;
+          id?: string | null;
+        }[]
+      | null;
+    kitCards?:
+      | {
+          title: string;
+          icon?: ('Box' | 'Fingerprint' | 'ClipboardList' | 'FileSearch' | 'FlaskConical' | 'Beaker' | 'Users') | null;
+          id?: string | null;
+        }[]
+      | null;
+    legalLinks?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    researchItems?:
+      | {
+          num: string;
+          title: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+    trainingCards?:
+      | {
+          title: string;
+          desc: string;
+          cta: string;
+          href?: string | null;
+          id?: string | null;
+        }[]
+      | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1689,6 +1870,27 @@ export interface HomePageSelect<T extends boolean = true> {
         aboutHeading?: T;
         aboutDescription1?: T;
         aboutDescription2?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aboutPage_select".
+ */
+export interface AboutPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        heroImage?: T;
+      };
+  sectionText?:
+    | T
+    | {
+        aboutHeading?: T;
+        aboutDescription1?: T;
+        aboutDescription2?: T;
         heroEyebrow?: T;
         heroCtaLabel?: T;
         heroCtaHref?: T;
@@ -1831,6 +2033,93 @@ export interface HomePageSelect<T extends boolean = true> {
         awardsImageAlt1?: T;
         awardsImageAlt2?: T;
         awardsImageAlt3?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "servicesPage_select".
+ */
+export interface ServicesPageSelect<T extends boolean = true> {
+  sectionText?:
+    | T
+    | {
+        heroEyebrow?: T;
+        heroTitle?: T;
+        heroHighlight?: T;
+        heroDescription?: T;
+        heroCtaLabel?: T;
+        labStatusLabel?: T;
+        labStatusValue?: T;
+        labCardCtaLabel?: T;
+        infrastructureEyebrow?: T;
+        infrastructureTitle?: T;
+        infrastructureBody1?: T;
+        infrastructureBody2?: T;
+        visionTitle?: T;
+        visionBody?: T;
+        missionTitle?: T;
+        missionBody?: T;
+        directorateEyebrow?: T;
+        directorateTitle?: T;
+        directorateSubtitle?: T;
+        teamEyebrow?: T;
+        teamTitle?: T;
+        teamSubtitle?: T;
+        catalogEyebrow?: T;
+        catalogTitle?: T;
+        legalTitle?: T;
+        legalDescription?: T;
+        legalCtaLabel?: T;
+        kitsEyebrow?: T;
+        kitsTitle?: T;
+        kitsDescription?: T;
+        trainingTitle?: T;
+        researchTitle?: T;
+        inquiryEyebrow?: T;
+        inquiryTitle?: T;
+        inquiryDescription?: T;
+        priorityHelplineLabel?: T;
+        reportVerificationLabel?: T;
+        certificationStats?:
+          | T
+          | {
+              label?: T;
+              caption?: T;
+              id?: T;
+            };
+        kitCards?:
+          | T
+          | {
+              title?: T;
+              icon?: T;
+              id?: T;
+            };
+        legalLinks?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        researchItems?:
+          | T
+          | {
+              num?: T;
+              title?: T;
+              desc?: T;
+              id?: T;
+            };
+        trainingCards?:
+          | T
+          | {
+              title?: T;
+              desc?: T;
+              cta?: T;
+              href?: T;
+              id?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;

@@ -1,54 +1,9 @@
 'use client'
 
-import { useMemo, useState } from 'react'
-
-type State =
-  | { status: 'idle'; message?: string }
-  | { status: 'submitting'; message?: string }
-  | { status: 'success'; message: string }
-  | { status: 'error'; message: string }
+import { useContactFormSubmit } from '@/hooks/useContactFormSubmit'
 
 export function ContactForm() {
-  const [state, setState] = useState<State>({ status: 'idle' })
-
-  const disabled = state.status === 'submitting'
-
-  const buttonLabel = useMemo(() => {
-    if (state.status === 'submitting') return 'Sending...'
-    if (state.status === 'success') return 'Sent'
-    return 'Send Message'
-  }, [state.status])
-
-  async function onSubmit(formData: FormData) {
-    const fullName = String(formData.get('fullName') || '').trim()
-    const mobile = String(formData.get('mobile') || '').trim()
-    const email = String(formData.get('email') || '').trim()
-    const subject = String(formData.get('subject') || '').trim()
-    const message = String(formData.get('message') || '').trim()
-
-    if (!fullName || !email || !message) {
-      setState({ status: 'error', message: 'Please fill Full Name, Email, and Message.' })
-      return
-    }
-
-    setState({ status: 'submitting' })
-    try {
-      const res = await fetch('/api/contactMessages', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ fullName, mobile, email, subject, message }),
-      })
-
-      if (!res.ok) {
-        const text = await res.text().catch(() => '')
-        throw new Error(text || 'Failed to send message')
-      }
-
-      setState({ status: 'success', message: 'Message sent successfully. We will contact you soon.' })
-    } catch (e) {
-      setState({ status: 'error', message: e instanceof Error ? e.message : 'Something went wrong' })
-    }
-  }
+  const { state, disabled, buttonLabel, onSubmit } = useContactFormSubmit()
 
   return (
     <form
@@ -118,7 +73,11 @@ export function ContactForm() {
       {state.status !== 'idle' && (
         <p
           className={`mt-4 text-sm ${
-            state.status === 'success' ? 'text-emerald-600' : state.status === 'error' ? 'text-rose-600' : 'text-slate-500'
+            state.status === 'success'
+              ? 'text-emerald-600'
+              : state.status === 'error'
+                ? 'text-rose-600'
+                : 'text-slate-500'
           }`}
         >
           {state.message}
@@ -128,11 +87,10 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={disabled}
-        className="mt-6 inline-flex w-full h-12 items-center justify-center rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white text-sm font-bold transition"
+        className="mt-6 h-11 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold disabled:opacity-60"
       >
-        {buttonLabel} <span className="ml-2" aria-hidden>→</span>
+        {buttonLabel}
       </button>
     </form>
   )
 }
-

@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { eventRegistrationAccess } from '../access'
 import { ADMIN_GROUPS } from '../config/adminGroups'
-import { registrationContactFields, registrationPaymentFields } from '../fields'
+import { registrationContactFields, registrationPaymentFields, registrationPaymentProofFields } from '../fields'
 
 export const CourseRegistrations: CollectionConfig = {
   slug: 'courseRegistrations',
@@ -52,31 +52,9 @@ export const CourseRegistrations: CollectionConfig = {
     },
     { name: 'preferredBatch', type: 'text' },
     { name: 'message', type: 'textarea' },
-    { name: 'transactionId', type: 'text' },
-    { name: 'transactionDate', type: 'date' },
-    { name: 'transactionTime', type: 'text' },
-    { name: 'transactionProof', type: 'upload', relationTo: 'media' },
 
-    ...registrationPaymentFields.map((field) => {
-      if ('name' in field && field.name === 'paymentStatus' && field.type === 'select') {
-        return {
-          ...field,
-          options: [
-            ...(field.options ?? []),
-            { label: 'Not Required', value: 'notRequired' },
-          ],
-        }
-      }
-      if ('name' in field && field.name === 'registrationStatus' && field.type === 'select') {
-        return {
-          ...field,
-          options: [
-            ...(field.options ?? []),
-            { label: 'Contacted', value: 'contacted' },
-          ],
-        }
-      }
-      return field
-    }),
+    ...registrationPaymentProofFields,
+
+    ...registrationPaymentFields,
   ],
 }

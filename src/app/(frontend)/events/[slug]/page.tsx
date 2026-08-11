@@ -7,7 +7,7 @@ import type { Event as AfrsEvent, Media } from '@/payload-types'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import type { Metadata } from 'next'
 
-const fallbackBanner = 'https://www.figma.com/api/mcp/asset/4c42ae20-cfcd-4d2a-96e1-bc17321dcca2'
+import { FALLBACK_BANNER_IMAGE } from '@/lib/constants/assets'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -44,7 +44,7 @@ export default async function EventDetailPage({ params }: Props) {
   const evt = result.docs[0] as AfrsEvent | undefined
   if (!evt) notFound()
 
-  const banner = resolveMediaUrl(evt.banner as number | Media | null | undefined, fallbackBanner)
+  const banner = resolveMediaUrl(evt.banner as number | Media | null | undefined, FALLBACK_BANNER_IMAGE)
   const summary = evt.excerpt || richTextToPlain(evt.description, 200)
 
   return (

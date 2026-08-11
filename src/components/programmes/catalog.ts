@@ -3,44 +3,23 @@ import {
   defaultArchiveFilterLinks,
   defaultEducationCategories,
   defaultTrainingCategories,
-} from '@/components/programmes/catalog.defaults'
+} from '@/data/defaults/programmes/catalog'
 import { getPayloadClient } from '@/lib/payload'
 
+export type {
+  ArchiveFilterLinks,
+  EducationCategory,
+  ProgrammeListItem,
+  TrainingCategory,
+} from '@/domain/programmes/catalog-types'
+
+import type {
+  ArchiveFilterLinks,
+  EducationCategory,
+  TrainingCategory,
+} from '@/domain/programmes/catalog-types'
+
 type TagTone = TrainingOption['tagTone']
-
-export type ProgrammeListItem = {
-  id: string
-  title: string
-  description: string
-  duration: string
-  mode: string
-  level?: string
-}
-
-export type EducationCategory = {
-  slug: string
-  icon: string
-  title: string
-  summary: string
-  programmes: ProgrammeListItem[]
-}
-
-export type TrainingCategory = {
-  slug: string
-  icon: string
-  title: string
-  tag: string
-  tagTone: TagTone
-  summary: string
-  programmes: ProgrammeListItem[]
-}
-
-export type ArchiveFilterLinks = {
-  nationalEvents: string
-  internationalEvents: string
-  workshops: string
-  webinars: string
-}
 
 export const educationCategories: EducationCategory[] = defaultEducationCategories
 export const trainingCategories: TrainingCategory[] = defaultTrainingCategories

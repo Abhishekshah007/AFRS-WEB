@@ -18,18 +18,20 @@ export const eventNatureField = (overrides: SelectFieldOverrides = {}): SelectFi
 })
 
 export const PAYMENT_PROVIDER_OPTIONS = [
-  { label: 'Stripe', value: 'stripe' },
-  { label: 'Manual / Offline', value: 'manual' },
+  { label: 'Manual / UPI / Bank Transfer', value: 'manual' },
+  { label: 'Stripe (future)', value: 'stripe' },
 ] as const
 
 export const PAYMENT_STATUS_OPTIONS = [
-  { label: 'Pending', value: 'pending' },
-  { label: 'Paid', value: 'paid' },
-  { label: 'Failed', value: 'failed' },
+  { label: 'Pending verification', value: 'pending' },
+  { label: 'Verified', value: 'paid' },
+  { label: 'Failed / Rejected', value: 'failed' },
+  { label: 'Not required', value: 'notRequired' },
 ] as const
 
 export const REGISTRATION_STATUS_OPTIONS = [
-  { label: 'Initiated', value: 'initiated' },
+  { label: 'Submitted', value: 'initiated' },
   { label: 'Confirmed', value: 'confirmed' },
   { label: 'Cancelled', value: 'cancelled' },
+  { label: 'Contacted', value: 'contacted' },
 ] as const

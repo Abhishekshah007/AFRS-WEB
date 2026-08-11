@@ -1,5 +1,5 @@
 import type { ExamPrepCardData, ResourceCardData } from '@/components/student-hub/types'
-import { defaultAcademicResources, defaultExamPrep, defaultUgcNetAchievers } from '@/components/student-hub/content.defaults'
+import { defaultAcademicResources, defaultExamPrep, defaultUgcNetAchievers } from '@/data/defaults/student-hub/content'
 import { getPayloadClient } from '@/lib/payload'
 import { resolveMediaUrl } from '@/lib/cms'
 import type { Media } from '@/payload-types'

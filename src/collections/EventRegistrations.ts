@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { eventRegistrationAccess } from '../access'
 import { ADMIN_GROUPS } from '../config/adminGroups'
-import { registrationContactFields, registrationPaymentFields } from '../fields'
+import { registrationContactFields, registrationPaymentFields, registrationPaymentProofFields } from '../fields'
 
 export const EventRegistrations: CollectionConfig = {
   slug: 'eventRegistrations',
@@ -35,6 +35,8 @@ export const EventRegistrations: CollectionConfig = {
     { name: 'registrationCategoryPrice', type: 'number', required: true },
     { name: 'includeKit', type: 'checkbox', defaultValue: false },
     { name: 'kitPrice', type: 'number', defaultValue: 0 },
+
+    ...registrationPaymentProofFields,
 
     ...registrationPaymentFields.map((field) =>
       'name' in field && field.name === 'totalAmount'

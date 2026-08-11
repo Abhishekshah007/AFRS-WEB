@@ -5,7 +5,7 @@ import {
   defaultAcademicResources,
   defaultExamPrep,
   defaultUgcNetAchievers,
-} from '../components/student-hub/content.defaults'
+} from '@/data/defaults/student-hub/content'
 import { ADMIN_GROUPS } from '../config/adminGroups'
 
 export const StudentHubContent: GlobalConfig = {

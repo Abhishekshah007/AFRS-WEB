@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: 'Explore AFRS forensic science facilities, training activities, and research events through our virtual gallery.',
 }
 
-const fallbackImg = 'https://www.figma.com/api/mcp/asset/4c42ae20-cfcd-4d2a-96e1-bc17321dcca2'
+import { FALLBACK_BANNER_IMAGE } from '@/lib/constants/assets'
 
 const categories = [
   { value: 'all', label: 'All' },
@@ -69,7 +69,7 @@ export default async function GalleryPage() {
               <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
                 {docs.map((item) => {
                   const g = item as GalleryItem
-                  const src = resolveMediaUrl(g.image as number | Media | null | undefined, fallbackImg)
+                  const src = resolveMediaUrl(g.image as number | Media | null | undefined, FALLBACK_BANNER_IMAGE)
                   return (
                     <div
                       key={g.id}

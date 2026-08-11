@@ -5,13 +5,13 @@ import {
   defaultArchiveFilterLinks,
   defaultEducationCategories,
   defaultTrainingCategories,
-} from '../components/programmes/catalog.defaults'
+} from '@/data/defaults/programmes/catalog'
 import {
   defaultGallery,
   defaultHubEvents,
   defaultResourcePersons,
   defaultTrainingChecklist,
-} from '../components/programmes/content.defaults'
+} from '@/data/defaults/programmes/content'
 import { ADMIN_GROUPS } from '../config/adminGroups'
 import { eventNatureField } from '../fields'
 import { programmeItemFields } from '../fields/programmes'

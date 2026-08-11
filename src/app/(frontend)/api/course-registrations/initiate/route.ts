@@ -1,36 +1,8 @@
 import { NextResponse } from 'next/server'
+import { getFormValue, readUploadFile } from '@/lib/api/form-data'
 import { hasRequiredFields, jsonError } from '@/lib/apiResponses'
 import { getPayloadClient } from '@/lib/payload'
 import { createLocalReq } from 'payload'
-
-type CourseRegistrationPayload = {
-  programmeType?: 'education' | 'training' | 'other'
-  categorySlug?: string
-  categoryTitle?: string
-  programmeId?: string
-  programmeTitle?: string
-  programmeDuration?: string
-  programmeMode?: string
-  fullName?: string
-  email?: string
-  countryCode?: string
-  mobileNumber?: string
-  address?: string
-  organization?: string
-  designation?: string
-  qualification?: string
-  experienceLevel?: 'student' | 'beginner' | 'professional' | 'faculty'
-  preferredBatch?: string
-  message?: string
-  transactionId?: string
-  transactionDate?: string
-  transactionTime?: string
-}
-
-function getFormValue(formData: FormData, fieldName: string, defaultValue = ''): string {
-  const raw = formData.get(fieldName)
-  return typeof raw === 'string' ? raw : defaultValue
-}
 
 export async function POST(req: Request) {
   try {
@@ -41,55 +13,42 @@ export async function POST(req: Request) {
 
     const body = formData
       ? {
-        programmeType: getFormValue(formData, 'programmeType', 'other'),
-        categorySlug: getFormValue(formData, 'categorySlug'),
-        categoryTitle: getFormValue(formData, 'categoryTitle'),
-        programmeId: getFormValue(formData, 'programmeId'),
-        programmeTitle: getFormValue(formData, 'programmeTitle'),
-        programmeDuration: getFormValue(formData, 'programmeDuration'),
-        programmeMode: getFormValue(formData, 'programmeMode'),
-        fullName: getFormValue(formData, 'fullName'),
-        email: getFormValue(formData, 'email'),
-        countryCode: getFormValue(formData, 'countryCode', '+91'),
-        mobileNumber: getFormValue(formData, 'mobileNumber'),
-        address: getFormValue(formData, 'address'),
-        organization: getFormValue(formData, 'organization'),
-        designation: getFormValue(formData, 'designation'),
-        qualification: getFormValue(formData, 'qualification'),
-        experienceLevel: getFormValue(formData, 'experienceLevel', 'student') as
-          | 'student'
-          | 'beginner'
-          | 'professional'
-          | 'faculty',
-        preferredBatch: getFormValue(formData, 'preferredBatch'),
-        message: getFormValue(formData, 'message'),
-        transactionId: getFormValue(formData, 'transactionId'),
-        transactionDate: getFormValue(formData, 'transactionDate'),
-        transactionTime: getFormValue(formData, 'transactionTime'),
-      }
+          programmeType: getFormValue(formData, 'programmeType', 'other'),
+          categorySlug: getFormValue(formData, 'categorySlug'),
+          categoryTitle: getFormValue(formData, 'categoryTitle'),
+          programmeId: getFormValue(formData, 'programmeId'),
+          programmeTitle: getFormValue(formData, 'programmeTitle'),
+          programmeDuration: getFormValue(formData, 'programmeDuration'),
+          programmeMode: getFormValue(formData, 'programmeMode'),
+          fullName: getFormValue(formData, 'fullName'),
+          email: getFormValue(formData, 'email'),
+          countryCode: getFormValue(formData, 'countryCode', '+91'),
+          mobileNumber: getFormValue(formData, 'mobileNumber'),
+          address: getFormValue(formData, 'address'),
+          organization: getFormValue(formData, 'organization'),
+          designation: getFormValue(formData, 'designation'),
+          qualification: getFormValue(formData, 'qualification'),
+          experienceLevel: getFormValue(formData, 'experienceLevel', 'student') as
+            | 'student'
+            | 'beginner'
+            | 'professional'
+            | 'faculty',
+          preferredBatch: getFormValue(formData, 'preferredBatch'),
+          message: getFormValue(formData, 'message'),
+          transactionId: getFormValue(formData, 'transactionId'),
+          transactionDate: getFormValue(formData, 'transactionDate'),
+          transactionTime: getFormValue(formData, 'transactionTime'),
+        }
       : await req.json().catch(() => ({}))
 
     if (!hasRequiredFields(body, ['programmeTitle', 'fullName', 'email', 'mobileNumber'])) {
       return jsonError('Missing required fields.', 400)
     }
 
-    const file = formData?.get('transactionProof')
-    let uploadFile
-    if (file instanceof File) {
-      const buffer = Buffer.from(await file.arrayBuffer())
-      uploadFile = {
-        name: file.name,
-        mimetype: file.type || 'application/octet-stream',
-        size: file.size,
-        data: buffer,
-      }
-    }
-
+    const uploadFile = formData ? await readUploadFile(formData, 'transactionProof') : undefined
     const payload = await getPayloadClient()
     const localReq = await createLocalReq({ req: { url: req.url, headers: req.headers } }, payload)
-    if (uploadFile) {
-      localReq.file = uploadFile
-    }
+    if (uploadFile) localReq.file = uploadFile
 
     const created = await payload.create({
       collection: 'courseRegistrations',
@@ -128,6 +87,8 @@ export async function POST(req: Request) {
       ok: true,
       registrationId: created.id,
       registrationStatus: created.registrationStatus,
+      message:
+        'Registration received. Our team will verify your payment and confirm your registration.',
     })
   } catch (error) {
     return jsonError(
