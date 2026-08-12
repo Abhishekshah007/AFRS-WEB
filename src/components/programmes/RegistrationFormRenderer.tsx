@@ -1,10 +1,9 @@
 'use client'
 
-import Image from 'next/image'
 import { useMemo, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
-import { resolveMediaUrl } from '@/lib/cms'
-import type { Media } from '@/payload-types'
+import { PaymentInstructionsPanel } from '@/components/forms/PaymentInstructionsPanel'
+import type { RegistrationPaymentConfig } from '@/domain/registration/types'
 
 type DynamicField = {
   name: string
@@ -23,28 +22,8 @@ type Section = {
   fields?: DynamicField[]
 }
 
-type PaymentMethod = {
-  title: string
-  description?: string
-  qrCode?: number | Media
-  link?: string
-}
-
-export type RegistrationFormConfig = {
-  formTitle?: string
-  formSubtitle?: string | null
+export type RegistrationFormConfig = RegistrationPaymentConfig & {
   sections?: Section[]
-  paymentInstructions?: {
-    title?: string
-    accountName?: string
-    accountNumber?: string
-    ifsc?: string
-    swift?: string
-    branchAddress?: string
-    upiId?: string
-    note?: string
-  }
-  paymentMethods?: PaymentMethod[]
 }
 
 type Props = Readonly<{
@@ -111,29 +90,6 @@ function renderField(field: DynamicField, disabled: boolean) {
   }
 }
 
-function renderPaymentInstructions(
-  paymentInstructions?: RegistrationFormConfig['paymentInstructions'],
-) {
-  if (!paymentInstructions) return null
-
-  return (
-    <aside className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
-      <h3 className="text-lg font-bold text-slate-950">{paymentInstructions.title}</h3>
-      <div className="mt-4 space-y-3 text-sm text-slate-600">
-        {paymentInstructions.accountName ? <p>{paymentInstructions.accountName}</p> : null}
-        {paymentInstructions.accountNumber ? <p>{paymentInstructions.accountNumber}</p> : null}
-        {paymentInstructions.ifsc ? <p>{paymentInstructions.ifsc}</p> : null}
-        {paymentInstructions.swift ? <p>{paymentInstructions.swift}</p> : null}
-        {paymentInstructions.branchAddress ? <p>{paymentInstructions.branchAddress}</p> : null}
-        {paymentInstructions.upiId ? <p>UPI ID: {paymentInstructions.upiId}</p> : null}
-        {paymentInstructions.note ? (
-          <p className="whitespace-pre-line">{paymentInstructions.note}</p>
-        ) : null}
-      </div>
-    </aside>
-  )
-}
-
 function renderSection(section: Section, disabled: boolean) {
   return (
     <section key={section.title} className={sectionClass}>
@@ -163,50 +119,6 @@ function renderSection(section: Section, disabled: boolean) {
   )
 }
 
-function renderPaymentMethods(paymentMethods: PaymentMethod[]) {
-  if (!paymentMethods.length) return null
-
-  return (
-    <section className={sectionClass}>
-      <h3 className="text-lg font-bold text-slate-950">Payment Methods</h3>
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        {paymentMethods.map((method, methodIndex) => (
-          <div
-            key={`${method.title}-${methodIndex}`}
-            className="rounded-3xl border border-slate-200 p-5"
-          >
-            <h4 className="text-sm font-semibold text-slate-900">{method.title}</h4>
-            {method.description ? (
-              <p className="mt-2 text-sm text-slate-600">{method.description}</p>
-            ) : null}
-            {method.qrCode ? (
-              <div className="mt-4 h-40 overflow-hidden rounded-3xl bg-slate-100 p-3">
-                <Image
-                  src={resolveMediaUrl(method.qrCode as any, '/assets/svg/afsl-logo.png')}
-                  alt={`${method.title} QR code`}
-                  width={300}
-                  height={300}
-                  className="h-full w-full object-contain"
-                />
-              </div>
-            ) : null}
-            {method.link ? (
-              <a
-                href={method.link}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-4 inline-flex items-center rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
-              >
-                Open payment method
-              </a>
-            ) : null}
-          </div>
-        ))}
-      </div>
-    </section>
-  )
-}
-
 export default function RegistrationFormRenderer({
   config,
   submitUrl = '/api/course-registrations/initiate',
@@ -216,8 +128,6 @@ export default function RegistrationFormRenderer({
   const [statusMessage, setStatusMessage] = useState<string | undefined>('')
 
   const sections = config.sections ?? []
-  const paymentInstructions = config.paymentInstructions
-  const paymentMethods = config.paymentMethods ?? []
 
   const heading = config.formTitle ?? 'Course Registration'
   const subtitle = config.formSubtitle
@@ -290,8 +200,7 @@ export default function RegistrationFormRenderer({
 
         {sections.map((section) => renderSection(section, status === 'submitting'))}
 
-        {renderPaymentInstructions(paymentInstructions)}
-        {renderPaymentMethods(paymentMethods)}
+        <PaymentInstructionsPanel config={config} compact />
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <button

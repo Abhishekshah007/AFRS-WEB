@@ -12,7 +12,9 @@ export const metadata: Metadata = {
   description: 'Register for AFRS forensic science workshops, webinars, training sessions, and conferences.',
 }
 
-const fallbackBanner = 'https://www.figma.com/api/mcp/asset/4c42ae20-cfcd-4d2a-96e1-bc17321dcca2'
+import { FALLBACK_BANNER_IMAGE } from '@/lib/constants/assets'
+import { SiteGallerySection } from '@/components/gallery/SiteGallerySection'
+import { getFeaturedGalleryItems } from '@/lib/queries/gallery'
 
 const typeColors: Record<string, string> = {
   workshop: 'bg-indigo-100 text-indigo-700',
@@ -24,7 +26,7 @@ const typeColors: Record<string, string> = {
 export default async function EventsPage() {
   const payload = await getPayloadClient()
 
-  const [upcoming, past] = await Promise.all([
+  const [upcoming, past, galleryItems] = await Promise.all([
     payload.find({
       collection: 'events',
       where: {
@@ -51,6 +53,7 @@ export default async function EventsPage() {
       depth: 1,
       overrideAccess: false,
     }),
+    getFeaturedGalleryItems(4),
   ])
 
   return (
@@ -100,7 +103,7 @@ export default async function EventsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
                 {upcoming.docs.map((e) => {
                   const evt = e as AfrsEvent
-                  const banner = resolveMediaUrl(evt.banner as number | Media | null | undefined, fallbackBanner)
+                  const banner = resolveMediaUrl(evt.banner as number | Media | null | undefined, FALLBACK_BANNER_IMAGE)
                   const typeClass = typeColors[evt.eventType ?? ''] ?? 'bg-slate-100 text-slate-600'
 
                   return (
@@ -189,6 +192,8 @@ export default async function EventsPage() {
           </div>
         </section>
       )}
+
+      <SiteGallerySection items={galleryItems} className="bg-white" />
     </div>
   )
 }

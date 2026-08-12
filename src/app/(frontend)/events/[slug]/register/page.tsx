@@ -1,11 +1,11 @@
 import { notFound } from 'next/navigation'
 import { getPayloadClient } from '@/lib/payload'
 import { formatEventDate, resolveMediaUrl, richTextToPlain } from '@/lib/cms'
+import { FALLBACK_BANNER_IMAGE } from '@/lib/constants/assets'
+import { getRegistrationPaymentConfig } from '@/lib/queries/registration-form'
 import { EventRegistrationFlow } from '@/components/events/EventRegistrationFlow'
 import type { Event as AfrsEvent, Media } from '@/payload-types'
 import type { Metadata } from 'next'
-
-const fallbackBanner = 'https://www.figma.com/api/mcp/asset/4c42ae20-cfcd-4d2a-96e1-bc17321dcca2'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -21,18 +21,21 @@ export default async function EventRegisterPage({ params }: Props) {
   const { slug } = await params
   const payload = await getPayloadClient()
 
-  const result = await payload.find({
-    collection: 'events',
-    where: { slug: { equals: slug }, published: { equals: true } },
-    limit: 1,
-    depth: 1,
-    overrideAccess: false,
-  })
+  const [result, paymentConfig] = await Promise.all([
+    payload.find({
+      collection: 'events',
+      where: { slug: { equals: slug }, published: { equals: true } },
+      limit: 1,
+      depth: 1,
+      overrideAccess: false,
+    }),
+    getRegistrationPaymentConfig(),
+  ])
 
   const evt = result.docs[0] as AfrsEvent | undefined
   if (!evt || evt.registrationOpen === false) notFound()
 
-  const banner = resolveMediaUrl(evt.banner as number | Media | null | undefined, fallbackBanner)
+  const banner = resolveMediaUrl(evt.banner as number | Media | null | undefined, FALLBACK_BANNER_IMAGE)
   const summary = evt.excerpt || richTextToPlain(evt.description, 170)
 
   const dateLabel = evt.endDate
@@ -42,6 +45,7 @@ export default async function EventRegisterPage({ params }: Props) {
   return (
     <div className="bg-[#F4F6FB] min-h-screen">
       <EventRegistrationFlow
+        paymentConfig={paymentConfig}
         event={{
           slug: evt.slug,
           title: evt.title,

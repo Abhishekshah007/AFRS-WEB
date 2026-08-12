@@ -81,6 +81,7 @@ export async function POST(req: Request) {
         includeKit: Boolean(body.includeKit),
         kitPrice,
         totalAmount,
+        paymentProvider: 'manual',
         paymentStatus: 'pending',
         registrationStatus: 'initiated',
       },
@@ -93,7 +94,10 @@ export async function POST(req: Request) {
       eventSlug: evt.slug,
       totalAmount,
     })
-  } catch {
-    return jsonError('Unable to initiate registration.', 500)
+  } catch (error) {
+    return jsonError(
+      error instanceof Error ? error.message : 'Unable to initiate registration.',
+      500,
+    )
   }
 }

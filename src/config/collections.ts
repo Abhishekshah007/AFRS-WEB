@@ -11,6 +11,7 @@ import { Scientists } from '../collections/Scientists'
 import { Services } from '../collections/Services'
 import { Testimonials } from '../collections/Testimonials'
 import { Users } from '../collections/Users'
+import { Notices } from '../collections/Notices'
 import { PartnersLogo } from '../collections/PartnersLogo'
 
 /** Collections registered in logical admin-nav order. */
@@ -23,6 +24,7 @@ export const collections = [
   Testimonials,
   Scientists,
   ImpactStats,
+  Notices,
   PartnersLogo,
   // Events & Programmes
   Events,

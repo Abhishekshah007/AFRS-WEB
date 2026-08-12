@@ -1,12 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
-
-type State =
-  | { status: 'idle'; message?: string }
-  | { status: 'submitting'; message?: string }
-  | { status: 'success'; message: string }
-  | { status: 'error'; message: string }
+import { useContactFormSubmit } from '@/hooks/useContactFormSubmit'
 
 const inputClass =
   'mt-2 w-full h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-800 outline-none transition focus:border-[var(--svc-primary)] focus:ring-2 focus:ring-[var(--svc-primary)]/20'
@@ -16,51 +10,29 @@ export type ServiceConsultFormProps = {
   caseTypes?: string[]
 }
 
-/**
- * Consultation form — posts to contactMessages with service pre-filled as subject.
- */
+/** Consultation form — posts to contactMessages with service pre-filled as subject. */
 export function ServiceConsultForm({
   serviceTitle,
   caseTypes = ['New case', 'Ongoing investigation', 'Expert opinion', 'Training inquiry'],
 }: ServiceConsultFormProps) {
-  const [state, setState] = useState<State>({ status: 'idle' })
-  const disabled = state.status === 'submitting'
+  const { state, disabled, onSubmit } = useContactFormSubmit({
+    successMessage: 'Message sent. An expert will contact you shortly.',
+    mapFormData: (formData) => {
+      const fullName = String(formData.get('fullName') || '').trim()
+      const email = String(formData.get('email') || '').trim()
+      const caseType = String(formData.get('caseType') || serviceTitle).trim()
+      const message = String(formData.get('message') || '').trim()
+      return {
+        fullName,
+        email,
+        subject: `${serviceTitle} — ${caseType}`,
+        message,
+      }
+    },
+  })
 
-  const buttonLabel = useMemo(() => {
-    if (state.status === 'submitting') return 'Sending…'
-    if (state.status === 'success') return 'Sent'
-    return 'Send Message'
-  }, [state.status])
-
-  async function onSubmit(formData: FormData) {
-    const fullName = String(formData.get('fullName') || '').trim()
-    const email = String(formData.get('email') || '').trim()
-    const caseType = String(formData.get('caseType') || serviceTitle).trim()
-    const message = String(formData.get('message') || '').trim()
-
-    if (!fullName || !email || !message) {
-      setState({ status: 'error', message: 'Please fill Full Name, Email, and Message.' })
-      return
-    }
-
-    setState({ status: 'submitting' })
-    try {
-      const res = await fetch('/api/contactMessages', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          fullName,
-          email,
-          subject: `${serviceTitle} — ${caseType}`,
-          message,
-        }),
-      })
-      if (!res.ok) throw new Error(await res.text().catch(() => 'Failed to send'))
-      setState({ status: 'success', message: 'Message sent. An expert will contact you shortly.' })
-    } catch (e) {
-      setState({ status: 'error', message: e instanceof Error ? e.message : 'Something went wrong' })
-    }
-  }
+  const buttonLabel =
+    state.status === 'submitting' ? 'Sending…' : state.status === 'success' ? 'Sent' : 'Send Message'
 
   return (
     <form action={onSubmit} className="space-y-4">

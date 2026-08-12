@@ -63,7 +63,6 @@ export const cloudinaryStorageAdapter: Adapter = ({ prefix }) => (
       return {}
     },
     staticHandler: async (_req, { params }) => {
-      console.log('Cloudinary staticHandler', params)
       return Response.redirect(buildCloudinaryDeliveryUrl(params.filename, params.prefix), 302)
     },
   })

@@ -4,9 +4,8 @@ import {
   defaultHubEvents,
   defaultResourcePersons,
   defaultTrainingChecklist,
-  eventVisualClass,
-  tagToneClass,
-} from '@/components/programmes/content.defaults'
+} from '@/data/defaults/programmes/content'
+import { eventVisualClass, tagToneClass } from '@/components/programmes/content-styles'
 
 export { defaultArchive, defaultGallery, defaultHubEvents, defaultResourcePersons, eventVisualClass, tagToneClass }
 

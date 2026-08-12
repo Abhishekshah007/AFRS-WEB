@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
+import { CMS_ARTICLE_CATEGORY_OPTIONS } from '../data/article-categories'
 import { editorManagedPublishedAccess } from '../access'
 import { ADMIN_GROUPS } from '../config/adminGroups'
 import { contentRichTextField, excerptField, slugField } from '../fields'
@@ -22,15 +23,7 @@ export const Articles: CollectionConfig = {
       name: 'category',
       type: 'select',
       required: true,
-      options: [
-        { label: 'Toxicology', value: 'toxicology' },
-        { label: 'Ballistics', value: 'ballistics' },
-        { label: 'Psychology', value: 'psychology' },
-        { label: 'DNA', value: 'dna' },
-        { label: 'Digital Forensics', value: 'digitalForensics' },
-        { label: 'Forensic Odontology', value: 'odontology' },
-        { label: 'General', value: 'general' },
-      ],
+      options: [...CMS_ARTICLE_CATEGORY_OPTIONS],
       defaultValue: 'general',
     },
     { name: 'coverImage', type: 'upload', relationTo: 'media' },

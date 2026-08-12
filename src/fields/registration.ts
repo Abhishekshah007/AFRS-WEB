@@ -25,13 +25,21 @@ export const registrationContactFields = ({
     { name: 'designation', type: 'text', required: designationRequired },
   ]
 
+/** Shared payment proof fields for manual UPI / bank transfer registrations. */
+export const registrationPaymentProofFields: Field[] = [
+  { name: 'transactionId', type: 'text', admin: { description: 'UPI / bank transaction reference.' } },
+  { name: 'transactionDate', type: 'date' },
+  { name: 'transactionTime', type: 'text', admin: { description: 'e.g. 14:30' } },
+  { name: 'transactionProof', type: 'upload', relationTo: 'media' },
+]
+
 /** Shared payment tracking fields for registrations. */
 export const registrationPaymentFields: Field[] = [
   { name: 'totalAmount', type: 'number', defaultValue: 0 },
   {
     name: 'paymentProvider',
     type: 'select',
-    defaultValue: 'stripe',
+    defaultValue: 'manual',
     options: [...PAYMENT_PROVIDER_OPTIONS],
   },
   {
@@ -49,7 +57,15 @@ export const registrationPaymentFields: Field[] = [
     options: [...REGISTRATION_STATUS_OPTIONS],
   },
   { name: 'paymentReference', type: 'text' },
-  { name: 'stripeCheckoutSessionId', type: 'text' },
-  { name: 'stripePaymentIntentId', type: 'text' },
+  {
+    name: 'stripeCheckoutSessionId',
+    type: 'text',
+    admin: { condition: (_, siblingData) => siblingData?.paymentProvider === 'stripe' },
+  },
+  {
+    name: 'stripePaymentIntentId',
+    type: 'text',
+    admin: { condition: (_, siblingData) => siblingData?.paymentProvider === 'stripe' },
+  },
   { name: 'paymentConfirmedAt', type: 'date' },
 ]

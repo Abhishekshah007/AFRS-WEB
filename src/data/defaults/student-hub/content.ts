@@ -92,7 +92,7 @@ export const defaultExamPrep: ExamPrepCardData[] = [
     title: 'FACT',
     subtitle: 'Forensic Aptitude and Caliber Test',
     description:
-      'Practice questions, sample papers, and preparation tips for the AFRS Forensic Aptitude and Caliber Test (FACT) to assess your forensic knowledge and skills.',
+      'Focus on enhancing forensic aptitude and caliber through targeted preparation and practice.',
     ctaLabel: 'Explore FACT Resources',
     href: '/student-hub/fact',
     watermark: '⚗️',

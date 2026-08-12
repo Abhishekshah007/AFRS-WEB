@@ -23,74 +23,39 @@ import {
 // import { Modal } from '@/components/ui/Modal'
 import { LabInquiryForm } from '@/components/services/LabInquiryForm'
 import { VisitorCounterBar } from '@/components/student-hub/VisitorCounterBar'
-import type { CatalogItem, DirectorateMember, SiteContact } from '@/components/services/types'
+import { SiteGallerySection } from '@/components/gallery/SiteGallerySection'
+import type { SiteGalleryItem } from '@/components/gallery/SiteGallerySection'
+import type {
+  CatalogItem,
+  DirectorateMember,
+  ServicesPageContent,
+  SiteContact,
+} from '@/components/services/types'
+import { defaultServicesCatalog } from '@/data/defaults/services-catalog'
+import type { LucideIcon } from 'lucide-react'
 import AFRSLogo from '../../../public/assets/afsl-logo.png'
 
 const CONTAINER = 'mx-auto w-full max-w-[1120px] px-6 sm:px-8'
 
-const certifications = [
-  { label: '11+', caption: 'Certifications' },
-  { label: 'ISO', caption: 'ISO Certified' },
-  { label: '24/7', caption: 'Forensic Access' },
-]
+const KIT_ICONS: Record<string, LucideIcon> = {
+  Box,
+  Fingerprint,
+  ClipboardList,
+  FileSearch,
+  FlaskConical,
+  Beaker,
+  Users,
+}
 
-const kitCards = [
-  {
-    title: 'Crime Scene Investigation Kit',
-    icon: Box,
-  },
-  {
-    title: 'Latent Fingerprint Development Kit',
-    icon: Fingerprint,
-  },
-  {
-    title: 'Fingerprint Collection Kit',
-    icon: ClipboardList,
-  },
-  {
-    title: 'Questioned Document Examination Kit',
-    icon: FileSearch,
-  },
-  {
-    title: 'Fire and Arson Investigation Kit',
-    icon: FlaskConical,
-  },
-  {
-    title: 'High Intensity Light Source Kit (ALS)',
-    icon: Beaker,
-  },
-  {
-    title: 'Biological Evidence Collection Kit',
-    icon: Users,
-  },
-]
-
-const legalLinks = [
-  'Medico Legal Property Report',
-  'Cross Examination Training',
-  'Research & Lab Projects',
-  'Expert Opinion (39 of BSA)',
-  'Internship & Training',
-  'Insurance Forensics Panel',
-]
-
-const researchItems = [
-  {
-    num: '01',
-    title: 'Guidelines & Protocols',
-    desc: 'Advanced evidence operations workbook and investigation protocols',
-  },
-  {
-    num: '02',
-    title: 'Research & Development',
-    desc: 'Research-ready analytical workflows for students and professionals',
-  },
-  {
-    num: '03',
-    title: 'Case Reporting',
-    desc: 'Case reporting guides and court submission documentation',
-  },
-]
+export type ServicesPageViewProps = {
+  content: ServicesPageContent
+  catalogItems: CatalogItem[]
+  directors: DirectorateMember[]
+  teamMembers: DirectorateMember[]
+  site: SiteContact
+  totalVisitors: number
+  galleryItems: SiteGalleryItem[]
+}
 
 // const clientCategories = [
 //   {
@@ -155,160 +120,6 @@ const researchItems = [
 //   },
 // ]
 
-const defaultServices = [
-  {
-    id: 'csi',
-    title: 'CSI Services',
-    slug: 'csi-services',
-    desc: 'Comprehensive field processing, evidence documentation, and specialized examination of complex crime scene scenarios using advanced 3D scanning and photography.',
-    banner:
-      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/csi_service_oqxdnf.png',
-  },
-  {
-    id: 'fingerprint',
-    title: 'Fingerprint Analysis',
-    slug: 'fingerprint-analysis',
-    desc: 'Latent print development using chemical and fluorescent methods, international certification procedures, and expert comparison using AFIS-grade standards.',
-    banner:
-      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008138/afrs-2026-assets/fingerprint_services_zfjbcd.png',
-  },
-  {
-    id: 'documents',
-    title: 'Questioned Documents',
-    slug: 'questioned-documents',
-    desc: 'Detailed forensic examination of handwriting, signatures, ink, paper, and digital alterations using ESDA and electrostatic detection apparatus for uncompromised accuracy.',
-    banner:
-      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008310/afrs-2026-assets/questionedDocument_services_mudcgv.png',
-  },
-
-  // Audio and Video Examination
-  {
-    id: 'audio-video',
-    title: 'Audio & Video Forensics',
-    slug: 'audio-video-forensics',
-    desc: 'Expert analysis of audio and video evidence, including enhancement, authentication, and forensic reporting for legal proceedings.',
-    banner:
-      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020382/afrs-2026-assets/audioVideo_service_dtefco.png',
-  },
-
-  // Image & Photography Examination
-  {
-    id: 'image-photography',
-    title: 'Image & Photography Forensics',
-    slug: 'image-photography-forensics',
-    desc: 'Forensic examination of digital and analog images, including metadata analysis, image authentication, and enhancement for investigative and legal purposes.',
-    banner:
-      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020383/afrs-2026-assets/image_service_bc6dzv.png',
-  },
-
-  // Digital Forensics
-  {
-    id: 'digital-forensics',
-    title: 'Digital Forensics',
-    slug: 'digital-forensics',
-    desc: 'Comprehensive analysis of digital devices, data recovery, and cyber investigation to support legal cases and corporate security.',
-    banner:
-      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020382/afrs-2026-assets/digitalEvidence_zmscd8.png',
-  },
-
-  // Insurance Forensic Investigation
-
-  {
-    id: 'insurance-forensics',
-    title: 'Insurance Forensic Investigation',
-    slug: 'insurance-forensic-investigation',
-    desc: 'Specialized forensic services for insurance claims, including fraud detection, accident reconstruction, and evidence analysis to support claim validation.',
-    banner:
-      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020382/afrs-2026-assets/insurance_service_c0oydn.png',
-  },
-
-  // Forensic Biology & Serology Examination
-  {
-    id: 'forensic-biology-serology',
-    title: 'Forensic Biology & Serology Examination',
-    slug: 'forensic-biology-serology-examination',
-    desc: 'Biological evidence analysis, including DNA profiling, serological testing, and forensic pathology to support criminal investigations and legal proceedings.',
-    banner:
-      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020381/afrs-2026-assets/bloodGroupExamination_service_okok85.png',
-  },
-
-  // Cyber Security
-  {
-    id: 'cyber-security',
-    title: 'Cyber Security',
-    slug: 'cyber-security',
-    desc: 'Comprehensive cybersecurity assessments, penetration testing, and digital threat analysis to protect organizational assets and data integrity.',
-    banner:
-      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020380/afrs-2026-assets/cyberSecurity_service_rd8wfx.png',
-  },
-
-  // Forensic Legal Consultancy
-  {
-    id: 'forensic-legal-consultancy',
-    title: 'Forensic Legal Consultancy',
-    slug: 'forensic-legal-consultancy',
-    desc: 'Expert legal consultancy services in forensic matters, providing guidance on evidence handling, case strategy, and courtroom presentation.',
-    banner:
-      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020375/afrs-2026-assets/forensicLegalCounsult_service_icfveh.png',
-  },
-
-  // Medicolegal Consultancy
-  {
-    id: 'medicolegal-consultancy',
-    title: 'Medicolegal Consultancy',
-    slug: 'medicolegal-consultancy',
-    desc: 'Specialized consultancy in medicolegal cases, offering expert opinions, report preparation, and guidance on medico-legal procedures.',
-    banner:
-      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020374/afrs-2026-assets/medicolegalCounsult_service_aojxeq.png',
-  },
-
-  // Forensic Expert Opinion (Under 39 BSA)
-  {
-    id: 'forensic-expert-opinion',
-    title: 'Forensic Expert Opinion (Under 39 BSA)',
-    slug: 'forensic-expert-opinion',
-    desc: 'Provision of expert forensic opinions in accordance with Section 39 of the BSA, supporting legal proceedings and investigative processes.',
-    banner:
-      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020374/afrs-2026-assets/expertOpinion_service_x9bmqo.png',
-  },
-  // Cross Examination
-  {
-    id: 'cross-examination',
-    title: 'Cross Examination Training',
-    slug: 'cross-examination-training',
-    desc: 'Training programs focused on effective cross-examination techniques for forensic experts, enhancing courtroom performance and credibility.',
-    banner:
-      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020373/afrs-2026-assets/crossExamination_service_jrqu4i.png',
-  },
-  // Training and Internship Program
-  {
-    id: 'training-internship',
-    title: 'Training and Internship Program',
-    slug: 'training-internship-program',
-    desc: 'Structured training and internship opportunities in forensic science, providing hands-on experience and professional development for students and early-career professionals.',
-    banner:
-      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020373/afrs-2026-assets/trainingInternship_service_dsyhmw.png',
-  },
-
-  // Research and Project
-  {
-    id: 'research-project',
-    title: 'Research and Project',
-    slug: 'research-and-project',
-    desc: 'Collaborative research initiatives and project-based learning in forensic science, fostering innovation and practical application of forensic methodologies.',
-    banner:
-      'https://res.cloudinary.com/drrzakkgo/image/upload/v1783020373/afrs-2026-assets/research_service_em2lja.png',
-  },
-] satisfies CatalogItem[]
-
-type Props = {
-  catalogItems: CatalogItem[]
-  directors: DirectorateMember[]
-  teamMembers: DirectorateMember[]
-  site: SiteContact
-  totalVisitors: number
-}
-
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <p className="text-[10px] font-extrabold uppercase tracking-[0.28em] text-[#6d28d9]">
@@ -318,14 +129,16 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 }
 
 export function ServicesPageView({
+  content,
   catalogItems,
   directors,
   teamMembers,
   site,
   totalVisitors,
-}: Props) {
+  galleryItems,
+}: ServicesPageViewProps) {
   // const [selectedCategory, setSelectedCategory] = useState<typeof clientCategories[0] | null>(null)
-  const services = catalogItems.length > 0 ? catalogItems : defaultServices
+  const services = catalogItems.length > 0 ? catalogItems : defaultServicesCatalog
   const serviceOptions = services.map((c) => c.title)
   const people = teamMembers.length ? teamMembers.slice(0, 6) : directors
 
@@ -338,30 +151,30 @@ export function ServicesPageView({
         >
           <div className="max-w-[570px]">
             <p className="text-[10px] font-extrabold uppercase tracking-[0.28em] text-white/55">
-              Scientific Assistance Towards Justice
+              {content.heroEyebrow}
             </p>
             <h1 className="mt-5 text-[44px] font-black leading-[0.98] tracking-[-0.01em] sm:text-[64px] lg:text-[76px]">
-              Future-Ready <span className="block text-[#ffbd18]">Forensic</span>
+              {content.heroTitle}{' '}
+              <span className="block text-[#ffbd18]">{content.heroHighlight}</span>
             </h1>
             <p className="mt-7 max-w-[500px] text-[15px] font-medium leading-7 text-white/72">
-              The Applied Forensic Science Laboratory (AFSL) integrates high-tech analytical
-              methodologies with investigative excellence to serve the modern justice system.
+              {content.heroDescription}
             </p>
             <Link
               href="#service-catalog"
               className="mt-8 inline-flex h-12 items-center rounded-[6px] bg-white px-7 text-[13px] font-extrabold text-[#141a2d] shadow-sm"
             >
-              Laboratory Catalog +
+              {content.heroCtaLabel}
             </Link>
           </div>
 
           <div className="rounded-[22px] bg-[#ded4e8] p-10 shadow-[0_22px_60px_rgba(9,8,24,0.24)]">
             <div className="rounded-[6px] bg-[#222735] px-7 py-5 shadow-xl">
               <p className="text-[9px] font-extrabold uppercase tracking-[0.22em] text-[#62c47a]">
-                Lab Status
+                {content.labStatusLabel}
               </p>
               <div className="mt-1 flex items-center justify-between gap-4">
-                <p className="text-[12px] font-bold text-[#62c47a]">Operational & Certified</p>
+                <p className="text-[12px] font-bold text-[#62c47a]">{content.labStatusValue}</p>
                 <ShieldCheck className="h-4 w-4 text-white/35" />
               </div>
             </div>
@@ -370,7 +183,7 @@ export function ServicesPageView({
                 href="#service-catalog"
                 className="rounded-[6px] bg-[#5d20b7] px-7 py-3 text-[12px] font-extrabold text-white shadow-lg shadow-violet-900/25"
               >
-                Our Service Catalog
+                {content.labCardCtaLabel}
               </Link>
             </div>
           </div>
@@ -383,29 +196,18 @@ export function ServicesPageView({
             <div className="rounded-[28px] bg-white p-8 shadow-[0_18px_55px_rgba(33,44,68,0.06)] lg:p-10">
               <div className="grid gap-10 lg:grid-cols-[1fr_480px]">
                 <div>
-                  <Eyebrow>Scientific Infrastructure</Eyebrow>
+                  <Eyebrow>{content.infrastructureEyebrow}</Eyebrow>
                   <h2 className="mt-3 text-[31px] font-black tracking-[-0.01em]">
-                    About AFSL Laboratory
+                    {content.infrastructureTitle}
                   </h2>
-                  <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176]">
-                    Applied Forensic Science Laboratory (AFSL Services India LLP) is registered with
-                    the Ministry of Corporate Affairs (MCA) and MSME, Government of India, and is an
-                    ISO 9001:2015 Certified Forensic Science Laboratory. Our training programs
-                    bridge the gap between theoretical knowledge and practical forensic application
-                    through hands-on, offline learning using advanced forensic instruments in
-                    fingerprint analysis, multimedia forensics, questioned document examination, and
-                    trace evidence analysis.
+                  <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176] text-justify">
+                    {content.infrastructureBody1}
                   </p>
-                  <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176]">
-                    Participants gain real-world exposure through supervised autopsy visits,
-                    simulated and actual crime scene visits, field investigations, evidence
-                    collection, documentation, scientific report writing, and investigative
-                    procedures under expert guidance. Our mission is to build practical skills,
-                    professional confidence, and industry-ready forensic professionals who can
-                    effectively contribute to justice and society.
+                  <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176] text-justify">
+                    {content.infrastructureBody2}
                   </p>
                   <div className="mt-8 grid max-w-[420px] grid-cols-3 gap-4">
-                    {certifications.map((stat) => (
+                    {content.certificationStats.map((stat) => (
                       <div
                         key={stat.caption}
                         className="border-t border-[#dfe7f2] pt-4 text-center"
@@ -438,14 +240,9 @@ export function ServicesPageView({
                 <div className="flex h-12 w-12 items-center justify-center rounded-[10px] bg-white/10">
                   <Microscope className="h-5 w-5" />
                 </div>
-                <h3 className="mt-8 text-[21px] font-black">Laboratory Vision</h3>
-                <p className="mt-4 max-w-[420px] text-[13px] font-medium leading-6 text-white/65">
-                  To be a leading forensic science training and research centre, delivering
-                  industry-oriented, hands-on education that bridges academic learning with
-                  real-world forensic practice. We strive to develop skilled, ethical, and
-                  investigation-ready forensic professionals through advanced laboratory training,
-                  crime scene exposure, and experiential learning, contributing to excellence in the
-                  justice system.
+                <h3 className="mt-8 text-[21px] font-black">{content.visionTitle}</h3>
+                <p className="mt-4 max-w-[420px] text-[13px] font-medium leading-6 text-white/65 text-justify">
+                  {content.visionBody}
                 </p>
                 <div className="mt-7 h-1 w-10 rounded-full bg-[#7434d3]" />
               </article>
@@ -455,14 +252,9 @@ export function ServicesPageView({
                 <div className="flex h-12 w-12 items-center justify-center rounded-[10px] bg-[#6d28d9] text-white">
                   <BriefcaseBusiness className="h-5 w-5" />
                 </div>
-                <h3 className="mt-8 text-[21px] font-black">Our Mission</h3>
-                <p className="mt-4 max-w-[420px] text-[13px] font-medium leading-6 text-[#5e6978]">
-                  To provide high-quality, practical forensic education through state-of-the-art
-                  laboratory facilities, expert mentorship, autopsy exposure, field investigations,
-                  and crime scene training. Our mission is to equip students and professionals with
-                  technical expertise, scientific thinking, evidence-handling skills, and
-                  professional ethics, preparing them to meet the evolving demands of forensic
-                  science and the criminal justice system..
+                <h3 className="mt-8 text-[21px] font-black">{content.missionTitle}</h3>
+                <p className="mt-4 max-w-[420px] text-[13px] font-medium leading-6 text-[#5e6978] text-justify">
+                  {content.missionBody}
                 </p>
                 <div className="mt-7 h-1 w-10 rounded-full bg-[#7434d3]" />
               </article>
@@ -476,13 +268,12 @@ export function ServicesPageView({
           {/* Directorate Section */}
           <div className="mb-24">
             <div className="mb-12 text-center">
-              <Eyebrow>Leadership & Expertise</Eyebrow>
+              <Eyebrow>{content.directorateEyebrow}</Eyebrow>
               <h2 className="mt-3 text-[42px] sm:text-[46px] font-black tracking-[-0.02em] leading-tight text-[#071329]">
-                Laboratory Directorate
+                {content.directorateTitle}
               </h2>
               <p className="mx-auto mt-4 max-w-[600px] text-[15px] font-medium text-[#687487]">
-                Meet the visionary leaders and scientific experts directing the laboratory&apos;s
-                operations and research initiatives.
+                {content.directorateSubtitle}
               </p>
             </div>
 
@@ -552,13 +343,12 @@ export function ServicesPageView({
           {/* Members Section */}
           <div>
             <div className="mb-12 text-center">
-              <Eyebrow>Scientific Team</Eyebrow>
+              <Eyebrow>{content.teamEyebrow}</Eyebrow>
               <h2 className="mt-3 text-[42px] sm:text-[46px] font-black tracking-[-0.02em] leading-tight text-[#071329]">
-                Laboratory Members
+                {content.teamTitle}
               </h2>
               <p className="mx-auto mt-4 max-w-[600px] text-[15px] font-medium text-[#687487]">
-                Dedicated forensic scientists and specialists committed to advancing forensic
-                science and justice.
+                {content.teamSubtitle}
               </p>
             </div>
 
@@ -638,8 +428,8 @@ export function ServicesPageView({
         <div className={CONTAINER}>
           <div className="mb-9 flex items-end justify-between gap-4">
             <div>
-              <Eyebrow>Core Competence</Eyebrow>
-              <h2 className="mt-2 text-[31px] font-black">Forensic Service Catalog</h2>
+              <Eyebrow>{content.catalogEyebrow}</Eyebrow>
+              <h2 className="mt-2 text-[31px] font-black">{content.catalogTitle}</h2>
             </div>
             <div className="hidden items-center gap-5 text-[9px] font-black uppercase tracking-[0.16em] text-[#8c98aa] sm:flex">
               <span className="flex items-center gap-2">
@@ -650,64 +440,63 @@ export function ServicesPageView({
               </span>
             </div>
           </div>
-          <div className="grid gap-7 lg:grid-cols-3">
+          <div className="grid items-stretch gap-7 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((item, index) => (
-              <div key={item.id}>
-                <Link
-                  href={`/services/${item.slug}`}
-                  className="group block overflow-hidden rounded-[16px] border border-[#dce4ef] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-                >
-                  <div className="relative h-[185px] overflow-hidden">
-                    <Image
-                      src={item.banner}
-                      alt={item.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover transition duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#071329]/85 via-[#071329]/12 to-transparent" />
-                    <span className="absolute bottom-5 left-5 flex h-8 w-8 items-center justify-center rounded-[6px] bg-[#6d28d9] text-white">
-                      {index === 1 ? (
-                        <Fingerprint className="h-4 w-4" />
-                      ) : index === 2 ? (
-                        <FileSearch className="h-4 w-4" />
-                      ) : (
-                        <Microscope className="h-4 w-4" />
-                      )}
-                    </span>
-                    <h3 className="absolute bottom-5 left-16 right-5 text-[18px] font-black text-white">
-                      {item.title}
-                    </h3>
-                  </div>
-                  <div className="p-6">
-                    <p className="min-h-[92px] text-[14px] font-medium leading-6 text-[#627086]">
-                      {item.desc}
-                    </p>
-                    <span className="mt-5 flex h-10 items-center justify-center rounded-[5px] border border-[#6d28d9] text-[10px] font-black uppercase tracking-[0.12em] text-[#4f1aa0]">
-                      View Details +
-                    </span>
-                  </div>
-                </Link>
-              </div>
+              <Link
+                key={item.id}
+                href={`/services/${item.slug}`}
+                className="group flex h-full flex-col overflow-hidden rounded-[16px] border border-[#dce4ef] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+              >
+                <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden">
+                  <Image
+                    src={item.banner}
+                    alt={item.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#071329]/85 via-[#071329]/12 to-transparent" />
+                  <span className="absolute bottom-5 left-5 flex h-8 w-8 items-center justify-center rounded-[6px] bg-[#6d28d9] text-white">
+                    {index === 1 ? (
+                      <Fingerprint className="h-4 w-4" />
+                    ) : index === 2 ? (
+                      <FileSearch className="h-4 w-4" />
+                    ) : (
+                      <Microscope className="h-4 w-4" />
+                    )}
+                  </span>
+                  <h3 className="absolute bottom-5 left-16 right-5 line-clamp-2 text-[18px] font-black leading-snug text-white">
+                    {item.title}
+                  </h3>
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <p className="line-clamp-4 min-h-[96px] flex-1 text-[14px] font-medium leading-6 text-[#627086]">
+                    {item.desc}
+                  </p>
+                  <span className="mt-5 flex h-10 items-center justify-center rounded-[5px] border border-[#6d28d9] text-[10px] font-black uppercase tracking-[0.12em] text-[#4f1aa0]">
+                    View Details +
+                  </span>
+                </div>
+              </Link>
             ))}
           </div>
 
           <div>
             <div className="mt-8 grid gap-8 rounded-[20px] bg-[#081326] p-8 text-white lg:grid-cols-[1fr_2fr] lg:p-10">
               <div>
-                <h3 className="text-[25px] font-black leading-tight">Expert Legal Consultancy</h3>
+                <h3 className="text-[25px] font-black leading-tight">{content.legalTitle}</h3>
                 <p className="mt-4 max-w-[300px] text-[13px] font-medium leading-6 text-white/65">
-                  Specialized legal support for judicial and corporate entities.
+                  {content.legalDescription}
                 </p>
                 <Link
                   href="/contact"
                   className="mt-8 inline-flex rounded-[6px] bg-[#6420c3] px-7 py-3 text-[12px] font-extrabold"
                 >
-                  Legal Intake
+                  {content.legalCtaLabel}
                 </Link>
               </div>
               <ul className="grid content-center gap-x-10 gap-y-5 sm:grid-cols-2">
-                {legalLinks.map((item) => (
+                {content.legalLinks.map((item) => (
                   <li
                     key={item}
                     className="flex items-center gap-3 text-[12px] font-bold text-white/78"
@@ -763,18 +552,17 @@ export function ServicesPageView({
       <section className="bg-[#eef3f9] py-24">
         <div className={CONTAINER}>
           <div className="mx-auto max-w-[740px] text-center">
-            <Eyebrow>Proprietary Equipment</Eyebrow>
+            <Eyebrow>{content.kitsEyebrow}</Eyebrow>
             <h2 className="mt-2 text-[36px] font-black leading-tight text-[#071329]">
-              AFSL Professional Kits
+              {content.kitsTitle}
             </h2>
             <p className="mt-4 text-[14px] font-medium leading-6 text-[#687487]">
-              Engineered for field professionals and academic researchers. Each kit conforms to
-              international forensic standards and is ready for deployment.
+              {content.kitsDescription}
             </p>
           </div>
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {kitCards.map((kit) => {
-              const Icon = kit.icon
+            {content.kitCards.map((kit) => {
+              const Icon = KIT_ICONS[kit.icon] ?? Box
               return (
                 <div key={kit.title}>
                   <article className="group h-full overflow-hidden rounded-[16px] border border-[#dfe7f2] bg-white shadow-[0_8px_20px_rgba(15,23,42,0.06)] transition hover:shadow-[0_16px_40px_rgba(109,40,217,0.12)] hover:-translate-y-1">
@@ -813,32 +601,21 @@ export function ServicesPageView({
         <div className={`${CONTAINER} grid gap-10 lg:grid-cols-[1fr_1fr]`}>
           <div>
             <div className="space-y-6">
-              <h2 className="text-[24px] font-black">Training & Internship</h2>
-              {[
-                [
-                  'Corporate Training',
-                  'Bespoke programs for law enforcement, insurance adjusters, and legal firms on evidence preservation and digital threat vectors.',
-                  'View Modules +',
-                ],
-                [
-                  'Internship Program',
-                  'Hands-on laboratory experience for aspiring forensic scientists. Accredited programs covering 12 scientific disciplines.',
-                  'Apply Now +',
-                ],
-              ].map(([title, desc, cta], index) => (
+              <h2 className="text-[24px] font-black">{content.trainingTitle}</h2>
+              {content.trainingCards.map((card, index) => (
                 <article
-                  key={title}
+                  key={card.title}
                   className={`rounded-[8px] bg-[#101d33] p-7 ${index === 0 ? 'border-l-4 border-[#6d28d9]' : 'border-l-4 border-[#10b8f0]'}`}
                 >
-                  <h3 className="text-[15px] font-black">{title}</h3>
+                  <h3 className="text-[15px] font-black">{card.title}</h3>
                   <p className="mt-3 max-w-[430px] text-[12px] font-medium leading-6 text-white/58">
-                    {desc}
+                    {card.desc}
                   </p>
                   <Link
-                    href="/courses"
+                    href={card.href || '/courses'}
                     className="mt-5 inline-block text-[12px] font-black text-[#b38cff]"
                   >
-                    {cta}
+                    {card.cta}
                   </Link>
                 </article>
               ))}
@@ -846,9 +623,9 @@ export function ServicesPageView({
           </div>
           <div>
             <article className="rounded-[10px] bg-[#1d2a47] p-9">
-              <h2 className="text-[24px] font-black">Research and Projects</h2>
+              <h2 className="text-[24px] font-black">{content.researchTitle}</h2>
               <ol className="mt-10 space-y-8">
-                {researchItems.map((item) => (
+                {content.researchItems.map((item) => (
                   <li key={item.num} className="grid grid-cols-[52px_1fr] gap-6">
                     <span className="text-[30px] font-black text-white/42">{item.num}</span>
                     <span>
@@ -869,14 +646,12 @@ export function ServicesPageView({
         <div className={`${CONTAINER} grid gap-12 lg:grid-cols-[1fr_520px] lg:items-center`}>
           <div>
             <div>
-              <Eyebrow>Case Registration</Eyebrow>
+              <Eyebrow>{content.inquiryEyebrow}</Eyebrow>
               <h2 className="mt-2 max-w-[460px] text-[34px] font-black leading-tight">
-                Laboratory Intake & Case Enquiry
+                {content.inquiryTitle}
               </h2>
               <p className="mt-6 max-w-[490px] text-[14px] font-medium leading-7 text-[#5f6d80]">
-                Registered agencies and legal professionals can submit evidence and initiate case
-                files through this portal. For emergency forensic support, please use our priority
-                helpline.
+                {content.inquiryDescription}
               </p>
               <div className="mt-10 space-y-5">
                 <a
@@ -888,7 +663,7 @@ export function ServicesPageView({
                   </span>
                   <span>
                     <span className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#a1acba]">
-                      Priority Helpline
+                      {content.priorityHelplineLabel}
                     </span>
                     <span className="mt-1 block text-[16px] font-black">{site.phone}</span>
                   </span>
@@ -902,7 +677,7 @@ export function ServicesPageView({
                   </span>
                   <span>
                     <span className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#a1acba]">
-                      Report Verification
+                      {content.reportVerificationLabel}
                     </span>
                     <span className="mt-1 block text-[16px] font-black">{site.email}</span>
                   </span>
@@ -921,8 +696,8 @@ export function ServicesPageView({
           </div>
         </div>
       </section>
-
-      <section className="bg-[#eef3f9] py-12">
+      <SiteGallerySection items={galleryItems} className="bg-[#eef3f9]" />
+      <section className="bg-[#eef3f9]">
         <VisitorCounterBar totalVisitors={totalVisitors} icon="📈" />
       </section>
       {/* 

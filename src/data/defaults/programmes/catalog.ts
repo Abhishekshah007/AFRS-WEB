@@ -1,8 +1,8 @@
 import type {
+  ArchiveFilterLinks,
   EducationCategory,
   TrainingCategory,
-  ArchiveFilterLinks,
-} from '@/components/programmes/catalog'
+} from '@/domain/programmes/catalog-types'
 
 export const defaultEducationCategories: EducationCategory[] = [
   {

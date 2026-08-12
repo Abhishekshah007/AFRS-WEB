@@ -1,14 +1,13 @@
 import type { ArticleListItem, FeaturedArticle, TopicFilter } from '@/components/student-hub/articles/types'
+import { ARTICLE_CATEGORY_OPTIONS } from '@/data/article-categories'
 
 export const topicFilters: TopicFilter[] = [
   { id: 'all', label: 'All Topics', value: 'all' },
-  { id: 'odontology', label: 'Forensic Odontology', value: 'odontology', icon: '🦷' },
-  { id: 'toxicology', label: 'Toxicology', value: 'toxicology' },
-  { id: 'dna', label: 'DNA', value: 'dna' },
-  { id: 'digitalForensics', label: 'Digital Forensics', value: 'digitalForensics' },
-  { id: 'ballistics', label: 'Ballistics', value: 'ballistics', icon: '🎯' },
-  { id: 'psychology', label: 'Psychology', value: 'psychology', icon: '🧠' },
-  { id: 'general', label: 'General', value: 'general', icon: '📘' },
+  ...ARTICLE_CATEGORY_OPTIONS.map((option) => ({
+    id: option.value,
+    label: option.label,
+    value: option.value,
+  })),
 ]
 
 export const defaultFeatured: FeaturedArticle = {

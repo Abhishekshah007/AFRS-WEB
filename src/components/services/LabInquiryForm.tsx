@@ -1,57 +1,28 @@
 'use client'
 
-import { useMemo, useState } from 'react'
-
-type State =
-  | { status: 'idle'; message?: string }
-  | { status: 'submitting'; message?: string }
-  | { status: 'success'; message: string }
-  | { status: 'error'; message: string }
+import { useContactFormSubmit } from '@/hooks/useContactFormSubmit'
 
 const inputClass =
   'mt-2 w-full h-11 rounded-[8px] border border-[#e4ebf4] bg-white px-4 text-[12px] font-semibold text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/15'
 
 export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] }) {
-  const [state, setState] = useState<State>({ status: 'idle' })
-  const disabled = state.status === 'submitting'
+  const { state, disabled, onSubmit } = useContactFormSubmit({
+    successMessage: 'Inquiry received. Our lab team will contact you within 24 hours.',
+    mapFormData: (formData) => ({
+      fullName: String(formData.get('fullName') || '').trim(),
+      email: String(formData.get('email') || '').trim(),
+      mobile: String(formData.get('mobile') || '').trim(),
+      subject: String(formData.get('serviceType') || 'Lab inquiry').trim(),
+      message: String(formData.get('message') || '').trim(),
+    }),
+  })
 
-  const buttonLabel = useMemo(() => {
-    if (state.status === 'submitting') return 'Submitting…'
-    if (state.status === 'success') return 'Submitted'
-    return 'SUBMIT INQUIRY'
-  }, [state.status])
-
-  async function onSubmit(formData: FormData) {
-    const fullName = String(formData.get('fullName') || '').trim()
-    const email = String(formData.get('email') || '').trim()
-    const mobile = String(formData.get('mobile') || '').trim()
-    const subject = String(formData.get('serviceType') || 'Lab inquiry').trim()
-    const message = String(formData.get('message') || '').trim()
-
-    if (!fullName || !email || !message) {
-      setState({ status: 'error', message: 'Please fill Full Name, Email, and Message.' })
-      return
-    }
-
-    setState({ status: 'submitting' })
-    try {
-      const res = await fetch('/api/contactMessages', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ fullName, mobile, email, subject, message }),
-      })
-      if (!res.ok) throw new Error(await res.text().catch(() => 'Failed to send'))
-      setState({
-        status: 'success',
-        message: 'Inquiry received. Our lab team will contact you within 24 hours.',
-      })
-    } catch (e) {
-      setState({
-        status: 'error',
-        message: e instanceof Error ? e.message : 'Something went wrong',
-      })
-    }
-  }
+  const buttonLabel =
+    state.status === 'submitting'
+      ? 'Submitting…'
+      : state.status === 'success'
+        ? 'Submitted'
+        : 'SUBMIT INQUIRY'
 
   return (
     <form action={onSubmit} className="space-y-4" id="lab-inquiry-form">
