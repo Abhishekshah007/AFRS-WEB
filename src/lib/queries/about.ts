@@ -18,8 +18,9 @@ import {
   fallbackLeaders,
 } from '@/data/defaults/about'
 import { resolveMediaUrl } from '@/lib/cms'
-import { membershipWhatsAppHref } from '@/lib/queries/site'
 import { getPayloadClient } from '@/lib/payload'
+import { getFeaturedGalleryItems } from '@/lib/queries/gallery'
+import { membershipWhatsAppHref } from '@/lib/queries/site'
 import type {
   AboutCertification,
   AboutPage,
@@ -225,7 +226,8 @@ function applyMembershipWhatsAppLinks(
 export async function getAboutPageData(): Promise<AboutPageViewProps> {
   const payload = await getPayloadClient()
 
-  const [aboutPage, siteSettings, scientists, impactStats, certificationsResult] = await Promise.all([
+  const [aboutPage, siteSettings, scientists, impactStats, certificationsResult, galleryItems] =
+    await Promise.all([
     payload.findGlobal({ slug: 'aboutPage', depth: 1, overrideAccess: false }),
     payload.findGlobal({ slug: 'siteSettings', depth: 0, overrideAccess: false }),
     payload.find({
@@ -252,6 +254,7 @@ export async function getAboutPageData(): Promise<AboutPageViewProps> {
       depth: 1,
       overrideAccess: false,
     }),
+    getFeaturedGalleryItems(4),
   ])
 
   const about = aboutPage as AboutPage
@@ -307,5 +310,6 @@ export async function getAboutPageData(): Promise<AboutPageViewProps> {
     futureRoadmapItems: sectionText.futureRoadmapItems ?? [],
     membershipReasons: sectionText.membershipReasons ?? [],
     heroImage,
+    galleryItems,
   }
 }

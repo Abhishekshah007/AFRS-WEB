@@ -18,6 +18,7 @@ import {
 } from '@/data/defaults/services'
 import { richTextToPlain, resolveMediaUrl } from '@/lib/cms'
 import { getPayloadClient } from '@/lib/payload'
+import { getFeaturedGalleryItems } from '@/lib/queries/gallery'
 import type { Media, Scientist, Service, ServicesPage, SiteSetting } from '@/payload-types'
 
 type CmsTextRow = { text?: string | null }
@@ -172,7 +173,7 @@ function buildSiteContact(site: SiteSetting | null | undefined): SiteContact {
 export async function getServicesPageData(): Promise<ServicesPageViewProps> {
   const payload = await getPayloadClient()
 
-  const [servicesPage, services, scientists, siteData] = await Promise.all([
+  const [servicesPage, services, scientists, siteData, galleryItems] = await Promise.all([
     payload.findGlobal({ slug: 'servicesPage', depth: 0, overrideAccess: false }),
     payload.find({
       collection: 'services',
@@ -191,6 +192,7 @@ export async function getServicesPageData(): Promise<ServicesPageViewProps> {
       overrideAccess: false,
     }),
     payload.findGlobal({ slug: 'siteSettings', depth: 0, overrideAccess: false }),
+    getFeaturedGalleryItems(4),
   ])
 
   const site = siteData as SiteSetting
@@ -228,5 +230,6 @@ export async function getServicesPageData(): Promise<ServicesPageViewProps> {
     teamMembers,
     site: buildSiteContact(site),
     totalVisitors: site?.totalVisitors || 200,
+    galleryItems,
   }
 }

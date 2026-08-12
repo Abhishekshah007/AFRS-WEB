@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import type { TopicFilter } from '@/components/student-hub/articles/types'
+import { VISIBLE_ARTICLE_CATEGORY_COUNT } from '@/data/article-categories'
 
 export type ArticlesHeroProps = {
   filters: TopicFilter[]
@@ -24,13 +25,12 @@ export function ArticlesHero({
   const [openMore, setOpenMore] = useState(false)
   const moreRef = useRef<HTMLDivElement | null>(null)
 
-  const visibleFilters = filters.filter((filter) =>
-    ['all', 'odontology', 'toxicology', 'dna', 'digitalForensics'].includes(filter.value),
-  )
-  const moreFilters = filters.filter(
-    (filter) =>
-      !['all', 'odontology', 'toxicology', 'dna', 'digitalForensics'].includes(filter.value),
-  )
+  const allFilter = filters.find((filter) => filter.value === 'all')
+  const categoryFilters = filters.filter((filter) => filter.value !== 'all')
+  const visibleCategoryFilters = categoryFilters.slice(0, VISIBLE_ARTICLE_CATEGORY_COUNT)
+  const moreFilters = categoryFilters.slice(VISIBLE_ARTICLE_CATEGORY_COUNT)
+  const visibleFilters = allFilter ? [allFilter, ...visibleCategoryFilters] : visibleCategoryFilters
+  const activeMoreFilter = moreFilters.find((filter) => filter.value === activeTopic)
 
   useEffect(() => {
     function handleOutside(event: MouseEvent) {
@@ -151,48 +151,58 @@ export function ArticlesHero({
           )
         })}
 
-        <div ref={moreRef} className="relative">
-          <button
-            type="button"
-            onClick={() => setOpenMore((prev) => !prev)}
-            className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
-              moreFilters.some((filter) => filter.value === activeTopic)
-                ? 'bg-white text-(--articles-accent) shadow-md'
-                : 'bg-white/15 text-white border border-white/30 hover:bg-white/25'
-            }`}
-            aria-expanded={openMore}
-          >
-            More{' '}
-            <span aria-hidden="true" className="text-xs">
-              ▼
-            </span>
-          </button>
+        {moreFilters.length > 0 && (
+          <div ref={moreRef} className="relative">
+            <button
+              type="button"
+              onClick={() => setOpenMore((prev) => !prev)}
+              className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
+                activeMoreFilter
+                  ? 'bg-white text-(--articles-accent) shadow-md'
+                  : 'bg-white/15 text-white border border-white/30 hover:bg-white/25'
+              }`}
+              aria-expanded={openMore}
+              aria-haspopup="listbox"
+            >
+              {activeMoreFilter ? activeMoreFilter.label : 'More'}
+              <span aria-hidden="true" className="text-xs">
+                ▼
+              </span>
+            </button>
 
-          {openMore && (
-            <div className="absolute right-0 z-10 mt-3 w-56 rounded-[20px] border border-white/20 bg-white/95 p-3 shadow-[0_18px_32px_rgba(15,23,42,0.18)] backdrop-blur-sm">
-              <div className="space-y-2">
-                {moreFilters.map((filter) => (
-                  <button
-                    key={filter.id}
-                    type="button"
-                    onClick={() => {
-                      onTopic(filter.value)
-                      setOpenMore(false)
-                    }}
-                    className="w-full rounded-[18px] px-4 py-2 text-left text-sm font-semibold text-[#071329] transition hover:bg-[#eef3f9]"
-                  >
-                    {filter.icon && (
-                      <span className="mr-2" aria-hidden="true">
-                        {filter.icon}
-                      </span>
-                    )}
-                    {filter.label}
-                  </button>
-                ))}
+            {openMore && (
+              <div
+                className="absolute right-0 z-10 mt-3 w-72 max-h-80 overflow-y-auto rounded-[20px] border border-white/20 bg-white/95 p-3 shadow-[0_18px_32px_rgba(15,23,42,0.18)] backdrop-blur-sm"
+                role="listbox"
+              >
+                <div className="space-y-1">
+                  {moreFilters.map((filter) => (
+                    <button
+                      key={filter.id}
+                      type="button"
+                      role="option"
+                      aria-selected={filter.value === activeTopic}
+                      onClick={() => {
+                        onTopic(filter.value)
+                        setOpenMore(false)
+                      }}
+                      className={`w-full rounded-[18px] px-4 py-2 text-left text-sm font-semibold transition hover:bg-[#eef3f9] ${
+                        filter.value === activeTopic ? 'bg-[#eef3f9] text-(--articles-accent)' : 'text-[#071329]'
+                      }`}
+                    >
+                      {filter.icon && (
+                        <span className="mr-2" aria-hidden="true">
+                          {filter.icon}
+                        </span>
+                      )}
+                      {filter.label}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )

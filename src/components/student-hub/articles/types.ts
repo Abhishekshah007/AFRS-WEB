@@ -1,11 +1,6 @@
-export type ArticleCategory =
-  | 'toxicology'
-  | 'ballistics'
-  | 'psychology'
-  | 'dna'
-  | 'digitalForensics'
-  | 'odontology'
-  | 'general'
+import type { ArticleCategoryValue } from '@/data/article-categories'
+
+export type ArticleCategory = ArticleCategoryValue
 
 export type ArticleListItem = {
   id: string

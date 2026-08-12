@@ -4,6 +4,8 @@ import { AboutPillarsSection } from '@/components/about/AboutPillarsSection'
 import { AboutRoadmapSection } from '@/components/about/AboutRoadmapSection'
 import { AchievementsBar } from '@/components/about/AchievementsBar'
 import { AwardsGallery } from '@/components/about/AwardsGallery'
+import { SiteGallerySection } from '@/components/gallery/SiteGallerySection'
+import type { SiteGalleryItem } from '@/components/gallery/SiteGallerySection'
 import { CertificationsSection } from '@/components/about/CertificationsSection'
 import { LeadershipSection } from '@/components/about/LeadershipSection'
 import { MembershipSection } from '@/components/about/MembershipSection'
@@ -34,6 +36,7 @@ export type AboutPageViewProps = {
   futureRoadmapItems: string[]
   membershipReasons: string[]
   heroImage?: string
+  galleryItems: SiteGalleryItem[]
 }
 
 export function AboutPageView({
@@ -52,6 +55,7 @@ export function AboutPageView({
   futureRoadmapItems,
   membershipReasons,
   heroImage,
+  galleryItems,
 }: Readonly<AboutPageViewProps>) {
   const heroTitle = sectionText.aboutHeading || 'Advancing the Frontiers of Forensic Science'
 
@@ -228,7 +232,7 @@ export function AboutPageView({
         cardBody={sectionText.roadmapCardBody ?? undefined}
       />
 
-      <AwardsGallery
+      {/* <AwardsGallery
         title={sectionText.awardsTitle ?? undefined}
         subtitle={sectionText.awardsSubtitle ?? undefined}
         callout={sectionText.awardsCallout ?? undefined}
@@ -237,7 +241,9 @@ export function AboutPageView({
           sectionText.awardsImageAlt2 ?? 'AFRS training session',
           sectionText.awardsImageAlt3 ?? 'AFRS team recognition',
         ]}
-      />
+      /> */}
+
+      <SiteGallerySection items={galleryItems} title="Awards & Recognition" subtitle="" />
     </div>
   )
 }

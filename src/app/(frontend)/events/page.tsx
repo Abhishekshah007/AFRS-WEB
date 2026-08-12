@@ -13,6 +13,8 @@ export const metadata: Metadata = {
 }
 
 import { FALLBACK_BANNER_IMAGE } from '@/lib/constants/assets'
+import { SiteGallerySection } from '@/components/gallery/SiteGallerySection'
+import { getFeaturedGalleryItems } from '@/lib/queries/gallery'
 
 const typeColors: Record<string, string> = {
   workshop: 'bg-indigo-100 text-indigo-700',
@@ -24,7 +26,7 @@ const typeColors: Record<string, string> = {
 export default async function EventsPage() {
   const payload = await getPayloadClient()
 
-  const [upcoming, past] = await Promise.all([
+  const [upcoming, past, galleryItems] = await Promise.all([
     payload.find({
       collection: 'events',
       where: {
@@ -51,6 +53,7 @@ export default async function EventsPage() {
       depth: 1,
       overrideAccess: false,
     }),
+    getFeaturedGalleryItems(4),
   ])
 
   return (
@@ -189,6 +192,8 @@ export default async function EventsPage() {
           </div>
         </section>
       )}
+
+      <SiteGallerySection items={galleryItems} className="bg-white" />
     </div>
   )
 }

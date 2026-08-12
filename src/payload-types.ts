@@ -190,7 +190,28 @@ export interface Article {
     };
     [k: string]: unknown;
   } | null;
-  category: 'toxicology' | 'ballistics' | 'psychology' | 'dna' | 'digitalForensics' | 'odontology' | 'general';
+  category:
+    | 'biologySerology'
+    | 'dna'
+    | 'toxicology'
+    | 'ballistics'
+    | 'fingerprint'
+    | 'questionedDocument'
+    | 'crimeScene'
+    | 'forensicPhotography'
+    | 'forensicMedicine'
+    | 'forensicPathology'
+    | 'multimediaForensics'
+    | 'forensicInstrumentation'
+    | 'psychology'
+    | 'odontology'
+    | 'forensicAnthropology'
+    | 'digitalForensics'
+    | 'aiMl'
+    | 'forensicBiotechnology'
+    | 'voiceAnalysis'
+    | 'forensicAccounting'
+    | 'general';
   coverImage?: (number | null) | Media;
   authorName: string;
   authorTitle?: string | null;

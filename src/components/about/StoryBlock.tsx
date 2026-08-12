@@ -40,8 +40,12 @@ export function StoryBlock({
       >
         {badge}
       </span>
-      <h2 className={`mt-4 ${aboutTokens.heading} text-2xl sm:text-[28px] leading-tight`}>{title}</h2>
-      <p className={`mt-4 text-justify text-sm sm:text-base ${aboutTokens.body}`}>{body}</p>
+      <h2 className={`mt-4 ${aboutTokens.heading} text-2xl sm:text-[28px] leading-tight`}>
+        {title}
+      </h2>
+      <p className={`mt-4 text-justify text-sm sm:text-base ${aboutTokens.body} text-justify`}>
+        {body}
+      </p>
       <div
         className={`mt-6 flex items-start gap-3 ${aboutTokens.radiusCard} border border-slate-100 bg-white p-4 shadow-sm max-w-md`}
       >
@@ -51,7 +55,9 @@ export function StoryBlock({
         >
           {highlight.icon}
         </span>
-        <p className="text-sm font-medium text-slate-700 leading-snug pt-1">{highlight.text}</p>
+        <p className="text-sm font-medium text-slate-700 leading-snug pt-1 text-justify">
+          {highlight.text}
+        </p>
       </div>
     </div>
   )
@@ -60,7 +66,13 @@ export function StoryBlock({
     <div
       className={`relative aspect-[4/3] sm:aspect-[16/11] overflow-hidden ${aboutTokens.radiusImage} bg-slate-100 shadow-md`}
     >
-      <Image src={imageSrc} alt={imageAlt} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
+      <Image
+        src={imageSrc}
+        alt={imageAlt}
+        fill
+        sizes="(max-width: 1024px) 100vw, 50vw"
+        className="object-cover"
+      />
     </div>
   )
 

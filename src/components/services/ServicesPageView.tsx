@@ -23,6 +23,8 @@ import {
 // import { Modal } from '@/components/ui/Modal'
 import { LabInquiryForm } from '@/components/services/LabInquiryForm'
 import { VisitorCounterBar } from '@/components/student-hub/VisitorCounterBar'
+import { SiteGallerySection } from '@/components/gallery/SiteGallerySection'
+import type { SiteGalleryItem } from '@/components/gallery/SiteGallerySection'
 import type {
   CatalogItem,
   DirectorateMember,
@@ -52,6 +54,7 @@ export type ServicesPageViewProps = {
   teamMembers: DirectorateMember[]
   site: SiteContact
   totalVisitors: number
+  galleryItems: SiteGalleryItem[]
 }
 
 // const clientCategories = [
@@ -132,6 +135,7 @@ export function ServicesPageView({
   teamMembers,
   site,
   totalVisitors,
+  galleryItems,
 }: ServicesPageViewProps) {
   // const [selectedCategory, setSelectedCategory] = useState<typeof clientCategories[0] | null>(null)
   const services = catalogItems.length > 0 ? catalogItems : defaultServicesCatalog
@@ -237,7 +241,7 @@ export function ServicesPageView({
                   <Microscope className="h-5 w-5" />
                 </div>
                 <h3 className="mt-8 text-[21px] font-black">{content.visionTitle}</h3>
-                <p className="mt-4 max-w-[420px] text-[13px] font-medium leading-6 text-white/65">
+                <p className="mt-4 max-w-[420px] text-[13px] font-medium leading-6 text-white/65 text-justify">
                   {content.visionBody}
                 </p>
                 <div className="mt-7 h-1 w-10 rounded-full bg-[#7434d3]" />
@@ -249,7 +253,7 @@ export function ServicesPageView({
                   <BriefcaseBusiness className="h-5 w-5" />
                 </div>
                 <h3 className="mt-8 text-[21px] font-black">{content.missionTitle}</h3>
-                <p className="mt-4 max-w-[420px] text-[13px] font-medium leading-6 text-[#5e6978]">
+                <p className="mt-4 max-w-[420px] text-[13px] font-medium leading-6 text-[#5e6978] text-justify">
                   {content.missionBody}
                 </p>
                 <div className="mt-7 h-1 w-10 rounded-full bg-[#7434d3]" />
@@ -436,45 +440,44 @@ export function ServicesPageView({
               </span>
             </div>
           </div>
-          <div className="grid gap-7 lg:grid-cols-3">
+          <div className="grid items-stretch gap-7 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((item, index) => (
-              <div key={item.id}>
-                <Link
-                  href={`/services/${item.slug}`}
-                  className="group block overflow-hidden rounded-[16px] border border-[#dce4ef] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-                >
-                  <div className="relative h-[185px] overflow-hidden">
-                    <Image
-                      src={item.banner}
-                      alt={item.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover transition duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#071329]/85 via-[#071329]/12 to-transparent" />
-                    <span className="absolute bottom-5 left-5 flex h-8 w-8 items-center justify-center rounded-[6px] bg-[#6d28d9] text-white">
-                      {index === 1 ? (
-                        <Fingerprint className="h-4 w-4" />
-                      ) : index === 2 ? (
-                        <FileSearch className="h-4 w-4" />
-                      ) : (
-                        <Microscope className="h-4 w-4" />
-                      )}
-                    </span>
-                    <h3 className="absolute bottom-5 left-16 right-5 text-[18px] font-black text-white">
-                      {item.title}
-                    </h3>
-                  </div>
-                  <div className="p-6">
-                    <p className="min-h-[92px] text-[14px] font-medium leading-6 text-[#627086]">
-                      {item.desc}
-                    </p>
-                    <span className="mt-5 flex h-10 items-center justify-center rounded-[5px] border border-[#6d28d9] text-[10px] font-black uppercase tracking-[0.12em] text-[#4f1aa0]">
-                      View Details +
-                    </span>
-                  </div>
-                </Link>
-              </div>
+              <Link
+                key={item.id}
+                href={`/services/${item.slug}`}
+                className="group flex h-full flex-col overflow-hidden rounded-[16px] border border-[#dce4ef] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+              >
+                <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden">
+                  <Image
+                    src={item.banner}
+                    alt={item.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#071329]/85 via-[#071329]/12 to-transparent" />
+                  <span className="absolute bottom-5 left-5 flex h-8 w-8 items-center justify-center rounded-[6px] bg-[#6d28d9] text-white">
+                    {index === 1 ? (
+                      <Fingerprint className="h-4 w-4" />
+                    ) : index === 2 ? (
+                      <FileSearch className="h-4 w-4" />
+                    ) : (
+                      <Microscope className="h-4 w-4" />
+                    )}
+                  </span>
+                  <h3 className="absolute bottom-5 left-16 right-5 line-clamp-2 text-[18px] font-black leading-snug text-white">
+                    {item.title}
+                  </h3>
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <p className="line-clamp-4 min-h-[96px] flex-1 text-[14px] font-medium leading-6 text-[#627086]">
+                    {item.desc}
+                  </p>
+                  <span className="mt-5 flex h-10 items-center justify-center rounded-[5px] border border-[#6d28d9] text-[10px] font-black uppercase tracking-[0.12em] text-[#4f1aa0]">
+                    View Details +
+                  </span>
+                </div>
+              </Link>
             ))}
           </div>
 
@@ -693,9 +696,7 @@ export function ServicesPageView({
           </div>
         </div>
       </section>
-      <section className="bg-[#eef3f9] py-10">
-        {/* <GallerySection galleryItems={galleryItems} /> */}
-      </section>
+      <SiteGallerySection items={galleryItems} className="bg-[#eef3f9]" />
       <section className="bg-[#eef3f9]">
         <VisitorCounterBar totalVisitors={totalVisitors} icon="📈" />
       </section>
