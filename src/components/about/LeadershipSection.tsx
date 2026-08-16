@@ -151,7 +151,7 @@ function LeaderCard({ leader }: { leader: LeaderProfile }) {
         {/* ── Photo panel ── */}
         <div className="relative min-h-[260px] overflow-hidden bg-slate-900">
           {/* Brand accent bar */}
-          <div className="absolute inset-y-0 left-0 z-10 w-[3px] bg-[#4F75F4]" />
+          <div className="absolute inset-y-0 left-0 z-10 w-[3px] bg-[var(--about-primary)]" />
 
           {leader.photoUrl ? (
             <Image
@@ -180,7 +180,7 @@ function LeaderCard({ leader }: { leader: LeaderProfile }) {
               <h3 className="text-[1.25rem] font-extrabold leading-tight tracking-[-0.025em] text-slate-950">
                 {leader.name}
               </h3>
-              <span className="mt-2 inline-flex items-center rounded-full border border-[#4F75F4]/20 bg-[#4F75F4]/8 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] text-[#4F75F4]">
+              <span className="mt-2 inline-flex items-center rounded-full border border-[var(--about-primary)]/20 bg-[var(--about-primary)]/8 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] text-[var(--about-primary)]">
                 {leader.designation}
               </span>
             </div>
@@ -195,7 +195,7 @@ function LeaderCard({ leader }: { leader: LeaderProfile }) {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`${leader.name} on ${label}`}
-                    className="flex h-[30px] w-[30px] items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-400 transition-all duration-150 hover:border-[#4F75F4]/30 hover:bg-[#4F75F4]/8 hover:text-[#4F75F4]"
+                    className="flex h-[30px] w-[30px] items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-400 transition-all duration-150 hover:border-[var(--about-primary)]/30 hover:bg-[var(--about-primary)]/8 hover:text-[var(--about-primary)]"
                   >
                     {icon}
                   </Link>
@@ -209,8 +209,8 @@ function LeaderCard({ leader }: { leader: LeaderProfile }) {
 
           {/* Quote block — left border rule, no bg card */}
           {leader.message && (
-            <div className="border-l-2 border-[#4F75F4] pl-3.5">
-              <Quote className="mb-2 h-4 w-4 text-[#4F75F4]/40" strokeWidth={2.5} />
+            <div className="border-l-2 border-[var(--about-primary)] pl-3.5">
+              <Quote className="mb-2 h-4 w-4 text-[var(--about-primary)]/40" strokeWidth={2.5} />
               <p className="line-clamp-5 text-[12.5px] leading-[1.75] text-slate-600">
                 {leader.message}
               </p>

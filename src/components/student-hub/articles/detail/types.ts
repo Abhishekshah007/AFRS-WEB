@@ -1,18 +1,5 @@
 import type { ArticleListItem, FeaturedArticle } from '@/components/student-hub/articles/types'
 
-// Lexical types for rich text
-type LexicalNode = {
-  type?: string
-  text?: string
-  children?: LexicalNode[]
-}
-
-type LexicalRoot = {
-  root?: {
-    children?: LexicalNode[]
-  }
-}
-
 export type ArticleSection = {
   id: string
   title: string
@@ -33,12 +20,12 @@ export type ArticleDetailData = FeaturedArticle & {
   secondaryTag?: string
   tags: string[]
   sections: ArticleSection[]
+  htmlBody?: string
   bodyIntro: string
   bodyParagraphs: string[]
   blockquote?: ArticleBlockquote
   figure?: ArticleFigure
   authorBio: string
-  richTextBody?: LexicalRoot | null
 }
 
 export type RelatedArticlePreview = ArticleListItem & {

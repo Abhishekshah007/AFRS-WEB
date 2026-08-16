@@ -52,7 +52,7 @@ export function ArticleShareActions({ articleSlug, title }: ArticleShareActionsP
 
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <button
+      {/* <button
         type="button"
         onClick={toggleSave}
         className="inline-flex h-10 items-center gap-2 rounded-xl border-2 border-[var(--articles-primary)] bg-white px-4 text-sm font-bold text-[var(--articles-primary)] hover:bg-[var(--articles-primary)]/5 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
@@ -73,7 +73,7 @@ export function ArticleShareActions({ articleSlug, title }: ArticleShareActionsP
         <span className="text-xs font-semibold text-emerald-600" role="status">
           {shareMsg}
         </span>
-      )}
+      )} */}
     </div>
   )
 }

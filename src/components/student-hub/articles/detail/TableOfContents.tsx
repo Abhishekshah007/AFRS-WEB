@@ -38,11 +38,7 @@ export function TableOfContents({ sections }: TableOfContentsProps) {
   if (sections.length === 0) return null
 
   return (
-    <nav
-      className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm"
-      aria-label="Table of contents"
-    >
-      <h2 className="text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-4">Table of Contents</h2>
+    <nav aria-label="Table of contents">
       <ol className="space-y-2">
         {sections.map((section) => (
           <li key={section.id}>

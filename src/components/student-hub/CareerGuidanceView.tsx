@@ -32,22 +32,14 @@ const mentorshipFeatures = [
 export function CareerGuidanceView() {
   return (
     <div className="student-hub-page bg-white">
-      <section className="relative overflow-hidden py-16 sm:py-20">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(ellipse 80% 60% at 50% -10%, #e8eaff 0%, #f5f6ff 40%, #ffffff 75%)',
-          }}
-        />
+      <section className="hub-hero-glow py-16 sm:py-20">
         <div className={`relative z-10 ${studentHubTokens.container} text-center`}>
           <span className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500 shadow-sm">
             Mentorship Programmes
           </span>
           <h1 className="mt-6 text-4xl sm:text-5xl font-extrabold tracking-tight">
-            <span className="text-[#111827]">Student </span>
-            <span className="text-[#5B5FE8]">Career Guidance</span>
+            <span className="text-[var(--hub-text)]">Student </span>
+            <span className="text-[var(--hub-primary)]">Career Guidance</span>
           </h1>
           <p className="mt-5 mx-auto max-w-2xl text-[15px] leading-relaxed text-slate-500">
             Explore career roadmaps, internship opportunities, and mentorship programmes designed for
@@ -87,7 +79,7 @@ export function CareerGuidanceView() {
             {pathways.map((pathway) => (
               <article
                 key={pathway.title}
-                className={`${studentHubTokens.radiusCard} border border-slate-200 bg-[#F8FAFC] p-7 h-full`}
+                className={`${studentHubTokens.radiusCard} border border-slate-200 bg-[var(--hub-surface)] p-7 h-full`}
               >
                 <h3 className="text-lg font-extrabold text-slate-900">{pathway.title}</h3>
                 <p className={`mt-3 text-sm ${studentHubTokens.body}`}>{pathway.description}</p>

@@ -16,7 +16,7 @@ export type PageHeroProps = {
 
 export function PageHero({ eyebrow, title, subtitle, primaryCta, secondaryCta }: PageHeroProps) {
   return (
-    <section className="relative overflow-hidden bg-[#4F75F4] text-white">
+    <section className="programmes-hero relative overflow-hidden text-white">
       <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 h-[420px] w-[420px] rounded-full bg-white/10 blur-[80px]" />
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)', backgroundSize: '42px 42px' }} />
 
@@ -68,7 +68,7 @@ export type SubPageHeroProps = {
 
 export function SubPageHero({ breadcrumbs, eyebrow, title, description, icon }: SubPageHeroProps) {
   return (
-    <div className="relative w-full overflow-hidden bg-[#4F75F4] text-white">
+    <div className="programmes-sub-hero relative w-full overflow-hidden text-white">
       <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 h-[400px] w-[400px] rounded-full bg-white/10 blur-[80px]" />
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 

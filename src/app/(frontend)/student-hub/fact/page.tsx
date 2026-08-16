@@ -16,7 +16,7 @@ export default async function FactPage() {
   ])
 
   return (
-    <div className="min-h-screen bg-[#F5F7FB]">
+    <div className="student-hub-page min-h-screen hub-surface">
       <UgcNetExperience
         content={{
           heroEyebrow: 'Forensic Aptitude and Caliber Test',

@@ -40,7 +40,7 @@ function ValuePanel({
 
   return (
     <article
-      className={`relative overflow-hidden rounded-3xl border border-slate-100 bg-gradient-to-br ${panelGradient} p-6 sm:p-8 shadow-[0_10px_30px_rgba(15,23,42,0.06)] card-pop`}
+      className={`relative flex h-full flex-col overflow-hidden rounded-3xl border border-slate-100 bg-gradient-to-br ${panelGradient} p-6 sm:p-8 shadow-[0_10px_30px_rgba(15,23,42,0.06)] card-pop`}
     >
       <div className="flex items-start gap-4">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--about-primary)] text-white shadow-md">
@@ -52,13 +52,13 @@ function ValuePanel({
         </div>
       </div>
 
-      <ul className="mt-8 grid gap-3 sm:grid-cols-1">
+      <ul className="mt-8 flex flex-1 flex-col gap-3">
         {items.map((item, i) => {
           const Icon = icons[i % icons.length]
           return (
             <li
               key={`${item.text}-${i}`}
-              className="flex items-start gap-3 rounded-2xl border border-white/80 bg-white/90 p-4 shadow-sm"
+              className="flex flex-1 items-start gap-3 rounded-2xl border border-white/80 bg-white/90 p-4 shadow-sm"
             >
               <span
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[var(--about-primary-soft)] text-[var(--about-primary)]"
@@ -95,7 +95,7 @@ export function ValuesSection({
           <SectionHeader id="values-heading" title={title} subtitle={subtitle} align="left" />
         </AnimateOnScroll>
 
-        <AnimateOnScroll stagger className="grid gap-8 lg:grid-cols-2">
+        <AnimateOnScroll stagger className="grid gap-8 lg:grid-cols-2 lg:items-stretch [&>*]:h-full">
           <ValuePanel
             title={uniqueTitle}
             subtitle={uniqueSubtitle}

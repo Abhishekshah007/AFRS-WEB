@@ -2,15 +2,20 @@ import Link from 'next/link'
 import { getArticleHref } from '@/components/student-hub/articles/links'
 import type { FeaturedArticle } from '@/components/student-hub/articles/types'
 import { studentHubTokens } from '@/components/student-hub/tokens'
+import Image from 'next/image'
 
-export type FeaturedArticleCardProps = {
+export type FeaturedArticleCardProps = Readonly<{
   article: FeaturedArticle
-}
+}>
 
 function formatDate(iso?: string) {
   if (!iso) return ''
   try {
-    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    return new Date(iso).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    })
   } catch {
     return iso
   }
@@ -20,24 +25,37 @@ function formatDate(iso?: string) {
  * Editor’s Choice horizontal feature card.
  */
 export function FeaturedArticleCard({ article }: FeaturedArticleCardProps) {
+  const imageSrc = article.imageSrc ?? article.coverUrl
+
   return (
     <article
       className={`${studentHubTokens.radiusCard} overflow-hidden bg-white shadow-lg border border-slate-100 grid md:grid-cols-2 card-pop`}
       aria-labelledby="featured-article-title"
     >
-      <div className="relative min-h-[220px] md:min-h-full bg-[#1b5e20] flex items-center justify-center p-8">
-        <span className="absolute top-4 left-4 rounded-full bg-violet-600 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+      <div className="relative min-h-55 md:min-h-full bg-[#1b5e20] flex items-center justify-center p-8 overflow-hidden">
+        <span className="absolute top-4 left-4 z-10 rounded-full bg-violet-600 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
           Editor&apos;s Choice
         </span>
-        <div className="text-center text-white/90" aria-hidden>
-          <div className="mx-auto w-32 h-32 border-2 border-white/30 rounded-lg flex items-center justify-center">
-            <svg viewBox="0 0 64 64" className="w-20 h-20 stroke-white fill-none stroke-2">
-              <path d="M8 48 L32 12 L56 48 Z" />
-              <rect x="20" y="38" width="24" height="14" rx="2" />
-            </svg>
+
+        {imageSrc ? (
+          <Image
+            src={imageSrc}
+            alt={article.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover"
+            priority
+          />
+        ) : (
+          <div className="relative z-10 text-center text-white/90" aria-hidden>
+            <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-lg border-2 border-white/30 bg-white/10 text-4xl">
+              📄
+            </div>
+            <p className="mt-4 text-xs font-semibold uppercase tracking-wider opacity-80">
+              Featured Article
+            </p>
           </div>
-          <p className="mt-4 text-xs font-semibold uppercase tracking-wider opacity-80">Featured article</p>
-        </div>
+        )}
       </div>
 
       <div className="p-6 sm:p-8 flex flex-col">
@@ -51,7 +69,10 @@ export function FeaturedArticleCard({ article }: FeaturedArticleCardProps) {
             </>
           )}
         </p>
-        <h2 id="featured-article-title" className="mt-3 text-xl sm:text-2xl font-extrabold text-[#1e3a8a] leading-snug">
+        <h2
+          id="featured-article-title"
+          className="mt-3 text-xl sm:text-2xl font-extrabold text-[var(--hub-text)] leading-snug"
+        >
           {article.title}
         </h2>
         <p className={`mt-3 text-sm flex-1 ${studentHubTokens.body}`}>{article.excerpt}</p>
@@ -63,7 +84,9 @@ export function FeaturedArticleCard({ article }: FeaturedArticleCardProps) {
             </div>
             <div>
               <p className="text-sm font-bold text-slate-900">{article.authorName}</p>
-              {article.authorTitle && <p className="text-xs text-slate-500">{article.authorTitle}</p>}
+              {article.authorTitle && (
+                <p className="text-xs text-slate-500">{article.authorTitle}</p>
+              )}
             </div>
           </div>
           <Link

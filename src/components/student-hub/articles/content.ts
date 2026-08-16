@@ -22,6 +22,8 @@ export const defaultFeatured: FeaturedArticle = {
   authorTitle: 'Cyber Expert',
   readTimeMinutes: 12,
   publishedDate: '2023-11-15',
+  coverUrl: undefined,
+  imageSrc: undefined,
 }
 
 export const defaultArticles: ArticleListItem[] = [

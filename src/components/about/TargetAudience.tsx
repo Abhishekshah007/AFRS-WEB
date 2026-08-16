@@ -31,14 +31,14 @@ export function TargetAudienceTable() {
         <div className="border-b border-slate-200/80 bg-white/70 px-6 py-5 sm:px-8">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#4F75F4]">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--about-primary)]">
                 Who it serves
               </p>
               <h3 className="mt-1 text-xl font-semibold text-slate-900">
                 A platform built for every stage of forensic learning and practice
               </h3>
             </div>
-            <div className="inline-flex w-fit items-center rounded-full border border-[#4F75F4]/15 bg-[#4F75F4]/10 px-3 py-1 text-sm font-medium text-[#4F75F4]">
+            <div className="inline-flex w-fit items-center rounded-full border border-[var(--about-primary)]/15 bg-[var(--about-primary)]/10 px-3 py-1 text-sm font-medium text-[var(--about-primary)]">
               10+ professional groups
             </div>
           </div>

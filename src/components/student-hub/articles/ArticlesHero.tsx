@@ -68,7 +68,7 @@ export function ArticlesHero({
   }
 
   return (
-    <div className="w-full text-center text-white px-6 py-16 sm:py-20 lg:py-24 bg-[#4F75F4]">
+    <div className="articles-hero w-full text-center text-white px-6 py-16 sm:py-20 lg:py-24">
       {/* Badge — above title */}
       <span className="inline-flex rounded-full border border-white/40 bg-white/10 px-4 py-1 text-[11px] font-bold uppercase tracking-widest text-white/95">
         Knowledge Base

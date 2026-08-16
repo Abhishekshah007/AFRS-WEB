@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { ArticleDetailView } from '@/components/student-hub/articles/detail/ArticleDetailView'
 import { buildArticleDetail } from '@/components/student-hub/articles/detail/buildArticleDetail'
-import type { RelatedArticlePreview } from '@/components/student-hub/articles/detail/types'
+import { mergeRelatedArticles } from '@/components/student-hub/articles/detail/relatedArticles'
 import { defaultArticles } from '@/components/student-hub/articles/content'
 import { mapArticle } from '@/components/student-hub/articles/mapArticle'
 import { getPayloadClient } from '@/lib/payload'
@@ -44,7 +44,7 @@ export default async function ArticleDetailPage({ params }: Props) {
 
   const article = buildArticleDetail(doc)
 
-  const [relatedResult, nextResult] = await Promise.all([
+  const [sameDomainResult, recentResult, nextResult] = await Promise.all([
     payload.find({
       collection: 'articles',
       where: {
@@ -65,22 +65,27 @@ export default async function ArticleDetailPage({ params }: Props) {
         and: [{ published: { equals: true } }, { slug: { not_equals: slug } }],
       },
       sort: '-publishedDate',
+      limit: 6,
+      depth: 1,
+      overrideAccess: false,
+    }),
+    payload.find({
+      collection: 'articles',
+      where: {
+        and: [{ published: { equals: true } }, { slug: { not_equals: slug } }],
+      },
+      sort: '-publishedDate',
       limit: 1,
       depth: 0,
       overrideAccess: false,
     }),
   ])
 
-  const related: RelatedArticlePreview[] =
-    relatedResult.docs.length > 0
-      ? (relatedResult.docs as Article[]).map((a) => ({
-          ...mapArticle(a),
-          tagLabel: a.category === 'general' ? 'CASE STUDY' : undefined,
-        }))
-      : defaultArticles
-          .filter((a) => a.slug !== slug)
-          .slice(0, 3)
-          .map((a) => ({ ...a, tagLabel: 'CASE STUDY' }))
+  const related = mergeRelatedArticles(
+    sameDomainResult.docs as Article[],
+    recentResult.docs as Article[],
+    slug,
+  )
 
   const nextArticle =
     nextResult.docs.length > 0

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { CheckCircle2 } from 'lucide-react'
 import type { TrainingOption } from '@/components/programmes/types'
+import { programmesTokens } from '@/components/programmes/tokens'
 import { tagToneClass } from '@/components/programmes/content'
 import { iconMap } from '../ui/iconMap'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
@@ -15,10 +16,10 @@ export function AfslTrainingSection({ options, checklist }: AfslTrainingSectionP
   return (
     <section
       id="afsl-training"
-      className="py-12 md:py-16 bg-[#F5F7FB] scroll-mt-24"
+      className={`${programmesTokens.sectionY} bg-[var(--prog-surface)] scroll-mt-24`}
       aria-labelledby="afsl-training-heading"
     >
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={programmesTokens.container}>
         <div className="grid gap-6 lg:grid-cols-[300px_1fr] items-start">
           {/* ── Left panel — white card ── */}
           <AnimateOnScroll direction="left">
@@ -62,7 +63,7 @@ export function AfslTrainingSection({ options, checklist }: AfslTrainingSectionP
               {/* CTA — full width solid blue */}
               <Link
                 href="/courses/training"
-                className="mt-8 flex h-12 w-full items-center justify-center rounded-xl bg-[#4F75F4] hover:bg-[#3d63e8] text-white text-[13px] font-bold transition-colors shadow-md shadow-indigo-500/20"
+                className="mt-8 flex h-12 w-full items-center justify-center rounded-xl bg-[var(--prog-primary)] hover:bg-[var(--prog-primary-hover)] text-white text-[13px] font-bold transition-colors shadow-md shadow-indigo-500/20"
               >
                 Apply for Training
               </Link>
@@ -96,7 +97,7 @@ export function AfslTrainingSection({ options, checklist }: AfslTrainingSectionP
                       </span>
 
                       {/* Title + subtitle */}
-                      <h3 className="mt-5 text-[14px] font-extrabold text-slate-900 leading-snug group-hover:text-[#4F75F4] transition-colors pr-12">
+                      <h3 className="mt-5 text-[14px] font-extrabold text-slate-900 leading-snug group-hover:text-[var(--prog-primary)] transition-colors pr-12">
                         {opt.title}
                       </h3>
                       <p className="mt-1 text-[12px] text-slate-400 leading-snug">{opt.summary}</p>

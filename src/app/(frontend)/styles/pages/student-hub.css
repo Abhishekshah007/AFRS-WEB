@@ -1,0 +1,54 @@
+.student-hub-page {
+  --hub-primary: #4f46e5;
+  --hub-primary-hover: #4338ca;
+  --hub-primary-soft: #eef2ff;
+  --hub-text: #0f172a;
+  --hub-text-muted: #64748b;
+  --hub-navy: #0f172a;
+  --hub-surface: #f5f7fb;
+}
+
+.hub-surface {
+  background: var(--hub-surface);
+}
+
+.hub-hero-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.hub-hero-glow::before,
+.hub-hero-glow::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  opacity: 0.45;
+}
+.hub-hero-glow::before {
+  width: 420px;
+  height: 420px;
+  top: -120px;
+  left: -80px;
+  background: #c7d2fe;
+}
+.hub-hero-glow::after {
+  width: 380px;
+  height: 380px;
+  bottom: -100px;
+  right: -60px;
+  background: #ddd6fe;
+}
+
+.hub-exam-section {
+  background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+}
+
+.hub-quiz-card {
+  background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
+}
+
+.hub-visitor-bar {
+  background: linear-gradient(90deg, #4f46e5 0%, #6366f1 50%, #4f46e5 100%);
+}

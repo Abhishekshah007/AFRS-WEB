@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { GraduationCap, FlaskConical, CalendarDays } from 'lucide-react'
+import { GraduationCap, FlaskConical } from 'lucide-react'
 import { HeroStagger, HeroStaggerItem } from '@/components/motion/HeroStagger'
 
 const quickLinks = [
@@ -23,13 +23,12 @@ const quickLinks = [
 export function ProgrammesHero() {
   return (
     <div
-      className="w-full text-center text-white px-6 py-16 sm:py-20 lg:py-24"
-      style={{ backgroundColor: '#4F75F4' }}
+      className="programmes-hero w-full text-center text-white px-6 py-16 sm:py-20 lg:py-24"
     >
       <HeroStagger>
         {/* Badge — solid white pill, dark text */}
         <HeroStaggerItem>
-          <span className="inline-flex rounded-full bg-white px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#4F75F4] shadow-sm">
+          <span className="inline-flex rounded-full bg-white px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-[var(--prog-primary)] shadow-sm">
             Portal Access
           </span>
         </HeroStaggerItem>
@@ -61,9 +60,9 @@ export function ProgrammesHero() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[13px] font-semibold text-slate-700 hover:text-[#4F75F4] shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[13px] font-semibold text-slate-700 hover:text-[var(--prog-primary)] shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
                 >
-                  <Icon className="h-4 w-4 text-[#4F75F4]" strokeWidth={1.8} aria-hidden />
+                  <Icon className="h-4 w-4 text-[var(--prog-primary)]" strokeWidth={1.8} aria-hidden />
                   {link.label}
                 </Link>
               )

@@ -10,5 +10,6 @@ export const studentHubTokens = {
   body: `text-[var(--hub-text-muted)] ${DESIGN_SYSTEM.typography.body}`,
   radiusCard: DESIGN_SYSTEM.radius.card,
   radiusPill: DESIGN_SYSTEM.radius.pill,
+  surface: 'hub-surface',
   linkCta: `text-xs font-bold uppercase tracking-wider text-[var(--hub-primary)] hover:underline inline-flex items-center gap-1`,
 } as const
