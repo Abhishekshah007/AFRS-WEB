@@ -1,0 +1,14 @@
+.service-detail-page {
+  --svc-primary: #5d5fef;
+  --svc-primary-hover: #4f46e5;
+  --svc-primary-soft: #eef0ff;
+  --svc-accent: #f28c28;
+  --svc-accent-hover: #e67e22;
+  --svc-surface: #f8f9ff;
+  --svc-text: #0a0b1e;
+  --svc-text-muted: #4b5563;
+}
+
+.svc-consult-panel {
+  background: linear-gradient(145deg, #5d5fef 0%, #4f46e5 45%, #3b37ff 100%);
+}

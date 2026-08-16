@@ -55,7 +55,7 @@ export function StudentHubSearch() {
       {/* Search button — solid indigo pill */}
       <button
         type="submit"
-        className="shrink-0 h-10 px-7 rounded-full bg-[#5B5FE8] hover:bg-[#4a4ed6] text-white text-[13px] font-bold tracking-wide transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5B5FE8]"
+        className="shrink-0 h-10 px-7 rounded-full bg-[var(--hub-primary)] hover:bg-[var(--hub-primary-hover)] text-white text-[13px] font-bold tracking-wide transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--hub-primary)]"
       >
         Search
       </button>

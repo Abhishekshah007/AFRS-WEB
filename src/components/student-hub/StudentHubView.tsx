@@ -2,6 +2,7 @@ import { AcademicResourcesSection } from '@/components/student-hub/AcademicResou
 import { ExamExcellenceSection } from '@/components/student-hub/ExamExcellenceSection'
 import { QuizCareerSection } from '@/components/student-hub/QuizCareerSection'
 import { StudentHubHero } from '@/components/student-hub/StudentHubHero'
+import { studentHubTokens } from '@/components/student-hub/tokens'
 import { VisitorCounterBar } from '@/components/student-hub/VisitorCounterBar'
 import { SiteGallerySection } from '@/components/gallery/SiteGallerySection'
 import type { SiteGalleryItem } from '@/components/gallery/SiteGallerySection'
@@ -29,7 +30,7 @@ export function StudentHubView({
       <AcademicResourcesSection resources={resources} />
       <ExamExcellenceSection exams={exams} />
       <QuizCareerSection />
-      <SiteGallerySection items={galleryItems} className="bg-[#F5F7FB]" />
+      <SiteGallerySection items={galleryItems} className={studentHubTokens.surface} />
       <VisitorCounterBar totalVisitors={totalVisitors} />
     </div>
   )

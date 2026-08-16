@@ -22,8 +22,12 @@ export function mapArticle(doc: Article): ArticleListItem {
 
 export function mapFeaturedArticle(doc: Article): FeaturedArticle {
   const base = mapArticle(doc)
+  const coverUrl = base.coverUrl || undefined
+
   return {
     ...base,
+    coverUrl,
+    imageSrc: coverUrl,
     authorTitle: doc.authorTitle ?? undefined,
     authorAvatarUrl:
       resolveMediaUrl(doc.authorAvatar as number | Media | null | undefined, '') || undefined,

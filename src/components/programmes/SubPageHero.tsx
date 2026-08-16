@@ -20,7 +20,7 @@ export type SubPageHeroProps = {
  */
 export function SubPageHero({ breadcrumbs, eyebrow, title, description, icon }: SubPageHeroProps) {
   return (
-    <div className="relative w-full overflow-hidden bg-[#4F75F4] text-white">
+    <div className="programmes-sub-hero relative w-full overflow-hidden text-white">
       {/* Radial glow top-right */}
       <div
         aria-hidden

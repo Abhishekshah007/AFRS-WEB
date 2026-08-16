@@ -18,10 +18,10 @@ export function AfRsEducationSection({ programmes }: AfRsEducationSectionProps) 
   return (
     <section
       id="afrs-education"
-      className="py-12 md:py-16 bg-[#F5F7FB] scroll-mt-24"
+      className={`${programmesTokens.sectionY} bg-[var(--prog-surface)] scroll-mt-24`}
       aria-labelledby="afrs-education-heading"
     >
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={programmesTokens.container}>
         <AnimateOnScroll>
           <header className="flex items-center gap-3 mb-10">
             <span

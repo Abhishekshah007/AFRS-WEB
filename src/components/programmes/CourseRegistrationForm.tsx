@@ -31,7 +31,7 @@ export function CourseRegistrationForm({ details, config }: Props) {
   }
 
   return (
-    <div className="programmes-page min-h-screen bg-[#f4f6fb]">
+    <div className="programmes-page min-h-screen bg-[var(--prog-surface)]">
       <div className="mx-auto grid w-full max-w-[1180px] gap-6 px-4 py-10 sm:px-6 lg:grid-cols-[330px_1fr] lg:px-8">
         <aside className="space-y-4">
           <Link

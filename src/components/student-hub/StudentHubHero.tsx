@@ -4,17 +4,7 @@ import { StudentHubSearch } from '@/components/student-hub/StudentHubSearch'
 
 export function StudentHubHero() {
   return (
-    <section className="relative w-full overflow-hidden py-20 sm:py-28">
-      {/* Radial glow — top center, very soft lavender */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(ellipse 80% 60% at 50% -10%, #e8eaff 0%, #f5f6ff 40%, #ffffff 75%)',
-        }}
-      />
-
+    <section className="hub-hero-glow relative w-full py-20 sm:py-28">
       <div className="relative z-10 mx-auto w-full max-w-3xl px-6 text-center">
         <HeroStagger>
           {/* Badge */}
@@ -27,8 +17,8 @@ export function StudentHubHero() {
           {/* Headline */}
           <HeroStaggerItem>
             <h1 className="mt-6 text-[42px] sm:text-[56px] lg:text-[64px] font-extrabold leading-[1.08] tracking-[-0.025em]">
-              <span className="text-[#111827]">Student </span>
-              <span className="text-[#5B5FE8]">Resource Hub</span>
+              <span className="text-[var(--hub-text)]">Student </span>
+              <span className="text-[var(--hub-primary)]">Resource Hub</span>
             </h1>
           </HeroStaggerItem>
 

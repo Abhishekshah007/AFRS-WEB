@@ -1,0 +1,47 @@
+.about-page {
+  --about-primary: var(--color-about-primary);
+  --about-primary-hover: var(--color-about-primary-hover);
+  --about-primary-soft: var(--color-about-primary-soft);
+  --about-surface-alt: var(--color-about-surface-alt);
+  --about-text: var(--color-about-text);
+  --about-text-muted: var(--color-about-text-muted);
+  --about-footer: var(--color-about-footer);
+  --about-stat-blue: var(--color-about-stat-blue);
+  --about-stat-purple: var(--color-about-stat-purple);
+  --about-stat-orange: var(--color-about-stat-orange);
+  --about-stat-green: var(--color-about-stat-green);
+  --about-stat-red: var(--color-about-stat-red);
+}
+
+.about-hero {
+  background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 45%, #2563eb 75%, #6366f1 100%);
+  background-size: 200% 200%;
+  animation: heroMeshShift 14s ease infinite;
+}
+
+.about-feature-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 1rem;
+  right: 1rem;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  background: var(--card-accent, #6366f1);
+  opacity: 0.9;
+}
+
+.about-committee-card {
+  background: linear-gradient(165deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.about-committee-card::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 3px;
+  border-radius: 18px 18px 0 0;
+  background: linear-gradient(90deg, #6366f1, #3b82f6);
+  opacity: 0.85;
+}

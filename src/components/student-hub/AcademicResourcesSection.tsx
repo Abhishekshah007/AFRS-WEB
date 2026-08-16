@@ -1,5 +1,6 @@
 import type { ResourceCardData } from '@/components/student-hub/types'
 import { ResourceCard } from '@/components/student-hub/ResourceCard'
+import { studentHubTokens } from '@/components/student-hub/tokens'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 
 export function AcademicResourcesSection({ resources }: { resources: ResourceCardData[] }) {
@@ -7,17 +8,17 @@ export function AcademicResourcesSection({ resources }: { resources: ResourceCar
   const bottomRow = resources.slice(4)
 
   return (
-    <section className="py-12 md:py-16 bg-[#F5F7FB]" aria-labelledby="academic-resources-heading">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section className={`${studentHubTokens.sectionY} ${studentHubTokens.surface}`} aria-labelledby="academic-resources-heading">
+      <div className={studentHubTokens.container}>
         <AnimateOnScroll>
           <div className="mb-8">
             <h2
               id="academic-resources-heading"
-              className="text-[28px] sm:text-[32px] font-extrabold text-slate-900 tracking-tight"
+              className={`${studentHubTokens.heading} text-[28px] sm:text-[32px]`}
             >
               Academic Resources
             </h2>
-            <p className="mt-1.5 text-[14px] text-slate-500">
+            <p className={`mt-1.5 ${studentHubTokens.body} text-[14px]`}>
               Curated materials for forensic scholars
             </p>
           </div>

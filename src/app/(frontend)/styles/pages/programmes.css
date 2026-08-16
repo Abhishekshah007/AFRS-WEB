@@ -1,0 +1,24 @@
+.programmes-page {
+  --prog-primary: #5d87ff;
+  --prog-primary-hover: #4a75f0;
+  --prog-primary-soft: #eef3ff;
+  --prog-surface: #f5f7fb;
+  --prog-text: #0f172a;
+  --prog-text-muted: #64748b;
+}
+
+.programmes-hero {
+  background: linear-gradient(135deg, #5d87ff 0%, #4a75f0 45%, #3b63e8 75%, #6366f1 100%);
+  background-size: 200% 200%;
+  animation: heroMeshShift 13s ease infinite;
+}
+
+.programmes-sub-hero {
+  background: linear-gradient(135deg, #5d87ff 0%, #4a75f0 55%, #3b63e8 100%);
+  background-size: 200% 200%;
+  animation: heroMeshShift 15s ease infinite;
+}
+
+.programmes-page .hub-visitor-bar {
+  background: linear-gradient(90deg, #5d87ff 0%, #6b93ff 50%, #5d87ff 100%);
+}

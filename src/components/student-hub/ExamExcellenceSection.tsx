@@ -22,12 +22,15 @@ export function ExamExcellenceSection({ exams }: ExamExcellenceSectionProps) {
             <span className="text-[11px] font-bold uppercase tracking-widest text-indigo-400">
               Prepare to Succeed
             </span>
-            <h2 id="exam-excellence-heading" className="mt-3 text-2xl sm:text-[32px] font-extrabold">
+            <h2
+              id="exam-excellence-heading"
+              className="mt-3 text-2xl sm:text-[32px] font-extrabold"
+            >
               Exam Excellence Center
             </h2>
             <p className="mt-3 text-sm text-white/60 leading-relaxed">
-              Structured preparation pathways, mock assessments, and expert-curated study material for national
-              forensic science examinations.
+              Structured preparation pathways, mock assessments, and expert-curated study material
+              for national forensic science examinations.
             </p>
           </header>
         </AnimateOnScroll>

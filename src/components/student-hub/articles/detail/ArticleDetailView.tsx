@@ -26,7 +26,7 @@ export type ArticleDetailViewProps = {
  */
 export function ArticleDetailView({ article, related, nextArticle }: ArticleDetailViewProps) {
   return (
-    <div className="min-h-screen bg-[#f5f6fa]">
+    <div className="student-hub-page articles-page articles-canvas min-h-screen">
       {/* ── Breadcrumb bar ─────────────────────────────────────── */}
       <div className="bg-white border-b border-slate-100">
         <nav
@@ -90,34 +90,34 @@ export function ArticleDetailView({ article, related, nextArticle }: ArticleDeta
             </div>
           </article>
 
-          {/* ── Right: Sticky sidebar ──────────────────────────── */}
           <aside className="flex flex-col gap-6 lg:sticky lg:top-24 self-start">
-            {/* Table of contents */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-              {/* Sidebar section header style */}
-              <div className="flex items-center gap-2 px-5 py-4 border-b border-slate-100">
-                <span className="h-1 w-4 rounded-full bg-[var(--articles-primary)]" aria-hidden />
-                <h2 className="text-xs font-bold uppercase tracking-widest text-slate-500">
-                  Contents
-                </h2>
+            {article.sections.length > 0 ? (
+              <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                <div className="flex items-center gap-2 px-5 py-4 border-b border-slate-100">
+                  <span className="h-1 w-4 rounded-full bg-[var(--articles-primary)]" aria-hidden />
+                  <h2 className="text-xs font-bold uppercase tracking-widest text-slate-500">
+                    Contents
+                  </h2>
+                </div>
+                <div className="px-5 py-4">
+                  <TableOfContents sections={article.sections} />
+                </div>
               </div>
-              <div className="px-5 py-4">
-                <TableOfContents sections={article.sections} />
-              </div>
-            </div>
+            ) : null}
 
-            {/* Related articles */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-              <div className="flex items-center gap-2 px-5 py-4 border-b border-slate-100">
-                <span className="h-1 w-4 rounded-full bg-[var(--articles-primary)]" aria-hidden />
-                <h2 className="text-xs font-bold uppercase tracking-widest text-slate-500">
-                  Related Articles
-                </h2>
+            {related.length > 0 ? (
+              <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                <div className="flex items-center gap-2 px-5 py-4 border-b border-slate-100">
+                  <span className="h-1 w-4 rounded-full bg-[var(--articles-primary)]" aria-hidden />
+                  <h2 className="text-xs font-bold uppercase tracking-widest text-slate-500">
+                    Related Articles
+                  </h2>
+                </div>
+                <div className="px-5 py-4">
+                  <RelatedArticlesSidebar articles={related} />
+                </div>
               </div>
-              <div className="px-5 py-4">
-                <RelatedArticlesSidebar articles={related} />
-              </div>
-            </div>
+            ) : null}
           </aside>
         </div>
       </div>

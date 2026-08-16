@@ -15,15 +15,7 @@ export function RelatedArticlesSidebar({ articles }: RelatedArticlesSidebarProps
   if (articles.length === 0) return null
 
   return (
-    <aside className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm" aria-labelledby="related-heading">
-      <div className="flex items-center gap-2 mb-5">
-        <span className="text-[var(--articles-primary)]" aria-hidden>
-          ◈
-        </span>
-        <h2 id="related-heading" className="text-[11px] font-bold uppercase tracking-widest text-slate-700">
-          Related Articles
-        </h2>
-      </div>
+    <div>
       <ul className="space-y-5">
         {articles.map((item) => (
           <li key={item.id}>
@@ -59,6 +51,6 @@ export function RelatedArticlesSidebar({ articles }: RelatedArticlesSidebarProps
       >
         View More Articles
       </Link>
-    </aside>
+    </div>
   )
 }

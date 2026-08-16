@@ -35,7 +35,7 @@ export function ServiceDetailHero({ title, description, bannerUrl }: ServiceDeta
         <HeroStagger className="max-w-[560px]">
           {/* Eyebrow badge */}
           <HeroStaggerItem>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#4F75F4]/30 bg-white/50 backdrop-blur-sm px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#4F75F4]">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--svc-primary)]/30 bg-white/50 backdrop-blur-sm px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.18em] text-[var(--svc-primary)]">
               <ShieldCheck className="h-3 w-3" />
               Specialized Service
             </span>

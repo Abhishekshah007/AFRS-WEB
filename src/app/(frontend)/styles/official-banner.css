@@ -1,0 +1,215 @@
+.official-banner {
+  isolation: isolate;
+  color: white;
+}
+
+.official-banner--navy {
+  background: linear-gradient(145deg, #0c1929 0%, #132f4c 40%, #1e3a5f 70%, #0f2744 100%);
+}
+.official-banner--indigo {
+  background: linear-gradient(145deg, #1e1b4b 0%, #312e81 35%, #1d4ed8 70%, #0e7490 100%);
+  background-size: 200% 200%;
+  animation: heroMeshShift 14s ease infinite;
+}
+.official-banner--about {
+  background: linear-gradient(145deg, #1e3a5f 0%, #1e40af 45%, #2563eb 75%, #1d4ed8 100%);
+  background-size: 200% 200%;
+  animation: heroMeshShift 14s ease infinite;
+}
+.official-banner--programmes {
+  background: linear-gradient(145deg, #1e3a5f 0%, #2563eb 40%, #3b63e8 75%, #1d4ed8 100%);
+  background-size: 200% 200%;
+  animation: heroMeshShift 13s ease infinite;
+}
+.official-banner--articles {
+  background: linear-gradient(145deg, #1e3a5f 0%, #3b5bdb 50%, #4f63e8 100%);
+  background-size: 200% 200%;
+  animation: heroMeshShift 13s ease infinite;
+}
+.official-banner--afsl {
+  background: linear-gradient(155deg, #1a0a2e 0%, #3b0764 35%, #5b21b6 65%, #312e81 100%);
+  background-size: 200% 200%;
+  animation: heroMeshShift 16s ease infinite;
+}
+.official-banner--light {
+  background: linear-gradient(180deg, #f0f4fa 0%, #ffffff 55%, #f8fafc 100%);
+  color: #0f172a;
+}
+.official-banner--overlay {
+  background: #0f172a;
+}
+
+.official-tricolor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  z-index: 20;
+  background: linear-gradient(
+    90deg,
+    #ff9933 0%,
+    #ff9933 33.33%,
+    #ffffff 33.33%,
+    #ffffff 66.66%,
+    #138808 66.66%,
+    #138808 100%
+  );
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+.official-seal-strip {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 16px 6px 10px;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  backdrop-filter: blur(12px);
+  max-width: min(96vw, 720px);
+  pointer-events: none;
+}
+.official-seal-strip--light {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(30, 58, 95, 0.2);
+  box-shadow: 0 4px 20px -6px rgba(15, 23, 42, 0.12);
+}
+.official-seal-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.official-seal-eyebrow {
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(251, 191, 36, 0.95);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.official-seal-strip--light .official-seal-eyebrow {
+  color: #b45309;
+}
+.official-seal-tagline {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.88);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.official-seal-strip--light .official-seal-tagline {
+  color: #475569;
+}
+
+.official-ticker-wrap {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 12;
+  overflow: hidden;
+  border-top: 1px solid rgba(251, 191, 36, 0.25);
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(8px);
+}
+.official-banner--light .official-ticker-wrap {
+  background: rgba(30, 58, 95, 0.08);
+  border-top-color: rgba(30, 58, 95, 0.12);
+}
+.official-ticker-track {
+  display: flex;
+  gap: 2.5rem;
+  padding: 7px 0;
+  width: max-content;
+  animation: officialTicker 38s linear infinite;
+}
+.official-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+  white-space: nowrap;
+}
+.official-banner--light .official-ticker-item {
+  color: #1e3a5f;
+}
+.official-ticker-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fbbf24;
+  flex-shrink: 0;
+}
+@keyframes officialTicker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.official-banner-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 15%, transparent 100%);
+}
+.official-banner--light .official-banner-grid {
+  background-image:
+    linear-gradient(rgba(30, 58, 95, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 58, 95, 0.06) 1px, transparent 1px);
+}
+.official-banner-vignette {
+  background: radial-gradient(ellipse 85% 75% at 50% 45%, transparent 30%, rgba(15, 23, 42, 0.35) 100%);
+}
+.official-banner--light .official-banner-vignette {
+  background: radial-gradient(ellipse 80% 70% at 50% 40%, transparent 40%, rgba(241, 245, 249, 0.6) 100%);
+}
+.official-banner--overlay .official-banner-vignette {
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.75) 0%, rgba(15, 23, 42, 0.45) 60%, rgba(15, 23, 42, 0.25) 100%);
+}
+
+.official-corner {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  z-index: 8;
+  pointer-events: none;
+  border-color: rgba(251, 191, 36, 0.4);
+  border-style: solid;
+}
+.official-corner-tl {
+  top: 48px;
+  left: 16px;
+  border-width: 2px 0 0 2px;
+}
+.official-corner-br {
+  bottom: 36px;
+  right: 16px;
+  border-width: 0 2px 2px 0;
+}
+.official-banner--light .official-corner {
+  border-color: rgba(30, 58, 95, 0.2);
+}
+
+.official-banner-content-pad {
+  padding-top: 3.5rem;
+  padding-bottom: 2.75rem;
+}
+.official-banner-content-pad-light {
+  padding-top: 4rem;
+  padding-bottom: 2.5rem;
+}

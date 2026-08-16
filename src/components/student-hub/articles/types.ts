@@ -18,6 +18,7 @@ export type ArticleListItem = {
 export type FeaturedArticle = ArticleListItem & {
   authorTitle?: string
   authorAvatarUrl?: string
+  imageSrc?: string
 }
 
 export type TopicFilter = {

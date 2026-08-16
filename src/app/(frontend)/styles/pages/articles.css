@@ -1,0 +1,118 @@
+.articles-page {
+  --articles-primary: #5d78ff;
+  --articles-primary-hover: #4f63e8;
+  --articles-accent: #ff9800;
+  --articles-accent-hover: #f57c00;
+  --articles-canvas: #f5f6fa;
+}
+
+.articles-hero {
+  background: linear-gradient(135deg, #5d78ff 0%, #4f63e8 50%, #3b5bdb 100%);
+}
+
+.articles-stats-bar {
+  background: linear-gradient(90deg, #5d78ff 0%, #6366f1 50%, #5d78ff 100%);
+}
+
+.articles-canvas {
+  background: var(--articles-canvas);
+}
+
+.article-prose {
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+.article-prose > * + * {
+  margin-top: 1.1rem;
+}
+
+.article-prose h2,
+.article-prose h3,
+.article-prose h4 {
+  color: var(--articles-primary);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  scroll-margin-top: 7rem;
+}
+
+.article-prose h2 {
+  margin-top: 2.25rem;
+  font-size: 1.25rem;
+}
+
+.article-prose h3,
+.article-prose h4 {
+  margin-top: 1.75rem;
+  font-size: 1.1rem;
+}
+
+.article-prose p {
+  color: #475569;
+}
+
+.article-prose strong {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.article-prose em {
+  font-style: italic;
+}
+
+.article-prose ul,
+.article-prose ol {
+  margin-left: 1.25rem;
+  padding-left: 0.5rem;
+}
+
+.article-prose ul {
+  list-style: disc;
+}
+
+.article-prose ol {
+  list-style: decimal;
+}
+
+.article-prose li + li {
+  margin-top: 0.4rem;
+}
+
+.article-prose a {
+  color: var(--articles-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.article-prose blockquote {
+  margin-top: 1.5rem;
+  border-left: 4px solid var(--articles-primary);
+  background: #f0f9ff;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  font-style: italic;
+  color: #334155;
+}
+
+.article-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.article-prose th,
+.article-prose td {
+  border: 1px solid #e2e8f0;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.article-prose img {
+  border-radius: 1rem;
+  max-width: 100%;
+  height: auto;
+}
+

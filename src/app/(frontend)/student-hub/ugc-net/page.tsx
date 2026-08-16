@@ -16,7 +16,7 @@ export default async function UgcNetPage() {
   ])
 
   return (
-    <div className="bg-[#F5F7FB] min-h-screen">
+    <div className="student-hub-page min-h-screen hub-surface">
       <UgcNetExperience achievers={achievers} featured={featured} events={events} />
     </div>
   )
