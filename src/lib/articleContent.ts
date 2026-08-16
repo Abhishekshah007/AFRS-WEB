@@ -1,6 +1,7 @@
 import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html'
-import type { SerializedEditorState } from 'lexical'
 import type { ArticleSection } from '@/components/student-hub/articles/detail/types'
+
+type LexicalEditorState = Parameters<typeof convertLexicalToHTML>[0]['data']
 
 type LexicalNode = {
   type?: string
@@ -136,7 +137,7 @@ export function renderArticleHtml(value: LexicalRoot | null | undefined): {
 
   try {
     const html = convertLexicalToHTML({
-      data: normalized as SerializedEditorState,
+      data: normalized as LexicalEditorState,
       disableContainer: true,
       converters: ({ defaultConverters }) => ({
         ...defaultConverters,
