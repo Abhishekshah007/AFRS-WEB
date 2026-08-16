@@ -137,7 +137,7 @@ export function renderArticleHtml(value: LexicalRoot | null | undefined): {
 
   try {
     const html = convertLexicalToHTML({
-      data: normalized as LexicalEditorState,
+      data: normalized as unknown as LexicalEditorState,
       disableContainer: true,
       converters: ({ defaultConverters }) => ({
         ...defaultConverters,
