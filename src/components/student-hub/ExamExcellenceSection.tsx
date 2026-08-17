@@ -36,7 +36,7 @@ export function ExamExcellenceSection({ exams }: ExamExcellenceSectionProps) {
         </AnimateOnScroll>
 
         <AnimateOnScroll stagger>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             {exams.map((exam) => (
               <li key={exam.id}>
                 <ExamPrepCard exam={exam} />

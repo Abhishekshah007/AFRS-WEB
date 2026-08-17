@@ -89,7 +89,12 @@ export function CertificationsSection({
               return (
                 <li key={item.title}>
                   {item.href ? (
-                    <Link href={item.href} target="_blank" rel="noreferrer" className="block h-full">
+                    <Link
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="block h-full"
+                    >
                       {cardBody}
                     </Link>
                   ) : (
@@ -101,13 +106,10 @@ export function CertificationsSection({
           </ul>
           <p className="mt-8 text-justify text-sm sm:text-base text-[var(--about-text)]">
             AFRS recognizes the importance of quality assurance, professional recognition, and
-            institutional credibility.
-          </p>
-          <p className="mt-4 text-justify text-sm sm:text-base text-[var(--about-text)]">
-            The organization continuously strives to align its activities with recognized standards,
-            professional guidelines, and best practices through relevant certifications,
-            affiliations, registrations, and strategic partnerships that strengthen trust and
-            accountability.
+            institutional credibility. The organization continuously strives to align its activities
+            with recognized standards, professional guidelines, and best practices through relevant
+            certifications, affiliations, registrations, and strategic partnerships that strengthen
+            trust and accountability.
           </p>
         </AnimateOnScroll>
       </div>

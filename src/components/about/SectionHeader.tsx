@@ -22,11 +22,12 @@ export function SectionHeader({
 }: SectionHeaderProps) {
   return (
     <SharedSectionHeader
+      id={id}
       title={title}
       subtitle={subtitle}
       align={align}
       light={light}
-      className={id}
+      fullWidth
       titleClassName={aboutTokens.heading}
       subtitleClassName={aboutTokens.body}
       accent={align === 'center'}

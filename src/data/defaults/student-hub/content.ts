@@ -81,7 +81,7 @@ export const defaultExamPrep: ExamPrepCardData[] = [
     title: 'UGC NET',
     subtitle: 'Forensic Science Paper II & III',
     description:
-      'Topic-wise notes, previous-year question analysis, mock test series, and mentor support for the National Eligibility Test in forensic science.',
+      'Topic-wise notes, previous-year question analysis, mock test series, and mentor support for the NET.',
     ctaLabel: 'View Preparation Resources',
     href: '/student-hub/ugc-net',
     watermark: '🎓',
@@ -96,6 +96,17 @@ export const defaultExamPrep: ExamPrepCardData[] = [
     ctaLabel: 'Explore FACT Resources',
     href: '/student-hub/fact',
     watermark: '⚗️',
+  },
+  {
+    id: 'cuet',
+    badge: 'NTA CUET Pathway',
+    title: 'CUET UG/PG',
+    subtitle: 'Paper Code: SCQP13',
+    description:
+      'Structured preparation, covering domain knowledge, previous-year pattern analysis, mock tests, and guided practice.',
+    ctaLabel: 'Explore CUET Resources',
+    href: '/student-hub/cuet',
+    watermark: '📘',
   },
 ]
 

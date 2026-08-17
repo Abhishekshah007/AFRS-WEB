@@ -48,7 +48,7 @@ function ValuePanel({
         </div>
         <div>
           <h2 className={`${aboutTokens.heading} text-xl sm:text-2xl`}>{title}</h2>
-          <p className={`mt-2 text-sm ${aboutTokens.body}`}>{subtitle}</p>
+          <p className={`mt-2 text-sm text-left md:text-justify ${aboutTokens.body}`}>{subtitle}</p>
         </div>
       </div>
 
@@ -66,7 +66,7 @@ function ValuePanel({
               >
                 <Icon className="h-5 w-5" strokeWidth={2.2} />
               </span>
-              <span className="text-sm leading-relaxed text-slate-700">{item.text}</span>
+              <span className="text-sm leading-relaxed text-left text-slate-700 md:text-justify">{item.text}</span>
             </li>
           )
         })}

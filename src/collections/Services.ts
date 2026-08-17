@@ -31,12 +31,57 @@ export const Services: CollectionConfig = {
       ],
     },
     {
+      name: 'helpHeading',
+      type: 'text',
+      defaultValue: 'How We Can Help',
+      admin: {
+        description: 'Heading for the capability rows on the service detail page.',
+      },
+    },
+    {
+      name: 'helpIntro',
+      type: 'textarea',
+      admin: {
+        description: 'Optional intro paragraph shown under the heading.',
+      },
+    },
+    {
       name: 'features',
       type: 'array',
+      label: 'How We Can Help',
+      labels: {
+        singular: 'Capability',
+        plural: 'How We Can Help',
+      },
+      admin: {
+        description:
+          'Each item is a full-width row: content on the left and thumbnail on the right.',
+        initCollapsed: true,
+      },
       fields: [
-        { name: 'featureTitle', type: 'text' },
-        { name: 'featureDescription', type: 'textarea' },
-        { name: 'featureIcon', type: 'upload', relationTo: 'media' },
+        { name: 'featureTitle', type: 'text', required: true, label: 'Title' },
+        {
+          name: 'featureDescription',
+          type: 'textarea',
+          label: 'Description',
+        },
+        {
+          name: 'featurePoints',
+          type: 'textarea',
+          label: 'Key points',
+          admin: {
+            description: 'Optional supporting points. Enter one point per line.',
+          },
+        },
+        {
+          name: 'featureIcon',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Thumbnail',
+          admin: {
+            description: 'Image shown on the right side of this row.',
+          },
+        },
       ],
     },
     publishedField(),

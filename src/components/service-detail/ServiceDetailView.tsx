@@ -29,7 +29,11 @@ export function ServiceDetailView({ service, helpCards, gallerySlides, contact }
         bannerUrl={service.bannerUrl}
       />
       <ServiceOverviewSection title={overviewTitle} paragraphs={paragraphs} />
-      <HowWeHelpSection items={helpCards} />
+      <HowWeHelpSection
+        items={helpCards}
+        title={service.helpHeading || undefined}
+        subtitle={service.helpIntro || undefined}
+      />
       <InvestigationGallery slides={gallerySlides} />
       <ExpertConsultationSection serviceTitle={service.title} contact={contact} />
     </div>

@@ -6,7 +6,7 @@ const pathways = [
   {
     title: 'Academic & Research Track',
     description:
-      'Guidance for UGC NET, doctoral programmes, teaching careers, and research fellowships in forensic science.',
+      'Guidance for UGC NET, CUET UG/PG (SCQP13), doctoral programmes, teaching careers, and research fellowships in forensic science.',
   },
   {
     title: 'Laboratory & Casework Track',
@@ -25,7 +25,7 @@ const mentorshipFeatures = [
   'Career roadmaps for undergraduate and postgraduate students',
   'Internship and training placement counselling',
   'Interview, CV, and research-statement reviews',
-  'Exam-focused mentoring for UGC NET and FACT',
+  'Exam-focused mentoring for UGC NET, FACT, and CUET UG/PG',
   'Professional ethics and courtroom communication coaching',
 ]
 

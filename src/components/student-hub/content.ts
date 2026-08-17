@@ -18,6 +18,12 @@ type StudentHubContentGlobal = {
   ugcNetAchievers?: UgcAchiever[]
 }
 
+function withDefaultExams(cms?: ExamPrepCardData[]): ExamPrepCardData[] {
+  if (!cms?.length) return defaultExamPrep
+  const seen = new Set(cms.map((exam) => exam.id))
+  return [...cms, ...defaultExamPrep.filter((exam) => !seen.has(exam.id))]
+}
+
 export async function getStudentHubContent() {
   try {
     const payload = await getPayloadClient()
@@ -25,7 +31,7 @@ export async function getStudentHubContent() {
 
     return {
       resources: global.academicResources?.length ? global.academicResources : defaultAcademicResources,
-      exams: global.examPrep?.length ? global.examPrep : defaultExamPrep,
+      exams: withDefaultExams(global.examPrep),
     }
   } catch {
     return {

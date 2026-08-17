@@ -20,7 +20,7 @@ export function ServiceOverviewSection({
     <section className={`${serviceDetailTokens.sectionY} bg-white`} aria-labelledby="service-overview-heading">
       <div className={serviceDetailTokens.container}>
         <AnimateOnScroll>
-          <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
+          <div className="grid items-center gap-8 md:grid-cols-2 md:gap-12 lg:gap-16">
             <div>
               <span className={serviceDetailTokens.accentBar} aria-hidden />
               <h2 id="service-overview-heading" className={`mt-4 ${serviceDetailTokens.heading} text-2xl sm:text-[28px] leading-tight`}>

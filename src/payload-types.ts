@@ -350,10 +350,28 @@ export interface Service {
     [k: string]: unknown;
   } | null;
   category?: ('forensicService' | 'laboratory' | 'training' | 'consultancy') | null;
+  /**
+   * Heading for the capability rows on the service detail page.
+   */
+  helpHeading?: string | null;
+  /**
+   * Optional intro paragraph shown under the heading.
+   */
+  helpIntro?: string | null;
+  /**
+   * Each item is a full-width row: content on the left and thumbnail on the right.
+   */
   features?:
     | {
-        featureTitle?: string | null;
+        featureTitle: string;
         featureDescription?: string | null;
+        /**
+         * Optional supporting points. Enter one point per line.
+         */
+        featurePoints?: string | null;
+        /**
+         * Image shown on the right side of this row.
+         */
         featureIcon?: (number | null) | Media;
         id?: string | null;
       }[]
@@ -849,11 +867,14 @@ export interface ServicesSelect<T extends boolean = true> {
   excerpt?: T;
   content?: T;
   category?: T;
+  helpHeading?: T;
+  helpIntro?: T;
   features?:
     | T
     | {
         featureTitle?: T;
         featureDescription?: T;
+        featurePoints?: T;
         featureIcon?: T;
         id?: T;
       };

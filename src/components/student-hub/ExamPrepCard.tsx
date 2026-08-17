@@ -10,7 +10,7 @@ export type ExamPrepCardProps = {
  */
 export function ExamPrepCard({ exam }: ExamPrepCardProps) {
   return (
-    <article className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 sm:p-8 card-pop min-h-[280px] flex flex-col">
+    <article className="relative flex min-h-[260px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md card-pop sm:min-h-[280px] sm:p-8">
       <span
         className="absolute right-4 top-4 text-6xl opacity-[0.08] pointer-events-none select-none"
         aria-hidden
@@ -24,7 +24,7 @@ export function ExamPrepCard({ exam }: ExamPrepCardProps) {
       <p className="mt-1 text-sm font-semibold text-indigo-300">{exam.subtitle}</p>
       <p className="mt-4 text-sm text-white/65 leading-relaxed flex-1">{exam.description}</p>
       <Link
-        href={exam.id === 'ugc-net' ? '/student-hub/ugc-net' : exam.href}
+        href={exam.href}
         className="mt-6 inline-flex items-center gap-1 text-sm font-bold text-white hover:text-indigo-200 transition"
       >
         {exam.ctaLabel} <span aria-hidden>→</span>

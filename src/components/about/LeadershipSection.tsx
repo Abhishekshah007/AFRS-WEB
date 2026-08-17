@@ -147,9 +147,9 @@ function LeaderCard({ leader }: { leader: LeaderProfile }) {
 
   return (
     <article className="group h-full overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-[0_2px_16px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(15,23,42,0.10)]">
-      <div className="grid h-full md:grid-cols-[160px_1fr]">
+      <div className="grid h-full grid-cols-[96px_1fr] sm:grid-cols-[140px_1fr] md:grid-cols-[160px_1fr]">
         {/* ── Photo panel ── */}
-        <div className="relative min-h-[260px] overflow-hidden bg-slate-900">
+        <div className="relative min-h-[200px] overflow-hidden bg-slate-900 sm:min-h-[240px] md:min-h-[260px]">
           {/* Brand accent bar */}
           <div className="absolute inset-y-0 left-0 z-10 w-[3px] bg-[var(--about-primary)]" />
 
@@ -173,7 +173,7 @@ function LeaderCard({ leader }: { leader: LeaderProfile }) {
         </div>
 
         {/* ── Content panel ── */}
-        <div className="flex min-h-[280px] flex-col p-6">
+        <div className="flex min-h-[200px] flex-col p-4 sm:min-h-[260px] sm:p-6 md:min-h-[280px]">
           {/* Header row */}
           <div className="flex items-start justify-between gap-4">
             <div>

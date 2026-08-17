@@ -5,8 +5,8 @@ import {
   defaultHelpCards,
   featuresToHelpCards,
 } from '@/components/service-detail/buildServiceContent'
-import { SERVICE_DETAIL_IMAGES } from '@/components/service-detail/tokens'
 import type { GallerySlide, ServiceDetailData } from '@/components/service-detail/types'
+import { SERVICE_DETAIL_IMAGES } from '@/components/service-detail/tokens'
 import { resolveMediaUrl, richTextToPlain } from '@/lib/cms'
 import { getPayloadClient } from '@/lib/payload'
 import type { GalleryItem, Media, Service, SiteSetting } from '@/payload-types'
@@ -72,9 +72,11 @@ export default async function ServiceDetailPage({ params }: Props) {
     contentPlain: richTextToPlain(srv.content, 4000),
     bannerUrl,
     category: srv.category,
+    helpHeading: srv.helpHeading,
+    helpIntro: srv.helpIntro,
   }
 
-  const helpCards = featuresToHelpCards(srv.features, SERVICE_DETAIL_IMAGES.traceMicroscope)
+  const helpCards = featuresToHelpCards(srv.features)
 
   const gallerySlides: GallerySlide[] =
     galleryResult.docs.length > 0

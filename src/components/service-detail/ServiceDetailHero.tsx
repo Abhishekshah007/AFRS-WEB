@@ -13,7 +13,7 @@ export type ServiceDetailHeroProps = {
 export function ServiceDetailHero({ title, description, bannerUrl }: ServiceDetailHeroProps) {
   return (
     <section
-      className="relative h-[520px] md:h-[580px] overflow-hidden flex items-center"
+      className="relative flex min-h-[440px] items-center overflow-hidden py-16 md:h-[580px] md:min-h-0 md:py-0"
       aria-labelledby="service-hero-title"
     >
       <Image
@@ -45,7 +45,7 @@ export function ServiceDetailHero({ title, description, bannerUrl }: ServiceDeta
           <HeroStaggerItem>
             <h1
               id="service-hero-title"
-              className="mt-5 text-[38px] sm:text-[48px] lg:text-[56px] font-black text-[#071329] leading-[1.0] tracking-[-0.02em]"
+              className="mt-5 text-[32px] leading-[1.05] font-black tracking-[-0.02em] text-[#071329] sm:text-[48px] lg:text-[56px] lg:leading-[1.0]"
             >
               {title}
             </h1>
