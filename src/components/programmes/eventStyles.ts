@@ -12,15 +12,15 @@ export function eventTypeDisplayLabel(eventType: string): string {
 }
 
 export const eventTypeBadgeClass: Record<string, string> = {
-  workshop: 'bg-emerald-500 text-white',
-  conference: 'bg-orange-500 text-white',
-  training: 'bg-pink-500 text-white',
-  webinar: 'bg-violet-500 text-white',
+  workshop: 'bg-brand-500 text-white',
+  conference: 'bg-brand-700 text-white',
+  training: 'bg-brand-600 text-white',
+  webinar: 'bg-brand-200 text-brand',
 }
 
 export const eventNatureBadgeClass: Record<NonNullable<HubEventCard['eventNature']>, string> = {
-  national: 'border-violet-300 bg-white/90 text-violet-700',
-  international: 'border-blue-300 bg-white/90 text-blue-700',
+  national: 'border-brand-200 bg-white/90 text-brand-700',
+  international: 'border-brand-500 bg-white/90 text-brand-600',
 }
 
 export function eventNatureLabel(nature: HubEventCard['eventNature']): string {

@@ -33,7 +33,7 @@ export function FeaturedArticleCard({ article }: FeaturedArticleCardProps) {
       aria-labelledby="featured-article-title"
     >
       <div className="relative min-h-55 md:min-h-full bg-[#1b5e20] flex items-center justify-center p-8 overflow-hidden">
-        <span className="absolute top-4 left-4 z-10 rounded-full bg-violet-600 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+        <span className="absolute top-4 left-4 z-10 rounded-full bg-brand-600 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
           Editor&apos;s Choice
         </span>
 
@@ -75,7 +75,9 @@ export function FeaturedArticleCard({ article }: FeaturedArticleCardProps) {
         >
           {article.title}
         </h2>
-        <p className={`mt-3 text-sm flex-1 ${studentHubTokens.body}`}>{article.excerpt}</p>
+        <p className={`mt-3 text-sm flex-1 ${studentHubTokens.body} text-justify`}>
+          {article.excerpt}
+        </p>
 
         <div className="mt-6 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">

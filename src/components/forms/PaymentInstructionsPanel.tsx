@@ -55,7 +55,7 @@ function PaymentMethodCard({ method }: { method: PaymentMethodConfig }) {
           href={method.link}
           target="_blank"
           rel="noreferrer"
-          className="mt-4 inline-flex items-center rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700"
+          className="mt-4 inline-flex items-center rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-700"
         >
           Pay via UPI / link
         </a>
@@ -80,13 +80,13 @@ export function PaymentInstructionsPanel({
       ) : null}
 
       {typeof amount === 'number' ? (
-        <div className="rounded-2xl border border-indigo-100 bg-indigo-50 p-4">
-          <p className="text-xs font-semibold uppercase tracking-wide text-indigo-600">Amount to pay</p>
-          <p className="mt-1 text-3xl font-extrabold text-indigo-900">
+        <div className="rounded-2xl border border-brand-100 bg-brand-50 p-4">
+          <p className="text-xs font-semibold uppercase tracking-wide text-brand-600">Amount to pay</p>
+          <p className="mt-1 text-3xl font-extrabold text-brand-900">
             ₹{amount.toLocaleString('en-IN')}
           </p>
           {registrationId ? (
-            <p className="mt-2 text-xs text-indigo-700">
+            <p className="mt-2 text-xs text-brand-700">
               Registration ID: <span className="font-semibold">{registrationId}</span>
             </p>
           ) : null}

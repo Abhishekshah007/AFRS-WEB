@@ -30,7 +30,7 @@ export function AboutHeroSection({
       aria-labelledby="about-hero-heading"
     >
       <div className={`${aboutTokens.container} relative z-10 py-16 md:py-20 lg:py-24`}>
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
+        <div className="grid items-center gap-8 md:grid-cols-2 md:gap-12 lg:gap-16">
           <div className="reveal-up max-w-xl">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/80">{eyebrow}</p>
             <h1
@@ -39,7 +39,7 @@ export function AboutHeroSection({
             >
               {title}
             </h1>
-            <p className="mt-5 text-base sm:text-lg text-white/85 leading-relaxe text-justify">
+            <p className="mt-5 text-base leading-relaxed text-white/85 text-left sm:text-lg md:text-justify">
               {subtitle}
             </p>
             <Link href={ctaHref} className={`mt-8 ${aboutTokens.primaryBtn}`}>

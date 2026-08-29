@@ -19,7 +19,7 @@ export function ExamExcellenceSection({ exams }: ExamExcellenceSectionProps) {
       <div className={`${studentHubTokens.container} relative z-10`}>
         <AnimateOnScroll>
           <header className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-indigo-400">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-brand-400">
               Prepare to Succeed
             </span>
             <h2
@@ -36,7 +36,7 @@ export function ExamExcellenceSection({ exams }: ExamExcellenceSectionProps) {
         </AnimateOnScroll>
 
         <AnimateOnScroll stagger>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             {exams.map((exam) => (
               <li key={exam.id}>
                 <ExamPrepCard exam={exam} />

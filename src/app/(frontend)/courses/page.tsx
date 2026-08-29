@@ -15,14 +15,16 @@ import { getPayloadClient } from '@/lib/payload'
 import { fetchProgrammeHubEvents } from '@/lib/programmeEvents'
 import { resolveMediaUrl } from '@/lib/cms'
 import type { Media, Scientist, SiteSetting } from '@/payload-types'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 import type { Where } from 'payload'
 
-export const metadata: Metadata = {
-  title: 'Forensic Programmes & Events',
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Forensic Science Courses, Training & Internships',
   description:
-    'Explore AFRS education programmes, AFSL training and internships, and register for upcoming forensic workshops and conferences.',
-}
+    'Explore AFRS forensic science courses, AFSL laboratory training and internships, and upcoming workshops for students and professionals.',
+  path: '/courses',
+})
 
 function initialsFromName(name: string): string {
   return name

@@ -5,12 +5,20 @@ import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 
 export type HowWeHelpSectionProps = {
   items: HelpCardItem[]
+  title?: string
+  subtitle?: string
 }
 
 /**
- * Centered header + responsive grid of help cards (wide card spans 2 cols on desktop).
+ * Stacked full-width help rows — one capability per row.
  */
-export function HowWeHelpSection({ items }: HowWeHelpSectionProps) {
+export function HowWeHelpSection({
+  items,
+  title = 'How We Can Help',
+  subtitle = 'Comprehensive forensic support from scene to courtroom — delivered by certified experts using validated protocols.',
+}: HowWeHelpSectionProps) {
+  if (!items.length) return null
+
   return (
     <section
       className={`${serviceDetailTokens.sectionY} ${serviceDetailTokens.pageBg}`}
@@ -18,22 +26,26 @@ export function HowWeHelpSection({ items }: HowWeHelpSectionProps) {
     >
       <div className={serviceDetailTokens.container}>
         <AnimateOnScroll>
-          <header className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
-            <h2 id="how-we-help-heading" className={`${serviceDetailTokens.heading} text-2xl sm:text-[30px]`}>
-              How We Can Help
+          <header className="mb-10 w-full max-w-none md:mb-14">
+            <h2
+              id="how-we-help-heading"
+              className={`${serviceDetailTokens.heading} text-2xl sm:text-[30px]`}
+            >
+              {title}
             </h2>
-            <p className={`mt-3 text-sm sm:text-base ${serviceDetailTokens.body}`}>
-              Comprehensive forensic support from scene to courtroom — delivered by certified experts using
-              validated protocols.
-            </p>
+            {subtitle ? (
+              <p className={`mt-3 max-w-none text-sm sm:text-base ${serviceDetailTokens.body}`}>
+                {subtitle}
+              </p>
+            ) : null}
           </header>
         </AnimateOnScroll>
 
         <AnimateOnScroll stagger>
-          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-            {items.map((item) => (
-              <li key={item.id} className={item.wide ? 'md:col-span-2 lg:col-span-2' : undefined}>
-                <HelpCard item={item} />
+          <ul className="grid grid-cols-1 gap-6">
+            {items.map((item, index) => (
+              <li key={item.id}>
+                <HelpCard item={item} index={index} />
               </li>
             ))}
           </ul>

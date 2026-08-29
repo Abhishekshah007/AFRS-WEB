@@ -42,7 +42,7 @@ export function CourseRegistrationForm({ details, config }: Props) {
           </Link>
 
           <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-            <div className="bg-gradient-to-br from-[var(--prog-primary)] to-blue-500 p-6 text-white">
+            <div className="bg-gradient-to-br from-[var(--prog-primary)] to-brand-500 p-6 text-white">
               <BookOpen className="h-8 w-8" />
               <p className="mt-5 text-xs font-extrabold uppercase tracking-[0.18em] text-white/75">
                 Course Registration

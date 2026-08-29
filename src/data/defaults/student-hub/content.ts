@@ -8,8 +8,8 @@ export const defaultAcademicResources: ResourceCardData[] = [
     ctaLabel: 'Browse Library',
     href: '/student-hub/articles',
     icon: 'FileText',
-    iconBg: 'bg-blue-50',
-    iconColor: 'text-blue-500',
+    iconBg: 'bg-brand-50',
+    iconColor: 'text-brand-600',
   },
   {
     id: 'research',
@@ -18,8 +18,8 @@ export const defaultAcademicResources: ResourceCardData[] = [
     ctaLabel: 'Access Papers',
     href: '/student-hub/research',
     icon: 'FlaskConical',
-    iconBg: 'bg-violet-50',
-    iconColor: 'text-violet-500',
+    iconBg: 'bg-brand-100',
+    iconColor: 'text-brand-500',
   },
   {
     id: 'cases',
@@ -28,8 +28,8 @@ export const defaultAcademicResources: ResourceCardData[] = [
     ctaLabel: 'Read Cases',
     href: '/student-hub/cases',
     icon: 'FolderOpen',
-    iconBg: 'bg-purple-50',
-    iconColor: 'text-purple-500',
+    iconBg: 'bg-brand-200/50',
+    iconColor: 'text-brand-700',
   },
   {
     id: 'blogs',
@@ -38,8 +38,8 @@ export const defaultAcademicResources: ResourceCardData[] = [
     ctaLabel: 'Read Blogs',
     href: '/student-hub/blogs',
     icon: 'Rss',
-    iconBg: 'bg-pink-50',
-    iconColor: 'text-pink-500',
+    iconBg: 'bg-brand-50',
+    iconColor: 'text-brand-500',
   },
   {
     id: 'elibrary',
@@ -48,8 +48,8 @@ export const defaultAcademicResources: ResourceCardData[] = [
     ctaLabel: 'Enter Library',
     href: '/student-hub/library',
     icon: 'BookCopy',
-    iconBg: 'bg-emerald-50',
-    iconColor: 'text-emerald-500',
+    iconBg: 'bg-brand-100',
+    iconColor: 'text-brand-600',
   },
   {
     id: 'videos',
@@ -58,8 +58,8 @@ export const defaultAcademicResources: ResourceCardData[] = [
     ctaLabel: 'Watch Now',
     href: '/student-hub/videos',
     icon: 'PlayCircle',
-    iconBg: 'bg-red-50',
-    iconColor: 'text-red-500',
+    iconBg: 'bg-brand-50',
+    iconColor: 'text-brand-700',
   },
   {
     id: 'practical',
@@ -68,8 +68,8 @@ export const defaultAcademicResources: ResourceCardData[] = [
     ctaLabel: 'Start Experiment',
     href: '/student-hub/practical',
     icon: 'Microscope',
-    iconBg: 'bg-amber-50',
-    iconColor: 'text-amber-500',
+    iconBg: 'bg-brand-200/60',
+    iconColor: 'text-brand-600',
     featured: true,
   },
 ]
@@ -81,7 +81,7 @@ export const defaultExamPrep: ExamPrepCardData[] = [
     title: 'UGC NET',
     subtitle: 'Forensic Science Paper II & III',
     description:
-      'Topic-wise notes, previous-year question analysis, mock test series, and mentor support for the National Eligibility Test in forensic science.',
+      'Topic-wise notes, previous-year question analysis, mock test series, and mentor support for the NET.',
     ctaLabel: 'View Preparation Resources',
     href: '/student-hub/ugc-net',
     watermark: '🎓',
@@ -96,6 +96,17 @@ export const defaultExamPrep: ExamPrepCardData[] = [
     ctaLabel: 'Explore FACT Resources',
     href: '/student-hub/fact',
     watermark: '⚗️',
+  },
+  {
+    id: 'cuet',
+    badge: 'NTA CUET Pathway',
+    title: 'CUET UG/PG',
+    subtitle: 'Paper Code: SCQP13',
+    description:
+      'Structured preparation, covering domain knowledge, previous-year pattern analysis, mock tests, and guided practice.',
+    ctaLabel: 'Explore CUET Resources',
+    href: '/student-hub/cuet',
+    watermark: '📘',
   },
 ]
 

@@ -1,12 +1,14 @@
 import { EventsListingView } from '@/components/programmes/EventsListingView'
 import { fetchProgrammeHubEvents } from '@/lib/programmeEvents'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Online Events Hub',
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Forensic Workshops & Online Events',
   description:
-    'Register for national and international forensic workshops, conferences, and faculty development programmes.',
-}
+    'Register for national and international forensic workshops, conferences and faculty development programmes.',
+  path: '/courses/events',
+})
 
 type Props = {
   searchParams: Promise<{

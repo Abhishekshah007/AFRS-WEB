@@ -7,11 +7,13 @@ export type CatalogItem = {
 }
 
 export type DirectorateMember = {
+  id: number | string
   name: string
   designation: string
   bio?: string | null
   photo?: string
   initials: string
+  status: 'active' | 'inactive'
 }
 
 export type SiteContact = {
@@ -44,6 +46,11 @@ export type TrainingCard = {
   href?: string
 }
 
+export type LegalLinkItem = {
+  title: string
+  desc: string
+}
+
 export type ServicesSectionText = {
   heroEyebrow: string
   heroTitle: string
@@ -70,8 +77,10 @@ export type ServicesSectionText = {
   catalogEyebrow: string
   catalogTitle: string
   legalTitle: string
+  legalSubtitle: string
   legalDescription: string
   legalCtaLabel: string
+  legalCtaSubtext: string
   kitsEyebrow: string
   kitsTitle: string
   kitsDescription: string
@@ -87,7 +96,7 @@ export type ServicesSectionText = {
 export type ServicesPageContent = ServicesSectionText & {
   certificationStats: CertificationStat[]
   kitCards: KitCardData[]
-  legalLinks: string[]
+  legalLinks: LegalLinkItem[]
   researchItems: ResearchItem[]
   trainingCards: TrainingCard[]
 }

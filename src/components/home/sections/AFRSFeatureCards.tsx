@@ -93,7 +93,7 @@ export function AFRSFeatureCards({
                   >
                     <item.icon className="h-6 w-6" />
                   </div>
-                  <h3 className="mt-4 text-base font-bold text-slate-900 leading-snug group-hover:text-indigo-700 transition-colors">
+                  <h3 className="mt-4 text-base font-bold text-slate-900 leading-snug group-hover:text-brand-700 transition-colors">
                     {item.label}
                   </h3>
                   <p className="mt-2 text-sm text-slate-500 leading-relaxed">{item.description}</p>
@@ -103,7 +103,7 @@ export function AFRSFeatureCards({
           })}
         </AnimateOnScroll>
       </div>
-      <div className="pointer-events-none absolute -bottom-10 -left-8 opacity-[0.035] text-indigo-900">
+      <div className="pointer-events-none absolute -bottom-10 -left-8 opacity-[0.035] text-brand-900">
         <svg width="220" height="220" viewBox="0 0 260 260" fill="none" aria-hidden>
           <circle cx="130" cy="130" r="20" stroke="currentColor" strokeWidth="10" />
           <circle cx="130" cy="130" r="45" stroke="currentColor" strokeWidth="10" />

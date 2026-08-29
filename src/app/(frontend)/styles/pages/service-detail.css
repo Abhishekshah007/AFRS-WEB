@@ -1,14 +1,14 @@
 .service-detail-page {
-  --svc-primary: #5d5fef;
-  --svc-primary-hover: #4f46e5;
-  --svc-primary-soft: #eef0ff;
-  --svc-accent: #f28c28;
-  --svc-accent-hover: #e67e22;
-  --svc-surface: #f8f9ff;
-  --svc-text: #0a0b1e;
-  --svc-text-muted: #4b5563;
+  --svc-primary: var(--brand-primary);
+  --svc-primary-hover: var(--brand-primary-hover);
+  --svc-primary-soft: var(--brand-soft);
+  --svc-accent: var(--brand-burgundy);
+  --svc-accent-hover: var(--brand-primary-hover);
+  --svc-surface: var(--brand-surface);
+  --svc-text: var(--brand-ink);
+  --svc-text-muted: var(--brand-muted);
 }
 
 .svc-consult-panel {
-  background: linear-gradient(145deg, #5d5fef 0%, #4f46e5 45%, #3b37ff 100%);
+  background: linear-gradient(145deg, var(--brand-burgundy) 0%, var(--brand-dark-maroon) 45%, var(--brand-deep-wine) 100%);
 }

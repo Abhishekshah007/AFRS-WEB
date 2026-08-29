@@ -15,10 +15,10 @@ export type CertificationsSectionProps = {
 
 const certIconCycle = [BadgeCheck, Award, Shield, CheckCircle2]
 const certAccents = [
-  { bg: 'bg-indigo-50', text: 'text-indigo-600', bar: '#6366f1' },
-  { bg: 'bg-blue-50', text: 'text-blue-600', bar: '#3b82f6' },
-  { bg: 'bg-violet-50', text: 'text-violet-600', bar: '#8b5cf6' },
-  { bg: 'bg-emerald-50', text: 'text-emerald-600', bar: '#10b981' },
+  { bg: 'bg-brand-50', text: 'text-brand-600', bar: '#3B010B' },
+  { bg: 'bg-brand-100', text: 'text-brand-700', bar: '#560B18' },
+  { bg: 'bg-brand-50', text: 'text-brand-500', bar: '#75162D' },
+  { bg: 'bg-brand-200/40', text: 'text-brand-600', bar: '#F2D9A0' },
 ]
 
 export function CertificationsSection({
@@ -89,7 +89,12 @@ export function CertificationsSection({
               return (
                 <li key={item.title}>
                   {item.href ? (
-                    <Link href={item.href} target="_blank" rel="noreferrer" className="block h-full">
+                    <Link
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="block h-full"
+                    >
                       {cardBody}
                     </Link>
                   ) : (
@@ -101,13 +106,10 @@ export function CertificationsSection({
           </ul>
           <p className="mt-8 text-justify text-sm sm:text-base text-[var(--about-text)]">
             AFRS recognizes the importance of quality assurance, professional recognition, and
-            institutional credibility.
-          </p>
-          <p className="mt-4 text-justify text-sm sm:text-base text-[var(--about-text)]">
-            The organization continuously strives to align its activities with recognized standards,
-            professional guidelines, and best practices through relevant certifications,
-            affiliations, registrations, and strategic partnerships that strengthen trust and
-            accountability.
+            institutional credibility. The organization continuously strives to align its activities
+            with recognized standards, professional guidelines, and best practices through relevant
+            certifications, affiliations, registrations, and strategic partnerships that strengthen
+            trust and accountability.
           </p>
         </AnimateOnScroll>
       </div>

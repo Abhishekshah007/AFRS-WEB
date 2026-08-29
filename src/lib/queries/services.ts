@@ -3,6 +3,7 @@ import type {
   CatalogItem,
   DirectorateMember,
   KitCardData,
+  LegalLinkItem,
   ResearchItem,
   ServicesPageContent,
   SiteContact,
@@ -21,8 +22,6 @@ import { getPayloadClient } from '@/lib/payload'
 import { getFeaturedGalleryItems } from '@/lib/queries/gallery'
 import type { Media, Scientist, Service, ServicesPage, SiteSetting } from '@/payload-types'
 
-type CmsTextRow = { text?: string | null }
-
 function toMember(sci: Scientist): DirectorateMember {
   const photo = resolveMediaUrl(sci.photo as number | Media | null | undefined, '')
   const initials =
@@ -33,21 +32,43 @@ function toMember(sci: Scientist): DirectorateMember {
       .slice(0, 2)
       .toUpperCase() ?? '??'
   return {
+    id: sci.id,
     name: sci.name,
     designation: sci.designation ?? 'Forensic Scientist',
     bio: sci.bio,
     photo: photo || undefined,
     initials,
+    status: sci.status === 'inactive' ? 'inactive' : 'active',
   }
 }
 
-function toTextArray(items: unknown): string[] | undefined {
+function toLegalLinks(items: LegalLinkItem[] | null | undefined): LegalLinkItem[] | undefined {
   if (!Array.isArray(items)) return undefined
   const normalized = items
-    .map((item) =>
-      typeof item === 'string' ? item : (item as CmsTextRow | null | undefined)?.text,
-    )
-    .filter((item): item is string => Boolean(item?.trim()))
+    .map((item) => ({
+      title: item.title?.trim() ?? '',
+      desc: item.desc?.trim() ?? '',
+    }))
+    .filter((item) => item.title && item.desc)
+  return normalized.length > 0 ? normalized : undefined
+}
+
+function toLegalLinksLegacy(items: unknown): LegalLinkItem[] | undefined {
+  if (!Array.isArray(items)) return undefined
+
+  const normalized = items
+    .map((item) => {
+      if (typeof item === 'string') {
+        return { title: item.trim(), desc: '' }
+      }
+
+      const row = item as { title?: string | null; desc?: string | null; text?: string | null }
+      const title = row.title?.trim() || row.text?.trim() || ''
+      const desc = row.desc?.trim() || ''
+      return { title, desc }
+    })
+    .filter((item) => item.title)
+
   return normalized.length > 0 ? normalized : undefined
 }
 
@@ -124,8 +145,10 @@ function buildServicesContent(cms?: ServicesPage['sectionText']): ServicesPageCo
     catalogEyebrow: withDefaultString(source.catalogEyebrow, defaults.catalogEyebrow),
     catalogTitle: withDefaultString(source.catalogTitle, defaults.catalogTitle),
     legalTitle: withDefaultString(source.legalTitle, defaults.legalTitle),
+    legalSubtitle: withDefaultString(source.legalSubtitle, defaults.legalSubtitle),
     legalDescription: withDefaultString(source.legalDescription, defaults.legalDescription),
     legalCtaLabel: withDefaultString(source.legalCtaLabel, defaults.legalCtaLabel),
+    legalCtaSubtext: withDefaultString(source.legalCtaSubtext, defaults.legalCtaSubtext),
     kitsEyebrow: withDefaultString(source.kitsEyebrow, defaults.kitsEyebrow),
     kitsTitle: withDefaultString(source.kitsTitle, defaults.kitsTitle),
     kitsDescription: withDefaultString(source.kitsDescription, defaults.kitsDescription),
@@ -151,7 +174,10 @@ function buildServicesContent(cms?: ServicesPage['sectionText']): ServicesPageCo
         : defaults.certificationStats,
     kitCards:
       toKitCards(source.kitCards as KitCardData[] | null | undefined) ?? defaults.kitCards,
-    legalLinks: toTextArray(source.legalLinks) ?? defaults.legalLinks,
+    legalLinks:
+      toLegalLinks(source.legalLinks as LegalLinkItem[] | null | undefined) ??
+      toLegalLinksLegacy(source.legalLinks) ??
+      defaults.legalLinks,
     researchItems:
       toResearchItems(source.researchItems as ResearchItem[] | null | undefined) ??
       defaults.researchItems,
@@ -187,7 +213,7 @@ export async function getServicesPageData(): Promise<ServicesPageViewProps> {
       collection: 'scientists',
       where: { published: { equals: true } },
       sort: 'order',
-      limit: 10,
+      limit: 200,
       depth: 1,
       overrideAccess: false,
     }),
@@ -215,19 +241,22 @@ export async function getServicesPageData(): Promise<ServicesPageViewProps> {
         })
       : fallbackCatalog
 
-  const allScientists =
-    scientists.docs.length > 0
-      ? (scientists.docs as Scientist[]).map((sci) => toMember(sci))
-      : [...fallbackDirectors, ...fallbackTeam]
+  const cmsScientists = scientists.docs as Scientist[]
+  const directors = cmsScientists
+    .filter((scientist) => scientist.memberType === 'director')
+    .map(toMember)
+  const teamMembers = cmsScientists
+    .filter((scientist) => scientist.memberType !== 'director')
+    .map(toMember)
 
-  const directors = allScientists.slice(0, 2)
-  const teamMembers = allScientists.length > 2 ? allScientists.slice(2, 8) : fallbackTeam
+  const resolvedDirectors = cmsScientists.length === 0 ? fallbackDirectors : directors
+  const resolvedTeamMembers = cmsScientists.length === 0 ? fallbackTeam : teamMembers
 
   return {
     content,
     catalogItems,
-    directors: directors.length >= 2 ? directors : fallbackDirectors,
-    teamMembers,
+    directors: resolvedDirectors,
+    teamMembers: resolvedTeamMembers,
     site: buildSiteContact(site),
     totalVisitors: site?.totalVisitors || 200,
     galleryItems,

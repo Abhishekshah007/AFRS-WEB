@@ -3,9 +3,8 @@ import { CheckCircle2 } from 'lucide-react'
 import type { TrainingOption } from '@/components/programmes/types'
 import { programmesTokens } from '@/components/programmes/tokens'
 import { tagToneClass } from '@/components/programmes/content'
-import { iconMap } from '../ui/iconMap'
+import { resolveIcon } from '@/components/ui/iconMap'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
-import { BookOpen } from 'lucide-react'
 
 export type AfslTrainingSectionProps = {
   options: TrainingOption[]
@@ -25,7 +24,7 @@ export function AfslTrainingSection({ options, checklist }: AfslTrainingSectionP
           <AnimateOnScroll direction="left">
             <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-[0_1px_6px_rgba(0,0,0,0.05)] h-full flex flex-col">
               {/* Eyebrow pill */}
-              <span className="inline-flex w-fit rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.16em] text-indigo-500">
+              <span className="inline-flex w-fit rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.16em] text-brand-500">
                 Laboratory Division
               </span>
 
@@ -63,7 +62,7 @@ export function AfslTrainingSection({ options, checklist }: AfslTrainingSectionP
               {/* CTA — full width solid blue */}
               <Link
                 href="/courses/training"
-                className="mt-8 flex h-12 w-full items-center justify-center rounded-xl bg-[var(--prog-primary)] hover:bg-[var(--prog-primary-hover)] text-white text-[13px] font-bold transition-colors shadow-md shadow-indigo-500/20"
+                className="mt-8 flex h-12 w-full items-center justify-center rounded-xl bg-[var(--prog-primary)] hover:bg-[var(--prog-primary-hover)] text-white text-[13px] font-bold transition-colors shadow-md shadow-brand-500/20"
               >
                 Apply for Training
               </Link>
@@ -74,7 +73,7 @@ export function AfslTrainingSection({ options, checklist }: AfslTrainingSectionP
           <AnimateOnScroll stagger>
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {options.map((opt) => {
-                const Icon = iconMap[opt.icon] ?? BookOpen
+                const Icon = resolveIcon(opt.icon)
                 return (
                   <li key={opt.id}>
                     <Link

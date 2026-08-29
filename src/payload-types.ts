@@ -350,10 +350,28 @@ export interface Service {
     [k: string]: unknown;
   } | null;
   category?: ('forensicService' | 'laboratory' | 'training' | 'consultancy') | null;
+  /**
+   * Heading for the capability rows on the service detail page.
+   */
+  helpHeading?: string | null;
+  /**
+   * Optional intro paragraph shown under the heading.
+   */
+  helpIntro?: string | null;
+  /**
+   * Each item is a full-width row: content on the left and thumbnail on the right.
+   */
   features?:
     | {
-        featureTitle?: string | null;
+        featureTitle: string;
         featureDescription?: string | null;
+        /**
+         * Optional supporting points. Enter one point per line.
+         */
+        featurePoints?: string | null;
+        /**
+         * Image shown on the right side of this row.
+         */
         featureIcon?: (number | null) | Media;
         id?: string | null;
       }[]
@@ -404,18 +422,37 @@ export interface Testimonial {
   createdAt: string;
 }
 /**
+ * Add, edit, reorder, and publish people shown in Laboratory Directorate and Laboratory Members on the Services page. The same records also appear on Home and About when published.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "scientists".
  */
 export interface Scientist {
   id: number;
   name: string;
+  /**
+   * Role shown under the name, for example Forensic Expert.
+   */
   designation: string;
+  /**
+   * Directorate appears in Laboratory Directorate. Team member appears in Laboratory Members.
+   */
+  memberType: 'director' | 'member';
+  /**
+   * Badge on the profile card. Uncheck Published to hide this person from the website.
+   */
+  status: 'active' | 'inactive';
   bio?: string | null;
+  /**
+   * Square profile photo recommended.
+   */
   photo?: (number | null) | Media;
+  /**
+   * Unpublished people are hidden from the public site.
+   */
   published?: boolean | null;
   /**
-   * Lower numbers appear first.
+   * Lower numbers appear first within the same section.
    */
   order?: number | null;
   updatedAt: string;
@@ -849,11 +886,14 @@ export interface ServicesSelect<T extends boolean = true> {
   excerpt?: T;
   content?: T;
   category?: T;
+  helpHeading?: T;
+  helpIntro?: T;
   features?:
     | T
     | {
         featureTitle?: T;
         featureDescription?: T;
+        featurePoints?: T;
         featureIcon?: T;
         id?: T;
       };
@@ -898,6 +938,8 @@ export interface TestimonialsSelect<T extends boolean = true> {
 export interface ScientistsSelect<T extends boolean = true> {
   name?: T;
   designation?: T;
+  memberType?: T;
+  status?: T;
   bio?: T;
   photo?: T;
   published?: T;
@@ -1527,8 +1569,10 @@ export interface ServicesPage {
     catalogEyebrow?: string | null;
     catalogTitle?: string | null;
     legalTitle?: string | null;
+    legalSubtitle?: string | null;
     legalDescription?: string | null;
     legalCtaLabel?: string | null;
+    legalCtaSubtext?: string | null;
     kitsEyebrow?: string | null;
     kitsTitle?: string | null;
     kitsDescription?: string | null;
@@ -1555,7 +1599,8 @@ export interface ServicesPage {
       | null;
     legalLinks?:
       | {
-          text: string;
+          title: string;
+          desc: string;
           id?: string | null;
         }[]
       | null;
@@ -1594,6 +1639,7 @@ export interface ProgrammesCatalog {
         icon: string;
         title: string;
         summary: string;
+        intro?: string | null;
         programmes?:
           | {
               id: string;
@@ -1615,6 +1661,46 @@ export interface ProgrammesCatalog {
         tag: string;
         tagTone: 'blue' | 'green' | 'purple' | 'orange';
         summary: string;
+        intro?: string | null;
+        body?: string | null;
+        highlightsTitle?: string | null;
+        highlightsNote?: string | null;
+        whoCanApply?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        outcomesTitle?: string | null;
+        outcomes?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        ctaLabel?: string | null;
+        vision?: string | null;
+        missionTitle?: string | null;
+        missionItems?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        extraSections?:
+          | {
+              title: string;
+              items?:
+                | {
+                    text: string;
+                    id?: string | null;
+                  }[]
+                | null;
+              note?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        disclaimer?: string | null;
         programmes?:
           | {
               id: string;
@@ -1773,6 +1859,278 @@ export interface StudentHubContent {
         id?: string | null;
       }[]
     | null;
+  /**
+   * UGC-NET / JRF page copy and structured content.
+   */
+  ugcNetPage?: {
+    heroEyebrow?: string | null;
+    heroTitlePrefix?: string | null;
+    heroTitleHighlight?: string | null;
+    heroDescription?: string | null;
+    heroCtaLabel?: string | null;
+    heroMetricEyebrow?: string | null;
+    heroMetricValue?: string | null;
+    overviewTitle?: string | null;
+    overviewSubtitle?: string | null;
+    overviewDescription?: string | null;
+    overviewBody?: string | null;
+    whyChooseTitle?: string | null;
+    whyChooseItems?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    programmeTitle?: string | null;
+    paperOneTitle?: string | null;
+    paperOneDescription?: string | null;
+    paperTwoTitle?: string | null;
+    paperTwoDescription?: string | null;
+    benefitsTitle?: string | null;
+    benefits?:
+      | {
+          title: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+    learningTitle?: string | null;
+    learningFlow?: string | null;
+    learningSteps?:
+      | {
+          label: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+    audienceTitle?: string | null;
+    audienceItems?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    audienceNote?: string | null;
+    featuresTitle?: string | null;
+    features?:
+      | {
+          feature: string;
+          details: string;
+          id?: string | null;
+        }[]
+      | null;
+    batchTitle?: string | null;
+    batchDetails?:
+      | {
+          label: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    batchCtaLabel?: string | null;
+    registrationTitle?: string | null;
+    registrationSteps?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    facultyTitle?: string | null;
+    facultyDescription?: string | null;
+    resourcesTitle?: string | null;
+    resourceItems?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    supportTitle?: string | null;
+    supportDescription?: string | null;
+    faqTitle?: string | null;
+    faqs?:
+      | {
+          question: string;
+          answer: string;
+          id?: string | null;
+        }[]
+      | null;
+    bottomCtaTitle?: string | null;
+    bottomCtaDescription?: string | null;
+    bottomCtaTagline?: string | null;
+    bottomCtaPrimaryLabel?: string | null;
+    bottomCtaSecondaryLabel?: string | null;
+    bottomCtaContactLabel?: string | null;
+    achieversEyebrow?: string | null;
+    achieversTitle?: string | null;
+    statsValue?: string | null;
+    statsDescription?: string | null;
+    quickNav?:
+      | {
+          label: string;
+          href: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Student Career Guidance page copy and structured content.
+   */
+  careerGuidancePage?: {
+    heroEyebrow?: string | null;
+    heroTitle?: string | null;
+    heroHighlight?: string | null;
+    heroDescription?: string | null;
+    heroBody?: string | null;
+    heroNote?: string | null;
+    heroCtaLabel?: string | null;
+    heroCtaHref?: string | null;
+    careersTitle?: string | null;
+    careersDescription?: string | null;
+    careerPathways?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    careersCtaLabel?: string | null;
+    careersCtaHref?: string | null;
+    specialisationTitle?: string | null;
+    specialisationDescription?: string | null;
+    specialisations?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    specialisationPrimaryCtaLabel?: string | null;
+    specialisationPrimaryCtaHref?: string | null;
+    specialisationSecondaryCtaLabel?: string | null;
+    specialisationSecondaryCtaHref?: string | null;
+    academicTitle?: string | null;
+    academicDescription?: string | null;
+    academicSteps?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    academicNote?: string | null;
+    skillsTitle?: string | null;
+    skillsIntro?: string | null;
+    skillsDescription?: string | null;
+    skills?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    skillsCtaLabel?: string | null;
+    skillsCtaHref?: string | null;
+    internshipsTitle?: string | null;
+    internshipsIntro?: string | null;
+    internshipsDescription?: string | null;
+    internships?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    internshipsNote?: string | null;
+    internshipsCtaLabel?: string | null;
+    internshipsCtaHref?: string | null;
+    examsTitle?: string | null;
+    examsDescription?: string | null;
+    exams?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    examsNote?: string | null;
+    examLinks?:
+      | {
+          label: string;
+          href: string;
+          id?: string | null;
+        }[]
+      | null;
+    researchTitle?: string | null;
+    researchDescription?: string | null;
+    researchItems?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    researchCtaLabel?: string | null;
+    researchCtaHref?: string | null;
+    finderTitle?: string | null;
+    finderIntro?: string | null;
+    finderDescription?: string | null;
+    finderFormula?: string | null;
+    finderDisclaimer?: string | null;
+    consultationTitle?: string | null;
+    consultationDescription?: string | null;
+    consultationTopics?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    consultationDetails?:
+      | {
+          label: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    consultationCtaLabel?: string | null;
+    consultationCtaHref?: string | null;
+    journeyTitle?: string | null;
+    journeySteps?:
+      | {
+          label: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+    resourcesTitle?: string | null;
+    resourcesDescription?: string | null;
+    resources?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    resourcesCtaLabel?: string | null;
+    resourcesCtaHref?: string | null;
+    faqTitle?: string | null;
+    faqs?:
+      | {
+          question: string;
+          answer: string;
+          id?: string | null;
+        }[]
+      | null;
+    bottomCtaTitle?: string | null;
+    bottomCtaIntro?: string | null;
+    bottomCtaDescription?: string | null;
+    bottomCtas?:
+      | {
+          label: string;
+          href: string;
+          id?: string | null;
+        }[]
+      | null;
+    disclaimer?: string | null;
+    quickNav?:
+      | {
+          label: string;
+          href: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2092,8 +2450,10 @@ export interface ServicesPageSelect<T extends boolean = true> {
         catalogEyebrow?: T;
         catalogTitle?: T;
         legalTitle?: T;
+        legalSubtitle?: T;
         legalDescription?: T;
         legalCtaLabel?: T;
+        legalCtaSubtext?: T;
         kitsEyebrow?: T;
         kitsTitle?: T;
         kitsDescription?: T;
@@ -2121,7 +2481,8 @@ export interface ServicesPageSelect<T extends boolean = true> {
         legalLinks?:
           | T
           | {
-              text?: T;
+              title?: T;
+              desc?: T;
               id?: T;
             };
         researchItems?:
@@ -2158,6 +2519,7 @@ export interface ProgrammesCatalogSelect<T extends boolean = true> {
         icon?: T;
         title?: T;
         summary?: T;
+        intro?: T;
         programmes?:
           | T
           | {
@@ -2179,6 +2541,46 @@ export interface ProgrammesCatalogSelect<T extends boolean = true> {
         tag?: T;
         tagTone?: T;
         summary?: T;
+        intro?: T;
+        body?: T;
+        highlightsTitle?: T;
+        highlightsNote?: T;
+        whoCanApply?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        outcomesTitle?: T;
+        outcomes?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        ctaLabel?: T;
+        vision?: T;
+        missionTitle?: T;
+        missionItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        extraSections?:
+          | T
+          | {
+              title?: T;
+              items?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              note?: T;
+              id?: T;
+            };
+        disclaimer?: T;
         programmes?:
           | T
           | {
@@ -2326,6 +2728,276 @@ export interface StudentHubContentSelect<T extends boolean = true> {
         title?: T;
         photo?: T;
         id?: T;
+      };
+  ugcNetPage?:
+    | T
+    | {
+        heroEyebrow?: T;
+        heroTitlePrefix?: T;
+        heroTitleHighlight?: T;
+        heroDescription?: T;
+        heroCtaLabel?: T;
+        heroMetricEyebrow?: T;
+        heroMetricValue?: T;
+        overviewTitle?: T;
+        overviewSubtitle?: T;
+        overviewDescription?: T;
+        overviewBody?: T;
+        whyChooseTitle?: T;
+        whyChooseItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        programmeTitle?: T;
+        paperOneTitle?: T;
+        paperOneDescription?: T;
+        paperTwoTitle?: T;
+        paperTwoDescription?: T;
+        benefitsTitle?: T;
+        benefits?:
+          | T
+          | {
+              title?: T;
+              desc?: T;
+              id?: T;
+            };
+        learningTitle?: T;
+        learningFlow?: T;
+        learningSteps?:
+          | T
+          | {
+              label?: T;
+              desc?: T;
+              id?: T;
+            };
+        audienceTitle?: T;
+        audienceItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        audienceNote?: T;
+        featuresTitle?: T;
+        features?:
+          | T
+          | {
+              feature?: T;
+              details?: T;
+              id?: T;
+            };
+        batchTitle?: T;
+        batchDetails?:
+          | T
+          | {
+              label?: T;
+              value?: T;
+              id?: T;
+            };
+        batchCtaLabel?: T;
+        registrationTitle?: T;
+        registrationSteps?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        facultyTitle?: T;
+        facultyDescription?: T;
+        resourcesTitle?: T;
+        resourceItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        supportTitle?: T;
+        supportDescription?: T;
+        faqTitle?: T;
+        faqs?:
+          | T
+          | {
+              question?: T;
+              answer?: T;
+              id?: T;
+            };
+        bottomCtaTitle?: T;
+        bottomCtaDescription?: T;
+        bottomCtaTagline?: T;
+        bottomCtaPrimaryLabel?: T;
+        bottomCtaSecondaryLabel?: T;
+        bottomCtaContactLabel?: T;
+        achieversEyebrow?: T;
+        achieversTitle?: T;
+        statsValue?: T;
+        statsDescription?: T;
+        quickNav?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+      };
+  careerGuidancePage?:
+    | T
+    | {
+        heroEyebrow?: T;
+        heroTitle?: T;
+        heroHighlight?: T;
+        heroDescription?: T;
+        heroBody?: T;
+        heroNote?: T;
+        heroCtaLabel?: T;
+        heroCtaHref?: T;
+        careersTitle?: T;
+        careersDescription?: T;
+        careerPathways?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        careersCtaLabel?: T;
+        careersCtaHref?: T;
+        specialisationTitle?: T;
+        specialisationDescription?: T;
+        specialisations?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        specialisationPrimaryCtaLabel?: T;
+        specialisationPrimaryCtaHref?: T;
+        specialisationSecondaryCtaLabel?: T;
+        specialisationSecondaryCtaHref?: T;
+        academicTitle?: T;
+        academicDescription?: T;
+        academicSteps?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        academicNote?: T;
+        skillsTitle?: T;
+        skillsIntro?: T;
+        skillsDescription?: T;
+        skills?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        skillsCtaLabel?: T;
+        skillsCtaHref?: T;
+        internshipsTitle?: T;
+        internshipsIntro?: T;
+        internshipsDescription?: T;
+        internships?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        internshipsNote?: T;
+        internshipsCtaLabel?: T;
+        internshipsCtaHref?: T;
+        examsTitle?: T;
+        examsDescription?: T;
+        exams?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        examsNote?: T;
+        examLinks?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+        researchTitle?: T;
+        researchDescription?: T;
+        researchItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        researchCtaLabel?: T;
+        researchCtaHref?: T;
+        finderTitle?: T;
+        finderIntro?: T;
+        finderDescription?: T;
+        finderFormula?: T;
+        finderDisclaimer?: T;
+        consultationTitle?: T;
+        consultationDescription?: T;
+        consultationTopics?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        consultationDetails?:
+          | T
+          | {
+              label?: T;
+              value?: T;
+              id?: T;
+            };
+        consultationCtaLabel?: T;
+        consultationCtaHref?: T;
+        journeyTitle?: T;
+        journeySteps?:
+          | T
+          | {
+              label?: T;
+              desc?: T;
+              id?: T;
+            };
+        resourcesTitle?: T;
+        resourcesDescription?: T;
+        resources?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        resourcesCtaLabel?: T;
+        resourcesCtaHref?: T;
+        faqTitle?: T;
+        faqs?:
+          | T
+          | {
+              question?: T;
+              answer?: T;
+              id?: T;
+            };
+        bottomCtaTitle?: T;
+        bottomCtaIntro?: T;
+        bottomCtaDescription?: T;
+        bottomCtas?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+        disclaimer?: T;
+        quickNav?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;

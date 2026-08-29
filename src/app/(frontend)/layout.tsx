@@ -5,6 +5,10 @@ import Footer from '@/components/Footer'
 import { AppProviders } from '@/components/providers/AppProviders'
 import { getPayloadClient } from '@/lib/payload'
 import type { FooterSetting, HeaderSetting, SiteSetting } from '@/payload-types'
+import type { Viewport } from 'next'
+import { JsonLd } from '@/components/seo/JsonLd'
+import { getSiteUrl } from '@/lib/seo/site'
+import { organizationGraph, websiteGraph, withContext } from '@/lib/seo/schema'
 import './styles.css'
 
 // Body text - clean, readable, professional
@@ -23,30 +27,48 @@ const dmSans = DM_Sans({
   weight: ['400', '500', '600', '700', '800'],
 })
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#3B010B',
+}
+
 export async function generateMetadata(): Promise<import('next').Metadata> {
   const payload = await getPayloadClient()
   const siteSettings = (await payload.findGlobal({ slug: 'siteSettings', depth: 0 })) as SiteSetting
   const siteName = siteSettings?.siteName || 'Applied Forensic Research Sciences Institute'
   const description =
-    'Advancing the frontiers of forensic science through education, research, and professional excellence.'
+    'AFRS provides forensic science education, professional training, internships, research support and AFSL laboratory services across India.'
 
   return {
-    metadataBase: new URL('https://afrs-webapp.vercel.app'),
+    metadataBase: new URL(getSiteUrl()),
     title: {
-      default: siteName,
-      template: `%s | ${siteName}`,
+      default: 'Forensic Science Education, Training & Services | AFRS',
+      template: `%s | AFRS`,
     },
     description,
     applicationName: siteName,
-    alternates: { canonical: '/' },
+    category: 'education',
+    manifest: '/manifest.webmanifest',
+    icons: {
+      icon: '/assets/logo.png',
+      apple: '/assets/logo.png',
+    },
     openGraph: {
       type: 'website',
       siteName,
-      title: siteName,
+      locale: 'en_IN',
+      title: 'Forensic Science Education, Training & Services | AFRS',
       description,
       url: '/',
+      images: [{ url: '/assets/logo.png', alt: siteName }],
     },
-    twitter: { card: 'summary_large_image', title: siteName, description },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Forensic Science Education, Training & Services | AFRS',
+      description,
+      images: ['/assets/logo.png'],
+    },
     robots: {
       index: true,
       follow: true,
@@ -63,9 +85,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     payload.findGlobal({ slug: 'siteSettings', depth: 0 }) as Promise<SiteSetting>,
   ])
 
+  const socials = siteSettings?.socialLinks || {}
+  const sameAs = [
+    socials.facebook,
+    socials.instagram,
+    socials.linkedin,
+    socials.youtube,
+    socials.twitter,
+  ].filter((url): url is string => typeof url === 'string' && url.startsWith('http'))
+
   return (
-    <html lang="en" className={`${inter.variable} ${dmSans.variable}`}>
+    <html lang="en-IN" className={`${inter.variable} ${dmSans.variable}`}>
       <body className="font-sans antialiased">
+        <JsonLd data={withContext([organizationGraph(sameAs), websiteGraph()])} />
         <Navbar settings={headerSettings} />
         <AppProviders>
           <main className="relative min-h-[50vh]">{children}</main>

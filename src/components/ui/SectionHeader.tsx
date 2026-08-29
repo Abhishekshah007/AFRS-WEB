@@ -11,6 +11,9 @@ export type SectionHeaderProps = {
   titleClassName?: string
   subtitleClassName?: string
   accent?: boolean
+  id?: string
+  /** Stretch the header to the parent width instead of a narrow reading column. */
+  fullWidth?: boolean
 }
 
 /**
@@ -27,17 +30,19 @@ export function SectionHeader({
   titleClassName = '',
   subtitleClassName = '',
   accent = true,
+  id,
+  fullWidth = false,
 }: Readonly<SectionHeaderProps>) {
   const alignClass = align === 'center' ? 'text-center mx-auto' : 'text-left'
-  const justifyClass = align === 'left' ? 'text-justify' : ''
-  const maxW = align === 'center' ? 'max-w-3xl' : 'max-w-2xl'
+  const justifyClass = align === 'left' && !fullWidth ? 'text-justify' : ''
+  const maxW = fullWidth ? 'w-full max-w-none' : align === 'center' ? 'max-w-3xl' : 'max-w-2xl'
 
   const textColor = light ? 'text-white' : 'text-slate-900'
   const subtitleColor = light ? 'text-white/80' : 'text-slate-500'
-  const eyebrowColor = light ? 'text-white/70' : 'text-indigo-600'
+  const eyebrowColor = light ? 'text-white/70' : 'text-brand-600'
 
   return (
-    <header className={`${alignClass} ${maxW} mb-12 lg:mb-16 ${className}`}>
+    <header id={id} className={`${alignClass} ${maxW} mb-12 lg:mb-16 ${className}`}>
       {eyebrow && (
         <span className={`block mb-3 ${DESIGN_SYSTEM.typography.label} ${eyebrowColor}`}>
           {eyebrow}
@@ -45,7 +50,7 @@ export function SectionHeader({
       )}
 
       {align === 'center' && accent && (
-        <span className="mx-auto mb-6 block h-1.5 w-12 rounded-full bg-indigo-600" aria-hidden />
+        <span className="mx-auto mb-6 block h-1.5 w-12 rounded-full bg-brand-600" aria-hidden />
       )}
 
       <h2 className={`${DESIGN_SYSTEM.typography.h2} ${textColor} ${titleClassName}`}>{title}</h2>

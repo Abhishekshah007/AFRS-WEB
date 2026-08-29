@@ -62,7 +62,7 @@ export function LeadershipSection({
                 >
                   <div className="flex h-full w-full flex-col items-center text-center">
                     <div className="relative">
-                      <div className="flex h-[120px] w-[120px] items-center justify-center rounded-full bg-gradient-to-br from-indigo-50 to-blue-50 p-1.5 shadow-[0_10px_24px_rgba(79,70,229,0.12)] ring-1 ring-indigo-100">
+                      <div className="flex h-[120px] w-[120px] items-center justify-center rounded-full bg-gradient-to-br from-brand-50 to-brand-100 p-1.5 shadow-[0_10px_24px_rgba(59,1,11,0.12)] ring-1 ring-brand-100">
                         {leader.photoUrl ? (
                           <Image
                             src={leader.photoUrl}
@@ -74,7 +74,7 @@ export function LeadershipSection({
                         ) : (
                           <UserRound
                             aria-hidden
-                            className="h-11 w-11 text-indigo-300"
+                            className="h-11 w-11 text-brand-300"
                             strokeWidth={1.8}
                           />
                         )}
@@ -147,9 +147,9 @@ function LeaderCard({ leader }: { leader: LeaderProfile }) {
 
   return (
     <article className="group h-full overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-[0_2px_16px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(15,23,42,0.10)]">
-      <div className="grid h-full md:grid-cols-[160px_1fr]">
+      <div className="grid h-full grid-cols-[96px_1fr] sm:grid-cols-[140px_1fr] md:grid-cols-[160px_1fr]">
         {/* ── Photo panel ── */}
-        <div className="relative min-h-[260px] overflow-hidden bg-slate-900">
+        <div className="relative min-h-[200px] overflow-hidden bg-slate-900 sm:min-h-[240px] md:min-h-[260px]">
           {/* Brand accent bar */}
           <div className="absolute inset-y-0 left-0 z-10 w-[3px] bg-[var(--about-primary)]" />
 
@@ -173,7 +173,7 @@ function LeaderCard({ leader }: { leader: LeaderProfile }) {
         </div>
 
         {/* ── Content panel ── */}
-        <div className="flex min-h-[280px] flex-col p-6">
+        <div className="flex min-h-[200px] flex-col p-4 sm:min-h-[260px] sm:p-6 md:min-h-[280px]">
           {/* Header row */}
           <div className="flex items-start justify-between gap-4">
             <div>

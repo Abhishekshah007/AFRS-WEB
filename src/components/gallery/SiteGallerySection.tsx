@@ -55,7 +55,7 @@ export function SiteGallerySection({
           <div className="mt-10 text-center">
             <Link
               href="/gallery"
-              className="inline-flex h-12 items-center justify-center rounded-xl border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-10 text-sm font-bold transition"
+              className="inline-flex h-12 items-center justify-center rounded-xl border-2 border-brand-600 text-brand-600 hover:bg-brand-50 px-10 text-sm font-bold transition"
             >
               View More Gallery
             </Link>

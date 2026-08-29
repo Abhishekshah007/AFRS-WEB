@@ -1,11 +1,14 @@
 import { CategoryIndexView } from '@/components/programmes/CategoryIndexView'
 import { getEducationCategories } from '@/components/programmes/catalog'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: 'AFRS Education Programmes',
-  description: 'Browse online training, professional courses, certificates, and workshop series at AFRS.',
-}
+  description:
+    'Browse AFRS one-month online training, internships, professional certificates, capsule modules, police training and research programmes.',
+  path: '/courses/education',
+})
 
 export default async function EducationIndexPage() {
   const categories = await getEducationCategories()

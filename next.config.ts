@@ -55,6 +55,22 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(dirname),
   },
+  async redirects() {
+    return [
+      { source: '/about-afrs', destination: '/about', permanent: true },
+      { source: '/forensic-services', destination: '/services', permanent: true },
+      { source: '/forensic-services/:path*', destination: '/services/:path*', permanent: true },
+      { source: '/student-corner', destination: '/student-hub', permanent: true },
+      { source: '/student-corner/ugc-net-forensic-science', destination: '/student-hub/ugc-net', permanent: true },
+      { source: '/student-corner/:path*', destination: '/student-hub/:path*', permanent: true },
+      { source: '/programmes', destination: '/courses', permanent: true },
+      { source: '/programmes/forensic-science-courses', destination: '/courses/education', permanent: true },
+      { source: '/programmes/forensic-science-internship', destination: '/courses/training', permanent: true },
+      { source: '/programmes/research-projects', destination: '/courses/training/research-articles', permanent: true },
+      { source: '/programmes/:path*', destination: '/courses/:path*', permanent: true },
+      { source: '/internship', destination: '/courses/training', permanent: true },
+    ]
+  },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })

@@ -5,15 +5,15 @@ export type ServiceDetailData = {
   contentPlain: string
   bannerUrl: string
   category?: string | null
+  helpHeading?: string | null
+  helpIntro?: string | null
 }
 
 export type HelpCardItem = {
   id: string
-  icon: string
   title: string
   description: string
   bullets?: string[]
-  wide?: boolean
   imageUrl?: string
 }
 

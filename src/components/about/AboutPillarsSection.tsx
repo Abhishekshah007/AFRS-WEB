@@ -107,7 +107,7 @@ export function AboutPillarsSection({
               eyebrow={qualityEthicsEyebrow}
               items={qualityEthicsItems}
               icon={<ShieldCheck className="h-6 w-6" strokeWidth={2.2} />}
-              gradient="bg-gradient-to-r from-indigo-500 to-violet-500"
+              gradient="bg-gradient-to-r from-brand-600 to-brand-500"
             />
           )}
           {researchItems.length > 0 && (
@@ -116,7 +116,7 @@ export function AboutPillarsSection({
               eyebrow={researchEyebrow}
               items={researchItems}
               icon={<FlaskConical className="h-6 w-6" strokeWidth={2.2} />}
-              gradient="bg-gradient-to-r from-blue-500 to-cyan-500"
+              gradient="bg-gradient-to-r from-brand-500 to-brand-200"
             />
           )}
           {partnershipItems.length > 0 && (
@@ -138,7 +138,7 @@ export function AboutPillarsSection({
               return (
                 <div
                   key={label}
-                  className="flex items-center gap-3 rounded-2xl border border-indigo-100 bg-white/80 px-4 py-3 shadow-sm"
+                  className="flex items-center gap-3 rounded-2xl border border-brand-100 bg-white/80 px-4 py-3 shadow-sm"
                 >
                   <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-(--about-primary-soft) text-(--about-primary)">
                     <Icon className="h-4 w-4" strokeWidth={2.2} />

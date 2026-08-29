@@ -11,8 +11,6 @@ import {
   defaultTrainingCards,
 } from '@/data/defaults/services'
 
-const textItemField = { name: 'text', type: 'text' as const, required: true }
-
 export const ServicesPage: GlobalConfig = {
   slug: 'servicesPage',
   access: editorManagedGlobalAccess,
@@ -112,11 +110,21 @@ export const ServicesPage: GlobalConfig = {
         { name: 'catalogTitle', type: 'text', defaultValue: defaultServicesPageContent.catalogTitle },
         { name: 'legalTitle', type: 'text', defaultValue: defaultServicesPageContent.legalTitle },
         {
+          name: 'legalSubtitle',
+          type: 'text',
+          defaultValue: defaultServicesPageContent.legalSubtitle,
+        },
+        {
           name: 'legalDescription',
           type: 'textarea',
           defaultValue: defaultServicesPageContent.legalDescription,
         },
         { name: 'legalCtaLabel', type: 'text', defaultValue: defaultServicesPageContent.legalCtaLabel },
+        {
+          name: 'legalCtaSubtext',
+          type: 'text',
+          defaultValue: defaultServicesPageContent.legalCtaSubtext,
+        },
         { name: 'kitsEyebrow', type: 'text', defaultValue: defaultServicesPageContent.kitsEyebrow },
         { name: 'kitsTitle', type: 'text', defaultValue: defaultServicesPageContent.kitsTitle },
         {
@@ -189,8 +197,11 @@ export const ServicesPage: GlobalConfig = {
         {
           name: 'legalLinks',
           type: 'array',
-          defaultValue: defaultLegalLinks.map((text) => ({ text })),
-          fields: [textItemField],
+          defaultValue: defaultLegalLinks,
+          fields: [
+            { name: 'title', type: 'text', required: true },
+            { name: 'desc', type: 'textarea', required: true },
+          ],
         },
         {
           name: 'researchItems',

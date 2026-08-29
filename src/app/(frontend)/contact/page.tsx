@@ -2,7 +2,16 @@ import { PageHero } from '@/components/marketing/PageHero'
 import { ContactForm } from '@/components/contact/ContactForm'
 import { getPayloadClient } from '@/lib/payload'
 import type { SiteSetting } from '@/payload-types'
+import { buildPageMetadata } from '@/lib/seo/metadata'
+import type { Metadata } from 'next'
 import Link from 'next/link'
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Contact AFRS & AFSL',
+  description:
+    'Contact AFRS and AFSL in Indore for forensic science education, training, internships, research and laboratory service enquiries.',
+  path: '/contact',
+})
 
 export default async function ContactPage() {
   const payload = await getPayloadClient()
@@ -24,7 +33,7 @@ export default async function ContactPage() {
     <div>
       <PageHero
         eyebrow="CONTACT FORM"
-        title="Reach Us"
+        title="Contact AFRS & AFSL"
         subtitle="We are here to assist you with forensic science inquiries, collaborations, and educational needs."
       />
 
@@ -40,7 +49,7 @@ export default async function ContactPage() {
 
             <div className="mt-8 space-y-5 text-sm">
               <div className="flex gap-3">
-                <div className="h-10 w-10 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center">
+                <div className="h-10 w-10 rounded-xl bg-brand-50 text-brand-600 border border-brand-100 flex items-center justify-center">
                   📍
                 </div>
                 <div>
@@ -49,7 +58,7 @@ export default async function ContactPage() {
                 </div>
               </div>
               <div className="flex gap-3">
-                <div className="h-10 w-10 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center">
+                <div className="h-10 w-10 rounded-xl bg-brand-50 text-brand-600 border border-brand-100 flex items-center justify-center">
                   ☎
                 </div>
                 <div>
@@ -58,7 +67,7 @@ export default async function ContactPage() {
                 </div>
               </div>
               <div className="flex gap-3">
-                <div className="h-10 w-10 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center">
+                <div className="h-10 w-10 rounded-xl bg-brand-50 text-brand-600 border border-brand-100 flex items-center justify-center">
                   ✉
                 </div>
                 <div>
@@ -83,7 +92,7 @@ export default async function ContactPage() {
                       href={item.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="h-12 rounded-2xl border border-slate-100 bg-slate-50 flex items-center justify-center text-sm font-bold text-slate-700 hover:text-indigo-600 transition card-pop"
+                      className="h-12 rounded-2xl border border-slate-100 bg-slate-50 flex items-center justify-center text-sm font-bold text-slate-700 hover:text-brand-600 transition card-pop"
                     >
                       {item.label}
                     </Link>

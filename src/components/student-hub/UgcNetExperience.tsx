@@ -123,19 +123,19 @@ export function UgcNetExperience({ achievers, featured, events: _events, content
   return (
     <>
       {/* ── HERO ── */}
-      <section className="bg-[#5B7BF0] text-white relative overflow-hidden">
+      <section className="bg-brand text-white relative overflow-hidden">
         <motion.div
           animate={{ x: [-20, 20], y: [0, -25] }}
           transition={floatTransition}
-          className="absolute -top-20 -left-20 h-56 w-56 rounded-full bg-cyan-300/20 blur-3xl"
+          className="absolute -top-20 -left-20 h-56 w-56 rounded-full bg-brand-200/20 blur-3xl"
         />
         <motion.div
           animate={{ x: [20, -20], y: [0, 20] }}
           transition={{ ...floatTransition, duration: 6.5 }}
-          className="absolute top-16 right-0 h-72 w-72 rounded-full bg-indigo-900/30 blur-3xl"
+          className="absolute top-16 right-0 h-72 w-72 rounded-full bg-brand-900/30 blur-3xl"
         />
 
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 py-14 lg:py-20 grid lg:grid-cols-[1.2fr_0.9fr] gap-10 items-center relative z-10">
+        <div className="relative z-10 mx-auto grid max-w-[1280px] items-center gap-8 px-4 py-12 sm:px-6 md:grid-cols-[1.2fr_0.9fr] md:py-16 lg:px-16 lg:py-20">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -146,9 +146,9 @@ export function UgcNetExperience({ achievers, featured, events: _events, content
               {page.heroEyebrow}
             </p>
 
-            <h1 className="mt-5 text-[40px] sm:text-[52px] leading-[1.05] font-extrabold tracking-tight">
+            <h1 className="mt-5 text-[28px] leading-[1.1] font-extrabold tracking-tight sm:text-[40px] lg:text-[52px] lg:leading-[1.05]">
               {page.heroTitlePrefix}{' '}
-              <span className="text-cyan-300"> {page.heroTitleHighlight}</span>
+              <span className="text-brand-200"> {page.heroTitleHighlight}</span>
             </h1>
             <p className="mt-5 text-white/85 max-w-xl leading-relaxed text-[15px]">
               {page.heroDescription}
@@ -156,7 +156,7 @@ export function UgcNetExperience({ achievers, featured, events: _events, content
             <div className="mt-8 flex gap-3 flex-wrap">
               <Link
                 href="#events"
-                className="h-11 px-6 rounded-xl bg-white text-indigo-700 text-sm font-bold inline-flex items-center shadow-lg shadow-indigo-900/20 hover:bg-white/90 transition"
+                className="h-11 px-6 rounded-xl bg-white text-brand-700 text-sm font-bold inline-flex items-center shadow-lg shadow-brand-900/20 hover:bg-white/90 transition"
               >
                 {page.heroCtaLabel} →
               </Link>
@@ -170,7 +170,7 @@ export function UgcNetExperience({ achievers, featured, events: _events, content
             style={{ transformStyle: 'preserve-3d' }}
             className="rounded-2xl bg-[#13306E] border border-white/20 p-4 sm:p-5 shadow-2xl"
           >
-            <div className="rounded-xl h-[300px] bg-[#0a1628] border border-white/10 relative overflow-hidden">
+            <div className="relative h-[220px] overflow-hidden rounded-xl border border-white/10 bg-[#0a1628] sm:h-[300px]">
               {/* Dark overlay pattern simulating lab microscope image */}
               <div
                 className="absolute inset-0 opacity-60"
@@ -208,7 +208,7 @@ export function UgcNetExperience({ achievers, featured, events: _events, content
         <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-bold">
           {page.achieversEyebrow}
         </p>
-        <h2 className="mt-2 text-[36px] font-extrabold text-slate-900 tracking-tight">
+        <h2 className="mt-2 text-[26px] font-extrabold tracking-tight text-slate-900 sm:text-[36px]">
           {page.achieversTitle}
         </h2>
         <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -266,7 +266,7 @@ export function UgcNetExperience({ achievers, featured, events: _events, content
           <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-bold">
             {page.ecosystemEyebrow}
           </p>
-          <h2 className="mt-2 text-[34px] font-extrabold text-slate-900 tracking-tight">
+          <h2 className="mt-2 text-[26px] font-extrabold tracking-tight text-slate-900 sm:text-[34px]">
             {page.ecosystemTitle}
           </h2>
         </div>
@@ -276,7 +276,7 @@ export function UgcNetExperience({ achievers, featured, events: _events, content
           <motion.div
             whileHover={{ y: -4 }}
             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-            className="rounded-2xl bg-[#0f1c38] text-white p-8 shadow-xl"
+            className="rounded-2xl bg-[#0f1c38] p-6 text-white shadow-xl sm:p-8"
           >
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 mb-6">
               <Monitor className="h-5 w-5 text-blue-300" />
@@ -303,7 +303,7 @@ export function UgcNetExperience({ achievers, featured, events: _events, content
           <motion.div
             whileHover={{ y: -4 }}
             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-            className="rounded-2xl bg-[#0f1c38] text-white p-8 shadow-xl"
+            className="rounded-2xl bg-[#0f1c38] p-6 text-white shadow-xl sm:p-8"
           >
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 mb-6">
               <Building2 className="h-5 w-5 text-blue-300" />
@@ -335,7 +335,7 @@ export function UgcNetExperience({ achievers, featured, events: _events, content
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-2xl text-white p-7 sm:p-10 shadow-xl"
+          className="rounded-2xl p-6 text-white shadow-xl sm:p-10"
           style={{
             background: 'linear-gradient(135deg, #2e3a52 0%, #3a4560 50%, #2c3a58 100%)',
           }}

@@ -35,8 +35,8 @@ function ValuePanel({
   const HeaderIcon = headerIcon
   const panelGradient =
     accent === 'indigo'
-      ? 'from-indigo-500/10 via-white to-violet-50/40'
-      : 'from-blue-500/10 via-white to-cyan-50/40'
+      ? 'from-brand-500/10 via-white to-brand-100/40'
+      : 'from-brand-700/10 via-white to-brand-200/30'
 
   return (
     <article
@@ -48,7 +48,7 @@ function ValuePanel({
         </div>
         <div>
           <h2 className={`${aboutTokens.heading} text-xl sm:text-2xl`}>{title}</h2>
-          <p className={`mt-2 text-sm ${aboutTokens.body}`}>{subtitle}</p>
+          <p className={`mt-2 text-sm text-left md:text-justify ${aboutTokens.body}`}>{subtitle}</p>
         </div>
       </div>
 
@@ -66,7 +66,7 @@ function ValuePanel({
               >
                 <Icon className="h-5 w-5" strokeWidth={2.2} />
               </span>
-              <span className="text-sm leading-relaxed text-slate-700">{item.text}</span>
+              <span className="text-sm leading-relaxed text-left text-slate-700 md:text-justify">{item.text}</span>
             </li>
           )
         })}

@@ -44,7 +44,7 @@ export function AboutSection({ sectionText }: { sectionText: SectionText }) {
                 />
               </div>
             </div>
-            <div className="absolute -right-2 -bottom-2 sm:-right-4 sm:-bottom-4 rounded-2xl bg-indigo-600 text-white px-5 py-4 shadow-xl">
+            <div className="absolute -right-2 -bottom-2 sm:-right-4 sm:-bottom-4 rounded-2xl bg-brand-600 text-white px-5 py-4 shadow-xl">
               <p className="text-3xl font-extrabold leading-none">10+</p>
               <p className={`mt-1 ${TYPOGRAPHY.label} text-white/90`}>Years of Experience</p>
             </div>

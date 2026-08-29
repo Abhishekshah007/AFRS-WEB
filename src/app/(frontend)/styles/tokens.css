@@ -1,66 +1,103 @@
+/**
+ * AFRS brand palette (client strip)
+ * Deep Wine is primary; remaining shades complement it.
+ * Change values here — page tokens inherit these variables.
+ */
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-headings: var(--font-dm-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-  --color-about-primary: #4f46e5;
-  --color-about-primary-hover: #4338ca;
-  --color-about-primary-soft: #eef2ff;
-  --color-about-surface-alt: #f9fafb;
-  --color-about-text: #0f172a;
-  --color-about-text-muted: #64748b;
-  --color-about-footer: #0f172a;
-  --color-about-stat-blue: #3b82f6;
-  --color-about-stat-purple: #8b5cf6;
-  --color-about-stat-orange: #f97316;
-  --color-about-stat-green: #22c55e;
-  --color-about-stat-red: #ef4444;
+  --color-brand: #3b010b;
+  --color-brand-50: #fbf6ec;
+  --color-brand-100: #f2e5c6;
+  --color-brand-200: #f2d9a0;
+  --color-brand-300: #e4c57a;
+  --color-brand-400: #c4a56a;
+  --color-brand-500: #75162d;
+  --color-brand-600: #3b010b;
+  --color-brand-700: #560b18;
+  --color-brand-800: #3b010b;
+  --color-brand-900: #2a0108;
+  --color-brand-maroon: #560b18;
+  --color-brand-burgundy: #75162d;
+  --color-brand-gold: #f2d9a0;
+  --color-brand-beige: #f2e5c6;
+  --color-brand-soft: #fbf6ec;
+  --color-brand-ink: #1a0c0f;
+
+  --color-about-primary: var(--color-brand);
+  --color-about-primary-hover: var(--color-brand-maroon);
+  --color-about-primary-soft: var(--color-brand-beige);
+  --color-about-surface-alt: var(--color-brand-soft);
+  --color-about-text: var(--color-brand-ink);
+  --color-about-text-muted: #6b5348;
+  --color-about-footer: var(--color-brand);
+  --color-about-stat-blue: var(--color-brand-burgundy);
+  --color-about-stat-purple: var(--color-brand-maroon);
+  --color-about-stat-orange: var(--color-brand);
+  --color-about-stat-green: #3d6b4f;
+  --color-about-stat-red: var(--color-brand-burgundy);
 }
 
-/*
-  Page tokens live on :root so var(--*) works even if a wrapper class is missing,
-  then page classes re-declare the same names for scoped overrides.
-*/
 :root {
-  --about-primary: var(--color-about-primary);
-  --about-primary-hover: var(--color-about-primary-hover);
-  --about-primary-soft: var(--color-about-primary-soft);
-  --about-surface-alt: var(--color-about-surface-alt);
-  --about-text: var(--color-about-text);
-  --about-text-muted: var(--color-about-text-muted);
-  --about-footer: var(--color-about-footer);
-  --about-stat-blue: var(--color-about-stat-blue);
-  --about-stat-purple: var(--color-about-stat-purple);
-  --about-stat-orange: var(--color-about-stat-orange);
-  --about-stat-green: var(--color-about-stat-green);
-  --about-stat-red: var(--color-about-stat-red);
+  --brand-deep-wine: #3b010b;
+  --brand-dark-maroon: #560b18;
+  --brand-burgundy: #75162d;
+  --brand-sand-gold: #f2d9a0;
+  --brand-champagne: #f2e5c6;
 
-  --svc-primary: #5d5fef;
-  --svc-primary-hover: #4f46e5;
-  --svc-primary-soft: #eef0ff;
-  --svc-accent: #f28c28;
-  --svc-accent-hover: #e67e22;
-  --svc-surface: #f8f9ff;
-  --svc-text: #0a0b1e;
-  --svc-text-muted: #4b5563;
+  --brand-primary: var(--brand-deep-wine);
+  --brand-primary-hover: var(--brand-dark-maroon);
+  --brand-accent: var(--brand-burgundy);
+  --brand-highlight: var(--brand-sand-gold);
+  --brand-soft: var(--brand-champagne);
+  --brand-surface: #fbf6ec;
+  --brand-ink: #1a0c0f;
+  --brand-muted: #6b5348;
+  --brand-hero: linear-gradient(135deg, #3b010b 0%, #560b18 42%, #75162d 78%, #3b010b 100%);
+  --brand-hero-soft: linear-gradient(180deg, #fbf6ec 0%, #f2e5c6 55%, #f7f0de 100%);
+  --brand-gold-line: linear-gradient(90deg, transparent, #f2d9a0, transparent);
 
-  --hub-primary: #4f46e5;
-  --hub-primary-hover: #4338ca;
-  --hub-primary-soft: #eef2ff;
-  --hub-text: #0f172a;
-  --hub-text-muted: #64748b;
-  --hub-navy: #0f172a;
-  --hub-surface: #f5f7fb;
+  --about-primary: var(--brand-primary);
+  --about-primary-hover: var(--brand-primary-hover);
+  --about-primary-soft: var(--brand-soft);
+  --about-surface-alt: var(--brand-surface);
+  --about-text: var(--brand-ink);
+  --about-text-muted: var(--brand-muted);
+  --about-footer: var(--brand-primary);
+  --about-stat-blue: var(--brand-burgundy);
+  --about-stat-purple: var(--brand-dark-maroon);
+  --about-stat-orange: var(--brand-deep-wine);
+  --about-stat-green: #3d6b4f;
+  --about-stat-red: var(--brand-burgundy);
 
-  --articles-primary: #5d78ff;
-  --articles-primary-hover: #4f63e8;
-  --articles-accent: #ff9800;
-  --articles-accent-hover: #f57c00;
-  --articles-canvas: #f5f6fa;
+  --svc-primary: var(--brand-primary);
+  --svc-primary-hover: var(--brand-primary-hover);
+  --svc-primary-soft: var(--brand-soft);
+  --svc-accent: var(--brand-burgundy);
+  --svc-accent-hover: var(--brand-primary-hover);
+  --svc-surface: var(--brand-surface);
+  --svc-text: var(--brand-ink);
+  --svc-text-muted: var(--brand-muted);
 
-  --prog-primary: #5d87ff;
-  --prog-primary-hover: #4a75f0;
-  --prog-primary-soft: #eef3ff;
-  --prog-surface: #f5f7fb;
-  --prog-text: #0f172a;
-  --prog-text-muted: #64748b;
+  --hub-primary: var(--brand-primary);
+  --hub-primary-hover: var(--brand-primary-hover);
+  --hub-primary-soft: var(--brand-soft);
+  --hub-text: var(--brand-ink);
+  --hub-text-muted: var(--brand-muted);
+  --hub-navy: var(--brand-deep-wine);
+  --hub-surface: var(--brand-surface);
+
+  --articles-primary: var(--brand-burgundy);
+  --articles-primary-hover: var(--brand-primary);
+  --articles-accent: var(--brand-sand-gold);
+  --articles-accent-hover: #e4c57a;
+  --articles-canvas: var(--brand-surface);
+
+  --prog-primary: var(--brand-primary);
+  --prog-primary-hover: var(--brand-primary-hover);
+  --prog-primary-soft: var(--brand-soft);
+  --prog-surface: var(--brand-surface);
+  --prog-text: var(--brand-ink);
+  --prog-text-muted: var(--brand-muted);
 }

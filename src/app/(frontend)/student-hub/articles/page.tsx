@@ -3,14 +3,16 @@ import { defaultArticles, defaultFeatured } from '@/components/student-hub/artic
 import { mapArticle, mapFeaturedArticle } from '@/components/student-hub/articles/mapArticle'
 import { getPayloadClient } from '@/lib/payload'
 import type { Article } from '@/payload-types'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 import type { Where } from 'payload'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: 'Forensic Insights & Articles',
   description:
-    'Curated forensic science articles, research summaries, and expert insights for AFRS students and professionals.',
-}
+    'Articles and expert insights on forensic science disciplines, methods and professional practice for students and practitioners.',
+  path: '/student-hub/articles',
+})
 
 const PAGE_SIZE = 8
 

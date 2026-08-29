@@ -4,7 +4,7 @@ import Link from 'next/link'
 export function AfslOffers() {
   return (
     <div>
-      <div className="rounded-3xl bg-[#C8D6FC] px-6 py-10 sm:px-10 sm:py-12 lg:px-14 shadow-xl">
+      <div className="rounded-3xl bg-brand-100 px-6 py-10 sm:px-10 sm:py-12 lg:px-14 shadow-xl">
         {/* Two-column layout */}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -24,14 +24,14 @@ export function AfslOffers() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/courses"
-                className="inline-flex h-11 items-center justify-center rounded-xl bg-violet-600 hover:bg-violet-700 px-6 text-sm font-bold text-white transition"
+                className="inline-flex h-11 items-center justify-center rounded-xl bg-brand-600 hover:bg-brand-700 px-6 text-sm font-bold text-white transition"
               >
                 Explore Training Programs
               </Link>
 
               <Link
                 href="/internship"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-orange-400 hover:bg-orange-500 px-6 text-sm font-bold text-white transition"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-brand-700 hover:bg-brand px-6 text-sm font-bold text-white transition"
               >
                 <svg
                   className="w-4 h-4"

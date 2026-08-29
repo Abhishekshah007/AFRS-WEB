@@ -4,19 +4,21 @@ import type { Event as AfrsEvent, Notice } from '@/payload-types'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import { PageHero } from '@/components/marketing/PageHero'
 import Link from 'next/link'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: 'Notice Board',
-  description: 'Official notices, announcements, and updates from AFRS Institute.',
-}
+  description: 'Official AFRS notices, admissions updates and programme announcements.',
+  path: '/notices',
+})
 
 const tagColors: Record<string, string> = {
-  Admission: 'bg-indigo-100 text-indigo-700',
-  Service: 'bg-emerald-100 text-emerald-700',
-  Results: 'bg-orange-100 text-orange-700',
-  Partnership: 'bg-violet-100 text-violet-700',
-  Event: 'bg-blue-100 text-blue-700',
+  Admission: 'bg-brand-100 text-brand-700',
+  Service: 'bg-brand-50 text-brand-600',
+  Results: 'bg-brand-200/50 text-brand-700',
+  Partnership: 'bg-brand-100 text-brand-500',
+  Event: 'bg-brand-50 text-brand-700',
   General: 'bg-slate-100 text-slate-600',
 }
 
@@ -79,13 +81,13 @@ export default async function NoticesPage() {
                     key={notice.id}
                     className="flex gap-4 rounded-2xl border border-slate-100 bg-white p-5 shadow-sm card-pop"
                   >
-                    <div className="mt-0.5 h-7 w-7 shrink-0 rounded-lg bg-indigo-600 text-white text-xs font-extrabold flex items-center justify-center">
+                    <div className="mt-0.5 h-7 w-7 shrink-0 rounded-lg bg-brand-600 text-white text-xs font-extrabold flex items-center justify-center">
                       {i + 1}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-start justify-between gap-3">
                         {notice.href ? (
-                          <Link href={notice.href} className="text-sm font-bold text-slate-800 leading-snug hover:text-indigo-600">
+                          <Link href={notice.href} className="text-sm font-bold text-slate-800 leading-snug hover:text-brand-600">
                             {notice.title}
                           </Link>
                         ) : (
@@ -114,7 +116,7 @@ export default async function NoticesPage() {
           <ul className="mt-4 space-y-3">
             {events.map((event) => (
               <li key={event.id} className="text-sm">
-                <Link href={`/events/${event.slug}`} className="font-semibold text-slate-800 hover:text-indigo-600">
+                <Link href={`/events/${event.slug}`} className="font-semibold text-slate-800 hover:text-brand-600">
                   {event.title}
                 </Link>
                 <p className="text-xs text-slate-400 mt-0.5">{formatEventDate(event.startDate)}</p>

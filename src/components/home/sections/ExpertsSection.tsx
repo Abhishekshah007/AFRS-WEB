@@ -34,7 +34,7 @@ export function ExpertsSection({ scientists }: { scientists: PaginatedDocs<Scien
 
               return (
                 <div key={cardKey} className={`${UI.cardSmall} p-5 card-pop flex gap-4`}>
-                  <div className="h-14 w-14 shrink-0 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-lg font-bold overflow-hidden">
+                  <div className="h-14 w-14 shrink-0 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center text-lg font-bold overflow-hidden">
                     {photoUrl ? (
                       <Image
                         src={photoUrl}
@@ -49,7 +49,7 @@ export function ExpertsSection({ scientists }: { scientists: PaginatedDocs<Scien
                   </div>
                   <div>
                     <h3 className="font-bold text-slate-900">{expert.name}</h3>
-                    <p className="text-xs font-semibold text-indigo-600 mt-0.5">
+                    <p className="text-xs font-semibold text-brand-600 mt-0.5">
                       {expert.designation}
                     </p>
                     {expert.bio && (
@@ -64,7 +64,7 @@ export function ExpertsSection({ scientists }: { scientists: PaginatedDocs<Scien
           </AnimateOnScroll>
         </div>
         <AnimateOnScroll direction="right">
-          <div className="rounded-3xl bg-gradient-to-br from-indigo-600 to-blue-600 p-8 text-white shadow-lg">
+          <div className="rounded-3xl bg-gradient-to-br from-brand-600 to-brand-500 p-8 text-white shadow-lg">
             <h3 className={TYPOGRAPHY.cardTitle}>Case Submission</h3>
             <p className="mt-4 text-sm text-white/85 leading-relaxed">
               Need professional forensic assistance? Our team is ready to help with specialized

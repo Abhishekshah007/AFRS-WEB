@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Landmark, LibraryBig, Rss } from 'lucide-react'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
+import { BRAND_GRADIENTS } from '@/lib/brand'
 import { CONTAINER, SECTION } from './constants'
 
 export function MediaResourcesSection() {
@@ -20,7 +21,7 @@ export function MediaResourcesSection() {
   return (
     <section
       className={`${SECTION} text-white section-glow-top`}
-      style={{ background: 'linear-gradient(117.28deg, #6366F1 0%, #3B82F6 100%)' }}
+      style={{ background: BRAND_GRADIENTS.hero }}
     >
       <div className={CONTAINER}>
         <SectionHeader

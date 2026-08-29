@@ -5,11 +5,29 @@ import { getPayloadClient } from '@/lib/payload'
 import { formatEventDate, formatEventType, resolveMediaUrl, richTextToPlain } from '@/lib/cms'
 import type { Event as AfrsEvent, Media } from '@/payload-types'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
+import { buildPageMetadata } from '@/lib/seo/metadata'
+import { JsonLd } from '@/components/seo/JsonLd'
+import { breadcrumbList, withContext } from '@/lib/seo/schema'
+import { clipMeta } from '@/lib/seo/site'
 import type { Metadata } from 'next'
 
 import { FALLBACK_BANNER_IMAGE } from '@/lib/constants/assets'
 
 type Props = { params: Promise<{ slug: string }> }
+
+export async function generateStaticParams() {
+  const payload = await getPayloadClient()
+  const result = await payload.find({
+    collection: 'events',
+    where: { published: { equals: true } },
+    limit: 200,
+    depth: 0,
+    overrideAccess: false,
+  })
+  return result.docs
+    .filter((doc) => typeof doc.slug === 'string' && doc.slug)
+    .map((doc) => ({ slug: doc.slug as string }))
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
@@ -22,11 +40,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     overrideAccess: false,
   })
   const evt = result.docs[0] as AfrsEvent | undefined
-  if (!evt) return { title: 'Event not found' }
-  return {
+  if (!evt) return { title: 'Event not found', robots: { index: false, follow: false } }
+  return buildPageMetadata({
     title: evt.title,
-    description: evt.excerpt || richTextToPlain(evt.description, 160),
-  }
+    description: clipMeta(evt.excerpt || richTextToPlain(evt.description, 160) || evt.title, 160),
+    path: `/events/${evt.slug}`,
+  })
 }
 
 export default async function EventDetailPage({ params }: Props) {
@@ -49,12 +68,40 @@ export default async function EventDetailPage({ params }: Props) {
 
   return (
     <div className="bg-white min-h-screen">
+      <JsonLd
+        data={withContext([
+          breadcrumbList([
+            { name: 'Home', path: '/' },
+            { name: 'Events', path: '/events' },
+            { name: evt.title, path: `/events/${evt.slug}` },
+          ]),
+          {
+            '@type': 'Event',
+            name: evt.title,
+            description: summary,
+            startDate: evt.startDate || undefined,
+            eventAttendanceMode:
+              evt.mode === 'online'
+                ? 'https://schema.org/OnlineEventAttendanceMode'
+                : evt.mode === 'hybrid'
+                  ? 'https://schema.org/MixedEventAttendanceMode'
+                  : 'https://schema.org/OfflineEventAttendanceMode',
+            eventStatus: 'https://schema.org/EventScheduled',
+            organizer: { '@type': 'Organization', name: 'AFRS' },
+            location: {
+              '@type': 'Place',
+              name: evt.venue || 'AFRS, Indore',
+              address: evt.venue || 'Indore, Madhya Pradesh, India',
+            },
+          },
+        ])}
+      />
       {/* Breadcrumb */}
       <div className="bg-slate-50 border-b border-slate-100">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 py-3 text-xs text-slate-500 flex gap-2 items-center">
-          <Link href="/" className="hover:text-indigo-600">Home</Link>
+          <Link href="/" className="hover:text-brand-600">Home</Link>
           <span>/</span>
-          <Link href="/events" className="hover:text-indigo-600">Events</Link>
+          <Link href="/events" className="hover:text-brand-600">Events</Link>
           <span>/</span>
           <span className="text-slate-700 font-semibold line-clamp-1">{evt.title}</span>
         </div>
@@ -71,7 +118,7 @@ export default async function EventDetailPage({ params }: Props) {
 
             <div className="mt-8">
               {evt.eventType && (
-                <span className="rounded-full bg-indigo-100 text-indigo-700 px-4 py-1.5 text-xs font-bold">
+                <span className="rounded-full bg-brand-100 text-brand-700 px-4 py-1.5 text-xs font-bold">
                   {formatEventType(evt.eventType)}
                 </span>
               )}
@@ -106,7 +153,7 @@ export default async function EventDetailPage({ params }: Props) {
                 {evt.registrationCategories.map((cat) => (
                   <div key={cat.id} className="flex items-center justify-between rounded-xl bg-slate-50 border border-slate-100 px-4 py-3">
                     <span className="text-sm font-semibold text-slate-800">{cat.categoryName}</span>
-                    <span className="text-sm font-extrabold text-indigo-700">
+                    <span className="text-sm font-extrabold text-brand-700">
                       {cat.price ? `₹${cat.price.toLocaleString('en-IN')}` : 'Free'}
                     </span>
                   </div>
@@ -123,7 +170,7 @@ export default async function EventDetailPage({ params }: Props) {
             {evt.registrationOpen !== false ? (
               <Link
                 href={`/events/${evt.slug}/register`}
-                className="block w-full text-center h-12 leading-[48px] rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold transition"
+                className="block w-full text-center h-12 leading-[48px] rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold transition"
               >
                 Register Now →
               </Link>
@@ -139,7 +186,7 @@ export default async function EventDetailPage({ params }: Props) {
             <p className="text-xs text-slate-500 leading-relaxed mb-4">
               For queries about registration, fees, or certificates, contact our support team.
             </p>
-            <Link href={`/events/${evt.slug}/register`} className="text-sm font-bold text-indigo-600 hover:text-indigo-700">
+            <Link href={`/events/${evt.slug}/register`} className="text-sm font-bold text-brand-600 hover:text-brand-700">
               Contact Support →
             </Link>
           </div>

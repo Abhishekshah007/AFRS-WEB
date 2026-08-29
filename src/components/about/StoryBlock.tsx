@@ -30,8 +30,8 @@ export function StoryBlock({
 }: StoryBlockProps) {
   const badgeClass =
     badgeVariant === 'blue'
-      ? 'bg-blue-100 text-[var(--about-primary)]'
-      : 'bg-violet-100 text-violet-700'
+      ? 'bg-brand-50 text-[var(--about-primary)]'
+      : 'bg-brand-100 text-brand-700'
 
   const textCol = (
     <div className="flex flex-col justify-center">
@@ -43,7 +43,7 @@ export function StoryBlock({
       <h2 className={`mt-4 ${aboutTokens.heading} text-2xl sm:text-[28px] leading-tight`}>
         {title}
       </h2>
-      <p className={`mt-4 text-justify text-sm sm:text-base ${aboutTokens.body} text-justify`}>
+      <p className={`mt-4 text-sm sm:text-base text-left md:text-justify ${aboutTokens.body}`}>
         {body}
       </p>
       <div
@@ -55,7 +55,7 @@ export function StoryBlock({
         >
           {highlight.icon}
         </span>
-        <p className="text-sm font-medium text-slate-700 leading-snug pt-1 text-justify">
+        <p className="pt-1 text-sm font-medium leading-snug text-left text-slate-700 md:text-justify">
           {highlight.text}
         </p>
       </div>
@@ -79,7 +79,7 @@ export function StoryBlock({
   return (
     <article
       id={id}
-      className={`grid gap-8 md:gap-12 lg:gap-16 items-center md:grid-cols-2 ${aboutTokens.sectionY}`}
+      className={`grid items-center gap-6 sm:gap-8 md:grid-cols-2 md:gap-12 lg:gap-16 ${aboutTokens.sectionY}`}
     >
       {imageRight ? (
         <>

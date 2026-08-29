@@ -16,7 +16,7 @@ export function StudentHubHero() {
 
           {/* Headline */}
           <HeroStaggerItem>
-            <h1 className="mt-6 text-[42px] sm:text-[56px] lg:text-[64px] font-extrabold leading-[1.08] tracking-[-0.025em]">
+            <h1 className="mt-6 text-[32px] leading-[1.1] font-extrabold tracking-[-0.025em] sm:text-[56px] lg:text-[64px] sm:leading-[1.08]">
               <span className="text-[var(--hub-text)]">Student </span>
               <span className="text-[var(--hub-primary)]">Resource Hub</span>
             </h1>
