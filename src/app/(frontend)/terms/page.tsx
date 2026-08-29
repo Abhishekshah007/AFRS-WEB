@@ -1,10 +1,12 @@
 import { PageHero } from '@/components/marketing/PageHero'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: 'Terms of Service',
-  description: 'Terms and conditions governing the use of AFRS website and services.',
-}
+  description: 'Terms governing use of the AFRS website, programmes and related services.',
+  path: '/terms',
+})
 
 const sections = [
   {

@@ -35,8 +35,8 @@ function ValuePanel({
   const HeaderIcon = headerIcon
   const panelGradient =
     accent === 'indigo'
-      ? 'from-indigo-500/10 via-white to-violet-50/40'
-      : 'from-blue-500/10 via-white to-cyan-50/40'
+      ? 'from-brand-500/10 via-white to-brand-100/40'
+      : 'from-brand-700/10 via-white to-brand-200/30'
 
   return (
     <article

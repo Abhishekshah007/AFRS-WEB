@@ -4,12 +4,15 @@ import { resolveMediaUrl } from '@/lib/cms'
 import type { GalleryItem, Media } from '@/payload-types'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import { PageHero } from '@/components/marketing/PageHero'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Virtual Museum',
-  description: 'Explore AFRS forensic science facilities, training activities, and research events through our virtual gallery.',
-}
+export const metadata: Metadata = buildPageMetadata({
+  title: 'AFRS Gallery',
+  description:
+    'Photographs from AFRS laboratories, forensic training sessions, workshops and research activities.',
+  path: '/gallery',
+})
 
 import { FALLBACK_BANNER_IMAGE } from '@/lib/constants/assets'
 
@@ -48,7 +51,7 @@ export default async function GalleryPage() {
               <span
                 key={cat.value}
                 className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold cursor-pointer transition ${
-                  i === 0 ? 'bg-indigo-600 text-white' : 'text-slate-500 hover:bg-slate-100'
+                  i === 0 ? 'bg-brand-600 text-white' : 'text-slate-500 hover:bg-slate-100'
                 }`}
               >
                 {cat.label}

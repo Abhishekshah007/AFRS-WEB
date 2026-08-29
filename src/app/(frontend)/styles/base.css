@@ -21,6 +21,8 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: var(--brand-surface);
+  color: var(--brand-ink);
 }
 
 .no-scrollbar {

@@ -123,16 +123,16 @@ export function UgcNetExperience({ achievers, featured, events: _events, content
   return (
     <>
       {/* ── HERO ── */}
-      <section className="bg-[#5B7BF0] text-white relative overflow-hidden">
+      <section className="bg-brand text-white relative overflow-hidden">
         <motion.div
           animate={{ x: [-20, 20], y: [0, -25] }}
           transition={floatTransition}
-          className="absolute -top-20 -left-20 h-56 w-56 rounded-full bg-cyan-300/20 blur-3xl"
+          className="absolute -top-20 -left-20 h-56 w-56 rounded-full bg-brand-200/20 blur-3xl"
         />
         <motion.div
           animate={{ x: [20, -20], y: [0, 20] }}
           transition={{ ...floatTransition, duration: 6.5 }}
-          className="absolute top-16 right-0 h-72 w-72 rounded-full bg-indigo-900/30 blur-3xl"
+          className="absolute top-16 right-0 h-72 w-72 rounded-full bg-brand-900/30 blur-3xl"
         />
 
         <div className="relative z-10 mx-auto grid max-w-[1280px] items-center gap-8 px-4 py-12 sm:px-6 md:grid-cols-[1.2fr_0.9fr] md:py-16 lg:px-16 lg:py-20">
@@ -148,7 +148,7 @@ export function UgcNetExperience({ achievers, featured, events: _events, content
 
             <h1 className="mt-5 text-[28px] leading-[1.1] font-extrabold tracking-tight sm:text-[40px] lg:text-[52px] lg:leading-[1.05]">
               {page.heroTitlePrefix}{' '}
-              <span className="text-cyan-300"> {page.heroTitleHighlight}</span>
+              <span className="text-brand-200"> {page.heroTitleHighlight}</span>
             </h1>
             <p className="mt-5 text-white/85 max-w-xl leading-relaxed text-[15px]">
               {page.heroDescription}
@@ -156,7 +156,7 @@ export function UgcNetExperience({ achievers, featured, events: _events, content
             <div className="mt-8 flex gap-3 flex-wrap">
               <Link
                 href="#events"
-                className="h-11 px-6 rounded-xl bg-white text-indigo-700 text-sm font-bold inline-flex items-center shadow-lg shadow-indigo-900/20 hover:bg-white/90 transition"
+                className="h-11 px-6 rounded-xl bg-white text-brand-700 text-sm font-bold inline-flex items-center shadow-lg shadow-brand-900/20 hover:bg-white/90 transition"
               >
                 {page.heroCtaLabel} →
               </Link>

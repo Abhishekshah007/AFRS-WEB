@@ -29,7 +29,7 @@ export function FutureSection() {
               <button
                 type="button"
                 aria-label="Play introduction video"
-                className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-white/95 text-indigo-700 text-xl font-bold shadow-xl hover:scale-105 transition"
+                className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-white/95 text-brand-700 text-xl font-bold shadow-xl hover:scale-105 transition"
               >
                 ►
               </button>
@@ -55,7 +55,7 @@ export function FutureSection() {
             </p>
             <Link
               href="/courses"
-              className="mt-8 inline-flex h-11 items-center justify-center rounded-lg bg-violet-600 hover:bg-violet-700 px-6 text-white text-sm font-bold transition"
+              className="mt-8 inline-flex h-11 items-center justify-center rounded-lg bg-brand-600 hover:bg-brand-700 px-6 text-white text-sm font-bold transition"
             >
               Explore Our Courses
             </Link>

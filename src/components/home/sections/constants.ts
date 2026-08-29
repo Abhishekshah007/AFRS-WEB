@@ -64,12 +64,12 @@ export const fallbackScientists: Pick<Scientist, 'name' | 'designation' | 'bio'>
 ]
 
 export const serviceIcons = [
-  { label: 'Forensic Investigation', color: 'bg-indigo-100 text-indigo-600', accent: '#6366f1' },
-  { label: 'Fingerprint Analysis', color: 'bg-blue-100 text-blue-600', accent: '#3b82f6' },
-  { label: 'Questioned Documents', color: 'bg-violet-100 text-violet-600', accent: '#8b5cf6' },
-  { label: 'Cyber Forensics', color: 'bg-cyan-100 text-cyan-700', accent: '#06b6d4' },
-  { label: 'DNA Profiling', color: 'bg-emerald-100 text-emerald-600', accent: '#10b981' },
-  { label: 'Forensic Training', color: 'bg-orange-100 text-orange-600', accent: '#f97316' },
+  { label: 'Forensic Investigation', color: 'bg-brand-beige text-brand', accent: '#3B010B' },
+  { label: 'Fingerprint Analysis', color: 'bg-brand-beige text-brand-burgundy', accent: '#75162D' },
+  { label: 'Questioned Documents', color: 'bg-brand-gold/40 text-brand-maroon', accent: '#560B18' },
+  { label: 'Cyber Forensics', color: 'bg-brand-beige text-brand', accent: '#3B010B' },
+  { label: 'DNA Profiling', color: 'bg-brand-gold/50 text-brand-maroon', accent: '#560B18' },
+  { label: 'Forensic Training', color: 'bg-brand-beige text-brand-burgundy', accent: '#75162D' },
 ]
 
 export const CONTAINER = UI.container

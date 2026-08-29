@@ -3,7 +3,7 @@
 import { useContactFormSubmit } from '@/hooks/useContactFormSubmit'
 
 const inputClass =
-  'mt-2 w-full h-11 rounded-[8px] border border-[#e4ebf4] bg-white px-4 text-[12px] font-semibold text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/15'
+  'mt-2 w-full h-11 rounded-[8px] border border-[#eadcc0] bg-white px-4 text-[12px] font-semibold text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/15'
 
 export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] }) {
   const { state, disabled, onSubmit } = useContactFormSubmit({

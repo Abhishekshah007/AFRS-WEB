@@ -55,7 +55,7 @@ export function HelpCard({ item, index }: HelpCardProps) {
               className="object-cover"
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-100 via-slate-100 to-blue-50" />
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-100 via-brand-50 to-brand-200/40" />
           )}
         </div>
       </div>

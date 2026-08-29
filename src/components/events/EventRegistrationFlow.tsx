@@ -34,7 +34,7 @@ type Props = {
   paymentConfig: RegistrationPaymentConfig
 }
 
-const inputClass = 'w-full h-11 rounded-xl border border-slate-200 px-3 text-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100'
+const inputClass = 'w-full h-11 rounded-xl border border-slate-200 px-3 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100'
 
 export function EventRegistrationFlow({ event, paymentConfig }: Props) {
   const router = useRouter()
@@ -155,7 +155,7 @@ export function EventRegistrationFlow({ event, paymentConfig }: Props) {
   return (
     <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 py-10">
       <div className="text-xs text-slate-500 flex gap-2 items-center mb-6">
-        <Link href="/events" className="hover:text-indigo-600">
+        <Link href="/events" className="hover:text-brand-600">
           ← Back to Events
         </Link>
         <span>/</span>
@@ -169,7 +169,7 @@ export function EventRegistrationFlow({ event, paymentConfig }: Props) {
               <Image src={event.banner} alt={event.title} fill className="object-cover" />
             </div>
             <div className="p-4 space-y-3">
-              <p className="text-[10px] font-bold uppercase text-indigo-600">{event.eventType}</p>
+              <p className="text-[10px] font-bold uppercase text-brand-600">{event.eventType}</p>
               <h2 className="text-[30px] leading-tight font-extrabold text-slate-900">
                 {event.title}
               </h2>
@@ -179,9 +179,9 @@ export function EventRegistrationFlow({ event, paymentConfig }: Props) {
               <p className="text-xs text-slate-500 leading-relaxed">{event.description}</p>
             </div>
           </div>
-          <div className="rounded-2xl bg-gradient-to-br from-indigo-600 to-indigo-800 p-4 text-white">
+          <div className="rounded-2xl bg-gradient-to-br from-brand-600 to-brand-800 p-4 text-white">
             <p className="font-bold">Need Help?</p>
-            <p className="text-xs mt-2 text-indigo-100">
+            <p className="text-xs mt-2 text-brand-100">
               Facing issues with registration? Contact support.
             </p>
             <Link href="/contact" className="inline-block mt-3 text-sm font-semibold">
@@ -195,7 +195,7 @@ export function EventRegistrationFlow({ event, paymentConfig }: Props) {
             {[1, 2].map((s) => (
               <div key={s} className="flex items-center gap-3 flex-1">
                 <div
-                  className={`h-7 w-7 rounded-full border text-center leading-7 font-bold ${step >= s ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white border-slate-300 text-slate-500'}`}
+                  className={`h-7 w-7 rounded-full border text-center leading-7 font-bold ${step >= s ? 'bg-brand-600 border-brand-600 text-white' : 'bg-white border-slate-300 text-slate-500'}`}
                 >
                   {s}
                 </div>
@@ -291,13 +291,13 @@ export function EventRegistrationFlow({ event, paymentConfig }: Props) {
                       type="button"
                       key={cat.id}
                       onClick={() => setSelectedCategoryId(cat.id)}
-                      className={`text-left rounded-xl border p-4 ${selectedCategoryId === cat.id ? 'border-indigo-500 bg-indigo-50' : 'border-slate-200'}`}
+                      className={`text-left rounded-xl border p-4 ${selectedCategoryId === cat.id ? 'border-brand-500 bg-brand-50' : 'border-slate-200'}`}
                     >
                       <p className="font-bold text-slate-800 text-sm">{cat.categoryName}</p>
                       <p className="text-xs text-slate-500">
                         {cat.description || 'Registration category'}
                       </p>
-                      <p className="mt-2 text-xl font-extrabold text-indigo-700">
+                      <p className="mt-2 text-xl font-extrabold text-brand-700">
                         ₹{(cat.price || 0).toLocaleString('en-IN')}
                       </p>
                     </button>
@@ -325,7 +325,7 @@ export function EventRegistrationFlow({ event, paymentConfig }: Props) {
                     type="button"
                     onClick={initiateRegistration}
                     disabled={loading}
-                    className="h-12 px-8 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold disabled:opacity-60"
+                    className="h-12 px-8 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold disabled:opacity-60"
                   >
                     {loading ? 'Processing...' : 'Continue to Payment →'}
                   </button>
@@ -414,7 +414,7 @@ export function EventRegistrationFlow({ event, paymentConfig }: Props) {
                   type="button"
                   onClick={submitPaymentDetails}
                   disabled={loading}
-                  className="h-11 px-7 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold disabled:opacity-60"
+                  className="h-11 px-7 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold disabled:opacity-60"
                 >
                   {loading ? 'Submitting...' : 'Submit payment details'}
                 </button>

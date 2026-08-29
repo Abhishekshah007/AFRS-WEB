@@ -17,15 +17,15 @@ export function ExamPrepCard({ exam }: ExamPrepCardProps) {
       >
         {exam.watermark}
       </span>
-      <span className="inline-flex w-fit rounded-full bg-indigo-400/20 border border-indigo-300/30 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-indigo-200">
+      <span className="inline-flex w-fit rounded-full bg-brand-400/20 border border-brand-300/30 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-brand-200">
         {exam.badge}
       </span>
       <h3 className="mt-5 text-2xl sm:text-3xl font-extrabold text-white">{exam.title}</h3>
-      <p className="mt-1 text-sm font-semibold text-indigo-300">{exam.subtitle}</p>
+      <p className="mt-1 text-sm font-semibold text-brand-300">{exam.subtitle}</p>
       <p className="mt-4 text-sm text-white/65 leading-relaxed flex-1">{exam.description}</p>
       <Link
         href={exam.href}
-        className="mt-6 inline-flex items-center gap-1 text-sm font-bold text-white hover:text-indigo-200 transition"
+        className="mt-6 inline-flex items-center gap-1 text-sm font-bold text-white hover:text-brand-200 transition"
       >
         {exam.ctaLabel} <span aria-hidden>→</span>
       </Link>

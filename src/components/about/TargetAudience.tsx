@@ -27,7 +27,7 @@ const audienceHighlights = [
 export function TargetAudienceTable() {
   return (
     <section className="mx-auto w-full max-w-7xl px-6 pb-12 sm:px-8 lg:px-10">
-      <div className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-gradient-to-br from-slate-50 via-white to-indigo-50 shadow-[0_12px_32px_rgba(15,23,42,0.08)]">
+      <div className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-gradient-to-br from-slate-50 via-white to-brand-50 shadow-[0_12px_32px_rgba(15,23,42,0.08)]">
         <div className="border-b border-slate-200/80 bg-white/70 px-6 py-5 sm:px-8">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>

@@ -91,7 +91,7 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
   return (
     <header className="sticky top-0 z-50">
       {topBarEnabled && (
-        <div className="bg-[#0a0f1e] text-slate-300 text-xs border-b border-white/5">
+        <div className="bg-brand text-brand-gold/90 text-xs border-b border-white/10">
           <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 py-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-wrap gap-x-5 gap-y-1">
               <span className="hover:text-white transition-colors">{topLeftText}</span>
@@ -126,7 +126,7 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
           <motion.div
             whileHover={{ scale: 1.06, rotate: 3 }}
             transition={springSnappy}
-            className="w-11 h-11 bg-gradient-to-br from-indigo-500 via-violet-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-indigo-500/25"
+            className="w-11 h-11 bg-gradient-to-br from-brand via-brand-maroon to-brand-burgundy rounded-full flex items-center justify-center shadow-lg shadow-brand/25"
           >
             {pathname === '/services' ? (
               <Image
@@ -142,11 +142,11 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
           </motion.div>
           <div className="hidden sm:block">
             {pathname === '/services' ? (
-              <p className="font-extrabold text-sm text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors">
+              <p className="font-extrabold text-sm text-slate-900 leading-tight group-hover:text-brand-burgundy transition-colors">
                 Applied Forensic Science Laboratory
               </p>
             ) : (
-              <p className="font-extrabold text-sm text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors">
+              <p className="font-extrabold text-sm text-slate-900 leading-tight group-hover:text-brand-burgundy transition-colors">
                 {brandTitle}
               </p>
             )}
@@ -163,15 +163,15 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
                   href={link.url}
                   className={`relative block px-3 py-2 text-[11px] lg:text-xs font-bold whitespace-nowrap transition-colors rounded-lg ${
                     active
-                      ? 'text-indigo-600'
-                      : 'text-slate-600 hover:text-indigo-700 hover:bg-indigo-50/80'
+                      ? 'text-brand-burgundy'
+                      : 'text-slate-600 hover:text-brand hover:bg-brand-beige/80'
                   }`}
                 >
                   {link.label}
                   {active && (
                     <motion.span
                       layoutId="nav-active-pill"
-                      className="absolute inset-0 rounded-lg bg-indigo-50 -z-10"
+                      className="absolute inset-0 rounded-lg bg-brand-beige -z-10"
                       transition={springSnappy}
                     />
                   )}
@@ -190,7 +190,7 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
             <Link
               href="/search"
               aria-label="Search"
-              className="hidden sm:flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/80 text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition"
+              className="hidden sm:flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/80 text-slate-600 hover:bg-brand-beige hover:text-brand hover:border-brand-gold transition"
             >
               <svg
                 className="h-4 w-4"
@@ -239,8 +239,8 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
               href={link.url}
               className={`block text-sm py-2.5 px-3 font-medium rounded-xl transition ${
                 pathname === link.url
-                  ? 'text-indigo-600 bg-indigo-50'
-                  : 'text-slate-700 hover:text-indigo-700 hover:bg-slate-50'
+                  ? 'text-brand-burgundy bg-brand-beige'
+                  : 'text-slate-700 hover:text-brand hover:bg-slate-50'
               }`}
               onClick={() => setOpen(false)}
             >

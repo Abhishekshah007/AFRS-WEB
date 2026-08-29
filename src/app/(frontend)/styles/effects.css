@@ -11,21 +11,21 @@
   height: min(520px, 70vw);
   top: -8%;
   left: -6%;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.35) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(242, 229, 198, 0.7) 0%, transparent 70%);
 }
 .ambient-orb-b {
   width: min(480px, 65vw);
   height: min(480px, 65vw);
   top: 35%;
   right: -8%;
-  background: radial-gradient(circle, rgba(236, 72, 153, 0.18) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(242, 217, 160, 0.45) 0%, transparent 70%);
 }
 .ambient-orb-c {
   width: min(400px, 55vw);
   height: min(400px, 55vw);
   bottom: 5%;
   left: 30%;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.2) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(117, 22, 45, 0.16) 0%, transparent 70%);
 }
 .ambient-noise {
   position: absolute;
@@ -55,18 +55,18 @@
   height: 220px;
   top: 20%;
   right: 12%;
-  background: rgba(147, 197, 253, 0.35);
+  background: rgba(242, 217, 160, 0.35);
 }
 .hero-orb-3 {
   width: 180px;
   height: 180px;
   bottom: 15%;
   left: 40%;
-  background: rgba(196, 181, 253, 0.3);
+  background: rgba(117, 22, 45, 0.28);
 }
 
 .hero-mesh {
-  background: linear-gradient(135deg, #2563eb 0%, #4f46e5 45%, #7c3aed 75%, #93c5fd 100%);
+  background: var(--brand-hero);
   background-size: 200% 200%;
   animation: heroMeshShift 12s ease infinite;
 }
@@ -76,7 +76,7 @@
 }
 
 .text-gradient-brand {
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #2563eb 100%);
+  background: linear-gradient(135deg, #75162d 0%, #560b18 50%, #3b010b 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -115,14 +115,14 @@
   40%, 100% { left: 140%; }
 }
 .btn-shimmer-primary {
-  background: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #f97316 100%);
+  background: linear-gradient(135deg, #3b010b 0%, #75162d 50%, #560b18 100%);
   background-size: 200% auto;
   color: white;
-  box-shadow: 0 8px 28px -6px rgba(249, 115, 22, 0.55);
+  box-shadow: 0 8px 28px -6px rgba(59, 1, 11, 0.5);
   animation: gradTextShift 4s ease infinite;
 }
 .btn-shimmer-primary:hover {
-  box-shadow: 0 12px 36px -4px rgba(249, 115, 22, 0.65);
+  box-shadow: 0 12px 36px -4px rgba(117, 22, 45, 0.55);
 }
 .btn-shimmer-ghost {
   border: 2px solid rgba(255, 255, 255, 0.85);
@@ -135,7 +135,7 @@
 }
 .btn-shimmer-white {
   background: white;
-  color: var(--prog-primary, #4f46e5);
+  color: var(--prog-primary, #3b010b);
   box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.15);
 }
 
@@ -150,7 +150,7 @@
   transform: translateX(-50%);
   width: min(600px, 80%);
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(242, 217, 160, 0.55), transparent);
 }
 
 .section-aura-services {
@@ -159,22 +159,22 @@
 
 .section-aura-training {
   position: relative;
-  background: linear-gradient(155deg, #ede9fe 0%, #f5f3ff 28%, #f8fafc 68%, #ecfdf5 100%);
+  background: linear-gradient(155deg, #fbf6ec 0%, #f2e5c6 28%, #faf7f0 68%, #f2d9a0 100%);
 }
 .section-aura-training::before {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 48% 38% at 0% 100%, rgba(139, 92, 246, 0.08), transparent 55%),
-    radial-gradient(ellipse 42% 34% at 100% 15%, rgba(16, 185, 129, 0.06), transparent 52%);
+    radial-gradient(ellipse 48% 38% at 0% 100%, rgba(117, 22, 45, 0.08), transparent 55%),
+    radial-gradient(ellipse 42% 34% at 100% 15%, rgba(242, 217, 160, 0.18), transparent 52%);
   pointer-events: none;
 }
 
 .elevated-card {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(168deg, #ffffff 0%, #f8fafc 100%);
+  background: linear-gradient(168deg, #ffffff 0%, #fbf6ec 100%);
   border: 1px solid rgba(226, 232, 240, 0.95);
   box-shadow:
     0 1px 2px rgba(15, 23, 42, 0.04),
@@ -188,18 +188,18 @@
   right: 1.25rem;
   height: 3px;
   border-radius: 0 0 4px 4px;
-  background: var(--card-accent, #6366f1);
+  background: var(--card-accent, #75162d);
   opacity: 0.9;
 }
 
 .training-card {
   position: relative;
-  background: linear-gradient(135deg, #ffffff 0%, #fafbff 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #fbf6ec 100%);
   border: 1px solid rgba(226, 232, 240, 0.9);
-  border-left: 3px solid var(--card-accent, #6366f1);
+  border-left: 3px solid var(--card-accent, #75162d);
   box-shadow:
-    0 1px 2px rgba(15, 23, 42, 0.03),
-    0 8px 22px -6px rgba(79, 70, 229, 0.1);
+    0 1px 2px rgba(26, 12, 15, 0.03),
+    0 8px 22px -6px rgba(59, 1, 11, 0.12);
 }
 
 .sr { opacity: 0; transform: translateY(24px); transition: opacity 0.6s cubic-bezier(.22,1,.36,1), transform 0.6s cubic-bezier(.22,1,.36,1); }
@@ -233,16 +233,16 @@
 .card-pop:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow:
-    0 24px 48px -16px rgba(79, 70, 229, 0.2),
-    0 12px 28px -8px rgba(15, 23, 42, 0.1);
-  border-color: rgba(99, 102, 241, 0.15);
+    0 24px 48px -16px rgba(59, 1, 11, 0.18),
+    0 12px 28px -8px rgba(26, 12, 15, 0.1);
+  border-color: rgba(117, 22, 45, 0.18);
 }
 
 .glow-hover {
   transition: box-shadow 300ms ease, border-color 300ms ease;
 }
 .glow-hover:hover {
-  box-shadow: 0 0 0 2px rgba(139,92,246,.5), 0 8px 40px -12px rgba(139,92,246,.5);
+  box-shadow: 0 0 0 2px rgba(117, 22, 45, 0.4), 0 8px 40px -12px rgba(59, 1, 11, 0.35);
 }
 
 .grad-border {
@@ -255,7 +255,7 @@
   inset: -1px;
   z-index: -1;
   border-radius: inherit;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6, #3b82f6);
+  background: linear-gradient(135deg, #3b010b, #75162d, #f2d9a0);
   background-size: 300% 300%;
   animation: gradMove 4s ease infinite;
   opacity: 0;
@@ -275,8 +275,8 @@
   inset: 0;
   pointer-events: none;
   background-image:
-    radial-gradient(circle at 15% 20%, rgba(125,211,252,.20), transparent 30%),
-    radial-gradient(circle at 85% 75%, rgba(139, 92,246,.15), transparent 28%);
+    radial-gradient(circle at 15% 20%, rgba(242, 217, 160, 0.28), transparent 30%),
+    radial-gradient(circle at 85% 75%, rgba(117, 22, 45, 0.14), transparent 28%);
 }
 
 .forensic-background {

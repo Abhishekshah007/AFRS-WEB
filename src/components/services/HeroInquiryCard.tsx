@@ -14,7 +14,7 @@ export function HeroInquiryCard({ services }: { services: { title: string; slug:
         <select
           value={selected}
           onChange={(e) => setSelected(e.target.value)}
-          className="mt-2 w-full h-12 rounded-xl border border-white/25 bg-white/95 px-4 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-violet-400/50"
+          className="mt-2 w-full h-12 rounded-xl border border-white/25 bg-white/95 px-4 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-brand-200/60"
         >
           {services.length === 0 ? (
             <option value="">General inquiry</option>
@@ -29,7 +29,7 @@ export function HeroInquiryCard({ services }: { services: { title: string; slug:
       </label>
       <Link
         href={selected ? `/contact?service=${encodeURIComponent(selected)}` : '/contact'}
-        className="mt-4 flex h-12 w-full items-center justify-center rounded-xl bg-[#7c3aed] hover:bg-[#6d28d9] text-sm font-bold text-white shadow-lg shadow-violet-900/40 transition"
+        className="mt-4 flex h-12 w-full items-center justify-center rounded-xl bg-brand-gold text-brand hover:bg-brand-100 text-sm font-bold shadow-lg shadow-black/20 transition"
       >
         Get Forensic Inquiry →
       </Link>

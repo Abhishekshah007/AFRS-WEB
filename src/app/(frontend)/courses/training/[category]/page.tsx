@@ -1,5 +1,7 @@
 import { CategoryListingView } from '@/components/programmes/CategoryListingView'
 import { getTrainingCategories, getTrainingCategory } from '@/components/programmes/catalog'
+import { buildPageMetadata } from '@/lib/seo/metadata'
+import { clipMeta } from '@/lib/seo/site'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
@@ -15,11 +17,12 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params
   const cat = await getTrainingCategory(category)
-  if (!cat) return { title: 'Training Not Found' }
-  return {
-    title: `${cat.title} | AFSL Training`,
-    description: cat.summary,
-  }
+  if (!cat) return { title: 'Training not found', robots: { index: false, follow: false } }
+  return buildPageMetadata({
+    title: cat.title,
+    description: clipMeta(cat.summary, 160),
+    path: `/courses/training/${cat.slug}`,
+  })
 }
 
 export default async function TrainingCategoryPage({ params }: Props) {
@@ -40,6 +43,18 @@ export default async function TrainingCategoryPage({ params }: Props) {
       icon={cat.icon}
       programmes={cat.programmes}
       backHref="/courses#afsl-training"
+      intro={cat.intro}
+      body={cat.body}
+      highlightsTitle={cat.highlightsTitle}
+      highlightsNote={cat.highlightsNote}
+      whoCanApply={cat.whoCanApply}
+      outcomesTitle={cat.outcomesTitle}
+      outcomes={cat.outcomes}
+      vision={cat.vision}
+      missionTitle={cat.missionTitle}
+      missionItems={cat.missionItems}
+      extraSections={cat.extraSections}
+      disclaimer={cat.disclaimer}
     />
   )
 }

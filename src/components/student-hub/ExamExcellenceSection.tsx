@@ -19,7 +19,7 @@ export function ExamExcellenceSection({ exams }: ExamExcellenceSectionProps) {
       <div className={`${studentHubTokens.container} relative z-10`}>
         <AnimateOnScroll>
           <header className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-indigo-400">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-brand-400">
               Prepare to Succeed
             </span>
             <h2

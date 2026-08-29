@@ -43,7 +43,7 @@ export function ServicesSection({
               >
                 ◈
               </div>
-              <p className="mt-4 text-sm font-semibold text-slate-800 leading-snug group-hover:text-indigo-600 transition-colors">
+              <p className="mt-4 text-sm font-semibold text-slate-800 leading-snug group-hover:text-brand-600 transition-colors">
                 {item.label}
               </p>
             </Link>

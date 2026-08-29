@@ -42,7 +42,7 @@ export function LatestNewsSection() {
                 </div>
                 <Link
                   href={item.href}
-                  className="text-sm font-bold text-indigo-600 hover:text-indigo-700 shrink-0"
+                  className="text-sm font-bold text-brand-600 hover:text-brand-700 shrink-0"
                 >
                   Read More →
                 </Link>

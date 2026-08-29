@@ -1,12 +1,14 @@
 import { getServicesPageData } from '@/lib/queries/services'
 import { ServicesPageView } from '@/components/services/ServicesPageView'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'AFSL - Applied Forensic Sciences Laboratory',
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Forensic Services & Laboratory',
   description:
-    'Future-ready forensic laboratory services — DNA analysis, cyber forensics, questioned documents, training, and expert legal consultancy.',
-}
+    'AFSL forensic laboratory services including crime scene investigation, fingerprint examination, questioned documents, digital forensics and expert consultancy.',
+  path: '/services',
+})
 
 export default async function ServicesPage() {
   const data = await getServicesPageData()

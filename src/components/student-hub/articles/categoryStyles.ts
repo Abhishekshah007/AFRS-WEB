@@ -9,15 +9,15 @@ export const categoryLabels: Record<ArticleCategory, string> = Object.fromEntrie
 ) as Record<ArticleCategory, string>
 
 const TAG_PALETTE = [
-  'bg-sky-100 text-sky-700',
-  'bg-violet-100 text-violet-700',
-  'bg-pink-100 text-pink-700',
-  'bg-emerald-100 text-emerald-700',
-  'bg-indigo-100 text-indigo-700',
-  'bg-teal-100 text-teal-700',
-  'bg-amber-100 text-amber-700',
-  'bg-rose-100 text-rose-700',
-  'bg-cyan-100 text-cyan-700',
+  'bg-brand-50 text-brand-700',
+  'bg-brand-100 text-brand-600',
+  'bg-brand-200/50 text-brand-700',
+  'bg-brand-50 text-brand-500',
+  'bg-brand-100 text-brand-700',
+  'bg-brand-200/40 text-brand-600',
+  'bg-brand-50 text-brand-700',
+  'bg-brand-100 text-brand-500',
+  'bg-brand-200/60 text-brand-700',
   'bg-slate-100 text-slate-700',
 ]
 

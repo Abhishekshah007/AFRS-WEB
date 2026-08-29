@@ -14,7 +14,7 @@ export const aboutTokens = {
   radiusImage: DESIGN_SYSTEM.radius.card,
   radiusBtn: DESIGN_SYSTEM.radius.button,
   primaryBtn:
-    'inline-flex items-center justify-center h-12 px-8 text-sm font-bold bg-white text-[var(--about-primary)] hover:bg-blue-50 transition shadow-sm',
+    'inline-flex items-center justify-center h-12 px-8 text-sm font-bold bg-white text-[var(--about-primary)] hover:bg-brand-beige transition shadow-sm',
   outlineBtn:
     'inline-flex items-center justify-center h-12 px-8 text-sm font-bold border-2 border-white/80 text-white hover:bg-white/10 transition',
 } as const

@@ -50,7 +50,7 @@ export function QuizCareerSection() {
               </p>
               <Link
                 href="/student-hub/career-guidance"
-                className="mt-8 text-sm font-bold text-white underline underline-offset-4 hover:text-indigo-200 transition"
+                className="mt-8 text-sm font-bold text-white underline underline-offset-4 hover:text-brand-200 transition"
               >
                 Learn about Mentorship Programs
               </Link>

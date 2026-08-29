@@ -62,7 +62,7 @@ export function LeadershipSection({
                 >
                   <div className="flex h-full w-full flex-col items-center text-center">
                     <div className="relative">
-                      <div className="flex h-[120px] w-[120px] items-center justify-center rounded-full bg-gradient-to-br from-indigo-50 to-blue-50 p-1.5 shadow-[0_10px_24px_rgba(79,70,229,0.12)] ring-1 ring-indigo-100">
+                      <div className="flex h-[120px] w-[120px] items-center justify-center rounded-full bg-gradient-to-br from-brand-50 to-brand-100 p-1.5 shadow-[0_10px_24px_rgba(59,1,11,0.12)] ring-1 ring-brand-100">
                         {leader.photoUrl ? (
                           <Image
                             src={leader.photoUrl}
@@ -74,7 +74,7 @@ export function LeadershipSection({
                         ) : (
                           <UserRound
                             aria-hidden
-                            className="h-11 w-11 text-indigo-300"
+                            className="h-11 w-11 text-brand-300"
                             strokeWidth={1.8}
                           />
                         )}

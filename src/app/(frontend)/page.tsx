@@ -1,6 +1,10 @@
 import { getPayloadClient } from '@/lib/payload'
 import type { HomePage, SiteSetting } from '@/payload-types'
 import type { Metadata } from 'next'
+import { JsonLd } from '@/components/seo/JsonLd'
+import { buildPageMetadata } from '@/lib/seo/metadata'
+import { faqPage, withContext } from '@/lib/seo/schema'
+import { HOME_FAQS } from '@/components/home/sections/faqs'
 import {
   AboutSection,
   AchievementsSection,
@@ -11,7 +15,6 @@ import {
   FutureSection,
   GallerySection,
   HeroSection,
-  heroPanelImage,
   ImpactSection,
   InternshipProgramSection,
   LatestNewsSection,
@@ -23,13 +26,20 @@ import {
   PartnerLogosSection,
 } from '@/components/home/sections'
 
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Forensic Science Education, Training & Services',
+  description:
+    'Applied Forensic Research Sciences (AFRS) offers forensic science education, professional training, internships, research support and AFSL laboratory services.',
+  path: '/',
+})
+
 export default async function HomePage() {
   const payload = await getPayloadClient()
   const today = new Date().toISOString()
 
   const [
     events,
-    services,
+    _services,
     testimonials,
     scientists,
     galleryItems,
@@ -103,29 +113,11 @@ export default async function HomePage() {
   const sectionText = home?.sectionText || {}
   const heroData = home?.hero || {}
   const totalVisitors = site?.totalVisitors
-  const socials = site?.socialLinks || {}
-  const sameAs = [
-    socials.facebook,
-    socials.instagram,
-    socials.linkedin,
-    socials.youtube,
-    socials.twitter,
-  ].filter((url): url is string => typeof url === 'string' && url.startsWith('http'))
-  const orgJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: site?.siteName || 'Applied Forensic Research Sciences',
-    url: 'https://afrs-webapp.vercel.app',
-    logo: heroPanelImage,
-    sameAs,
-  }
+  const orgJsonLd = withContext([faqPage([...HOME_FAQS])])
 
   return (
     <div className="min-h-screen">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
-      />
+      <JsonLd data={orgJsonLd} />
       <HeroSection heroData={heroData} />
       <AFRSFeatureCards sectionText={sectionText} events={events} />
       <ForensicTrainingProgram />

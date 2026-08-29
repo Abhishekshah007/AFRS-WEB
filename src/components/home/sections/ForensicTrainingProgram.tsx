@@ -10,27 +10,27 @@ export function ForensicTrainingProgram() {
     {
       icon: '🎯',
       title: 'Crime Scene Investigation Training',
-      accent: '#6366f1',
+      accent: '#3B010B',
     },
     {
       icon: '🌀',
       title: 'Fingerprint Examination Course',
-      accent: '#3b82f6',
+      accent: '#75162D',
     },
     {
       icon: '🧬',
       title: 'Forensic Biology & Serology Training',
-      accent: '#10b981',
+      accent: '#560B18',
     },
     {
       icon: '📄',
       title: 'Questioned Document Examination',
-      accent: '#8b5cf6',
+      accent: '#F2D9A0',
     },
     {
       icon: '💻',
       title: 'Multimedia & Digital Forensics',
-      accent: '#06b6d4',
+      accent: '#F2E5C6',
     },
   ]
   return (
@@ -82,7 +82,7 @@ export function ForensicTrainingProgram() {
           <div className="flex items-center justify-center">
             <Link
               href="/courses"
-              className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-blue-500 px-8 text-sm font-semibold text-white shadow-[0_12px_28px_-8px_rgba(79,70,229,0.45)] hover:shadow-[0_16px_36px_-8px_rgba(79,70,229,0.55)] transition"
+              className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-brand-600 to-brand-500 px-8 text-sm font-semibold text-white shadow-[0_12px_28px_-8px_rgba(59,1,11,0.45)] hover:shadow-[0_16px_36px_-8px_rgba(117,22,45,0.55)] transition"
             >
               View All Programs
               <span aria-hidden>→</span>

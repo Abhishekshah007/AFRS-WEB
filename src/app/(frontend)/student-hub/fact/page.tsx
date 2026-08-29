@@ -1,13 +1,15 @@
 import { getUgcNetAchievers } from '@/components/student-hub/content'
 import { getUpcomingStudentHubEvents } from '@/components/student-hub/eventSummaries.server'
 import { UgcNetExperience } from '@/components/student-hub/UgcNetExperience'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'FACT - Forensic Aptitude and Caliber Test',
+export const metadata: Metadata = buildPageMetadata({
+  title: 'FACT Forensic Aptitude Test Preparation',
   description:
-    'Prepare for FACT, the Forensic Aptitude and Caliber Test, with aptitude practice, forensic reasoning modules, mock tests, and guided preparation.',
-}
+    'Preparation support for the Forensic Aptitude and Caliber Test (FACT), including practice modules and guided learning.',
+  path: '/student-hub/fact',
+})
 
 export default async function FactPage() {
   const [{ featured, events }, achievers] = await Promise.all([

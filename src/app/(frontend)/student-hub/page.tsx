@@ -3,13 +3,15 @@ import { getStudentHubContent } from '@/components/student-hub/content'
 import { getPayloadClient } from '@/lib/payload'
 import { getFeaturedGalleryItems } from '@/lib/queries/gallery'
 import type { SiteSetting } from '@/payload-types'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Student Resource Hub',
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Forensic Science Student Resources',
   description:
-    'Forensic learning materials, research papers, exam preparation, quizzes, and career guidance for AFRS students.',
-}
+    'Study resources for forensic science students: articles, exam preparation for UGC NET, FACT and CUET, quizzes and career guidance.',
+  path: '/student-hub',
+})
 
 export default async function StudentHubPage() {
   const payload = await getPayloadClient()

@@ -34,17 +34,21 @@ export const fallbackCatalog: CatalogItem[] = [
 
 export const fallbackDirectors: DirectorateMember[] = [
   {
+    id: 'fallback-director-1',
     name: 'Mr. Rakesh Mia',
     designation: 'Lab Director',
     initials: 'RM',
+    status: 'active',
     photo:
       'https://res.cloudinary.com/drrzakkgo/image/upload/v1784833177/afrs/payload/media/WhatsApp_Image_2026-07-22_at_10.07.28_PM_rop83x.jpg',
     bio: 'Senior forensic scientist with expertise in analytical chemistry.',
   },
   {
+    id: 'fallback-director-2',
     name: 'Mr. Vijay Panchal',
     designation: 'Deputy Director',
     initials: 'VP',
+    status: 'active',
     photo:
       'https://res.cloudinary.com/drrzakkgo/image/upload/v1762258620/WhatsApp_Image_2025-11-04_at_12.33.03_AM_fywjbh.jpg',
     bio: 'Crime scene investigation and evidence documentation specialist.',
@@ -53,15 +57,19 @@ export const fallbackDirectors: DirectorateMember[] = [
 
 export const fallbackTeam: DirectorateMember[] = [
   {
+    id: 'fallback-member-1',
     name: 'Ms. Megha Jain',
     designation: 'Forensic Expert',
     initials: 'MJ',
+    status: 'active',
     photo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1763141455/xpvpfqfee6ppp875xdd5.jpg',
   },
   {
+    id: 'fallback-member-2',
     name: 'Dr. Shrutika Singla',
     designation: 'Forensic Expert',
     initials: 'SS',
+    status: 'active',
     photo:
       'https://res.cloudinary.com/drrzakkgo/image/upload/v1762258621/WhatsApp_Image_2025-11-04_at_12.37.51_AM_h1kedk.jpg',
   },
@@ -84,12 +92,30 @@ export const defaultKitCards = [
 ]
 
 export const defaultLegalLinks = [
-  'Medico Legal Property Report',
-  'Cross Examination Training',
-  'Research & Lab Projects',
-  'Expert Opinion (39 of BSA)',
-  'Internship & Training',
-  'Insurance Forensics Panel',
+  {
+    title: 'Forensic Expert Opinion',
+    desc: 'Scientific expert opinion and technical reporting under Section 39, BSA 2023.',
+  },
+  {
+    title: 'Forensic Evidence Assessment',
+    desc: 'Scientific evaluation of physical, documentary, digital and multimedia evidence.',
+  },
+  {
+    title: 'Electronic Evidence Certification',
+    desc: 'Certification of electronic records in accordance with applicable legal requirements, including Section 63(4)(C), BSA 2023.',
+  },
+  {
+    title: 'Forensic Case Consultation',
+    desc: 'Case-specific scientific guidance on forensic evidence and examination findings.',
+  },
+  {
+    title: 'Expert Cross-Examination Support',
+    desc: 'Technical assistance for understanding forensic evidence and preparing scientifically relevant questions.',
+  },
+  {
+    title: 'Internship & Professional Training',
+    desc: 'Practical forensic training, internships and skill-development programmes for students and professionals.',
+  },
 ]
 
 export const defaultResearchItems = [
@@ -157,9 +183,12 @@ export const defaultServicesPageContent: ServicesPageContent = {
     'Dedicated forensic scientists and specialists committed to advancing forensic science and justice.',
   catalogEyebrow: 'Core Competence',
   catalogTitle: 'Forensic Service Catalog',
-  legalTitle: 'Expert Legal Consultancy',
-  legalDescription: 'Specialized legal support for judicial and corporate entities.',
-  legalCtaLabel: 'Legal Intake',
+  legalTitle: 'Forensic & Legal Consultancy',
+  legalSubtitle: 'Scientific & Technical Forensic Support for Legal Proceedings',
+  legalDescription:
+    'AFSL provides independent forensic consultation and technical support to advocates, law firms, corporates, investigators and authorised individuals in matters involving scientific and forensic evidence.',
+  legalCtaLabel: 'Book a Consultation',
+  legalCtaSubtext: 'Online & Offline Consultation | Prior Appointment Required',
   kitsEyebrow: 'Proprietary Equipment',
   kitsTitle: 'AFSL Professional Kits',
   kitsDescription:

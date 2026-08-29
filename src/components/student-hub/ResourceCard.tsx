@@ -1,10 +1,9 @@
 import Link from 'next/link'
-import { FileText } from 'lucide-react'
 import type { ResourceCardData } from '@/components/student-hub/types'
-import { iconMap } from '../ui/iconMap'
+import { resolveIcon } from '../ui/iconMap'
 
 export function ResourceCard({ resource }: { resource: ResourceCardData }) {
-  const Icon = iconMap[resource.icon] ?? FileText
+  const Icon = resolveIcon(resource.icon)
 
   if (resource.featured) {
     // Wide horizontal card — "Practical Learning" layout

@@ -1,10 +1,12 @@
 import { PageHero } from '@/components/marketing/PageHero'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: 'Privacy Policy',
-  description: 'How AFRS collects, uses, and protects your personal information.',
-}
+  description: 'How AFRS collects, uses and protects personal information submitted through this website.',
+  path: '/privacy',
+})
 
 const sections = [
   {

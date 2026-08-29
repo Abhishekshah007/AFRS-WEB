@@ -1,11 +1,11 @@
 .student-hub-page {
-  --hub-primary: #4f46e5;
-  --hub-primary-hover: #4338ca;
-  --hub-primary-soft: #eef2ff;
-  --hub-text: #0f172a;
-  --hub-text-muted: #64748b;
-  --hub-navy: #0f172a;
-  --hub-surface: #f5f7fb;
+  --hub-primary: var(--brand-primary);
+  --hub-primary-hover: var(--brand-primary-hover);
+  --hub-primary-soft: var(--brand-soft);
+  --hub-text: var(--brand-ink);
+  --hub-text-muted: var(--brand-muted);
+  --hub-navy: var(--brand-deep-wine);
+  --hub-surface: var(--brand-surface);
 }
 
 .hub-surface {
@@ -31,24 +31,24 @@
   height: 420px;
   top: -120px;
   left: -80px;
-  background: #c7d2fe;
+  background: var(--brand-champagne);
 }
 .hub-hero-glow::after {
   width: 380px;
   height: 380px;
   bottom: -100px;
   right: -60px;
-  background: #ddd6fe;
+  background: var(--brand-sand-gold);
 }
 
 .hub-exam-section {
-  background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+  background: linear-gradient(180deg, var(--brand-deep-wine) 0%, var(--brand-dark-maroon) 50%, var(--brand-deep-wine) 100%);
 }
 
 .hub-quiz-card {
-  background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
+  background: linear-gradient(135deg, var(--brand-champagne) 0%, var(--brand-surface) 100%);
 }
 
 .hub-visitor-bar {
-  background: linear-gradient(90deg, #4f46e5 0%, #6366f1 50%, #4f46e5 100%);
+  background: linear-gradient(90deg, var(--brand-deep-wine) 0%, var(--brand-burgundy) 50%, var(--brand-deep-wine) 100%);
 }

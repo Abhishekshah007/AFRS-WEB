@@ -5,22 +5,25 @@ import { formatEventDate, formatEventType, resolveMediaUrl } from '@/lib/cms'
 import type { Event as AfrsEvent, Media } from '@/payload-types'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import { PageHero } from '@/components/marketing/PageHero'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Upcoming Events',
-  description: 'Register for AFRS forensic science workshops, webinars, training sessions, and conferences.',
-}
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Forensic Science Events',
+  description:
+    'Upcoming AFRS forensic science workshops, training programmes, conferences and faculty development events.',
+  path: '/events',
+})
 
 import { FALLBACK_BANNER_IMAGE } from '@/lib/constants/assets'
 import { SiteGallerySection } from '@/components/gallery/SiteGallerySection'
 import { getFeaturedGalleryItems } from '@/lib/queries/gallery'
 
 const typeColors: Record<string, string> = {
-  workshop: 'bg-indigo-100 text-indigo-700',
-  webinar: 'bg-violet-100 text-violet-700',
-  conference: 'bg-orange-100 text-orange-700',
-  training: 'bg-emerald-100 text-emerald-700',
+  workshop: 'bg-brand-100 text-brand-700',
+  webinar: 'bg-brand-200/50 text-brand-700',
+  conference: 'bg-brand-50 text-brand-600',
+  training: 'bg-brand-100 text-brand-700',
 }
 
 export default async function EventsPage() {
@@ -75,7 +78,7 @@ export default async function EventsPage() {
                 key={tab}
                 className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold cursor-pointer transition ${
                   i === 0
-                    ? 'bg-indigo-600 text-white shadow-sm'
+                    ? 'bg-brand-600 text-white shadow-sm'
                     : 'text-slate-500 hover:bg-slate-100'
                 }`}
               >
@@ -96,7 +99,7 @@ export default async function EventsPage() {
           {upcoming.docs.length === 0 ? (
             <p className="text-slate-400 text-center py-12">
               No upcoming events right now — check back soon or{' '}
-              <Link href="/contact" className="text-indigo-600 font-semibold">contact us</Link>.
+              <Link href="/contact" className="text-brand-600 font-semibold">contact us</Link>.
             </p>
           ) : (
             <AnimateOnScroll stagger>
@@ -129,8 +132,8 @@ export default async function EventsPage() {
                       </div>
 
                       <div className="p-6">
-                        <p className="text-xs text-indigo-600 font-semibold">{formatEventDate(evt.startDate)}</p>
-                        <h3 className="mt-2 font-extrabold text-slate-900 text-lg leading-snug group-hover:text-indigo-600 transition-colors">
+                        <p className="text-xs text-brand-600 font-semibold">{formatEventDate(evt.startDate)}</p>
+                        <h3 className="mt-2 font-extrabold text-slate-900 text-lg leading-snug group-hover:text-brand-600 transition-colors">
                           {evt.title}
                         </h3>
                         {evt.venue && <p className="mt-1 text-xs text-slate-400">📍 {evt.venue}</p>}
@@ -151,7 +154,7 @@ export default async function EventsPage() {
                           className={`mt-5 block text-center py-2.5 rounded-xl text-sm font-bold transition ${
                             evt.registrationOpen === false
                               ? 'bg-slate-100 text-slate-500 cursor-not-allowed'
-                              : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                              : 'bg-brand-600 hover:bg-brand-700 text-white'
                           }`}
                         >
                           {evt.registrationOpen === false ? 'Registration Closed' : 'Register Now →'}

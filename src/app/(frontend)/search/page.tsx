@@ -3,12 +3,15 @@ import { getPayloadClient } from '@/lib/payload'
 import { formatEventDate } from '@/lib/cms'
 import type { Event as AfrsEvent, Service } from '@/payload-types'
 import { PageHero } from '@/components/marketing/PageHero'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: 'Search',
-  description: 'Search for events, services, and content across the AFRS website.',
-}
+  description: 'Search AFRS events, forensic services and published content.',
+  path: '/search',
+  index: false,
+})
 
 type Props = { searchParams: Promise<{ q?: string }> }
 
@@ -69,12 +72,12 @@ export default async function SearchPage({ searchParams }: Props) {
             type="search"
             defaultValue={query}
             placeholder="Search events, services, topics…"
-            className="flex-1 h-14 rounded-2xl border border-slate-200 bg-white px-5 text-base outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-300 shadow-sm"
+            className="flex-1 h-14 rounded-2xl border border-slate-200 bg-white px-5 text-base outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-300 shadow-sm"
             autoFocus
           />
           <button
             type="submit"
-            className="h-14 px-8 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm transition shadow-sm"
+            className="h-14 px-8 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm transition shadow-sm"
           >
             Search
           </button>
@@ -92,7 +95,7 @@ export default async function SearchPage({ searchParams }: Props) {
             {events.length > 0 && (
               <section className="mb-10">
                 <h2 className="text-base font-extrabold text-slate-900 mb-5 flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
                   Events
                 </h2>
                 <div className="space-y-3">
@@ -102,7 +105,7 @@ export default async function SearchPage({ searchParams }: Props) {
                       href={`/events/${evt.slug}`}
                       className="flex gap-4 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
                     >
-                      <div className="h-10 w-10 shrink-0 rounded-xl bg-indigo-50 flex items-center justify-center text-lg">📅</div>
+                      <div className="h-10 w-10 shrink-0 rounded-xl bg-brand-50 flex items-center justify-center text-lg">📅</div>
                       <div>
                         <p className="font-bold text-slate-900 text-sm">{evt.title}</p>
                         <p className="text-xs text-slate-400 mt-0.5">{formatEventDate(evt.startDate)}</p>
@@ -117,7 +120,7 @@ export default async function SearchPage({ searchParams }: Props) {
             {services.length > 0 && (
               <section>
                 <h2 className="text-base font-extrabold text-slate-900 mb-5 flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-violet-500" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
                   Services
                 </h2>
                 <div className="space-y-3">
@@ -127,7 +130,7 @@ export default async function SearchPage({ searchParams }: Props) {
                       href={`/services/${srv.slug}`}
                       className="flex gap-4 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
                     >
-                      <div className="h-10 w-10 shrink-0 rounded-xl bg-violet-50 flex items-center justify-center text-lg">🔬</div>
+                      <div className="h-10 w-10 shrink-0 rounded-xl bg-brand-50 flex items-center justify-center text-lg">🔬</div>
                       <div>
                         <p className="font-bold text-slate-900 text-sm">{srv.title}</p>
                         {srv.category && <p className="text-xs text-slate-400 mt-0.5 capitalize">{srv.category}</p>}

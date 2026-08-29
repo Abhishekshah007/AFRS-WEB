@@ -1,17 +1,17 @@
 .articles-page {
-  --articles-primary: #5d78ff;
-  --articles-primary-hover: #4f63e8;
-  --articles-accent: #ff9800;
-  --articles-accent-hover: #f57c00;
-  --articles-canvas: #f5f6fa;
+  --articles-primary: var(--brand-burgundy);
+  --articles-primary-hover: var(--brand-primary);
+  --articles-accent: var(--brand-sand-gold);
+  --articles-accent-hover: #e4c57a;
+  --articles-canvas: var(--brand-surface);
 }
 
 .articles-hero {
-  background: linear-gradient(135deg, #5d78ff 0%, #4f63e8 50%, #3b5bdb 100%);
+  background: var(--brand-hero);
 }
 
 .articles-stats-bar {
-  background: linear-gradient(90deg, #5d78ff 0%, #6366f1 50%, #5d78ff 100%);
+  background: linear-gradient(90deg, var(--brand-deep-wine) 0%, var(--brand-burgundy) 50%, var(--brand-deep-wine) 100%);
 }
 
 .articles-canvas {
@@ -90,7 +90,7 @@
 .article-prose blockquote {
   margin-top: 1.5rem;
   border-left: 4px solid var(--articles-primary);
-  background: #f0f9ff;
+  background: #fbf6ec;
   border-radius: 1rem;
   padding: 1.25rem 1.5rem;
   font-style: italic;

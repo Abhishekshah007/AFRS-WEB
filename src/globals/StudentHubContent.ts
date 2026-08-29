@@ -7,6 +7,8 @@ import {
   defaultUgcNetAchievers,
 } from '@/data/defaults/student-hub/content'
 import { ADMIN_GROUPS } from '../config/adminGroups'
+import { careerGuidancePageFields } from './fields/careerGuidancePage'
+import { ugcNetPageFields } from './fields/ugcNetPage'
 
 export const StudentHubContent: GlobalConfig = {
   slug: 'studentHubContent',
@@ -56,5 +58,7 @@ export const StudentHubContent: GlobalConfig = {
         { name: 'photo', type: 'upload', relationTo: 'media' },
       ],
     },
+    ...ugcNetPageFields,
+    ...careerGuidancePageFields,
   ],
 }

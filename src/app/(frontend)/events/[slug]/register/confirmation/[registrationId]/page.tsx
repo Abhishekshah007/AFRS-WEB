@@ -8,7 +8,8 @@ type Props = { params: Promise<{ slug: string; registrationId: string }> }
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: 'Registration Confirmed',
-    description: 'Your event registration and payment are confirmed.',
+    description: 'Your event registration is confirmed.',
+    robots: { index: false, follow: false },
   }
 }
 
@@ -43,12 +44,12 @@ export default async function RegistrationConfirmationPage({ params }: Props) {
             <p><span className="text-slate-500">Payment Reference:</span> <span className="font-semibold">{record.paymentReference || '-'}</span></p>
             <p><span className="text-slate-500">Name:</span> <span className="font-semibold">{record.fullName}</span></p>
             <p><span className="text-slate-500">Email:</span> <span className="font-semibold">{record.email}</span></p>
-            <p><span className="text-slate-500">Total Paid:</span> <span className="font-extrabold text-indigo-700">₹{Number(record.totalAmount || 0).toLocaleString('en-IN')}</span></p>
+            <p><span className="text-slate-500">Total Paid:</span> <span className="font-extrabold text-brand-700">₹{Number(record.totalAmount || 0).toLocaleString('en-IN')}</span></p>
           </div>
 
           <div className="mt-7 flex gap-3">
             <Link href={`/events/${record.eventSlug}`} className="h-11 px-5 rounded-xl border border-slate-300 text-slate-700 font-semibold inline-flex items-center">Back to Event</Link>
-            <Link href="/events" className="h-11 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold inline-flex items-center">Browse More Events</Link>
+            <Link href="/events" className="h-11 px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold inline-flex items-center">Browse More Events</Link>
           </div>
         </div>
       </div>

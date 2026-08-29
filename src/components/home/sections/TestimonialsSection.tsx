@@ -22,7 +22,7 @@ export function TestimonialsSection({
         <AnimateOnScroll stagger className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.docs.map((t) => (
             <div key={t.id} className={`${UI.card} p-8 card-pop text-center`}>
-              <div className="mx-auto h-16 w-16 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl font-bold">
+              <div className="mx-auto h-16 w-16 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center text-xl font-bold">
                 {t.name?.[0]?.toUpperCase() || '?'}
               </div>
               <p className="mt-4 font-bold text-slate-900">{t.name}</p>

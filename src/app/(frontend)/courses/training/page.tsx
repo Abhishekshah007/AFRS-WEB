@@ -1,11 +1,14 @@
 import { CategoryIndexView } from '@/components/programmes/CategoryIndexView'
 import { getTrainingCategories } from '@/components/programmes/catalog'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'AFSL Training & Internship',
-  description: 'Online and lab-based training, internships, dissertation support, and research programmes at AFSL.',
-}
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Forensic Training & Internship Programmes',
+  description:
+    'AFSL forensic science training and laboratory internships for students, graduates and professionals, including dissertation and research support.',
+  path: '/courses/training',
+})
 
 export default async function TrainingIndexPage() {
   const categories = await getTrainingCategories()

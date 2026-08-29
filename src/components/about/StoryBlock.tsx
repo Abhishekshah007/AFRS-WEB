@@ -30,8 +30,8 @@ export function StoryBlock({
 }: StoryBlockProps) {
   const badgeClass =
     badgeVariant === 'blue'
-      ? 'bg-blue-100 text-[var(--about-primary)]'
-      : 'bg-violet-100 text-violet-700'
+      ? 'bg-brand-50 text-[var(--about-primary)]'
+      : 'bg-brand-100 text-brand-700'
 
   const textCol = (
     <div className="flex flex-col justify-center">

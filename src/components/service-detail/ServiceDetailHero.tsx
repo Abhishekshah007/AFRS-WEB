@@ -18,12 +18,11 @@ export function ServiceDetailHero({ title, description, bannerUrl }: ServiceDeta
     >
       <Image
         src={bannerUrl}
-        alt=""
+        alt={`${title} — AFSL forensic service`}
         fill
         priority
         sizes="100vw"
         className="object-cover hero-ken-burns"
-        aria-hidden
       />
 
       {/* Light misty overlay — matches the bright reference image tone */}

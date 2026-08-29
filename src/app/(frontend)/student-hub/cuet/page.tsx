@@ -1,13 +1,15 @@
 import { getUgcNetAchievers } from '@/components/student-hub/content'
 import { getUpcomingStudentHubEvents } from '@/components/student-hub/eventSummaries.server'
 import { UgcNetExperience } from '@/components/student-hub/UgcNetExperience'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'CUET UG/PG Forensic Science (SCQP13)',
+export const metadata: Metadata = buildPageMetadata({
+  title: 'CUET Forensic Science (SCQP13) Preparation',
   description:
-    'Prepare for CUET UG/PG Forensic Science, Paper Code SCQP13, with domain coaching, mock tests, and guided practice for NTA CUET aspirants.',
-}
+    'CUET UG/PG Forensic Science (SCQP13) preparation with domain practice, mock tests and guided study support.',
+  path: '/student-hub/cuet',
+})
 
 export default async function CuetPage() {
   const [{ featured, events }, achievers] = await Promise.all([

@@ -17,11 +17,11 @@ export function EventsSection({
   events: PaginatedDocs<AfrsEvent>
 }) {
   const buttonColors = [
-    'bg-indigo-600 hover:bg-indigo-700',
-    'bg-violet-700 hover:bg-violet-800',
-    'bg-orange-500 hover:bg-orange-600',
+    'bg-brand-600 hover:bg-brand-700',
+    'bg-brand-500 hover:bg-brand-700',
+    'bg-brand-700 hover:bg-brand',
   ]
-  const badgeColors = ['bg-indigo-500', 'bg-violet-600', 'bg-orange-500']
+  const badgeColors = ['bg-brand-500', 'bg-brand-700', 'bg-brand-600']
 
   return (
     <section className={`${SECTION} bg-white section-glow-top`}>

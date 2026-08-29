@@ -1,13 +1,16 @@
 import { CourseRegistrationForm } from '@/components/programmes/CourseRegistrationForm'
-import type { Metadata } from 'next'
 import type { RegistrationForm as RegistrationFormType } from '@/payload-types'
 import { getPayloadClient } from '@/lib/payload'
 import type { RegistrationFormConfig } from '@/components/programmes/RegistrationFormRenderer'
+import { buildPageMetadata } from '@/lib/seo/metadata'
+import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: 'Course Registration',
-  description: 'Register interest for AFRS forensic education and training programmes.',
-}
+  description: 'Register interest in AFRS forensic education and AFSL training programmes.',
+  path: '/courses/register',
+  index: false,
+})
 
 type Props = Readonly<{
   searchParams: Promise<{

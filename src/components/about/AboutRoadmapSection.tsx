@@ -40,9 +40,9 @@ export function AboutRoadmapSection({
         <div className="mt-12 grid gap-8 lg:grid-cols-[300px_1fr] lg:items-start">
           {/* ── Left card ── */}
           <AnimateOnScroll direction="left">
-            <div className="rounded-3xl border border-indigo-100 bg-[#f6f7ff] p-7 shadow-sm">
+            <div className="rounded-3xl border border-brand-100 bg-brand-50 p-7 shadow-sm">
               {/* Icon square */}
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--about-primary)] text-white shadow-md shadow-indigo-300/40">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--about-primary)] text-white shadow-md shadow-brand-300/40">
                 <MapPin className="h-5 w-5" strokeWidth={2} />
               </div>
 
@@ -68,7 +68,7 @@ export function AboutRoadmapSection({
                 <li key={item} className="flex items-center gap-5">
                   {/* Number bubble — no absolute positioning, pure flex */}
                   <span
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--about-primary)] text-[13px] font-extrabold text-white shadow-sm shadow-indigo-300/40"
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--about-primary)] text-[13px] font-extrabold text-white shadow-sm shadow-brand-300/40"
                     aria-hidden
                   >
                     {index + 1}

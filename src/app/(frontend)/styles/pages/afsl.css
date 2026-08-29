@@ -1,12 +1,12 @@
 .afsl-hero {
-  background: linear-gradient(155deg, #2e1065 0%, #4c1d95 35%, #6d28d9 65%, #5b21b6 100%);
+  background: linear-gradient(155deg, #3b010b 0%, #560b18 35%, #75162d 65%, #3b010b 100%);
 }
 
 .afsl-hero-ui {
   background:
-    radial-gradient(circle at 74% 18%, rgba(168, 40, 136, 0.58), transparent 34%),
-    radial-gradient(circle at 16% 88%, rgba(97, 37, 187, 0.72), transparent 38%),
-    linear-gradient(132deg, #0b1121 0%, #221844 30%, #5b1eb2 72%, #47178d 100%);
+    radial-gradient(circle at 74% 18%, rgba(242, 217, 160, 0.22), transparent 34%),
+    radial-gradient(circle at 16% 88%, rgba(117, 22, 45, 0.55), transparent 38%),
+    linear-gradient(132deg, #3b010b 0%, #560b18 30%, #75162d 72%, #3b010b 100%);
 }
 
 .afsl-diagonal-lines {

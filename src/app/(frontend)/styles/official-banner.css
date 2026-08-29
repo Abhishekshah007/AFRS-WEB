@@ -4,39 +4,39 @@
 }
 
 .official-banner--navy {
-  background: linear-gradient(145deg, #0c1929 0%, #132f4c 40%, #1e3a5f 70%, #0f2744 100%);
+  background: linear-gradient(145deg, #3b010b 0%, #560b18 40%, #75162d 70%, #3b010b 100%);
 }
 .official-banner--indigo {
-  background: linear-gradient(145deg, #1e1b4b 0%, #312e81 35%, #1d4ed8 70%, #0e7490 100%);
+  background: var(--brand-hero);
   background-size: 200% 200%;
   animation: heroMeshShift 14s ease infinite;
 }
 .official-banner--about {
-  background: linear-gradient(145deg, #1e3a5f 0%, #1e40af 45%, #2563eb 75%, #1d4ed8 100%);
+  background: linear-gradient(145deg, #3b010b 0%, #560b18 45%, #75162d 75%, #3b010b 100%);
   background-size: 200% 200%;
   animation: heroMeshShift 14s ease infinite;
 }
 .official-banner--programmes {
-  background: linear-gradient(145deg, #1e3a5f 0%, #2563eb 40%, #3b63e8 75%, #1d4ed8 100%);
+  background: linear-gradient(145deg, #3b010b 0%, #75162d 40%, #560b18 75%, #3b010b 100%);
   background-size: 200% 200%;
   animation: heroMeshShift 13s ease infinite;
 }
 .official-banner--articles {
-  background: linear-gradient(145deg, #1e3a5f 0%, #3b5bdb 50%, #4f63e8 100%);
+  background: linear-gradient(145deg, #3b010b 0%, #560b18 50%, #75162d 100%);
   background-size: 200% 200%;
   animation: heroMeshShift 13s ease infinite;
 }
 .official-banner--afsl {
-  background: linear-gradient(155deg, #1a0a2e 0%, #3b0764 35%, #5b21b6 65%, #312e81 100%);
+  background: linear-gradient(155deg, #3b010b 0%, #560b18 35%, #75162d 65%, #3b010b 100%);
   background-size: 200% 200%;
   animation: heroMeshShift 16s ease infinite;
 }
 .official-banner--light {
-  background: linear-gradient(180deg, #f0f4fa 0%, #ffffff 55%, #f8fafc 100%);
-  color: #0f172a;
+  background: linear-gradient(180deg, #fbf6ec 0%, #ffffff 55%, #f2e5c6 100%);
+  color: #1a0c0f;
 }
 .official-banner--overlay {
-  background: #0f172a;
+  background: #3b010b;
 }
 
 .official-tricolor {
@@ -69,8 +69,8 @@
   gap: 10px;
   padding: 6px 16px 6px 10px;
   border-radius: 9999px;
-  background: rgba(15, 23, 42, 0.45);
-  border: 1px solid rgba(251, 191, 36, 0.35);
+  background: rgba(59, 1, 11, 0.5);
+  border: 1px solid rgba(242, 217, 160, 0.4);
   backdrop-filter: blur(12px);
   max-width: min(96vw, 720px);
   pointer-events: none;
@@ -91,13 +91,13 @@
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(251, 191, 36, 0.95);
+  color: rgba(242, 217, 160, 0.98);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .official-seal-strip--light .official-seal-eyebrow {
-  color: #b45309;
+  color: #75162d;
 }
 .official-seal-tagline {
   font-size: 9px;
@@ -119,8 +119,8 @@
   right: 0;
   z-index: 12;
   overflow: hidden;
-  border-top: 1px solid rgba(251, 191, 36, 0.25);
-  background: rgba(15, 23, 42, 0.55);
+  border-top: 1px solid rgba(242, 217, 160, 0.28);
+  background: rgba(59, 1, 11, 0.55);
   backdrop-filter: blur(8px);
 }
 .official-banner--light .official-ticker-wrap {
@@ -152,7 +152,7 @@
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #fbbf24;
+  background: #f2d9a0;
   flex-shrink: 0;
 }
 @keyframes officialTicker {
@@ -188,7 +188,7 @@
   height: 48px;
   z-index: 8;
   pointer-events: none;
-  border-color: rgba(251, 191, 36, 0.4);
+  border-color: rgba(242, 217, 160, 0.45);
   border-style: solid;
 }
 .official-corner-tl {

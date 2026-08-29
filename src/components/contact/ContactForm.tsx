@@ -11,7 +11,7 @@ export function ContactForm() {
       className="rounded-3xl border border-slate-100 bg-white shadow-sm p-6 sm:p-8"
     >
       <div className="flex items-center gap-2 text-sm font-bold text-slate-900">
-        <span className="text-indigo-600">✦</span>
+        <span className="text-brand-600">✦</span>
         Send a Message
       </div>
 
@@ -21,7 +21,7 @@ export function ContactForm() {
           <input
             name="fullName"
             disabled={disabled}
-            className="mt-2 w-full h-11 rounded-lg border border-slate-200 px-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-300"
+            className="mt-2 w-full h-11 rounded-lg border border-slate-200 px-3 text-sm outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-300"
             placeholder="Your name"
             autoComplete="name"
             required
@@ -32,7 +32,7 @@ export function ContactForm() {
           <input
             name="mobile"
             disabled={disabled}
-            className="mt-2 w-full h-11 rounded-lg border border-slate-200 px-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-300"
+            className="mt-2 w-full h-11 rounded-lg border border-slate-200 px-3 text-sm outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-300"
             placeholder="+91 00000 00000"
             autoComplete="tel"
           />
@@ -43,7 +43,7 @@ export function ContactForm() {
             name="email"
             type="email"
             disabled={disabled}
-            className="mt-2 w-full h-11 rounded-lg border border-slate-200 px-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-300"
+            className="mt-2 w-full h-11 rounded-lg border border-slate-200 px-3 text-sm outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-300"
             placeholder="you@example.com"
             autoComplete="email"
             required
@@ -54,7 +54,7 @@ export function ContactForm() {
           <input
             name="subject"
             disabled={disabled}
-            className="mt-2 w-full h-11 rounded-lg border border-slate-200 px-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-300"
+            className="mt-2 w-full h-11 rounded-lg border border-slate-200 px-3 text-sm outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-300"
             placeholder="How can we help?"
           />
         </label>
@@ -63,7 +63,7 @@ export function ContactForm() {
           <textarea
             name="message"
             disabled={disabled}
-            className="mt-2 w-full min-h-28 rounded-lg border border-slate-200 p-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-300 resize-y"
+            className="mt-2 w-full min-h-28 rounded-lg border border-slate-200 p-3 text-sm outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-300 resize-y"
             placeholder="Write your message..."
             required
           />
@@ -87,7 +87,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={disabled}
-        className="mt-6 h-11 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold disabled:opacity-60"
+        className="mt-6 h-11 px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold disabled:opacity-60"
       >
         {buttonLabel}
       </button>

@@ -1,22 +1,10 @@
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import { CONTAINER, SECTION } from './constants'
+import { HOME_FAQS } from './faqs'
 
 export function FaqSection() {
-  const faqs = [
-    {
-      q: 'Who can apply for the forensic science internship program?',
-      a: 'Students and graduates in forensic science, criminology, or related fields may apply through our courses page.',
-    },
-    {
-      q: 'Are AFRS training programs accredited?',
-      a: 'Our programs follow industry-standard curricula with certificates issued upon successful completion.',
-    },
-    {
-      q: 'How do I register for upcoming workshops and events?',
-      a: 'Browse upcoming events on our website and complete registration through the event detail page.',
-    },
-  ]
+  const faqs = HOME_FAQS
 
   return (
     <section className={`${SECTION} bg-white section-glow-top`}>
@@ -33,7 +21,7 @@ export function FaqSection() {
             >
               <summary className="flex items-center justify-between gap-4 cursor-pointer p-5 text-sm font-semibold text-slate-800 list-none">
                 {faq.q}
-                <span className="shrink-0 h-8 w-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg font-light group-open:rotate-45 transition">
+                <span className="shrink-0 h-8 w-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center text-lg font-light group-open:rotate-45 transition">
                   +
                 </span>
               </summary>
