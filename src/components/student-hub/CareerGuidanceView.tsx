@@ -112,18 +112,39 @@ export function CareerGuidanceView({ content }: Props) {
                 </div>
                 <div className="mt-8 space-y-3">
                   <div className="career-path-step">
-                    <span className="career-path-icon"><GraduationCap className="h-4 w-4" aria-hidden /></span>
-                    <span><strong>Academic foundation</strong><small>Choose the right direction</small></span>
-                    <ArrowUpRight className="ml-auto h-4 w-4 text-[var(--hub-primary)]" aria-hidden />
+                    <span className="career-path-icon">
+                      <GraduationCap className="h-4 w-4" aria-hidden />
+                    </span>
+                    <span>
+                      <strong>Academic foundation</strong>
+                      <small>Choose the right direction</small>
+                    </span>
+                    <ArrowUpRight
+                      className="ml-auto h-4 w-4 text-[var(--hub-primary)]"
+                      aria-hidden
+                    />
                   </div>
                   <div className="career-path-step">
-                    <span className="career-path-icon"><Microscope className="h-4 w-4" aria-hidden /></span>
-                    <span><strong>Practical skills</strong><small>Build confidence through practice</small></span>
-                    <ArrowUpRight className="ml-auto h-4 w-4 text-[var(--hub-primary)]" aria-hidden />
+                    <span className="career-path-icon">
+                      <Microscope className="h-4 w-4" aria-hidden />
+                    </span>
+                    <span>
+                      <strong>Practical skills</strong>
+                      <small>Build confidence through practice</small>
+                    </span>
+                    <ArrowUpRight
+                      className="ml-auto h-4 w-4 text-[var(--hub-primary)]"
+                      aria-hidden
+                    />
                   </div>
                   <div className="career-path-step career-path-step-active">
-                    <span className="career-path-icon"><Compass className="h-4 w-4" aria-hidden /></span>
-                    <span><strong>Professional growth</strong><small>Plan your next opportunity</small></span>
+                    <span className="career-path-icon">
+                      <Compass className="h-4 w-4" aria-hidden />
+                    </span>
+                    <span>
+                      <strong>Professional growth</strong>
+                      <small>Plan your next opportunity</small>
+                    </span>
                     <ArrowUpRight className="ml-auto h-4 w-4 text-white" aria-hidden />
                   </div>
                 </div>
@@ -138,7 +159,9 @@ export function CareerGuidanceView({ content }: Props) {
       </section>
 
       <div className="border-b border-slate-100 bg-white">
-        <div className={`${studentHubTokens.container} flex items-center gap-2 py-3 text-xs text-slate-500`}>
+        <div
+          className={`${studentHubTokens.container} flex items-center gap-2 py-3 text-xs text-slate-500`}
+        >
           <Link href="/student-hub" className="hover:text-[var(--hub-primary)]">
             Student Hub
           </Link>
@@ -171,7 +194,11 @@ export function CareerGuidanceView({ content }: Props) {
           </AnimateOnScroll>
           <ChipList items={content.careerPathways} />
           <div className="mt-8">
-            <CtaLink href={content.careersCtaHref} label={`${content.careersCtaLabel} →`} variant="secondary" />
+            <CtaLink
+              href={content.careersCtaHref}
+              label={`${content.careersCtaLabel} →`}
+              variant="secondary"
+            />
           </div>
         </div>
       </section>
@@ -231,7 +258,9 @@ export function CareerGuidanceView({ content }: Props) {
       <section id="internships" className={`${studentHubTokens.sectionY} bg-white`}>
         <div className={studentHubTokens.container}>
           <SectionHeading title={content.internshipsTitle} description={content.internshipsIntro} />
-          <p className={`mt-6 text-sm font-semibold text-slate-700`}>{content.internshipsDescription}</p>
+          <p className={`mt-6 text-sm font-semibold text-slate-700`}>
+            {content.internshipsDescription}
+          </p>
           <ChipList items={content.internships} />
           <p className={`mt-6 text-sm ${studentHubTokens.body}`}>{content.internshipsNote}</p>
           <div className="mt-8">
@@ -256,13 +285,21 @@ export function CareerGuidanceView({ content }: Props) {
               <p className={`mt-6 text-sm ${studentHubTokens.body}`}>{content.examsNote}</p>
               <div className="mt-8 flex flex-wrap gap-3">
                 {content.examLinks.map((link) => (
-                  <CtaLink key={link.href} href={link.href} label={link.label} variant="secondary" />
+                  <CtaLink
+                    key={link.href}
+                    href={link.href}
+                    label={link.label}
+                    variant="secondary"
+                  />
                 ))}
               </div>
             </div>
 
             <div id="research">
-              <SectionHeading title={content.researchTitle} description={content.researchDescription} />
+              <SectionHeading
+                title={content.researchTitle}
+                description={content.researchDescription}
+              />
               <ChipList items={content.researchItems} />
               <div className="mt-8">
                 <CtaLink href={content.researchCtaHref} label={content.researchCtaLabel} />
@@ -292,8 +329,13 @@ export function CareerGuidanceView({ content }: Props) {
         </div>
       </section>
 
-      <section id="guidance" className={`${studentHubTokens.sectionY} bg-[var(--hub-navy)] text-white`}>
-        <div className={`${studentHubTokens.container} grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start`}>
+      <section
+        id="guidance"
+        className={`${studentHubTokens.sectionY} bg-[var(--hub-navy)] text-white`}
+      >
+        <div
+          className={`${studentHubTokens.container} grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start`}
+        >
           <div>
             <h2 className="text-2xl font-extrabold sm:text-3xl">{content.consultationTitle}</h2>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/70">
@@ -321,7 +363,11 @@ export function CareerGuidanceView({ content }: Props) {
               ))}
             </dl>
             <div className="mt-8">
-              <CtaLink href={content.consultationCtaHref} label={content.consultationCtaLabel} variant="light" />
+              <CtaLink
+                href={content.consultationCtaHref}
+                label={content.consultationCtaLabel}
+                variant="light"
+              />
             </div>
           </div>
         </div>
@@ -349,7 +395,10 @@ export function CareerGuidanceView({ content }: Props) {
 
       <section className={`${studentHubTokens.sectionY} bg-slate-50`}>
         <div className={studentHubTokens.container}>
-          <SectionHeading title={content.resourcesTitle} description={content.resourcesDescription} />
+          <SectionHeading
+            title={content.resourcesTitle}
+            description={content.resourcesDescription}
+          />
           <ChipList items={content.resources} />
           <div className="mt-8">
             <CtaLink href={content.resourcesCtaHref} label={content.resourcesCtaLabel} />
@@ -384,7 +433,8 @@ export function CareerGuidanceView({ content }: Props) {
           <h2 className="text-2xl font-extrabold sm:text-3xl">{content.bottomCtaTitle}</h2>
           <p className="mt-4 text-sm font-semibold text-brand-200">{content.bottomCtaIntro}</p>
           <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-white/70">
-            Let AFRS help you plan your next step in Forensic Science. {content.bottomCtaDescription}
+            Let AFRS help you plan your next step in Forensic Science.{' '}
+            {content.bottomCtaDescription}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             {content.bottomCtas.map((cta, index) => (
