@@ -41,6 +41,104 @@
   background: var(--brand-sand-gold);
 }
 
+.career-hero {
+  padding: 5.5rem 0 6rem;
+  background: linear-gradient(115deg, #fffdf8 0%, #ffffff 48%, #fffaf0 100%);
+}
+
+.career-hero-copy {
+  animation: career-hero-enter 700ms ease-out both;
+}
+
+.career-hero-panel {
+  overflow: hidden;
+  border: 1px solid rgba(59, 1, 11, 0.1);
+  border-radius: 1.75rem;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 24px 70px rgba(59, 1, 11, 0.12);
+  animation: career-hero-enter 700ms 120ms ease-out both;
+}
+
+.career-hero-panel-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.32;
+  background-image: linear-gradient(rgba(59, 1, 11, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 1, 11, 0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(to bottom right, black, transparent 72%);
+}
+
+.career-path-step {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 4.25rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.career-path-step > span:nth-child(2) {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.career-path-step strong {
+  color: var(--hub-text);
+  font-size: 0.85rem;
+}
+
+.career-path-step small {
+  color: #64748b;
+  font-size: 0.72rem;
+}
+
+.career-path-icon {
+  display: flex;
+  height: 2.25rem;
+  width: 2.25rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.7rem;
+  background: var(--brand-soft);
+  color: var(--hub-primary);
+}
+
+.career-path-step-active {
+  border-color: var(--hub-primary);
+  background: var(--hub-primary);
+}
+
+.career-path-step-active strong,
+.career-path-step-active small {
+  color: white;
+}
+
+.career-path-step-active .career-path-icon {
+  background: rgba(255, 255, 255, 0.16);
+  color: white;
+}
+
+@keyframes career-hero-enter {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 639px) {
+  .career-hero {
+    padding: 4.5rem 0 4.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .career-hero-copy,
+  .career-hero-panel {
+    animation: none;
+  }
+}
+
 .hub-exam-section {
   background: linear-gradient(180deg, var(--brand-deep-wine) 0%, var(--brand-dark-maroon) 50%, var(--brand-deep-wine) 100%);
 }
