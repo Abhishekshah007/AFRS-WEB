@@ -22,6 +22,8 @@ import {
 } from 'lucide-react'
 // import { Modal } from '@/components/ui/Modal'
 import { LabInquiryForm } from '@/components/services/LabInquiryForm'
+import { AfslTestimonialsSection } from '@/components/services/AfslTestimonialsSection'
+import type { AfslTestimonial } from '@/components/services/AfslTestimonialsSection'
 import { VisitorCounterBar } from '@/components/student-hub/VisitorCounterBar'
 import { SiteGallerySection } from '@/components/gallery/SiteGallerySection'
 import type { SiteGalleryItem } from '@/components/gallery/SiteGallerySection'
@@ -55,6 +57,7 @@ export type ServicesPageViewProps = {
   site: SiteContact
   totalVisitors: number
   galleryItems: SiteGalleryItem[]
+  testimonials: AfslTestimonial[]
 }
 
 // const clientCategories = [
@@ -136,6 +139,7 @@ export function ServicesPageView({
   site,
   totalVisitors,
   galleryItems,
+  testimonials,
 }: ServicesPageViewProps) {
   // const [selectedCategory, setSelectedCategory] = useState<typeof clientCategories[0] | null>(null)
   const services = catalogItems.length > 0 ? catalogItems : defaultServicesCatalog
@@ -145,7 +149,7 @@ export function ServicesPageView({
   return (
     <div className="afsl-page bg-white text-[#1A0C0F]">
       <section className="afsl-hero-ui relative overflow-hidden text-white">
-        <div className=" absolute inset-0" aria-hidden />
+        <div className=" absolute" aria-hidden />
         <div
           className={`${CONTAINER} grid min-h-[520px] items-center gap-10 py-16 lg:grid-cols-[1fr_470px]`}
         >
@@ -284,69 +288,69 @@ export function ServicesPageView({
                 </p>
               ) : (
                 directors.map((person) => (
-                <div key={person.id}>
-                  <article className="group overflow-hidden rounded-[20px] border border-[#e5ebf4] bg-gradient-to-br from-white to-[#FBF6EC] shadow-[0_12px_32px_rgba(15,23,42,0.08)] transition hover:shadow-[0_20px_48px_rgba(59,1,11,0.15)] hover:-translate-y-1">
-                    {/* Top gradient bar */}
-                    <div className="h-1 w-full bg-gradient-to-r from-[#75162D] via-[#F2D9A0] to-[#75162D]" />
+                  <div key={person.id}>
+                    <article className="group overflow-hidden rounded-[20px] border border-[#e5ebf4] bg-gradient-to-br from-white to-[#FBF6EC] shadow-[0_12px_32px_rgba(15,23,42,0.08)] transition hover:shadow-[0_20px_48px_rgba(59,1,11,0.15)] hover:-translate-y-1">
+                      {/* Top gradient bar */}
+                      <div className="h-1 w-full bg-gradient-to-r from-[#75162D] via-[#F2D9A0] to-[#75162D]" />
 
-                    {/* Content */}
-                    <div className="p-8">
-                      <div className="flex flex-col gap-6 lg:flex-row lg:items-center">
-                        {/* Photo */}
-                        <div className="relative flex-shrink-0 mx-auto lg:mx-0">
-                          <div className="absolute inset-0 rounded-[24px] bg-gradient-to-br from-[#75162D] to-[#F2D9A0] opacity-0 transition group-hover:opacity-20" />
-                          <div className="relative h-36 w-36 overflow-hidden rounded-[24px] border-2 border-[#e5ebf4] bg-[#FBF6EC] shadow-xl">
-                            {person.photo ? (
-                              <Image
-                                src={person.photo}
-                                alt={person.name}
-                                fill
-                                className="object-cover transition duration-500 group-hover:scale-105"
-                              />
-                            ) : (
-                              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#75162D]/10 to-[#F2D9A0]/10 text-4xl font-black text-[#75162D]">
-                                {person.initials}
-                              </div>
-                            )}
+                      {/* Content */}
+                      <div className="p-8">
+                        <div className="flex flex-col gap-6 lg:flex-row lg:items-center">
+                          {/* Photo */}
+                          <div className="relative flex-shrink-0 mx-auto lg:mx-0">
+                            <div className="absolute inset-0 rounded-[24px] bg-gradient-to-br from-[#75162D] to-[#F2D9A0] opacity-0 transition group-hover:opacity-20" />
+                            <div className="relative h-36 w-36 overflow-hidden rounded-[24px] border-2 border-[#e5ebf4] bg-[#FBF6EC] shadow-xl">
+                              {person.photo ? (
+                                <Image
+                                  src={person.photo}
+                                  alt={person.name}
+                                  fill
+                                  className="object-cover transition duration-500 group-hover:scale-105"
+                                />
+                              ) : (
+                                <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#75162D]/10 to-[#F2D9A0]/10 text-4xl font-black text-[#75162D]">
+                                  {person.initials}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Info */}
+                          <div className="flex-1 text-center lg:text-left">
+                            <h3 className="text-[24px] sm:text-[26px] font-black text-[#1A0C0F]">
+                              {person.name}
+                            </h3>
+                            <p className="mt-3 text-[14px] font-black uppercase tracking-[0.16em] text-[#75162D]">
+                              {person.designation}
+                            </p>
+                            <div className="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
+                              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#75162D]/10 px-3 py-1 text-[12px] font-bold text-[#75162D]">
+                                <Award className="h-3 w-3" />
+                                Expert Certified
+                              </span>
+                              <span
+                                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-bold ${
+                                  person.status === 'inactive'
+                                    ? 'bg-slate-100 text-slate-600'
+                                    : 'bg-emerald-50 text-emerald-700'
+                                }`}
+                              >
+                                <ShieldCheck className="h-3 w-3" />
+                                {person.status === 'inactive' ? 'Inactive' : 'Active'}
+                              </span>
+                            </div>
                           </div>
                         </div>
 
-                        {/* Info */}
-                        <div className="flex-1 text-center lg:text-left">
-                          <h3 className="text-[24px] sm:text-[26px] font-black text-[#1A0C0F]">
-                            {person.name}
-                          </h3>
-                          <p className="mt-3 text-[14px] font-black uppercase tracking-[0.16em] text-[#75162D]">
-                            {person.designation}
-                          </p>
-                          <div className="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
-                            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#75162D]/10 px-3 py-1 text-[12px] font-bold text-[#75162D]">
-                              <Award className="h-3 w-3" />
-                              Expert Certified
-                            </span>
-                            <span
-                              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-bold ${
-                                person.status === 'inactive'
-                                  ? 'bg-slate-100 text-slate-600'
-                                  : 'bg-emerald-50 text-emerald-700'
-                              }`}
-                            >
-                              <ShieldCheck className="h-3 w-3" />
-                              {person.status === 'inactive' ? 'Inactive' : 'Active'}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* CTA */}
-                      {/* <div className="mt-6 border-t border-[#e5ebf4] pt-6">
+                        {/* CTA */}
+                        {/* <div className="mt-6 border-t border-[#e5ebf4] pt-6">
                         <button className="w-full rounded-[10px] border border-[#75162D] bg-white px-4 py-2.5 text-center text-[12px] font-black text-[#75162D] transition hover:bg-[#75162D] hover:text-white">
                           View Credentials
                         </button>
                       </div> */}
-                    </div>
-                  </article>
-                </div>
+                      </div>
+                    </article>
+                  </div>
                 ))
               )}
             </div>
@@ -371,55 +375,55 @@ export function ServicesPageView({
                 </p>
               ) : (
                 people.map((person) => {
-                return (
-                  <div key={person.id}>
-                    <article className="group h-full overflow-hidden rounded-[18px] border border-[#e5ebf4] bg-gradient-to-b from-white to-[#FBF6EC] shadow-[0_10px_24px_rgba(15,23,42,0.08)] transition hover:shadow-[0_14px_32px_rgba(59,1,11,0.12)] hover:-translate-y-0.5">
-                      {/* Top accent line */}
-                      <div className="h-0.5 w-full bg-gradient-to-r from-[#75162D] via-[#F2D9A0] to-transparent" />
+                  return (
+                    <div key={person.id}>
+                      <article className="group h-full overflow-hidden rounded-[18px] border border-[#e5ebf4] bg-gradient-to-b from-white to-[#FBF6EC] shadow-[0_10px_24px_rgba(15,23,42,0.08)] transition hover:shadow-[0_14px_32px_rgba(59,1,11,0.12)] hover:-translate-y-0.5">
+                        {/* Top accent line */}
+                        <div className="h-0.5 w-full bg-gradient-to-r from-[#75162D] via-[#F2D9A0] to-transparent" />
 
-                      <div className="p-7 text-center">
-                        {/* Photo */}
-                        <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-[14px] border border-[#e5ebf4] bg-white overflow-hidden shadow-sm transition group-hover:shadow-md">
-                          {person.photo ? (
-                            <Image
-                              src={person.photo}
-                              alt={person.name}
-                              width={88}
-                              height={88}
-                              className="h-full w-full object-cover"
-                            />
-                          ) : (
-                            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#75162D]/10 to-[#F2D9A0]/10 text-lg font-black text-[#75162D]">
-                              {person.initials}
-                            </div>
-                          )}
+                        <div className="p-7 text-center">
+                          {/* Photo */}
+                          <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-[14px] border border-[#e5ebf4] bg-white overflow-hidden shadow-sm transition group-hover:shadow-md">
+                            {person.photo ? (
+                              <Image
+                                src={person.photo}
+                                alt={person.name}
+                                width={88}
+                                height={88}
+                                className="h-full w-full object-cover"
+                              />
+                            ) : (
+                              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#75162D]/10 to-[#F2D9A0]/10 text-lg font-black text-[#75162D]">
+                                {person.initials}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Name */}
+                          <h4 className="text-[14px] font-black text-[#1A0C0F] line-clamp-2">
+                            {person.name}
+                          </h4>
+
+                          {/* Designation */}
+                          <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#9ba8ba] line-clamp-2">
+                            {person.designation}
+                          </p>
+
+                          {/* Badge */}
+                          <div
+                            className={`mt-4 inline-block rounded-full px-3 py-1 text-[9px] font-black uppercase tracking-[0.08em] ${
+                              person.status === 'inactive'
+                                ? 'bg-slate-100 text-slate-500'
+                                : 'bg-[#75162D]/10 text-[#75162D]'
+                            }`}
+                          >
+                            {person.status === 'inactive' ? 'Inactive' : 'Active'}
+                          </div>
                         </div>
-
-                        {/* Name */}
-                        <h4 className="text-[14px] font-black text-[#1A0C0F] line-clamp-2">
-                          {person.name}
-                        </h4>
-
-                        {/* Designation */}
-                        <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#9ba8ba] line-clamp-2">
-                          {person.designation}
-                        </p>
-
-                        {/* Badge */}
-                        <div
-                          className={`mt-4 inline-block rounded-full px-3 py-1 text-[9px] font-black uppercase tracking-[0.08em] ${
-                            person.status === 'inactive'
-                              ? 'bg-slate-100 text-slate-500'
-                              : 'bg-[#75162D]/10 text-[#75162D]'
-                          }`}
-                        >
-                          {person.status === 'inactive' ? 'Inactive' : 'Active'}
-                        </div>
-                      </div>
-                    </article>
-                  </div>
-                )
-              })
+                      </article>
+                    </div>
+                  )
+                })
               )}
             </div>
 
@@ -731,6 +735,7 @@ export function ServicesPageView({
           </div>
         </div>
       </section>
+      <AfslTestimonialsSection testimonials={testimonials} />
       <SiteGallerySection items={galleryItems} className="bg-brand-soft" />
       <section className="bg-brand-soft">
         <VisitorCounterBar totalVisitors={totalVisitors} icon="📈" />

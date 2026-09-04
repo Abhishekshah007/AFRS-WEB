@@ -14,7 +14,7 @@ export const Scientists: CollectionConfig = {
   admin: {
     group: ADMIN_GROUPS.CONTENT,
     description:
-      'Add, edit, reorder, and publish people shown in Laboratory Directorate and Laboratory Members on the Services page. The same records also appear on Home and About when published.',
+      'Add, edit, reorder, and publish people shown in Laboratory Directorate and Laboratory Members on the AFSL Services page, and in Our Expert Scientists on Home. About Us uses the AFRS leadership and executive committee from about page defaults, not this collection.',
     useAsTitle: 'name',
     defaultColumns: ['name', 'designation', 'memberType', 'status', 'published', 'order'],
   },

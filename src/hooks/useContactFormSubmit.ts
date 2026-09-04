@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import type { SubmissionFormType } from '@/fields/submissionExport'
 import type { FormSubmitState } from '@/domain/registration/types'
 
 export type ContactMessagePayload = {
@@ -9,6 +10,9 @@ export type ContactMessagePayload = {
   email: string
   subject?: string
   message: string
+  formType?: SubmissionFormType
+  caseType?: string
+  serviceSlug?: string
 }
 
 type Options = {
@@ -23,6 +27,7 @@ const defaultMapFormData = (formData: FormData): ContactMessagePayload => ({
   email: String(formData.get('email') || '').trim(),
   subject: String(formData.get('subject') || '').trim(),
   message: String(formData.get('message') || '').trim(),
+  formType: 'contact',
 })
 
 export function useContactFormSubmit({
@@ -52,7 +57,10 @@ export function useContactFormSubmit({
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          ...payload,
+          formType: payload.formType || 'contact',
+        }),
       })
 
       if (!res.ok) {

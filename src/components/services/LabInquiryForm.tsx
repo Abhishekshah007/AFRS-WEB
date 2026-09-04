@@ -13,7 +13,9 @@ export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] })
       email: String(formData.get('email') || '').trim(),
       mobile: String(formData.get('mobile') || '').trim(),
       subject: String(formData.get('serviceType') || 'Lab inquiry').trim(),
+      caseType: String(formData.get('serviceType') || '').trim(),
       message: String(formData.get('message') || '').trim(),
+      formType: 'labInquiry',
     }),
   })
 

@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'motion/react'
 import type { HubEventCard } from '@/components/programmes/types'
@@ -44,32 +45,49 @@ export type EventHubCardProps = {
 }
 
 /**
- * Online Events Hub card — Figma layout with nature badge, type pill, and Register CTA.
+ * Shared event card — used on /courses, home, and /events for a consistent layout.
+ * Posters use object-contain so square CMS artwork is not cropped.
  */
 export function EventHubCard({ event, ctaLabel = 'Register Now' }: EventHubCardProps) {
   const typeClass = eventTypeBadgeClass[event.eventType] ?? 'bg-slate-600 text-white'
   const natureClass = eventNatureBadgeClass[event.eventNature]
+  const registrationOpen = event.registrationOpen !== false
+  const registerHref = registrationOpen ? `/events/${event.slug}/register` : `/events/${event.slug}`
+  const registerLabel = registrationOpen ? ctaLabel : 'Registration closed'
 
   return (
     <motion.article
       whileHover={{ y: -8, scale: 1.02 }}
       transition={springSnappy}
-      className={`${programmesTokens.radiusCard} border border-slate-100 bg-white shadow-[0_4px_24px_-4px_rgba(15,23,42,0.08)] overflow-hidden flex flex-col h-full`}
+      className={`${programmesTokens.radiusCard} flex h-full flex-col overflow-hidden border border-slate-100 bg-white shadow-[0_4px_24px_-4px_rgba(15,23,42,0.08)]`}
     >
       <div
-        className={`relative flex h-[148px] items-center justify-center ${eventVisualClass[event.visualTone]}`}
+        className={`relative flex h-[220px] items-center justify-center overflow-hidden border-b border-slate-100 ${
+          event.bannerUrl ? 'bg-slate-50' : eventVisualClass[event.visualTone]
+        }`}
       >
         <span
-          className={`absolute top-3 right-3 rounded-md border px-2 py-0.5 text-[9px] font-extrabold tracking-wide ${natureClass}`}
+          className={`absolute top-3 right-3 z-10 rounded-md border px-2 py-0.5 text-[9px] font-extrabold tracking-wide ${natureClass}`}
         >
           {eventNatureLabel(event.eventNature)}
         </span>
-        <span className="text-5xl opacity-70 select-none" aria-hidden>
-          {event.visualIcon}
-        </span>
+
+        {event.bannerUrl ? (
+          <Image
+            src={event.bannerUrl}
+            alt={`${event.title} poster`}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-contain p-3"
+          />
+        ) : (
+          <span className="text-5xl opacity-70 select-none" aria-hidden>
+            {event.visualIcon}
+          </span>
+        )}
       </div>
 
-      <div className="p-5 flex flex-col flex-1">
+      <div className="flex flex-1 flex-col p-5">
         <div className="flex items-center justify-between gap-2">
           <span className={`rounded-md px-2.5 py-0.5 text-[10px] font-bold ${typeClass}`}>
             {event.eventTypeLabel}
@@ -80,19 +98,30 @@ export function EventHubCard({ event, ctaLabel = 'Register Now' }: EventHubCardP
           </span>
         </div>
 
-        <h3 className="mt-3 font-extrabold text-slate-900 text-[15px] leading-snug">
-          {event.title}
-        </h3>
-        <p className={`mt-2 text-xs leading-relaxed flex-1 ${programmesTokens.body}`}>
+        <h3 className="mt-3 text-[15px] font-extrabold leading-snug text-slate-900">{event.title}</h3>
+        <p className={`mt-2 line-clamp-3 flex-1 text-xs leading-relaxed ${programmesTokens.body}`}>
           {event.description}
         </p>
 
-        <Link
-          href={`/events/${event.slug}`}
-          className="mt-5 block w-full text-center rounded-xl border border-slate-200 bg-white text-slate-800 hover:border-slate-300 hover:bg-slate-50 py-2.5 text-sm font-bold transition shadow-sm"
-        >
-          {ctaLabel}
-        </Link>
+        <div className="mt-5 flex flex-col gap-2">
+          <Link
+            href={`/events/${event.slug}`}
+            className="block w-full rounded-xl border border-slate-200 bg-white py-2.5 text-center text-sm font-bold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
+          >
+            Read more
+          </Link>
+          <Link
+            href={registerHref}
+            aria-disabled={!registrationOpen}
+            className={`block w-full rounded-xl border py-2.5 text-center text-sm font-bold shadow-sm transition ${
+              registrationOpen
+                ? 'border-slate-200 bg-white text-slate-800 hover:border-slate-300 hover:bg-slate-50'
+                : 'cursor-not-allowed border-slate-100 bg-slate-50 text-slate-400'
+            }`}
+          >
+            {registerLabel}
+          </Link>
+        </div>
       </div>
     </motion.article>
   )

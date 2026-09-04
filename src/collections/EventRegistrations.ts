@@ -3,6 +3,8 @@ import type { CollectionConfig } from 'payload'
 import { eventRegistrationAccess } from '../access'
 import { ADMIN_GROUPS } from '../config/adminGroups'
 import { registrationContactFields, registrationPaymentFields, registrationPaymentProofFields } from '../fields'
+import { submissionExportField } from '../fields/submissionExport'
+import { registrationSubmissionExportHook } from '../lib/submissions/attachSubmissionExport'
 
 export const EventRegistrations: CollectionConfig = {
   slug: 'eventRegistrations',
@@ -18,6 +20,9 @@ export const EventRegistrations: CollectionConfig = {
       'paymentStatus',
       'registrationStatus',
     ],
+  },
+  hooks: {
+    afterChange: [registrationSubmissionExportHook('eventRegistrations')],
   },
   fields: [
     { name: 'event', type: 'relationship', relationTo: 'events', required: true },
@@ -36,6 +41,14 @@ export const EventRegistrations: CollectionConfig = {
     { name: 'includeKit', type: 'checkbox', defaultValue: false },
     { name: 'kitPrice', type: 'number', defaultValue: 0 },
 
+    {
+      name: 'customResponses',
+      type: 'json',
+      admin: {
+        description: 'Answers to event-specific custom fields configured on the event.',
+      },
+    },
+
     ...registrationPaymentProofFields,
 
     ...registrationPaymentFields.map((field) =>
@@ -43,5 +56,6 @@ export const EventRegistrations: CollectionConfig = {
         ? { ...field, required: true, defaultValue: undefined }
         : field,
     ),
+    submissionExportField(),
   ],
 }

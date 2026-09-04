@@ -28,6 +28,9 @@ export type HubEventCard = {
   startDate: string
   visualTone: 'blue' | 'orange' | 'purple'
   visualIcon: string
+  /** CMS event poster/banner — shown with object-contain so full artwork is visible. */
+  bannerUrl?: string
+  registrationOpen?: boolean | null
 }
 
 export type ResourcePerson = {

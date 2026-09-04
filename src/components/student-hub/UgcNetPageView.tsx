@@ -4,7 +4,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'motion/react'
 import { CheckCircle2, Gavel } from 'lucide-react'
+import { ExamPrepGalleryCarousel } from '@/components/student-hub/ExamPrepGalleryCarousel'
 import { studentHubTokens } from '@/components/student-hub/tokens'
+import type { GallerySlide } from '@/components/service-detail/types'
 import type { UgcNetPageContent } from '@/components/student-hub/ugc-net/types'
 
 type Achiever = {
@@ -17,6 +19,7 @@ type Achiever = {
 type Props = {
   content: UgcNetPageContent
   achievers: Achiever[]
+  gallerySlides?: GallerySlide[]
 }
 
 const floatTransition = {
@@ -50,7 +53,7 @@ function SectionHeading({
   )
 }
 
-export function UgcNetPageView({ content, achievers }: Props) {
+export function UgcNetPageView({ content, achievers, gallerySlides = [] }: Props) {
   return (
     <>
       {/* ── HERO (unchanged layout) ── */}
@@ -477,6 +480,8 @@ export function UgcNetPageView({ content, achievers }: Props) {
           </div>
         </div>
       </section>
+
+      <ExamPrepGalleryCarousel slides={gallerySlides} />
     </>
   )
 }

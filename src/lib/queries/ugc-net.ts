@@ -92,7 +92,16 @@ function toQuickNav(items: UgcNetNavItem[] | null | undefined): UgcNetNavItem[] 
       href: item.href?.trim() ?? '',
     }))
     .filter((item) => item.label && item.href)
-  return normalized.length > 0 ? normalized : defaultUgcNetPageContent.quickNav
+  const nav = normalized.length > 0 ? normalized : defaultUgcNetPageContent.quickNav
+  if (nav.some((item) => item.href === '#gallery')) return nav
+
+  const withGallery = [...nav]
+  const faqsIndex = withGallery.findIndex((item) => item.href === '#faqs')
+  withGallery.splice(faqsIndex >= 0 ? faqsIndex + 1 : withGallery.length, 0, {
+    label: 'Gallery',
+    href: '#gallery',
+  })
+  return withGallery
 }
 
 export function buildUgcNetPageContent(

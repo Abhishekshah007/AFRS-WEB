@@ -4,6 +4,40 @@ import { hasRequiredFields, jsonError } from '@/lib/apiResponses'
 import { getPayloadClient } from '@/lib/payload'
 import { createLocalReq } from 'payload'
 
+const KNOWN_COURSE_FIELDS = new Set([
+  'programmeType',
+  'categorySlug',
+  'categoryTitle',
+  'programmeId',
+  'programmeTitle',
+  'programmeDuration',
+  'programmeMode',
+  'fullName',
+  'email',
+  'countryCode',
+  'mobileNumber',
+  'address',
+  'organization',
+  'designation',
+  'qualification',
+  'experienceLevel',
+  'preferredBatch',
+  'message',
+  'transactionId',
+  'transactionDate',
+  'transactionTime',
+  'transactionProof',
+])
+
+function extractCustomResponses(formData: FormData): Record<string, string> {
+  const custom: Record<string, string> = {}
+  for (const [key, value] of formData.entries()) {
+    if (KNOWN_COURSE_FIELDS.has(key) || value instanceof File) continue
+    custom[key] = String(value)
+  }
+  return custom
+}
+
 export async function POST(req: Request) {
   try {
     const contentType = req.headers.get('content-type') || ''
@@ -46,6 +80,7 @@ export async function POST(req: Request) {
     }
 
     const uploadFile = formData ? await readUploadFile(formData, 'transactionProof') : undefined
+    const customResponses = formData ? extractCustomResponses(formData) : {}
     const payload = await getPayloadClient()
     const localReq = await createLocalReq({ req: { url: req.url, headers: req.headers } }, payload)
     if (uploadFile) localReq.file = uploadFile
@@ -71,6 +106,7 @@ export async function POST(req: Request) {
         experienceLevel: body.experienceLevel || 'student',
         preferredBatch: body.preferredBatch || undefined,
         message: body.message || undefined,
+        customResponses: Object.keys(customResponses).length ? customResponses : undefined,
         transactionId: body.transactionId || undefined,
         transactionDate: body.transactionDate || undefined,
         transactionTime: body.transactionTime || undefined,

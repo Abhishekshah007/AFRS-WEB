@@ -30,32 +30,33 @@ export function LeadershipSection({
   if (!leaders?.length && !committee?.length) return null
 
   return (
-    <section className={`${aboutTokens.sectionY} ${aboutTokens.sectionAlt} section-glow-top`}>
-      <div className={aboutTokens.container}>
-        {leaders?.length > 0 && (
-          <>
+    <>
+      {leaders?.length > 0 && (
+        <section className={`${aboutTokens.sectionY} ${aboutTokens.sectionAlt} section-glow-top`}>
+          <div className={aboutTokens.container}>
             <AnimateOnScroll>
               <SectionHeader title={leadershipTitle} subtitle={leadershipSubtitle} align="left" />
             </AnimateOnScroll>
-            <AnimateOnScroll stagger className="mb-16 grid gap-6 lg:mb-20 lg:grid-cols-2">
+            <AnimateOnScroll stagger className="grid gap-6 lg:grid-cols-2">
               {leaders.slice(0, 2).map((leader) => (
                 <LeaderCard key={leader.id} leader={leader} />
               ))}
             </AnimateOnScroll>
-          </>
-        )}
+          </div>
+        </section>
+      )}
 
-        {committee?.length > 0 && (
-          <>
+      {committee?.length > 0 && (
+        <section className={`${aboutTokens.sectionY} bg-white`}>
+          <div className={aboutTokens.container}>
             <AnimateOnScroll>
               <SectionHeader title={committeeTitle} subtitle={committeeSubtitle} align="left" />
             </AnimateOnScroll>
-
             <AnimateOnScroll
               stagger
               className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3"
             >
-              {committee.slice(0, 5).map((leader) => (
+              {committee.map((leader) => (
                 <article
                   key={leader.id}
                   className="about-committee-card card-pop relative flex min-h-[390px] h-full overflow-hidden rounded-[18px] border border-slate-200/80 px-8 py-10 shadow-[0_14px_32px_rgba(15,23,42,0.06)]"
@@ -93,10 +94,10 @@ export function LeadershipSection({
                 </article>
               ))}
             </AnimateOnScroll>
-          </>
-        )}
-      </div>
-    </section>
+          </div>
+        </section>
+      )}
+    </>
   )
 }
 

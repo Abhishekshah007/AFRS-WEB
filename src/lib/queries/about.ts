@@ -4,7 +4,6 @@ import type {
   AboutSectionText,
   AchievementStat,
   CertificationItem,
-  LeaderProfile,
   ListItem,
   MembershipPlan,
 } from '@/components/about/types'
@@ -26,7 +25,6 @@ import type {
   AboutPage,
   ImpactStat,
   Media,
-  Scientist,
   SiteSetting,
 } from '@/payload-types'
 
@@ -90,26 +88,6 @@ function parseStatValue(raw: string): Pick<AchievementStat, 'value' | 'numericEn
     value: raw,
     numericEnd: Number(match[1]),
     suffix: match[2] || '',
-  }
-}
-
-function toLeader(sci: Scientist, index: number): LeaderProfile {
-  const photoUrl = resolveMediaUrl(sci.photo as number | Media | null | undefined, '')
-  const initials =
-    sci.name
-      ?.split(' ')
-      .map((w) => w[0])
-      .join('')
-      .slice(0, 2)
-      .toUpperCase() ?? '??'
-
-  return {
-    id: String(sci.id ?? index),
-    name: sci.name,
-    designation: sci.designation ?? 'Forensic Scientist',
-    bio: sci.bio,
-    photoUrl: photoUrl || undefined,
-    initials,
   }
 }
 
@@ -226,18 +204,10 @@ function applyMembershipWhatsAppLinks(
 export async function getAboutPageData(): Promise<AboutPageViewProps> {
   const payload = await getPayloadClient()
 
-  const [aboutPage, siteSettings, scientists, impactStats, certificationsResult, galleryItems] =
+  const [aboutPage, siteSettings, impactStats, certificationsResult, galleryItems] =
     await Promise.all([
     payload.findGlobal({ slug: 'aboutPage', depth: 1, overrideAccess: false }),
     payload.findGlobal({ slug: 'siteSettings', depth: 0, overrideAccess: false }),
-    payload.find({
-      collection: 'scientists',
-      where: { published: { equals: true } },
-      sort: 'order',
-      limit: 12,
-      depth: 1,
-      overrideAccess: false,
-    }),
     payload.find({
       collection: 'impactStats',
       where: { published: { equals: true } },
@@ -268,13 +238,16 @@ export async function getAboutPageData(): Promise<AboutPageViewProps> {
     ABOUT_IMAGES.hero,
   )
 
-  const allLeaders =
-    scientists.docs.length > 0
-      ? (scientists.docs as Scientist[]).map((s, i) => toLeader(s, i))
-      : [...fallbackLeaders, ...fallbackCommittee]
-
-  const featuredLeaders = allLeaders.slice(0, Math.max(2, Math.min(4, allLeaders.length)))
-  const committee = allLeaders.length > 2 ? allLeaders.slice(2, 7) : fallbackCommittee
+  const featuredLeaders = fallbackLeaders.map((leader) => {
+    if (leader.id === 'rakesh' && sectionText.rakeshMessage) {
+      return { ...leader, message: sectionText.rakeshMessage }
+    }
+    if (leader.id === 'vijay' && sectionText.vijayMessage) {
+      return { ...leader, message: sectionText.vijayMessage }
+    }
+    return leader
+  })
+  const committee = fallbackCommittee
 
   const achievements: AchievementStat[] =
     impactStats.docs.length > 0

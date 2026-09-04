@@ -4,8 +4,11 @@ import { useMemo, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { DynamicFormFields } from '@/components/forms/DynamicFormFields'
 import { PaymentInstructionsPanel } from '@/components/forms/PaymentInstructionsPanel'
 import type { RegistrationPaymentConfig } from '@/domain/registration/types'
+import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
+import { validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
 
 type EventCategory = {
   id: string
@@ -32,15 +35,17 @@ type EventRegistrationData = {
 type Props = {
   event: EventRegistrationData
   paymentConfig: RegistrationPaymentConfig
+  customSections?: DynamicFormSection[]
 }
 
 const inputClass = 'w-full h-11 rounded-xl border border-slate-200 px-3 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100'
 
-export function EventRegistrationFlow({ event, paymentConfig }: Props) {
+export function EventRegistrationFlow({ event, paymentConfig, customSections = [] }: Props) {
   const router = useRouter()
   const [step, setStep] = useState<1 | 2>(1)
   const [loading, setLoading] = useState(false)
   const [registrationId, setRegistrationId] = useState('')
+  const [customResponses, setCustomResponses] = useState<Record<string, string>>({})
   const [paymentForm, setPaymentForm] = useState({
     transactionId: '',
     transactionDate: '',
@@ -93,8 +98,17 @@ export function EventRegistrationFlow({ event, paymentConfig }: Props) {
       setError('Please fill all required fields.')
       return false
     }
+    const customError = validateCustomResponses(customSections, customResponses)
+    if (customError) {
+      setError(customError)
+      return false
+    }
     setError('')
     return true
+  }
+
+  const onCustomFieldChange = (name: string, value: string) => {
+    setCustomResponses((prev) => ({ ...prev, [name]: value }))
   }
 
   const initiateRegistration = async () => {
@@ -108,6 +122,7 @@ export function EventRegistrationFlow({ event, paymentConfig }: Props) {
           ...form,
           eventSlug: event.slug,
           registrationCategoryId: selectedCategoryId,
+          customResponses,
         }),
       })
       const data = await res.json()
@@ -282,6 +297,13 @@ export function EventRegistrationFlow({ event, paymentConfig }: Props) {
                   </div>
                 </label>
               </section>
+
+              <DynamicFormFields
+                sections={customSections}
+                values={customResponses}
+                onChange={onCustomFieldChange}
+                disabled={loading}
+              />
 
               <section className="rounded-2xl border border-slate-200 bg-white p-5 space-y-4 shadow-sm">
                 <h3 className="font-extrabold text-slate-900">Registration Category</h3>

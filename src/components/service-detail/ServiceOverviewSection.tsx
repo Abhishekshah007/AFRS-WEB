@@ -17,18 +17,27 @@ export function ServiceOverviewSection({
   imageUrl = SERVICE_DETAIL_IMAGES.overview,
 }: ServiceOverviewSectionProps) {
   return (
-    <section className={`${serviceDetailTokens.sectionY} bg-white`} aria-labelledby="service-overview-heading">
+    <section
+      className={`${serviceDetailTokens.sectionY} bg-white`}
+      aria-labelledby="service-overview-heading"
+    >
       <div className={serviceDetailTokens.container}>
         <AnimateOnScroll>
           <div className="grid items-center gap-8 md:grid-cols-2 md:gap-12 lg:gap-16">
             <div>
               <span className={serviceDetailTokens.accentBar} aria-hidden />
-              <h2 id="service-overview-heading" className={`mt-4 ${serviceDetailTokens.heading} text-2xl sm:text-[28px] leading-tight`}>
+              <h2
+                id="service-overview-heading"
+                className={`mt-4 ${serviceDetailTokens.heading} text-2xl sm:text-[28px] leading-tight`}
+              >
                 {title}
               </h2>
               <div className="mt-6 space-y-4">
                 {paragraphs.map((p, i) => (
-                  <p key={i} className={`text-sm sm:text-base ${serviceDetailTokens.body}`}>
+                  <p
+                    key={i}
+                    className={`text-sm sm:text-base ${serviceDetailTokens.body} text-justify`}
+                  >
                     {p}
                   </p>
                 ))}
@@ -36,7 +45,9 @@ export function ServiceOverviewSection({
             </div>
 
             <div className="relative">
-              <div className={`relative aspect-[4/3] overflow-hidden ${serviceDetailTokens.radiusLg} shadow-lg`}>
+              <div
+                className={`relative aspect-[4/3] overflow-hidden ${serviceDetailTokens.radiusLg} shadow-lg`}
+              >
                 <Image
                   src={imageUrl}
                   alt="Forensic professional at work"
@@ -56,7 +67,9 @@ export function ServiceOverviewSection({
                 </span>
                 <div>
                   <p className="text-sm font-bold text-[var(--svc-text)]">Professional Services</p>
-                  <p className="text-xs text-[var(--svc-text-muted)] mt-0.5">Quality you can trust.</p>
+                  <p className="text-xs text-[var(--svc-text-muted)] mt-0.5">
+                    Quality you can trust.
+                  </p>
                 </div>
               </div>
             </div>

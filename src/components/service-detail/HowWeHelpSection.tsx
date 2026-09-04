@@ -2,6 +2,7 @@ import type { HelpCardItem } from '@/components/service-detail/types'
 import { HelpCard } from '@/components/service-detail/HelpCard'
 import { serviceDetailTokens } from '@/components/service-detail/tokens'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
+import { CmsInlineHtml } from '@/components/ui/CmsInlineHtml'
 
 export type HowWeHelpSectionProps = {
   items: HelpCardItem[]
@@ -34,9 +35,9 @@ export function HowWeHelpSection({
               {title}
             </h2>
             {subtitle ? (
-              <p className={`mt-3 max-w-none text-sm sm:text-base ${serviceDetailTokens.body}`}>
-                {subtitle}
-              </p>
+              <div className={`mt-3 max-w-none text-sm sm:text-base [&_a]:font-semibold [&_a]:text-[var(--svc-primary)] [&_a]:underline ${serviceDetailTokens.body}`}>
+                <CmsInlineHtml html={subtitle} />
+              </div>
             ) : null}
           </header>
         </AnimateOnScroll>

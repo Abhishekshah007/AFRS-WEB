@@ -64,6 +64,10 @@ export const Services: CollectionConfig = {
           name: 'featureDescription',
           type: 'textarea',
           label: 'Description',
+          admin: {
+            description:
+              'Plain text or basic HTML. Links work, for example: <a href="/contact">Click here</a>',
+          },
         },
         {
           name: 'featurePoints',

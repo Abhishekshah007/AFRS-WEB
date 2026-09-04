@@ -23,7 +23,7 @@ export function LatestNewsSection() {
   ]
 
   return (
-    <section className={`${SECTION} bg-white section-glow-top`}>
+    <section className={`${SECTION} bg-white section-glow-top`} id="noticeBoard">
       <div className={`${CONTAINER} max-w-3xl`}>
         <SectionHeader
           title="Notice Board"
