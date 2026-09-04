@@ -21,7 +21,10 @@ export const Media: CollectionConfig = {
       { name: 'hero', width: 1600, height: 900, position: 'centre' },
     ],
     adminThumbnail: 'thumbnail',
-    mimeTypes: ['image/*'],
+    mimeTypes: [
+      'image/*',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    ],
   },
   fields: [
     { name: 'alt', type: 'text', required: true },

@@ -181,6 +181,7 @@ export const defaultUgcNetQuickNav = [
   { label: 'Resources', href: '#resources' },
   { label: 'Faculty', href: '#faculty' },
   { label: 'FAQs', href: '#faqs' },
+  { label: 'Gallery', href: '#gallery' },
   { label: 'Register', href: '#register' },
 ]
 

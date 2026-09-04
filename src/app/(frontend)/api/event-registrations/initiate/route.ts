@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
 import { hasRequiredFields, jsonError } from '@/lib/apiResponses'
+import { validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
+import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 import { getPayloadClient } from '@/lib/payload'
 import type { Event as AfrsEvent } from '@/payload-types'
 
@@ -16,6 +18,7 @@ type InitiatePayload = {
   idProofFileSize?: number
   registrationCategoryId?: string
   includeKit?: boolean
+  customResponses?: Record<string, string>
 }
 
 export async function POST(req: Request) {
@@ -52,6 +55,11 @@ export async function POST(req: Request) {
       return jsonError('Registration is closed for this event.', 400)
     }
 
+    const sections = (evt.registrationSections || []) as DynamicFormSection[]
+    const customResponses = body.customResponses || {}
+    const customError = validateCustomResponses(sections, customResponses)
+    if (customError) return jsonError(customError, 400)
+
     const categories = evt.registrationCategories || []
     const selected = categories.find((cat) => String(cat.id) === body.registrationCategoryId)
     if (!selected) return jsonError('Invalid registration category.', 400)
@@ -81,6 +89,7 @@ export async function POST(req: Request) {
         includeKit: Boolean(body.includeKit),
         kitPrice,
         totalAmount,
+        customResponses: Object.keys(customResponses).length ? customResponses : undefined,
         paymentProvider: 'manual',
         paymentStatus: 'pending',
         registrationStatus: 'initiated',

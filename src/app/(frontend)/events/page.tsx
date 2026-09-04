@@ -1,12 +1,16 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { getPayloadClient } from '@/lib/payload'
-import { formatEventDate, formatEventType, resolveMediaUrl } from '@/lib/cms'
-import type { Event as AfrsEvent, Media } from '@/payload-types'
+import { fetchActiveEvents } from '@/lib/queries/events'
+import { formatEventDate } from '@/lib/cms'
+import type { Event as AfrsEvent } from '@/payload-types'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import { PageHero } from '@/components/marketing/PageHero'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
+import { EventHubCard } from '@/components/programmes/EventHubCard'
+import { mapEventToHubCard } from '@/components/programmes/mapEvent'
+import { SiteGallerySection } from '@/components/gallery/SiteGallerySection'
+import { getFeaturedGalleryItems } from '@/lib/queries/gallery'
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Forensic Science Events',
@@ -15,34 +19,11 @@ export const metadata: Metadata = buildPageMetadata({
   path: '/events',
 })
 
-import { FALLBACK_BANNER_IMAGE } from '@/lib/constants/assets'
-import { SiteGallerySection } from '@/components/gallery/SiteGallerySection'
-import { getFeaturedGalleryItems } from '@/lib/queries/gallery'
-
-const typeColors: Record<string, string> = {
-  workshop: 'bg-brand-100 text-brand-700',
-  webinar: 'bg-brand-200/50 text-brand-700',
-  conference: 'bg-brand-50 text-brand-600',
-  training: 'bg-brand-100 text-brand-700',
-}
-
 export default async function EventsPage() {
   const payload = await getPayloadClient()
 
   const [upcoming, past, galleryItems] = await Promise.all([
-    payload.find({
-      collection: 'events',
-      where: {
-        and: [
-          { published: { equals: true } },
-          { startDate: { greater_than_equal: new Date().toISOString() } },
-        ],
-      },
-      sort: 'startDate',
-      limit: 9,
-      depth: 1,
-      overrideAccess: false,
-    }),
+    fetchActiveEvents(payload, { limit: 9, depth: 1 }),
     payload.find({
       collection: 'events',
       where: {
@@ -103,66 +84,10 @@ export default async function EventsPage() {
             </p>
           ) : (
             <AnimateOnScroll stagger>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-                {upcoming.docs.map((e) => {
-                  const evt = e as AfrsEvent
-                  const banner = resolveMediaUrl(evt.banner as number | Media | null | undefined, FALLBACK_BANNER_IMAGE)
-                  const typeClass = typeColors[evt.eventType ?? ''] ?? 'bg-slate-100 text-slate-600'
-
-                  return (
-                    <article key={evt.id} className="rounded-2xl border border-slate-100 bg-white overflow-hidden shadow-sm card-pop group">
-                      <div className="relative h-48 bg-slate-100 overflow-hidden">
-                        <Image
-                          src={banner}
-                          alt={evt.title}
-                          fill
-                          sizes="(max-width: 768px) 100vw, 33vw"
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                        {evt.eventType && (
-                          <span className={`absolute top-3 left-3 rounded-full px-3 py-1 text-[10px] font-bold ${typeClass}`}>
-                            {formatEventType(evt.eventType)}
-                          </span>
-                        )}
-                        {evt.mode && (
-                          <span className="absolute top-3 right-3 rounded-full bg-slate-900/70 text-white px-3 py-1 text-[10px] font-bold capitalize">
-                            {evt.mode}
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="p-6">
-                        <p className="text-xs text-brand-600 font-semibold">{formatEventDate(evt.startDate)}</p>
-                        <h3 className="mt-2 font-extrabold text-slate-900 text-lg leading-snug group-hover:text-brand-600 transition-colors">
-                          {evt.title}
-                        </h3>
-                        {evt.venue && <p className="mt-1 text-xs text-slate-400">📍 {evt.venue}</p>}
-                        {evt.excerpt && (
-                          <p className="mt-3 text-sm text-slate-500 leading-relaxed line-clamp-2">{evt.excerpt}</p>
-                        )}
-                        {evt.registrationCategories && evt.registrationCategories.length > 0 && (
-                          <div className="mt-3 flex flex-wrap gap-2">
-                            {evt.registrationCategories.map((cat) => (
-                              <span key={cat.id} className="text-[10px] font-bold rounded-full bg-slate-50 border border-slate-200 px-3 py-1 text-slate-600">
-                                {cat.categoryName} {cat.price ? `₹${cat.price}` : ''}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                        <Link
-                          href={evt.registrationOpen === false ? `/events/${evt.slug}` : `/events/${evt.slug}/register`}
-                          className={`mt-5 block text-center py-2.5 rounded-xl text-sm font-bold transition ${
-                            evt.registrationOpen === false
-                              ? 'bg-slate-100 text-slate-500 cursor-not-allowed'
-                              : 'bg-brand-600 hover:bg-brand-700 text-white'
-                          }`}
-                        >
-                          {evt.registrationOpen === false ? 'Registration Closed' : 'Register Now →'}
-                        </Link>
-                      </div>
-                    </article>
-                  )
-                })}
+              <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
+                {upcoming.docs.map((e, index) => (
+                  <EventHubCard key={e.id} event={mapEventToHubCard(e as AfrsEvent, index)} />
+                ))}
               </div>
             </AnimateOnScroll>
           )}

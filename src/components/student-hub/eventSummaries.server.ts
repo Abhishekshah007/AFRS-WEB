@@ -1,5 +1,6 @@
 import { formatEventDate } from '@/lib/cms'
 import { getPayloadClient } from '@/lib/payload'
+import { fetchActiveEvents } from '@/lib/queries/events'
 import type { Event as AfrsEvent } from '@/payload-types'
 
 export type StudentHubEventSummary = {
@@ -27,19 +28,7 @@ export type StudentHubEventsResult = {
 export async function getUpcomingStudentHubEvents(limit = 4): Promise<StudentHubEventsResult> {
   const payload = await getPayloadClient()
 
-  const eventResult = await payload.find({
-    collection: 'events',
-    where: {
-      and: [
-        { published: { equals: true } },
-        { startDate: { greater_than_equal: new Date().toISOString() } },
-      ],
-    },
-    sort: 'startDate',
-    limit,
-    depth: 0,
-    overrideAccess: false,
-  })
+  const eventResult = await fetchActiveEvents(payload, { limit, depth: 0 })
 
   const events = eventResult.docs as AfrsEvent[]
   const featuredEvent = events[0]

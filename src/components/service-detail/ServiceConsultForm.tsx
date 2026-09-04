@@ -1,5 +1,6 @@
 'use client'
 
+import type { SubmissionFormType } from '@/fields/submissionExport'
 import { useContactFormSubmit } from '@/hooks/useContactFormSubmit'
 
 const inputClass =
@@ -7,16 +8,25 @@ const inputClass =
 
 export type ServiceConsultFormProps = {
   serviceTitle: string
+  serviceSlug?: string
+  formType?: SubmissionFormType
   caseTypes?: string[]
+  submitLabel?: string
 }
 
-/** Consultation form — posts to contactMessages with service pre-filled as subject. */
+/** Consultation form — posts to contactMessages with typed form metadata. */
 export function ServiceConsultForm({
   serviceTitle,
+  serviceSlug,
+  formType = 'serviceConsult',
   caseTypes = ['New case', 'Ongoing investigation', 'Expert opinion', 'Training inquiry'],
+  submitLabel = 'Send Message',
 }: ServiceConsultFormProps) {
   const { state, disabled, onSubmit } = useContactFormSubmit({
-    successMessage: 'Message sent. An expert will contact you shortly.',
+    successMessage:
+      formType === 'legalConsultancy'
+        ? 'Consultancy request received. Our legal team will contact you shortly.'
+        : 'Message sent. An expert will contact you shortly.',
     mapFormData: (formData) => {
       const fullName = String(formData.get('fullName') || '').trim()
       const email = String(formData.get('email') || '').trim()
@@ -26,17 +36,20 @@ export function ServiceConsultForm({
         fullName,
         email,
         subject: `${serviceTitle} — ${caseType}`,
+        caseType,
+        serviceSlug,
         message,
+        formType,
       }
     },
   })
 
   const buttonLabel =
-    state.status === 'submitting' ? 'Sending…' : state.status === 'success' ? 'Sent' : 'Send Message'
+    state.status === 'submitting' ? 'Sending…' : state.status === 'success' ? 'Sent' : submitLabel
 
   return (
     <form action={onSubmit} className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
           Full Name
           <input name="fullName" disabled={disabled} className={inputClass} required autoComplete="name" />
@@ -47,7 +60,7 @@ export function ServiceConsultForm({
         </label>
       </div>
       <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
-        Select Case Type
+        {formType === 'legalConsultancy' ? 'Consultancy Type' : 'Select Case Type'}
         <select name="caseType" disabled={disabled} className={inputClass} defaultValue={caseTypes[0]}>
           {caseTypes.map((t) => (
             <option key={t} value={t}>
@@ -61,8 +74,12 @@ export function ServiceConsultForm({
         <textarea
           name="message"
           disabled={disabled}
-          className={`${inputClass} min-h-[120px] py-3 resize-y`}
-          placeholder="Describe your case or question…"
+          className={`${inputClass} min-h-[120px] resize-y py-3`}
+          placeholder={
+            formType === 'legalConsultancy'
+              ? 'Describe your legal or medico-legal requirement…'
+              : 'Describe your case or question…'
+          }
           required
         />
       </label>

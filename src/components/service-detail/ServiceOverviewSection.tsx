@@ -34,7 +34,10 @@ export function ServiceOverviewSection({
               </h2>
               <div className="mt-6 space-y-4 text-justify">
                 {paragraphs.map((p, i) => (
-                  <p key={i} className={`text-sm sm:text-base ${serviceDetailTokens.body}`}>
+                  <p
+                    key={i}
+                    className={`text-sm sm:text-base ${serviceDetailTokens.body} text-justify`}
+                  >
                     {p}
                   </p>
                 ))}

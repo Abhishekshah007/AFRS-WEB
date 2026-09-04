@@ -364,6 +364,9 @@ export interface Service {
   features?:
     | {
         featureTitle: string;
+        /**
+         * Plain text or basic HTML. Links work, for example: <a href="/contact">Click here</a>
+         */
         featureDescription?: string | null;
         /**
          * Optional supporting points. Enter one point per line.
@@ -415,6 +418,10 @@ export interface Testimonial {
   name: string;
   title: string;
   testimonial: string;
+  /**
+   * Choose whether this testimonial appears on AFRS Home, AFSL Services, or both.
+   */
+  displayOn: 'afrs' | 'afsl' | 'both';
   rating: number;
   image?: (number | null) | Media;
   published?: boolean | null;
@@ -422,7 +429,7 @@ export interface Testimonial {
   createdAt: string;
 }
 /**
- * Add, edit, reorder, and publish people shown in Laboratory Directorate and Laboratory Members on the Services page. The same records also appear on Home and About when published.
+ * Add, edit, reorder, and publish people shown in Laboratory Directorate and Laboratory Members on the AFSL Services page, and in Our Expert Scientists on Home. About Us uses the AFRS leadership and executive committee from about page defaults, not this collection.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "scientists".
@@ -562,6 +569,41 @@ export interface Event {
   includeKitOption?: boolean | null;
   kitPrice?: number | null;
   registrationOpen?: boolean | null;
+  /**
+   * Add event-specific questions (e.g. abstract title, nominee category). Shown on the registration form in addition to standard contact fields.
+   */
+  registrationSections?:
+    | {
+        title: string;
+        description?: string | null;
+        fields?:
+          | {
+              /**
+               * Internal key — use camelCase, no spaces.
+               */
+              name: string;
+              label: string;
+              fieldType: 'text' | 'email' | 'tel' | 'textarea' | 'select' | 'date' | 'time' | 'file' | 'number';
+              required?: boolean | null;
+              placeholder?: string | null;
+              /**
+               * Comma-separated options for select fields.
+               */
+              options?: string | null;
+              /**
+               * Rows for textarea fields.
+               */
+              rows?: number | null;
+              /**
+               * Accept attribute for file inputs (e.g. image/*,.pdf).
+               */
+              accept?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
   published?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -591,6 +633,18 @@ export interface EventRegistration {
   includeKit?: boolean | null;
   kitPrice?: number | null;
   /**
+   * Answers to event-specific custom fields configured on the event.
+   */
+  customResponses?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
    * UPI / bank transaction reference.
    */
   transactionId?: string | null;
@@ -608,6 +662,10 @@ export interface EventRegistration {
   stripeCheckoutSessionId?: string | null;
   stripePaymentIntentId?: string | null;
   paymentConfirmedAt?: string | null;
+  /**
+   * Auto-generated DOCX export of this submission.
+   */
+  exportDocument?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -636,6 +694,18 @@ export interface CourseRegistration {
   preferredBatch?: string | null;
   message?: string | null;
   /**
+   * Additional answers from CMS-configured registration form fields.
+   */
+  customResponses?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
    * UPI / bank transaction reference.
    */
   transactionId?: string | null;
@@ -653,6 +723,10 @@ export interface CourseRegistration {
   stripeCheckoutSessionId?: string | null;
   stripePaymentIntentId?: string | null;
   paymentConfirmedAt?: string | null;
+  /**
+   * Auto-generated DOCX export of this submission.
+   */
+  exportDocument?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -662,12 +736,25 @@ export interface CourseRegistration {
  */
 export interface ContactMessage {
   id: number;
+  /**
+   * Which form submitted this message.
+   */
+  formType: 'contact' | 'labInquiry' | 'serviceConsult' | 'legalConsultancy';
   fullName: string;
   mobile?: string | null;
   email: string;
   subject?: string | null;
+  /**
+   * Service or legal case type selected in the form.
+   */
+  caseType?: string | null;
+  serviceSlug?: string | null;
   message: string;
   status?: ('new' | 'inProgress' | 'resolved') | null;
+  /**
+   * Auto-generated DOCX export of this submission.
+   */
+  exportDocument?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -925,6 +1012,7 @@ export interface TestimonialsSelect<T extends boolean = true> {
   name?: T;
   title?: T;
   testimonial?: T;
+  displayOn?: T;
   rating?: T;
   image?: T;
   published?: T;
@@ -1016,6 +1104,26 @@ export interface EventsSelect<T extends boolean = true> {
   includeKitOption?: T;
   kitPrice?: T;
   registrationOpen?: T;
+  registrationSections?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        fields?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              fieldType?: T;
+              required?: T;
+              placeholder?: T;
+              options?: T;
+              rows?: T;
+              accept?: T;
+              id?: T;
+            };
+        id?: T;
+      };
   published?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1043,6 +1151,7 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
   registrationCategoryPrice?: T;
   includeKit?: T;
   kitPrice?: T;
+  customResponses?: T;
   transactionId?: T;
   transactionDate?: T;
   transactionTime?: T;
@@ -1055,6 +1164,7 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
   stripeCheckoutSessionId?: T;
   stripePaymentIntentId?: T;
   paymentConfirmedAt?: T;
+  exportDocument?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1081,6 +1191,7 @@ export interface CourseRegistrationsSelect<T extends boolean = true> {
   experienceLevel?: T;
   preferredBatch?: T;
   message?: T;
+  customResponses?: T;
   transactionId?: T;
   transactionDate?: T;
   transactionTime?: T;
@@ -1093,6 +1204,7 @@ export interface CourseRegistrationsSelect<T extends boolean = true> {
   stripeCheckoutSessionId?: T;
   stripePaymentIntentId?: T;
   paymentConfirmedAt?: T;
+  exportDocument?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1101,12 +1213,16 @@ export interface CourseRegistrationsSelect<T extends boolean = true> {
  * via the `definition` "contactMessages_select".
  */
 export interface ContactMessagesSelect<T extends boolean = true> {
+  formType?: T;
   fullName?: T;
   mobile?: T;
   email?: T;
   subject?: T;
+  caseType?: T;
+  serviceSlug?: T;
   message?: T;
   status?: T;
+  exportDocument?: T;
   updatedAt?: T;
   createdAt?: T;
 }

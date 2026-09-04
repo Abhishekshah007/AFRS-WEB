@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { CheckCircle2 } from 'lucide-react'
 import type { HelpCardItem } from '@/components/service-detail/types'
 import { serviceDetailTokens } from '@/components/service-detail/tokens'
+import { CmsInlineHtml } from '@/components/ui/CmsInlineHtml'
 
 export type HelpCardProps = {
   item: HelpCardItem
@@ -25,9 +26,11 @@ export function HelpCard({ item, index }: HelpCardProps) {
             {item.title}
           </h3>
           {item.description ? (
-            <p className={`mt-3 text-sm text-left sm:mt-4 sm:text-base md:text-justify ${serviceDetailTokens.body}`}>
-              {item.description}
-            </p>
+            <div
+              className={`mt-3 text-sm text-left sm:mt-4 sm:text-base md:text-justify [&_a]:font-semibold [&_a]:text-[var(--svc-primary)] [&_a]:underline ${serviceDetailTokens.body}`}
+            >
+              <CmsInlineHtml html={item.description} />
+            </div>
           ) : null}
           {item.bullets && item.bullets.length > 0 ? (
             <ul className="mt-5 space-y-2.5">
@@ -38,7 +41,9 @@ export function HelpCard({ item, index }: HelpCardProps) {
                     strokeWidth={2.2}
                     aria-hidden
                   />
-                  <span className="leading-relaxed text-left md:text-justify">{bullet}</span>
+                  <span className="leading-relaxed text-left md:text-justify [&_a]:font-semibold [&_a]:text-[var(--svc-primary)] [&_a]:underline">
+                    <CmsInlineHtml html={bullet} />
+                  </span>
                 </li>
               ))}
             </ul>

@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { getPayloadClient } from '@/lib/payload'
 import { formatEventDate, resolveMediaUrl, richTextToPlain } from '@/lib/cms'
 import { FALLBACK_BANNER_IMAGE } from '@/lib/constants/assets'
+import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 import { getRegistrationPaymentConfig } from '@/lib/queries/registration-form'
 import { EventRegistrationFlow } from '@/components/events/EventRegistrationFlow'
 import type { Event as AfrsEvent, Media } from '@/payload-types'
@@ -43,10 +44,26 @@ export default async function EventRegisterPage({ params }: Props) {
     ? `${formatEventDate(evt.startDate)} - ${formatEventDate(evt.endDate)}`
     : formatEventDate(evt.startDate)
 
+  const customSections = ((evt.registrationSections || []) as DynamicFormSection[]).map((section) => ({
+    title: section.title,
+    description: section.description,
+    fields: section.fields?.map((field) => ({
+      name: field.name,
+      label: field.label,
+      fieldType: field.fieldType,
+      required: field.required,
+      placeholder: field.placeholder,
+      options: field.options,
+      rows: field.rows,
+      accept: field.accept,
+    })),
+  }))
+
   return (
     <div className="bg-[#F4F6FB] min-h-screen">
       <EventRegistrationFlow
         paymentConfig={paymentConfig}
+        customSections={customSections}
         event={{
           slug: evt.slug,
           title: evt.title,

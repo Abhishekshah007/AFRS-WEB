@@ -3,6 +3,7 @@ import { Inter, DM_Sans } from 'next/font/google'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { AppProviders } from '@/components/providers/AppProviders'
+import { AfrsChatbot } from '@/components/chatbot/AfrsChatbot'
 import { getPayloadClient } from '@/lib/payload'
 import type { FooterSetting, HeaderSetting, SiteSetting } from '@/payload-types'
 import type { Viewport } from 'next'
@@ -101,6 +102,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Navbar settings={headerSettings} />
         <AppProviders>
           <main className="relative min-h-[50vh]">{children}</main>
+          <AfrsChatbot phone={siteSettings?.phone || undefined} email={siteSettings?.email || undefined} />
         </AppProviders>
         <Footer
           settings={footerSettings}

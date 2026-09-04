@@ -302,18 +302,36 @@ const defaultSectionText: AboutSectionText = {
 
 const fallbackLeaders: LeaderProfile[] = [
   {
-    id: '1',
+    id: 'rakesh',
     name: 'Mr. Rakesh Mia',
-    designation: 'Founder, AFRS',
-    bio: 'Specialized in analytical forensics, evidence interpretation, and academic mentoring.',
+    designation: 'President, AFRS',
     initials: 'RM',
+    photoUrl:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1784833177/afrs/payload/media/WhatsApp_Image_2026-07-22_at_10.07.28_PM_rop83x.jpg',
+    message:
+      'Student and professional development are at the heart of AFRS. We are committed to providing practical, research-driven training that empowers individuals to excel in forensic science and contribute to a safer society.',
+    bio: 'A visionary leader with over 15 years of experience in forensic education and administration.',
+    socials: {
+      linkedin: 'https://in.linkedin.com/in/rakesh-mia%F0%9F%87%AE%F0%9F%87%B3-2b9787182',
+      instagram: 'https://instagram.com/rakesh_mia?utm_medium=copy_link',
+      facebook: 'https://www.facebook.com/rakesh.mia.144',
+    },
   },
   {
-    id: '2',
+    id: 'vijay',
     name: 'Mr. Vijay',
-    designation: 'Co-Founder, AFRS',
-    bio: 'Focused on practical case workflows, documentation standards, and lab methodology.',
-    initials: 'VJ',
+    designation: 'Vice President, AFRS',
+    initials: 'V',
+    photoUrl:
+      'https://res.cloudinary.com/drrzakkgo/image/upload/v1762258620/WhatsApp_Image_2025-11-04_at_12.33.03_AM_fywjbh.jpg',
+    message:
+      'Strengthening the bridge between academic theory and practical application is our mission. AFRS equips students and professionals with the skills and knowledge necessary to excel in forensic investigation, evidence handling, and court-ready reporting.',
+    bio: 'An expert in criminal investigation techniques with a passion for student mentorship.',
+    socials: {
+      linkedin: 'https://in.linkedin.com/in/vijay-panchal-8631261b0',
+      instagram: 'https://instagram.com/vijay_panchal9977?utm_medium=copy_link',
+      facebook: 'https://www.facebook.com/profile.php?id=100017360178631',
+    },
   },
 ]
 

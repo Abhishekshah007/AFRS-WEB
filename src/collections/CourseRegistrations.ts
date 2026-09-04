@@ -3,6 +3,8 @@ import type { CollectionConfig } from 'payload'
 import { eventRegistrationAccess } from '../access'
 import { ADMIN_GROUPS } from '../config/adminGroups'
 import { registrationContactFields, registrationPaymentFields, registrationPaymentProofFields } from '../fields'
+import { submissionExportField } from '../fields/submissionExport'
+import { registrationSubmissionExportHook } from '../lib/submissions/attachSubmissionExport'
 
 export const CourseRegistrations: CollectionConfig = {
   slug: 'courseRegistrations',
@@ -18,6 +20,9 @@ export const CourseRegistrations: CollectionConfig = {
       'paymentStatus',
       'registrationStatus',
     ],
+  },
+  hooks: {
+    afterChange: [registrationSubmissionExportHook('courseRegistrations')],
   },
   fields: [
     {
@@ -53,8 +58,17 @@ export const CourseRegistrations: CollectionConfig = {
     { name: 'preferredBatch', type: 'text' },
     { name: 'message', type: 'textarea' },
 
+    {
+      name: 'customResponses',
+      type: 'json',
+      admin: {
+        description: 'Additional answers from CMS-configured registration form fields.',
+      },
+    },
+
     ...registrationPaymentProofFields,
 
     ...registrationPaymentFields,
+    submissionExportField(),
   ],
 }

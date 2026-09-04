@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { eventManagedPublishedAccess } from '../access'
 import { ADMIN_GROUPS } from '../config/adminGroups'
 import { contentRichTextField, excerptField, slugField } from '../fields'
+import { dynamicFormSectionsField } from '../fields/dynamicFormSections'
 import { eventNatureField } from '../fields/options'
 import { publishedField } from '../fields/publishing'
 
@@ -56,6 +57,12 @@ export const Events: CollectionConfig = {
     { name: 'includeKitOption', type: 'checkbox', defaultValue: false },
     { name: 'kitPrice', type: 'number' },
     { name: 'registrationOpen', type: 'checkbox', defaultValue: true },
+    dynamicFormSectionsField({
+      name: 'registrationSections',
+      label: 'Custom registration fields',
+      description:
+        'Add event-specific questions (e.g. abstract title, nominee category). Shown on the registration form in addition to standard contact fields.',
+    }),
     publishedField(),
   ],
 }

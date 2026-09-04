@@ -1,12 +1,10 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import { formatEventDate, formatEventType, resolveMediaUrl, richTextToPlain } from '@/lib/cms'
-import type { Event as AfrsEvent } from '@/payload-types'
 import type { PaginatedDocs } from 'payload'
+import { EventHubCard } from '@/components/programmes/EventHubCard'
+import { mapEventToHubCard } from '@/components/programmes/mapEvent'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
-import { TYPOGRAPHY, UI } from '../design'
-import { CONTAINER, eventCardImages, SECTION } from './constants'
+import type { Event as AfrsEvent } from '@/payload-types'
+import { CONTAINER, SECTION } from './constants'
 import type { SectionText } from './types'
 
 export function EventsSection({
@@ -16,13 +14,6 @@ export function EventsSection({
   sectionText: SectionText
   events: PaginatedDocs<AfrsEvent>
 }) {
-  const buttonColors = [
-    'bg-brand-600 hover:bg-brand-700',
-    'bg-brand-500 hover:bg-brand-700',
-    'bg-brand-700 hover:bg-brand',
-  ]
-  const badgeColors = ['bg-brand-500', 'bg-brand-700', 'bg-brand-600']
-
   return (
     <section className={`${SECTION} bg-white section-glow-top`}>
       <div className={CONTAINER}>
@@ -33,62 +24,15 @@ export function EventsSection({
             'Join our forensic science training programs and workshops'
           }
         />
-        <AnimateOnScroll stagger className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <AnimateOnScroll stagger className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
           {events.docs.length === 0 && (
-            <p className="md:col-span-3 text-center text-slate-400 py-8">
+            <p className="py-8 text-center text-slate-400 md:col-span-3">
               No upcoming events — add them in the CMS.
             </p>
           )}
-          {events.docs.map((afrsEvent, index) => {
-            const image = resolveMediaUrl(
-              afrsEvent.banner,
-              eventCardImages[index % eventCardImages.length],
-            )
-            const summary =
-              afrsEvent.excerpt ||
-              richTextToPlain(afrsEvent.description, 95) ||
-              'Join our focused forensic learning event designed for practical skill development.'
-
-            return (
-              <article key={afrsEvent.id} className={`${UI.card} overflow-hidden card-pop`}>
-                <div className="relative h-48 bg-slate-100">
-                  <Image
-                    src={image}
-                    alt={`${afrsEvent.title} cover`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-6">
-                  <div
-                    className={`h-10 w-10 rounded-lg ${badgeColors[index % badgeColors.length]} text-white flex items-center justify-center text-sm`}
-                  >
-                    <span className="sr-only">{afrsEvent.eventNature}</span>
-                  </div>
-                  <h3 className={`mt-4 ${TYPOGRAPHY.cardTitle} text-slate-900`}>
-                    {afrsEvent.title}
-                  </h3>
-                  <p className="mt-2 text-xs text-slate-500">
-                    {formatEventDate(afrsEvent.startDate)}
-                    {afrsEvent.venue ? ` • ${afrsEvent.venue}` : ''}
-                  </p>
-                  {afrsEvent.eventType && (
-                    <p className="mt-1 text-xs text-slate-400">
-                      {formatEventType(afrsEvent.eventType)}
-                    </p>
-                  )}
-                  <p className="mt-3 text-sm text-slate-600 leading-relaxed">{summary}</p>
-                  <Link
-                    href={`/events/${afrsEvent.slug}`}
-                    className={`mt-6 block text-center text-white py-2.5 rounded-lg text-sm font-bold transition ${buttonColors[index % buttonColors.length]}`}
-                  >
-                    {afrsEvent.registrationOpen === false ? 'View Details' : 'Register Now'}
-                  </Link>
-                </div>
-              </article>
-            )
-          })}
+          {events.docs.map((afrsEvent, index) => (
+            <EventHubCard key={afrsEvent.id} event={mapEventToHubCard(afrsEvent, index)} />
+          ))}
         </AnimateOnScroll>
       </div>
     </section>

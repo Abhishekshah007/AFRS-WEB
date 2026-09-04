@@ -51,7 +51,7 @@ export function SiteGallerySection({
             </div>
           ))}
         </AnimateOnScroll>
-        <AnimateOnScroll>
+        {/* <AnimateOnScroll>
           <div className="mt-10 text-center">
             <Link
               href="/gallery"
@@ -60,7 +60,7 @@ export function SiteGallerySection({
               View More Gallery
             </Link>
           </div>
-        </AnimateOnScroll>
+        </AnimateOnScroll> */}
       </div>
     </section>
   )

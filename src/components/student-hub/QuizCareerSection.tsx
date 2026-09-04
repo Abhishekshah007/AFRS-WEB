@@ -7,27 +7,34 @@ import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
  */
 export function QuizCareerSection() {
   return (
-    <section className={`${studentHubTokens.sectionY} bg-white`} aria-labelledby="quiz-career-heading">
+    <section
+      className={`${studentHubTokens.sectionY} bg-white`}
+      aria-labelledby="quiz-career-heading"
+    >
       <div className={studentHubTokens.container}>
         <h2 id="quiz-career-heading" className="sr-only">
           Quizzes and career guidance
         </h2>
         <AnimateOnScroll stagger>
           <div className="grid gap-6 lg:grid-cols-2">
-            <article className={`${studentHubTokens.radiusCard} hub-quiz-card p-8 sm:p-10 card-pop flex flex-col`}>
+            <article
+              className={`${studentHubTokens.radiusCard} hub-quiz-card p-8 sm:p-10 card-pop flex flex-col`}
+            >
               <span
                 className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--hub-primary)]/15 text-2xl"
                 aria-hidden
               >
                 📝
               </span>
-              <h3 className={`mt-5 ${studentHubTokens.heading} text-xl sm:text-2xl`}>Quiz Test Zone</h3>
+              <h3 className={`mt-5 ${studentHubTokens.heading} text-xl sm:text-2xl`}>
+                Quiz Test Zone
+              </h3>
               <p className={`mt-3 text-sm flex-1 ${studentHubTokens.body}`}>
-                Practice topic-wise quizzes and timed mock tests to reinforce forensic concepts before exams and
-                interviews.
+                Practice topic-wise quizzes and timed mock tests to reinforce forensic concepts
+                before exams and interviews.
               </p>
               <Link
-                href="/search?q=quiz"
+                href="https://www.appliedforensicresearchsciences.in/Mcqs"
                 className={`mt-8 inline-flex h-12 w-fit items-center justify-center px-8 ${studentHubTokens.radiusCard} bg-[var(--hub-primary)] hover:bg-[var(--hub-primary-hover)] text-white text-sm font-bold transition`}
               >
                 View All Quizzes
@@ -45,8 +52,8 @@ export function QuizCareerSection() {
               </span>
               <h3 className="mt-5 text-xl sm:text-2xl font-extrabold">Student Career Guidance</h3>
               <p className="mt-3 text-sm text-white/70 leading-relaxed flex-1">
-                Explore career roadmaps, internship opportunities, and mentorship programmes designed for forensic
-                science graduates and researchers.
+                Explore career roadmaps, internship opportunities, and mentorship programmes
+                designed for forensic science graduates and researchers.
               </p>
               <Link
                 href="/student-hub/career-guidance"

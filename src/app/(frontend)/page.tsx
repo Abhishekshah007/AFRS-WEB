@@ -1,4 +1,6 @@
 import { getPayloadClient } from '@/lib/payload'
+import { fetchActiveEvents } from '@/lib/queries/events'
+import { testimonialPlacementWhere } from '@/lib/queries/testimonials'
 import type { HomePage, SiteSetting } from '@/payload-types'
 import type { Metadata } from 'next'
 import { JsonLd } from '@/components/seo/JsonLd'
@@ -35,7 +37,6 @@ export const metadata: Metadata = buildPageMetadata({
 
 export default async function HomePage() {
   const payload = await getPayloadClient()
-  const today = new Date().toISOString()
 
   const [
     events,
@@ -48,16 +49,7 @@ export default async function HomePage() {
     homePage,
     siteSettings,
   ] = await Promise.all([
-    payload.find({
-      collection: 'events',
-      where: {
-        and: [{ published: { equals: true } }, { startDate: { greater_than_equal: today } }],
-      },
-      limit: 3,
-      sort: 'startDate',
-      depth: 1,
-      overrideAccess: false,
-    }),
+    fetchActiveEvents(payload, { limit: 3, depth: 1 }),
     payload.find({
       collection: 'services',
       where: { published: { equals: true } },
@@ -68,8 +60,8 @@ export default async function HomePage() {
     }),
     payload.find({
       collection: 'testimonials',
-      where: { published: { equals: true } },
-      limit: 3,
+      where: testimonialPlacementWhere('afrs'),
+      limit: 50,
       depth: 1,
       overrideAccess: false,
     }),

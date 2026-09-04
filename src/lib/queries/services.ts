@@ -1,4 +1,5 @@
 import type { ServicesPageViewProps } from '@/components/services/ServicesPageView'
+import type { AfslTestimonial } from '@/components/services/AfslTestimonialsSection'
 import type {
   CatalogItem,
   DirectorateMember,
@@ -20,7 +21,8 @@ import {
 import { richTextToPlain, resolveMediaUrl } from '@/lib/cms'
 import { getPayloadClient } from '@/lib/payload'
 import { getFeaturedGalleryItems } from '@/lib/queries/gallery'
-import type { Media, Scientist, Service, ServicesPage, SiteSetting } from '@/payload-types'
+import { testimonialPlacementWhere } from '@/lib/queries/testimonials'
+import type { Media, Scientist, Service, ServicesPage, SiteSetting, Testimonial } from '@/payload-types'
 
 function toMember(sci: Scientist): DirectorateMember {
   const photo = resolveMediaUrl(sci.photo as number | Media | null | undefined, '')
@@ -112,6 +114,33 @@ function withDefaultString(value: string | null | undefined, fallback: string): 
   return value?.trim() || fallback
 }
 
+const defaultAfslTestimonials: AfslTestimonial[] = [
+  {
+    id: 'afsl-t1',
+    name: 'Adv. Meera Joshi',
+    title: 'Legal Practitioner',
+    testimonial:
+      'AFSL delivered a clear, well-documented forensic opinion that helped us prepare the matter with confidence. Communication was professional throughout.',
+    rating: 5,
+  },
+  {
+    id: 'afsl-t2',
+    name: 'Inspector R. Chauhan',
+    title: 'Investigating Officer',
+    testimonial:
+      'The laboratory examination and reporting were timely and scientifically structured. The team understood the investigative context and evidence handling requirements.',
+    rating: 5,
+  },
+  {
+    id: 'afsl-t3',
+    name: 'Dr. Ankit Verma',
+    title: 'Academic Partner',
+    testimonial:
+      'Our students gained valuable exposure through AFSL’s professional forensic workflows. The consultancy and laboratory guidance were practical and academically relevant.',
+    rating: 5,
+  },
+]
+
 function buildServicesContent(cms?: ServicesPage['sectionText']): ServicesPageContent {
   const defaults = defaultServicesPageContent
   const source = cms ?? {}
@@ -199,7 +228,7 @@ function buildSiteContact(site: SiteSetting | null | undefined): SiteContact {
 export async function getServicesPageData(): Promise<ServicesPageViewProps> {
   const payload = await getPayloadClient()
 
-  const [servicesPage, services, scientists, siteData, galleryItems] = await Promise.all([
+  const [servicesPage, services, scientists, siteData, galleryItems, testimonials] = await Promise.all([
     payload.findGlobal({ slug: 'servicesPage', depth: 0, overrideAccess: false }),
     payload.find({
       collection: 'services',
@@ -219,6 +248,13 @@ export async function getServicesPageData(): Promise<ServicesPageViewProps> {
     }),
     payload.findGlobal({ slug: 'siteSettings', depth: 0, overrideAccess: false }),
     getFeaturedGalleryItems(4),
+    payload.find({
+      collection: 'testimonials',
+      where: testimonialPlacementWhere('afsl'),
+      limit: 50,
+      depth: 0,
+      overrideAccess: false,
+    }),
   ])
 
   const site = siteData as SiteSetting
@@ -252,6 +288,14 @@ export async function getServicesPageData(): Promise<ServicesPageViewProps> {
   const resolvedDirectors = cmsScientists.length === 0 ? fallbackDirectors : directors
   const resolvedTeamMembers = cmsScientists.length === 0 ? fallbackTeam : teamMembers
 
+  const cmsTestimonials: AfslTestimonial[] = (testimonials.docs as Testimonial[]).map((item) => ({
+    id: item.id,
+    name: item.name,
+    title: item.title,
+    testimonial: item.testimonial,
+    rating: item.rating,
+  }))
+
   return {
     content,
     catalogItems,
@@ -260,5 +304,6 @@ export async function getServicesPageData(): Promise<ServicesPageViewProps> {
     site: buildSiteContact(site),
     totalVisitors: site?.totalVisitors || 200,
     galleryItems,
+    testimonials: cmsTestimonials.length > 0 ? cmsTestimonials : defaultAfslTestimonials,
   }
 }

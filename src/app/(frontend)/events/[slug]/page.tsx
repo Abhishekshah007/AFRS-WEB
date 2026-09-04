@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getPayloadClient } from '@/lib/payload'
-import { formatEventDate, formatEventType, resolveMediaUrl, richTextToPlain } from '@/lib/cms'
+import { formatEventDate, formatEventType, renderRichTextHtml, resolveMediaUrl, richTextToPlain } from '@/lib/cms'
 import type { Event as AfrsEvent, Media } from '@/payload-types'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import { buildPageMetadata } from '@/lib/seo/metadata'
@@ -65,6 +65,7 @@ export default async function EventDetailPage({ params }: Props) {
 
   const banner = resolveMediaUrl(evt.banner as number | Media | null | undefined, FALLBACK_BANNER_IMAGE)
   const summary = evt.excerpt || richTextToPlain(evt.description, 200)
+  const descriptionHtml = renderRichTextHtml(evt.description)
 
   return (
     <div className="bg-white min-h-screen">
@@ -111,9 +112,9 @@ export default async function EventDetailPage({ params }: Props) {
         {/* Main */}
         <div>
           <AnimateOnScroll>
-            <div className="relative h-64 sm:h-80 rounded-3xl overflow-hidden shadow-lg">
-              <Image src={banner} alt={evt.title} fill sizes="(max-width: 1024px) 100vw, 800px" priority className="object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent" />
+            <div className="relative min-h-[280px] sm:min-h-[360px] rounded-3xl overflow-hidden shadow-lg bg-slate-50">
+              <Image src={banner} alt={evt.title} fill sizes="(max-width: 1024px) 100vw, 800px" priority className="object-contain p-4 sm:p-6" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent" />
             </div>
 
             <div className="mt-8">
@@ -136,8 +137,15 @@ export default async function EventDetailPage({ params }: Props) {
               </div>
 
               {summary && (
-                <p className="mt-6 text-slate-600 leading-relaxed text-base">{summary}</p>
+                <p className="mt-6 text-base leading-relaxed text-slate-600">{summary}</p>
               )}
+
+              {descriptionHtml ? (
+                <div
+                  className="prose prose-slate mt-8 max-w-none prose-headings:font-extrabold prose-a:text-brand-600"
+                  dangerouslySetInnerHTML={{ __html: descriptionHtml }}
+                />
+              ) : null}
             </div>
           </AnimateOnScroll>
         </div>

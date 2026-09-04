@@ -63,59 +63,6 @@ export function AboutPageView({
     sectionText.aboutDescription1 ||
     'Applied Forensic Research Sciences (AFRS) is a multidisciplinary organization dedicated to advancing forensic science through education, research, training, and professional development. Recognized by MSME, NITI Aayog, and ISO 9001:2015 certified, AFRS fosters innovation, collaboration, and knowledge exchange in the forensic community.'
 
-  const defaultFounderLeaders: LeaderProfile[] = [
-    {
-      id: 'rakesh',
-      name: 'Mr. Rakesh Mia',
-      designation: 'President, AFRS',
-      initials: 'RM',
-      photoUrl:
-        'https://res.cloudinary.com/drrzakkgo/image/upload/v1784833177/afrs/payload/media/WhatsApp_Image_2026-07-22_at_10.07.28_PM_rop83x.jpg',
-      message:
-        '' +
-        (sectionText.rakeshMessage ||
-          'Student and professional development are at the heart of AFRS. We are committed to providing practical, research-driven training that empowers individuals to excel in forensic science and contribute to a safer society.'),
-      bio: 'A visionary leader with over 15 years of experience in forensic education and administration.',
-      socials: {
-        linkedin: 'https://in.linkedin.com/in/rakesh-mia%F0%9F%87%AE%F0%9F%87%B3-2b9787182',
-        instagram: 'https://instagram.com/rakesh_mia?utm_medium=copy_link',
-        facebook: 'https://www.facebook.com/rakesh.mia.144',
-        x: '#',
-      },
-    },
-    {
-      id: 'vijay',
-      name: 'Mr. Vijay',
-      designation: 'Vice President, AFRS',
-      initials: 'V',
-      photoUrl:
-        'https://res.cloudinary.com/drrzakkgo/image/upload/v1762258620/WhatsApp_Image_2025-11-04_at_12.33.03_AM_fywjbh.jpg',
-      message:
-        '' +
-        (sectionText.vijayMessage ||
-          'Strengthening the bridge between academic theory and practical application is our mission. AFRS equips students and professionals with the skills and knowledge necessary to excel in forensic investigation, evidence handling, and court-ready reporting.'),
-      bio: 'An expert in criminal investigation techniques with a passion for student mentorship.',
-      socials: {
-        linkedin: 'https://instagram.com/vijay_panchal9977?utm_medium=copy_link',
-        instagram: 'https://in.linkedin.com/in/vijay-panchal-8631261b0',
-        facebook: 'https://www.facebook.com/profile.php?id=100017360178631',
-        x: '#',
-      },
-    },
-  ]
-
-  const leadershipLeaders =
-    featuredLeaders.length >= 2
-      ? featuredLeaders.slice(0, 2).map((leader, index) => ({
-          ...defaultFounderLeaders[index],
-          ...leader,
-          message: leader.message ?? defaultFounderLeaders[index]?.message,
-          bio: leader.bio ?? defaultFounderLeaders[index]?.bio,
-          photoUrl: leader.photoUrl ?? defaultFounderLeaders[index]?.photoUrl,
-          socials: leader.socials ?? defaultFounderLeaders[index]?.socials,
-        }))
-      : defaultFounderLeaders
-
   return (
     <div className="about-page bg-white">
       <AboutHeroSection
@@ -147,7 +94,7 @@ export function AboutPageView({
       />
 
       <LeadershipSection
-        leaders={leadershipLeaders}
+        leaders={featuredLeaders}
         committee={committee}
         leadershipTitle={sectionText.leadershipTitle ?? undefined}
         leadershipSubtitle={sectionText.leadershipSubtitle ?? undefined}

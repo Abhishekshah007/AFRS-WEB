@@ -56,8 +56,8 @@ export const HeaderSettings: GlobalConfig = {
       name: 'topBarLinks',
       defaultValue: [
         { label: 'Events', url: '/events' },
-        { label: 'Language', url: '#' },
-        { label: 'Notification', url: '#' },
+        // { label: 'Language', url: '' },
+        { label: 'Notification', url: '/#noticeBoard' },
       ],
     }),
     {

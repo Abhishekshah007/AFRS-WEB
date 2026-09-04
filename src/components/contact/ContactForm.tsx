@@ -3,7 +3,16 @@
 import { useContactFormSubmit } from '@/hooks/useContactFormSubmit'
 
 export function ContactForm() {
-  const { state, disabled, buttonLabel, onSubmit } = useContactFormSubmit()
+  const { state, disabled, buttonLabel, onSubmit } = useContactFormSubmit({
+    mapFormData: (formData) => ({
+      fullName: String(formData.get('fullName') || '').trim(),
+      mobile: String(formData.get('mobile') || '').trim(),
+      email: String(formData.get('email') || '').trim(),
+      subject: String(formData.get('subject') || '').trim(),
+      message: String(formData.get('message') || '').trim(),
+      formType: 'contact',
+    }),
+  })
 
   return (
     <form

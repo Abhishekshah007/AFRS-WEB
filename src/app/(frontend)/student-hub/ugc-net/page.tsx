@@ -1,5 +1,6 @@
 import { getUgcNetAchievers, getUgcNetPageContent } from '@/components/student-hub/content'
 import { UgcNetPageView } from '@/components/student-hub/UgcNetPageView'
+import { getPublishedGallerySlides } from '@/lib/queries/gallery'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
@@ -10,11 +11,15 @@ export const metadata: Metadata = buildPageMetadata({
   path: '/student-hub/ugc-net',
 })
 export default async function UgcNetPage() {
-  const [content, achievers] = await Promise.all([getUgcNetPageContent(), getUgcNetAchievers()])
+  const [content, achievers, gallerySlides] = await Promise.all([
+    getUgcNetPageContent(),
+    getUgcNetAchievers(),
+    getPublishedGallerySlides(),
+  ])
 
   return (
     <div className="student-hub-page min-h-screen hub-surface">
-      <UgcNetPageView content={content} achievers={achievers} />
+      <UgcNetPageView content={content} achievers={achievers} gallerySlides={gallerySlides} />
     </div>
   )
 }
