@@ -27,9 +27,7 @@ export const CourseRegistrations: CollectionConfig = {
       'registrationStatus',
     ],
     components: {
-      list: {
-        beforeList: ['/components/admin/CourseRegistrationCsvExport'],
-      },
+      beforeList: ['/components/admin/CourseRegistrationCsvExport'],
     },
   },
   hooks: {
