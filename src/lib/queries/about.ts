@@ -2,13 +2,13 @@ import { ABOUT_IMAGES } from '@/components/about/tokens'
 import type { AboutPageViewProps } from '@/components/about/AboutPageView'
 import type {
   AboutSectionText,
-  AchievementStat,
   CertificationItem,
   ListItem,
   MembershipPlan,
 } from '@/components/about/types'
+import type { AchievementDisplayItem } from '@/components/shared/OurAchievementsSection'
+import { defaultImpactStats } from '@/components/home/sections/constants'
 import {
-  defaultAchievements,
   defaultActivities,
   defaultCertifications,
   defaultSectionText,
@@ -16,26 +16,12 @@ import {
   fallbackCommittee,
   fallbackLeaders,
 } from '@/data/defaults/about'
-import { resolveMediaUrl } from '@/lib/cms'
+import { resolveMediaUrl, resolveMediaUrlOptional } from '@/lib/cms'
 import { getPayloadClient } from '@/lib/payload'
-import { getFeaturedGalleryItems } from '@/lib/queries/gallery'
+import { getFeaturedGalleryItems, mapGalleryDocs } from '@/lib/queries/gallery'
+import { safeQuery } from '@/lib/resilience/safeQuery'
 import { membershipWhatsAppHref } from '@/lib/queries/site'
-import type {
-  AboutCertification,
-  AboutPage,
-  ImpactStat,
-  Media,
-  SiteSetting,
-} from '@/payload-types'
-
-const toneMap: Record<string, AchievementStat['tone']> = {
-  indigo: 'blue',
-  blue: 'blue',
-  purple: 'purple',
-  orange: 'orange',
-  emerald: 'green',
-  green: 'green',
-}
+import type { AboutCertification, AboutPage, ImpactStat, Media, SiteSetting } from '@/payload-types'
 
 type CmsTextRow = { text?: string | null }
 type CmsListRow = CmsTextRow & { description?: string | null }
@@ -81,16 +67,6 @@ type CmsAboutSectionText = Omit<
   membershipPlans?: CmsMembershipPlanRow[] | null
 }
 
-function parseStatValue(raw: string): Pick<AchievementStat, 'value' | 'numericEnd' | 'suffix'> {
-  const match = raw.trim().match(/^(\d+)(.*)$/)
-  if (!match) return { value: raw }
-  return {
-    value: raw,
-    numericEnd: Number(match[1]),
-    suffix: match[2] || '',
-  }
-}
-
 function toTextArray(items: unknown): string[] | undefined {
   if (!Array.isArray(items)) return undefined
   const normalized = items
@@ -127,7 +103,7 @@ function toCertifications(
 }
 
 function toCertificationItem(cert: AboutCertification): CertificationItem {
-  const icon = resolveMediaUrl(cert.logo as number | Media | null | undefined, '')
+  const icon = resolveMediaUrlOptional(cert.logo as number | Media | null | undefined)
 
   return {
     title: cert.title,
@@ -184,7 +160,9 @@ function buildAboutSectionText(
   }
 }
 
-function resolveWhatsappPhone(siteSettings: SiteSetting | null | undefined): string | null | undefined {
+function resolveWhatsappPhone(
+  siteSettings: SiteSetting | null | undefined,
+): string | null | undefined {
   return siteSettings?.socialLinks?.whatsapp || siteSettings?.phone
 }
 
@@ -201,31 +179,59 @@ function applyMembershipWhatsAppLinks(
   }))
 }
 
-export async function getAboutPageData(): Promise<AboutPageViewProps> {
+export function getDefaultAboutPageData(): AboutPageViewProps {
+  const sectionText = buildAboutSectionText()
+  const membershipPlans = applyMembershipWhatsAppLinks(sectionText.membershipPlans, null)
+
+  return {
+    sectionText: { ...sectionText, membershipPlans },
+    featuredLeaders: fallbackLeaders,
+    committee: fallbackCommittee,
+    achievementStats: defaultImpactStats.map((stat) => ({
+      value: stat.value,
+      label: stat.label,
+      tone: stat.tone,
+    })),
+    certifications: sectionText.certifications ?? defaultCertifications,
+    uniqueItems: sectionText.uniqueItems ?? defaultUnique,
+    activityItems: sectionText.activityItems ?? defaultActivities,
+    expertiseItems: sectionText.expertiseItems ?? [],
+    whyChooseItems: sectionText.whyChooseItems ?? [],
+    qualityEthicsItems: sectionText.qualityEthicsItems ?? [],
+    researchItems: sectionText.researchItems ?? [],
+    partnershipItems: sectionText.partnershipItems ?? [],
+    futureRoadmapItems: sectionText.futureRoadmapItems ?? [],
+    membershipReasons: sectionText.membershipReasons ?? [],
+    heroImage: ABOUT_IMAGES.hero,
+    galleryItems: mapGalleryDocs([]),
+  }
+}
+
+async function loadAboutPageData(): Promise<AboutPageViewProps> {
   const payload = await getPayloadClient()
 
   const [aboutPage, siteSettings, impactStats, certificationsResult, galleryItems] =
     await Promise.all([
-    payload.findGlobal({ slug: 'aboutPage', depth: 1, overrideAccess: false }),
-    payload.findGlobal({ slug: 'siteSettings', depth: 0, overrideAccess: false }),
-    payload.find({
-      collection: 'impactStats',
-      where: { published: { equals: true } },
-      sort: 'order',
-      limit: 5,
-      depth: 0,
-      overrideAccess: false,
-    }),
-    payload.find({
-      collection: 'aboutCertifications',
-      where: { published: { equals: true } },
-      sort: 'order',
-      limit: 50,
-      depth: 1,
-      overrideAccess: false,
-    }),
-    getFeaturedGalleryItems(4),
-  ])
+      payload.findGlobal({ slug: 'aboutPage', depth: 1, overrideAccess: false }),
+      payload.findGlobal({ slug: 'siteSettings', depth: 0, overrideAccess: false }),
+      payload.find({
+        collection: 'impactStats',
+        where: { published: { equals: true } },
+        sort: 'order',
+        limit: 5,
+        depth: 0,
+        overrideAccess: false,
+      }),
+      payload.find({
+        collection: 'aboutCertifications',
+        where: { published: { equals: true } },
+        sort: 'order',
+        limit: 50,
+        depth: 1,
+        overrideAccess: false,
+      }),
+      getFeaturedGalleryItems(4),
+    ])
 
   const about = aboutPage as AboutPage
   const site = siteSettings as SiteSetting
@@ -249,18 +255,18 @@ export async function getAboutPageData(): Promise<AboutPageViewProps> {
   })
   const committee = fallbackCommittee
 
-  const achievements: AchievementStat[] =
+  const achievementStats: AchievementDisplayItem[] =
     impactStats.docs.length > 0
-      ? (impactStats.docs as ImpactStat[]).map((stat, i) => {
-          const parsed = parseStatValue(stat.value ?? '0')
-          const tones: AchievementStat['tone'][] = ['blue', 'purple', 'orange', 'green', 'red']
-          return {
-            ...parsed,
-            label: stat.label ?? 'Stat',
-            tone: toneMap[stat.tone ?? ''] ?? tones[i % tones.length],
-          }
-        })
-      : defaultAchievements
+      ? (impactStats.docs as ImpactStat[]).map((stat) => ({
+          value: stat.value ?? '',
+          label: stat.label ?? 'Stat',
+          tone: stat.tone,
+        }))
+      : defaultImpactStats.map((stat) => ({
+          value: stat.value,
+          label: stat.label,
+          tone: stat.tone,
+        }))
 
   const cmsCertifications =
     certificationsResult.docs.length > 0
@@ -271,7 +277,7 @@ export async function getAboutPageData(): Promise<AboutPageViewProps> {
     sectionText: { ...sectionText, membershipPlans },
     featuredLeaders: featuredLeaders.length >= 2 ? featuredLeaders : fallbackLeaders,
     committee,
-    achievements,
+    achievementStats,
     certifications: cmsCertifications ?? sectionText.certifications ?? defaultCertifications,
     uniqueItems: sectionText.uniqueItems ?? defaultUnique,
     activityItems: sectionText.activityItems ?? defaultActivities,
@@ -285,4 +291,8 @@ export async function getAboutPageData(): Promise<AboutPageViewProps> {
     heroImage,
     galleryItems,
   }
+}
+
+export async function getAboutPageData(): Promise<AboutPageViewProps> {
+  return safeQuery('getAboutPageData', loadAboutPageData, getDefaultAboutPageData())
 }

@@ -1,10 +1,18 @@
-import { ExpertConsultationSection, type ConsultSectionConfig } from '@/components/service-detail/ExpertConsultationSection'
+import {
+  ExpertConsultationSection,
+  type ConsultSectionConfig,
+} from '@/components/service-detail/ExpertConsultationSection'
 import { HowWeHelpSection } from '@/components/service-detail/HowWeHelpSection'
 import { InvestigationGallery } from '@/components/service-detail/InvestigationGallery'
 import { ServiceDetailHero } from '@/components/service-detail/ServiceDetailHero'
 import { ServiceOverviewSection } from '@/components/service-detail/ServiceOverviewSection'
 import { buildOverviewParagraphs } from '@/components/service-detail/buildServiceContent'
-import type { GallerySlide, HelpCardItem, ServiceDetailData, SiteContactInfo } from '@/components/service-detail/types'
+import type {
+  GallerySlide,
+  HelpCardItem,
+  ServiceDetailData,
+  SiteContactInfo,
+} from '@/components/service-detail/types'
 import { serviceDetailTokens } from '@/components/service-detail/tokens'
 
 export type ServiceDetailViewProps = {
@@ -16,8 +24,7 @@ export type ServiceDetailViewProps = {
 
 function buildConsultConfig(service: ServiceDetailData): ConsultSectionConfig {
   const isLegalConsultancy =
-    service.category === 'consultancy' ||
-    /legal|consultancy/i.test(service.slug)
+    service.category === 'consultancy' || /legal|consultancy/i.test(service.slug)
 
   if (isLegalConsultancy) {
     return {
@@ -49,7 +56,12 @@ function buildConsultConfig(service: ServiceDetailData): ConsultSectionConfig {
 /**
  * Full service catalog detail layout — composed from section components.
  */
-export function ServiceDetailView({ service, helpCards, gallerySlides, contact }: ServiceDetailViewProps) {
+export function ServiceDetailView({
+  service,
+  helpCards,
+  gallerySlides,
+  contact,
+}: ServiceDetailViewProps) {
   const overviewTitle = `What is ${service.title}?`
   const paragraphs = buildOverviewParagraphs(service)
   const consultConfig = buildConsultConfig(service)
@@ -61,7 +73,12 @@ export function ServiceDetailView({ service, helpCards, gallerySlides, contact }
         description={service.excerpt}
         bannerUrl={service.bannerUrl}
       />
-      <ServiceOverviewSection title={overviewTitle} paragraphs={paragraphs} />
+      <ServiceOverviewSection
+        title={overviewTitle}
+        paragraphs={paragraphs}
+        imageUrl={service.overviewImageUrl}
+        imageAlt={`${service.title} forensic services`}
+      />
       <HowWeHelpSection
         items={helpCards}
         title={service.helpHeading || undefined}

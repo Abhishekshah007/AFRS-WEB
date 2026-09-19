@@ -5,6 +5,7 @@ import type { GallerySlide } from '@/components/service-detail/types'
 import { SERVICE_DETAIL_IMAGES } from '@/components/service-detail/tokens'
 import { resolveMediaUrl } from '@/lib/cms'
 import { getPayloadClient } from '@/lib/payload'
+import { safeQuery } from '@/lib/resilience/safeQuery'
 import type { GalleryItem, Media } from '@/payload-types'
 
 const FALLBACK_ITEMS: SiteGalleryItem[] = ['Lab', 'Training', 'Tech', 'Events'].map(
@@ -26,17 +27,23 @@ export function mapGalleryDocs(docs: GalleryItem[]): SiteGalleryItem[] {
 }
 
 export async function getFeaturedGalleryItems(limit = 4): Promise<SiteGalleryItem[]> {
-  const payload = await getPayloadClient()
-  const { docs } = await payload.find({
-    collection: 'galleryItems',
-    where: { published: { equals: true }, featured: { equals: true } },
-    limit,
-    sort: 'order',
-    depth: 1,
-    overrideAccess: false,
-  })
+  return safeQuery(
+    'getFeaturedGalleryItems',
+    async () => {
+      const payload = await getPayloadClient()
+      const { docs } = await payload.find({
+        collection: 'galleryItems',
+        where: { published: { equals: true }, featured: { equals: true } },
+        limit,
+        sort: 'order',
+        depth: 1,
+        overrideAccess: false,
+      })
 
-  return mapGalleryDocs(docs as GalleryItem[])
+      return mapGalleryDocs(docs as GalleryItem[])
+    },
+    FALLBACK_ITEMS,
+  )
 }
 
 export async function getPublishedGallerySlides(limit = 8): Promise<GallerySlide[]> {

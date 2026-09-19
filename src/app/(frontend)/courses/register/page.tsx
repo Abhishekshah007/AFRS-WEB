@@ -1,7 +1,8 @@
 import { CourseRegistrationForm } from '@/components/programmes/CourseRegistrationForm'
-import type { RegistrationForm as RegistrationFormType } from '@/payload-types'
-import { getPayloadClient } from '@/lib/payload'
-import type { RegistrationFormConfig } from '@/components/programmes/RegistrationFormRenderer'
+import { normalizeDynamicSections } from '@/lib/registration/normalizeDynamicSections'
+import { resolveRegistrationConfig } from '@/lib/registration/resolveConfig'
+import { findProgrammeRegistrationContext } from '@/lib/queries/programme-registration'
+import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
@@ -29,70 +30,28 @@ function normaliseType(value?: string): 'education' | 'training' | 'other' {
   return 'other'
 }
 
-function normaliseRegistrationFormConfig(
-  registrationForm: RegistrationFormType | null,
-): RegistrationFormConfig | null {
-  if (!registrationForm) return null
-
-  return {
-    formTitle: registrationForm.formTitle,
-    formSubtitle: registrationForm.formSubtitle,
-    sections:
-      registrationForm.sections?.map((section) => ({
-        title: section.title,
-        description: section.description ?? undefined,
-        fields:
-          section.fields?.map((field) => ({
-            name: field.name,
-            label: field.label,
-            fieldType: field.fieldType,
-            required: field.required ?? undefined,
-            placeholder: field.placeholder ?? undefined,
-            options: field.options ?? undefined,
-            rows: field.rows ?? undefined,
-            accept: field.accept ?? undefined,
-          })) ?? undefined,
-      })) ?? [],
-    paymentInstructions: registrationForm.paymentInstructions
-      ? {
-          title: registrationForm.paymentInstructions.title ?? undefined,
-          accountName: registrationForm.paymentInstructions.accountName ?? undefined,
-          accountNumber: registrationForm.paymentInstructions.accountNumber ?? undefined,
-          ifsc: registrationForm.paymentInstructions.ifsc ?? undefined,
-          swift: registrationForm.paymentInstructions.swift ?? undefined,
-          branchAddress: registrationForm.paymentInstructions.branchAddress ?? undefined,
-          upiId: registrationForm.paymentInstructions.upiId ?? undefined,
-          note: registrationForm.paymentInstructions.note ?? undefined,
-        }
-      : undefined,
-    paymentMethods:
-      registrationForm.paymentMethods?.map((method) => ({
-        title: method.title,
-        description: method.description ?? undefined,
-        qrCode: method.qrCode ?? undefined,
-        link: method.link ?? undefined,
-      })) ?? [],
-  }
-}
-
 export default async function CourseRegisterPage({ searchParams }: Props) {
   const params = await searchParams
-  const payload = await getPayloadClient()
-  const registrationForm = (await payload.findGlobal({
-    slug: 'registrationForm',
-    depth: 1,
-    overrideAccess: false,
-  })) as RegistrationFormType | null
+  const context = await findProgrammeRegistrationContext(params.programmeId)
+  const registrationForm = context?.registrationForm
 
-  const config = normaliseRegistrationFormConfig(registrationForm)
+  const config = resolveRegistrationConfig({
+    settings: context?.match?.registrationSettings,
+    globalForm: registrationForm,
+  })
+
+  const customSections = normalizeDynamicSections(
+    registrationForm?.sections as DynamicFormSection[],
+  )
 
   return (
     <CourseRegistrationForm
       config={config}
+      customSections={customSections}
       details={{
         programmeType: normaliseType(params.type),
-        categorySlug: params.categorySlug,
-        categoryTitle: params.categoryTitle,
+        categorySlug: params.categorySlug || context?.match?.categorySlug,
+        categoryTitle: params.categoryTitle || context?.match?.categoryTitle,
         programmeId: params.programmeId,
         programmeTitle: params.programmeTitle || 'General AFRS Programme',
         programmeDuration: params.duration,

@@ -4,8 +4,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { AppProviders } from '@/components/providers/AppProviders'
 import { AfrsChatbot } from '@/components/chatbot/AfrsChatbot'
-import { getPayloadClient } from '@/lib/payload'
-import type { FooterSetting, HeaderSetting, SiteSetting } from '@/payload-types'
+import { getLayoutGlobals } from '@/lib/queries/layout'
 import type { Viewport } from 'next'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { getSiteUrl } from '@/lib/seo/site'
@@ -35,8 +34,7 @@ export const viewport: Viewport = {
 }
 
 export async function generateMetadata(): Promise<import('next').Metadata> {
-  const payload = await getPayloadClient()
-  const siteSettings = (await payload.findGlobal({ slug: 'siteSettings', depth: 0 })) as SiteSetting
+  const { siteSettings } = await getLayoutGlobals()
   const siteName = siteSettings?.siteName || 'Applied Forensic Research Sciences Institute'
   const description =
     'AFRS provides forensic science education, professional training, internships, research support and AFSL laboratory services across India.'
@@ -79,12 +77,7 @@ export async function generateMetadata(): Promise<import('next').Metadata> {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const payload = await getPayloadClient()
-  const [headerSettings, footerSettings, siteSettings] = await Promise.all([
-    payload.findGlobal({ slug: 'headerSettings', depth: 1 }) as Promise<HeaderSetting>,
-    payload.findGlobal({ slug: 'footerSettings', depth: 0 }) as Promise<FooterSetting>,
-    payload.findGlobal({ slug: 'siteSettings', depth: 0 }) as Promise<SiteSetting>,
-  ])
+  const { headerSettings, footerSettings, siteSettings, cmsAvailable } = await getLayoutGlobals()
 
   const socials = siteSettings?.socialLinks || {}
   const sameAs = [
@@ -99,10 +92,21 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en-IN" className={`${inter.variable} ${dmSans.variable}`}>
       <body className="font-sans antialiased">
         <JsonLd data={withContext([organizationGraph(sameAs), websiteGraph()])} />
+        {!cmsAvailable && (
+          <div
+            className="bg-amber-50 border-b border-amber-200 px-4 py-2 text-center text-xs font-semibold text-amber-900"
+            role="status"
+          >
+            Some content is loading from backup data. Full CMS content will return shortly.
+          </div>
+        )}
         <Navbar settings={headerSettings} />
         <AppProviders>
           <main className="relative min-h-[50vh]">{children}</main>
-          <AfrsChatbot phone={siteSettings?.phone || undefined} email={siteSettings?.email || undefined} />
+          <AfrsChatbot
+            phone={siteSettings?.phone || undefined}
+            email={siteSettings?.email || undefined}
+          />
         </AppProviders>
         <Footer
           settings={footerSettings}

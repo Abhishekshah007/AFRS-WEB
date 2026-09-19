@@ -2,33 +2,76 @@ import type { Field } from 'payload'
 
 /** Reusable CMS field rows for dynamic registration forms (courses + events). */
 export const dynamicFormFieldRows: Field[] = [
-  { name: 'name', type: 'text', required: true, admin: { description: 'Internal key — use camelCase, no spaces.' } },
-  { name: 'label', type: 'text', required: true },
+  {
+    name: 'label',
+    type: 'text',
+    required: true,
+    admin: {
+      description: 'Question shown to the participant (e.g. Full name for certificate).',
+    },
+  },
   {
     name: 'fieldType',
     type: 'select',
     required: true,
+    defaultValue: 'text',
     options: [
-      { label: 'Text', value: 'text' },
+      { label: 'Short text', value: 'text' },
       { label: 'Email', value: 'email' },
-      { label: 'Telephone', value: 'tel' },
-      { label: 'Textarea', value: 'textarea' },
-      { label: 'Select', value: 'select' },
+      { label: 'Phone / WhatsApp', value: 'tel' },
+      { label: 'Long text / paragraph', value: 'textarea' },
+      { label: 'Dropdown choices', value: 'select' },
       { label: 'Date', value: 'date' },
       { label: 'Time', value: 'time' },
-      { label: 'File', value: 'file' },
+      { label: 'File upload (image/PDF)', value: 'file' },
       { label: 'Number', value: 'number' },
     ],
   },
-  { name: 'required', type: 'checkbox', defaultValue: false },
-  { name: 'placeholder', type: 'text' },
+  {
+    name: 'required',
+    type: 'checkbox',
+    defaultValue: false,
+    label: 'Required field',
+  },
+  {
+    name: 'placeholder',
+    type: 'text',
+    admin: { description: 'Optional hint inside the input box.' },
+  },
   {
     name: 'options',
     type: 'textarea',
-    admin: { description: 'Comma-separated options for select fields.' },
+    admin: {
+      description: 'For dropdown only — separate choices with commas (e.g. Student, Professional).',
+      condition: (_, siblingData) => siblingData?.fieldType === 'select',
+    },
   },
-  { name: 'rows', type: 'number', admin: { description: 'Rows for textarea fields.' } },
-  { name: 'accept', type: 'text', admin: { description: 'Accept attribute for file inputs (e.g. image/*,.pdf).' } },
+  {
+    name: 'rows',
+    type: 'number',
+    admin: {
+      description: 'Height for long text fields.',
+      condition: (_, siblingData) => siblingData?.fieldType === 'textarea',
+    },
+  },
+  {
+    name: 'accept',
+    type: 'text',
+    defaultValue: 'image/*,.pdf',
+    admin: {
+      description: 'For file uploads — usually image/*,.pdf is fine.',
+      condition: (_, siblingData) => siblingData?.fieldType === 'file',
+    },
+  },
+  {
+    name: 'name',
+    type: 'text',
+    admin: {
+      readOnly: true,
+      hidden: true,
+      description: 'Auto-generated from the question label — do not edit.',
+    },
+  },
 ]
 
 export function dynamicFormSectionsField({
@@ -47,14 +90,26 @@ export function dynamicFormSectionsField({
     admin: {
       description:
         description ||
-        'Add sections and fields shown on the registration form. Leave empty to use default fields only.',
+        'Build the registration form participants will see. Add sections (e.g. Personal Information) and questions inside each section.',
     },
     fields: [
-      { name: 'title', type: 'text', required: true },
-      { name: 'description', type: 'textarea' },
+      {
+        name: 'title',
+        type: 'text',
+        required: true,
+        label: 'Section title',
+        admin: { placeholder: 'e.g. Personal Information' },
+      },
+      {
+        name: 'description',
+        type: 'textarea',
+        label: 'Section note (optional)',
+        admin: { placeholder: 'Short note shown under the section title.' },
+      },
       {
         name: 'fields',
         type: 'array',
+        label: 'Questions',
         fields: dynamicFormFieldRows,
       },
     ],

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getPayloadClient } from '@/lib/payload'
 import { formatEventDate } from '@/lib/cms'
+import { logCmsError } from '@/lib/resilience/logger'
 import type { Event as AfrsEvent, Service } from '@/payload-types'
 import { PageHero } from '@/components/marketing/PageHero'
 import { buildPageMetadata } from '@/lib/seo/metadata'
@@ -23,35 +24,33 @@ export default async function SearchPage({ searchParams }: Props) {
   let services: Service[] = []
 
   if (query.length >= 2) {
-    const payload = await getPayloadClient()
-    const [eventsResult, servicesResult] = await Promise.all([
-      payload.find({
-        collection: 'events',
-        where: {
-          and: [
-            { published: { equals: true } },
-            { title: { contains: query } },
-          ],
-        },
-        limit: 5,
-        depth: 0,
-        overrideAccess: false,
-      }),
-      payload.find({
-        collection: 'services',
-        where: {
-          and: [
-            { published: { equals: true } },
-            { title: { contains: query } },
-          ],
-        },
-        limit: 5,
-        depth: 0,
-        overrideAccess: false,
-      }),
-    ])
-    events = eventsResult.docs as AfrsEvent[]
-    services = servicesResult.docs as Service[]
+    try {
+      const payload = await getPayloadClient()
+      const [eventsResult, servicesResult] = await Promise.all([
+        payload.find({
+          collection: 'events',
+          where: {
+            and: [{ published: { equals: true } }, { title: { contains: query } }],
+          },
+          limit: 5,
+          depth: 0,
+          overrideAccess: false,
+        }),
+        payload.find({
+          collection: 'services',
+          where: {
+            and: [{ published: { equals: true } }, { title: { contains: query } }],
+          },
+          limit: 5,
+          depth: 0,
+          overrideAccess: false,
+        }),
+      ])
+      events = eventsResult.docs as AfrsEvent[]
+      services = servicesResult.docs as Service[]
+    } catch (error) {
+      logCmsError('searchPage', error, { query })
+    }
   }
 
   const hasResults = events.length > 0 || services.length > 0
@@ -88,7 +87,8 @@ export default async function SearchPage({ searchParams }: Props) {
           <div className="mt-10">
             {!hasResults && (
               <p className="text-slate-500 text-center py-12">
-                No results found for <strong>&ldquo;{query}&rdquo;</strong>. Try a different keyword.
+                No results found for <strong>&ldquo;{query}&rdquo;</strong>. Try a different
+                keyword.
               </p>
             )}
 
@@ -105,11 +105,17 @@ export default async function SearchPage({ searchParams }: Props) {
                       href={`/events/${evt.slug}`}
                       className="flex gap-4 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
                     >
-                      <div className="h-10 w-10 shrink-0 rounded-xl bg-brand-50 flex items-center justify-center text-lg">📅</div>
+                      <div className="h-10 w-10 shrink-0 rounded-xl bg-brand-50 flex items-center justify-center text-lg">
+                        📅
+                      </div>
                       <div>
                         <p className="font-bold text-slate-900 text-sm">{evt.title}</p>
-                        <p className="text-xs text-slate-400 mt-0.5">{formatEventDate(evt.startDate)}</p>
-                        {evt.excerpt && <p className="text-xs text-slate-500 mt-1 line-clamp-1">{evt.excerpt}</p>}
+                        <p className="text-xs text-slate-400 mt-0.5">
+                          {formatEventDate(evt.startDate)}
+                        </p>
+                        {evt.excerpt && (
+                          <p className="text-xs text-slate-500 mt-1 line-clamp-1">{evt.excerpt}</p>
+                        )}
                       </div>
                     </Link>
                   ))}
@@ -130,11 +136,17 @@ export default async function SearchPage({ searchParams }: Props) {
                       href={`/services/${srv.slug}`}
                       className="flex gap-4 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
                     >
-                      <div className="h-10 w-10 shrink-0 rounded-xl bg-brand-50 flex items-center justify-center text-lg">🔬</div>
+                      <div className="h-10 w-10 shrink-0 rounded-xl bg-brand-50 flex items-center justify-center text-lg">
+                        🔬
+                      </div>
                       <div>
                         <p className="font-bold text-slate-900 text-sm">{srv.title}</p>
-                        {srv.category && <p className="text-xs text-slate-400 mt-0.5 capitalize">{srv.category}</p>}
-                        {srv.excerpt && <p className="text-xs text-slate-500 mt-1 line-clamp-1">{srv.excerpt}</p>}
+                        {srv.category && (
+                          <p className="text-xs text-slate-400 mt-0.5 capitalize">{srv.category}</p>
+                        )}
+                        {srv.excerpt && (
+                          <p className="text-xs text-slate-500 mt-1 line-clamp-1">{srv.excerpt}</p>
+                        )}
                       </div>
                     </Link>
                   ))}

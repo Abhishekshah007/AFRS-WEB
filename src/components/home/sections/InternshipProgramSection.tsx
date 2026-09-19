@@ -56,7 +56,7 @@ export function InternshipProgramSection() {
               <div className="overflow-hidden rounded-[24px] border-[10px] border-white bg-white shadow-[0_32px_60px_rgba(15,23,42,0.18)]">
                 <div className="relative aspect-[1/1] w-full">
                   <Image
-                    src="https://res.cloudinary.com/drrzakkgo/image/upload/v1785958676/afrs/payload/media/Screenshot_2026-08-06_010405_y8knu5.png"
+                    src="https://res.cloudinary.com/drrzakkgo/image/upload/v1789644470/afrs/payload/media/AFRS%20SITE%20IMAGEs/HomeScreenAFSLAboutSection_j2xg1v.png"
                     alt="Forensic Internship Program"
                     fill
                     className="object-cover"

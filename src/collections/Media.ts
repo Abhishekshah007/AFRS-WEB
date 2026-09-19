@@ -15,12 +15,10 @@ export const Media: CollectionConfig = {
     delete: isAdmin,
   },
   upload: {
-    imageSizes: [
-      { name: 'thumbnail', width: 400, height: 300, position: 'centre' },
-      { name: 'card', width: 800, height: 600, position: 'centre' },
-      { name: 'hero', width: 1600, height: 900, position: 'centre' },
-    ],
-    adminThumbnail: 'thumbnail',
+    // Single Cloudinary upload per file. imageSizes were removed because they generated
+    // 3 extra derivatives per image (thumbnail/card/hero), slowing uploads and cluttering
+    // the library when combined with remote storage. The site uses media.url only.
+    adminThumbnail: ({ doc }) => (typeof doc.url === 'string' ? doc.url : ''),
     mimeTypes: [
       'image/*',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',

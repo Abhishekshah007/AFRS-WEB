@@ -83,6 +83,13 @@ export default async function ServiceDetailPage({ params }: Props) {
     srv.banner as number | Media | null | undefined,
     SERVICE_DETAIL_IMAGES.hero,
   )
+  const overviewImageUrl = resolveMediaUrl(
+    srv.overviewImage as number | Media | null | undefined,
+    resolveMediaUrl(
+      srv.banner as number | Media | null | undefined,
+      SERVICE_DETAIL_IMAGES.overview,
+    ),
+  )
   const service: ServiceDetailData = {
     slug: srv.slug,
     title: srv.title,
@@ -91,6 +98,7 @@ export default async function ServiceDetailPage({ params }: Props) {
       'Meticulous forensic investigation services preserving evidence integrity from scene to laboratory analysis.',
     contentPlain: richTextToPlain(srv.content, 4000),
     bannerUrl,
+    overviewImageUrl,
     category: srv.category,
     helpHeading: srv.helpHeading,
     helpIntro: srv.helpIntro,
@@ -132,13 +140,13 @@ export default async function ServiceDetailPage({ params }: Props) {
         ])}
       />
       <ServiceDetailView
-      service={service}
-      helpCards={helpCards.length ? helpCards : defaultHelpCards()}
-      gallerySlides={gallerySlides}
-      contact={{
-        phone: site?.phone || '+91-9926692487',
-        email: site?.email || 'afrsciences@gmail.com',
-      }}
+        service={service}
+        helpCards={helpCards.length ? helpCards : defaultHelpCards()}
+        gallerySlides={gallerySlides}
+        contact={{
+          phone: site?.phone || '+91-9926692487',
+          email: site?.email || 'afrsciences@gmail.com',
+        }}
       />
     </>
   )

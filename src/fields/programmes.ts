@@ -1,5 +1,7 @@
 import type { Field } from 'payload'
 
+import { registrationSettingsField } from './registrationSettings'
+
 /** Shared programme item schema used in education and training category arrays. */
 export const programmeItemFields: Field[] = [
   { name: 'id', type: 'text', required: true },
@@ -8,4 +10,10 @@ export const programmeItemFields: Field[] = [
   { name: 'duration', type: 'text', required: true },
   { name: 'mode', type: 'text', required: true },
   { name: 'level', type: 'text' },
+  registrationSettingsField({
+    includeFeeTiers: true,
+    name: 'registration',
+    dbName: 'reg',
+    compactDbNames: true,
+  }),
 ]

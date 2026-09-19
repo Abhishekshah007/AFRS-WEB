@@ -1,5 +1,9 @@
 import type { CollectionSlug, PayloadRequest } from 'payload'
-import { flattenDocForEmail, sendSubmissionNotification } from '@/lib/email/sendSubmissionNotification'
+import { sendRegistrantConfirmation } from '@/lib/email/sendRegistrantConfirmation'
+import {
+  flattenDocForEmail,
+  sendSubmissionNotification,
+} from '@/lib/email/sendSubmissionNotification'
 import { buildSubmissionDocx, slugifyExportName } from '@/lib/submissions/generateSubmissionDocx'
 import type { SubmissionFormType } from '@/fields/submissionExport'
 
@@ -55,7 +59,10 @@ const formTypeTitles: Record<SubmissionFormType, string> = {
   legalConsultancy: 'Legal Consultancy Request',
 }
 
-const contactEmailKind: Record<SubmissionFormType, Parameters<typeof sendSubmissionNotification>[0]['kind']> = {
+const contactEmailKind: Record<
+  SubmissionFormType,
+  Parameters<typeof sendSubmissionNotification>[0]['kind']
+> = {
   contact: 'contact',
   labInquiry: 'labInquiry',
   serviceConsult: 'serviceConsult',
@@ -155,7 +162,9 @@ export function contactSubmissionExportHook() {
     if (shouldSkipSubmissionExport(context)) return
     if (operation !== 'create') return
 
-    const formType = (typeof doc.formType === 'string' ? doc.formType : 'contact') as SubmissionFormType
+    const formType = (
+      typeof doc.formType === 'string' ? doc.formType : 'contact'
+    ) as SubmissionFormType
     const subject = typeof doc.subject === 'string' ? doc.subject : undefined
     const title = contactExportTitle(formType, subject)
 
@@ -175,7 +184,9 @@ export function contactSubmissionExportHook() {
   }
 }
 
-export function registrationSubmissionExportHook(collection: 'courseRegistrations' | 'eventRegistrations') {
+export function registrationSubmissionExportHook(
+  collection: 'courseRegistrations' | 'eventRegistrations',
+) {
   return async ({
     doc,
     req,
@@ -195,9 +206,7 @@ export function registrationSubmissionExportHook(collection: 'courseRegistration
     const statusChanged =
       operation === 'update' && doc.registrationStatus !== previousDoc?.registrationStatus
     const proofAdded =
-      operation === 'update' &&
-      Boolean(doc.transactionProof) &&
-      !previousDoc?.transactionProof
+      operation === 'update' && Boolean(doc.transactionProof) && !previousDoc?.transactionProof
 
     if (!created && !statusChanged && !proofAdded) return
 
@@ -223,6 +232,28 @@ export function registrationSubmissionExportHook(collection: 'courseRegistration
             ? String(doc.programmeTitle || doc.fullName || 'Course')
             : String(doc.eventTitle || doc.fullName || 'Event'),
         doc,
+      })
+    }
+
+    if (created && typeof doc.email === 'string' && doc.email.trim()) {
+      const totalAmount = Number(doc.totalAmount ?? 0)
+      const paymentStatus = typeof doc.paymentStatus === 'string' ? doc.paymentStatus : 'pending'
+      const isFree = totalAmount <= 0 || paymentStatus === 'notRequired'
+      const programmeOrEventTitle =
+        collection === 'courseRegistrations'
+          ? String(doc.programmeTitle || 'Programme')
+          : String(doc.eventTitle || 'Event')
+
+      await sendRegistrantConfirmation({
+        kind: collection === 'courseRegistrations' ? 'courseRegistration' : 'eventRegistration',
+        to: doc.email.trim(),
+        fullName: typeof doc.fullName === 'string' ? doc.fullName : 'Participant',
+        programmeOrEventTitle,
+        registrationId: doc.id,
+        totalAmount,
+        currency: doc.feeTierCurrency === 'USD' ? 'USD' : 'INR',
+        isFree,
+        paymentPending: !isFree && paymentStatus === 'pending',
       })
     }
   }

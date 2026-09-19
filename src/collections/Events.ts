@@ -4,8 +4,11 @@ import { eventManagedPublishedAccess } from '../access'
 import { ADMIN_GROUPS } from '../config/adminGroups'
 import { contentRichTextField, excerptField, slugField } from '../fields'
 import { dynamicFormSectionsField } from '../fields/dynamicFormSections'
+import { registrationSettingsField } from '../fields/registrationSettings'
 import { eventNatureField } from '../fields/options'
 import { publishedField } from '../fields/publishing'
+import { autoSlugFromTitle } from '../hooks/autoSlugFromTitle'
+import { normalizeRegistrationSectionsData } from '../hooks/normalizeRegistrationSections'
 
 export const Events: CollectionConfig = {
   slug: 'events',
@@ -14,17 +17,39 @@ export const Events: CollectionConfig = {
     group: ADMIN_GROUPS.EVENTS,
     useAsTitle: 'title',
     defaultColumns: ['title', 'eventType', 'startDate', 'registrationOpen', 'published'],
+    description:
+      'Create workshops, webinars, and conferences. The event title auto-generates the URL slug — no technical formatting needed.',
+  },
+  hooks: {
+    beforeValidate: [autoSlugFromTitle],
+    beforeChange: [normalizeRegistrationSectionsData],
   },
   fields: [
-    { name: 'title', type: 'text', required: true },
-    slugField(),
-    { name: 'banner', type: 'upload', relationTo: 'media' },
+    {
+      name: 'title',
+      type: 'text',
+      required: true,
+      admin: {
+        description: 'Public event name shown on the website.',
+      },
+    },
+    {
+      ...slugField(),
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        description:
+          'Created automatically from the event title when you save. You do not need to type or generate this.',
+      },
+    },
+    { name: 'banner', type: 'upload', relationTo: 'media', label: 'Event poster / banner' },
     excerptField(),
     contentRichTextField('description'),
     eventNatureField(),
     {
       name: 'eventType',
       type: 'select',
+      label: 'Event type',
       options: [
         { label: 'Workshop', value: 'workshop' },
         { label: 'Webinar', value: 'webinar' },
@@ -35,33 +60,74 @@ export const Events: CollectionConfig = {
     {
       name: 'mode',
       type: 'select',
+      label: 'Online or offline',
       options: [
         { label: 'Online', value: 'online' },
         { label: 'Offline', value: 'offline' },
         { label: 'Online & Offline', value: 'hybrid' },
       ],
     },
-    { name: 'startDate', type: 'date', required: true },
-    { name: 'endDate', type: 'date' },
-    { name: 'startTime', type: 'text', admin: { placeholder: 'e.g. 10:00 AM' } },
-    { name: 'venue', type: 'text' },
+    { name: 'startDate', type: 'date', required: true, label: 'Start date' },
+    { name: 'endDate', type: 'date', label: 'End date (optional)' },
+    {
+      name: 'startTime',
+      type: 'text',
+      label: 'Start time',
+      admin: { placeholder: 'e.g. 6:00 PM' },
+    },
+    {
+      name: 'venue',
+      type: 'text',
+      label: 'Venue / platform',
+      admin: { placeholder: 'e.g. Zoom link or AFRS Campus, Indore' },
+    },
     {
       name: 'registrationCategories',
       type: 'array',
+      label: 'Registration fees',
+      admin: {
+        description:
+          'Add who can register and how much they pay (e.g. Students ₹300). Use price 0 for free entry.',
+      },
       fields: [
-        { name: 'categoryName', type: 'text' },
-        { name: 'price', type: 'number' },
-        { name: 'description', type: 'text' },
+        {
+          name: 'categoryName',
+          type: 'text',
+          label: 'Category name',
+          admin: { placeholder: 'Students' },
+        },
+        { name: 'price', type: 'number', label: 'Price' },
+        {
+          name: 'currency',
+          type: 'select',
+          defaultValue: 'INR',
+          options: [
+            { label: 'INR (₹)', value: 'INR' },
+            { label: 'USD ($)', value: 'USD' },
+          ],
+        },
+        { name: 'description', type: 'text', label: 'Short note (optional)' },
       ],
     },
-    { name: 'includeKitOption', type: 'checkbox', defaultValue: false },
-    { name: 'kitPrice', type: 'number' },
-    { name: 'registrationOpen', type: 'checkbox', defaultValue: true },
+    registrationSettingsField({ includeFeeTiers: false, dbName: 'reg_cfg', compactDbNames: true }),
+    {
+      name: 'includeKitOption',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Offer workshop kit add-on',
+    },
+    { name: 'kitPrice', type: 'number', label: 'Kit price (INR)' },
+    {
+      name: 'registrationOpen',
+      type: 'checkbox',
+      defaultValue: true,
+      label: 'Registration open',
+    },
     dynamicFormSectionsField({
       name: 'registrationSections',
-      label: 'Custom registration fields',
+      label: 'Registration form',
       description:
-        'Add event-specific questions (e.g. abstract title, nominee category). Shown on the registration form in addition to standard contact fields.',
+        'This is the full registration form participants fill in — name, email, WhatsApp, file uploads, etc. Add one or more sections with questions.',
     }),
     publishedField(),
   ],

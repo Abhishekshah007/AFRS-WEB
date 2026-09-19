@@ -165,7 +165,7 @@ export function ServicesPageView({
               {content.heroDescription}
             </p>
             <Link
-              href="#service-catalog"
+              href="https://drive.google.com/file/d/1mimAe_o5pR-zQUKZVDts0lvZ7OtP7Vf9/view?usp=drivesdk"
               className="mt-8 inline-flex h-12 items-center rounded-[6px] bg-white px-7 text-[13px] font-extrabold text-[#141a2d] shadow-sm"
             >
               {content.heroCtaLabel}
@@ -210,6 +210,18 @@ export function ServicesPageView({
                   <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176] text-justify">
                     {content.infrastructureBody2}
                   </p>
+                  <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176] text-justify">
+                    {content.infrastructureBody3}
+                  </p>
+                  <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176] text-justify">
+                    {content.infrastructureBody4}
+                  </p>
+                  <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176] text-justify">
+                    {content.infrastructureBody5}
+                  </p>
+                  <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176] text-justify">
+                    {content.infrastructureBody6}
+                  </p>
                   <div className="mt-8 grid max-w-[420px] grid-cols-3 gap-4">
                     {content.certificationStats.map((stat) => (
                       <div
@@ -240,7 +252,7 @@ export function ServicesPageView({
         <div className={CONTAINER}>
           <div className="grid gap-8 md:grid-cols-2">
             <div>
-              <article className="min-h-[285px] rounded-[16px] bg-brand p-8 text-white shadow-[0_18px_45px_rgba(59,1,11,0.18)]">
+              <article className="flex h-full min-h-[285px] flex-col rounded-[16px] bg-brand p-8 text-white shadow-[0_18px_45px_rgba(59,1,11,0.18)]">
                 <div className="flex h-12 w-12 items-center justify-center rounded-[10px] bg-white/10">
                   <Microscope className="h-5 w-5" />
                 </div>
@@ -252,7 +264,7 @@ export function ServicesPageView({
               </article>
             </div>
             <div>
-              <article className="min-h-[285px] rounded-[16px] border border-[#e5ebf4] bg-[#FBF6EC] p-8">
+              <article className="flex h-full min-h-[285px] flex-col rounded-[16px] border border-[#e5ebf4] bg-[#FBF6EC] p-8">
                 <div className="flex h-12 w-12 items-center justify-center rounded-[10px] bg-[#75162D] text-white">
                   <BriefcaseBusiness className="h-5 w-5" />
                 </div>
@@ -521,8 +533,8 @@ export function ServicesPageView({
                 </p>
                 <div className="mt-8">
                   <Link
-                    href="/contact"
-                    className="inline-flex rounded-[6px] bg-[#3B010B] px-7 py-3 text-[12px] font-extrabold"
+                    href="/https://afrs-web.vercel.app/#service-consult-form"
+                    className="inline-flex rounded-[6px] bg-about-primary-soft text-about-primary px-7 py-3 text-[12px] font-extrabold"
                   >
                     {content.legalCtaLabel}
                   </Link>

@@ -56,17 +56,19 @@ export function HeroSection({ heroData }: { heroData: HeroData }) {
         </div>
         <div className="relative w-full max-w-[500px] mx-auto lg:ml-auto reveal-up">
           <div className="rounded-[2.5rem] border border-white/25 bg-white/10 p-4 shadow-2xl backdrop-blur-sm">
-            <div className="relative h-[280px] sm:h-[380px] lg:h-[420px] rounded-[2rem] overflow-hidden">
-              <Image
-                src={heroImageSrc}
-                alt="AFRS forensic science laboratory and training facility in Indore"
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 500px"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-900/30 to-transparent" />
-            </div>
+            <Link href={'/courses'}>
+              <div className="relative h-[280px] sm:h-[380px] lg:h-[420px] rounded-[2rem] overflow-hidden">
+                <Image
+                  src={heroImageSrc}
+                  alt="AFRS forensic science laboratory and training facility in Indore"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 500px"
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-900/30 to-transparent" />
+              </div>
+            </Link>
           </div>
         </div>
       </div>

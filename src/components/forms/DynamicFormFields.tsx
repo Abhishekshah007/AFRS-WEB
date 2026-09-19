@@ -10,14 +10,18 @@ const inputClass =
 type DynamicFormFieldsProps = {
   sections: DynamicFormSection[]
   values: Record<string, string>
+  files: Record<string, File | null>
   onChange: (name: string, value: string) => void
+  onFileChange: (name: string, file: File | null) => void
   disabled?: boolean
 }
 
 function renderControlledField(
   field: DynamicFormField,
   value: string,
+  file: File | null | undefined,
   onChange: (name: string, value: string) => void,
+  onFileChange: (name: string, file: File | null) => void,
   disabled: boolean,
 ) {
   const shared = {
@@ -32,7 +36,13 @@ function renderControlledField(
 
   switch (field.fieldType) {
     case 'textarea':
-      return <textarea {...shared} rows={field.rows ?? 4} className={`${inputClass} min-h-28 resize-y py-3`} />
+      return (
+        <textarea
+          {...shared}
+          rows={field.rows ?? 4}
+          className={`${inputClass} min-h-28 resize-y py-3`}
+        />
+      )
     case 'select':
       return (
         <select
@@ -54,13 +64,24 @@ function renderControlledField(
       )
     case 'file':
       return (
-        <input
-          type="file"
-          disabled={disabled}
-          accept={field.accept || undefined}
-          className={inputClass}
-          onChange={(e) => onChange(field.name, e.target.files?.[0]?.name || '')}
-        />
+        <div className="space-y-2">
+          <input
+            type="file"
+            disabled={disabled}
+            required={field.required || undefined}
+            accept={field.accept || 'image/*,.pdf'}
+            className={inputClass}
+            onChange={(e) => {
+              const next = e.target.files?.[0] || null
+              onFileChange(field.name, next)
+              onChange(field.name, next?.name || '')
+            }}
+          />
+          <p className="text-[11px] text-slate-400">
+            {field.accept ? `Accepted: ${field.accept}` : 'Image or PDF, max 10MB'}
+            {file?.name ? ` • Selected: ${file.name}` : ''}
+          </p>
+        </div>
       )
     case 'date':
     case 'time':
@@ -73,13 +94,23 @@ function renderControlledField(
   }
 }
 
-export function DynamicFormFields({ sections, values, onChange, disabled = false }: DynamicFormFieldsProps) {
+export function DynamicFormFields({
+  sections,
+  values,
+  files,
+  onChange,
+  onFileChange,
+  disabled = false,
+}: DynamicFormFieldsProps) {
   if (!sections.length) return null
 
   return (
     <div className="space-y-4">
       {sections.map((section) => (
-        <section key={section.title} className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <section
+          key={section.title}
+          className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+        >
           <div>
             <h3 className="font-extrabold text-slate-900">{section.title}</h3>
             {section.description ? (
@@ -92,13 +123,22 @@ export function DynamicFormFields({ sections, values, onChange, disabled = false
                 <label
                   key={field.name}
                   className={`text-xs font-bold uppercase tracking-[0.08em] text-slate-500 ${
-                    field.fieldType === 'textarea' ? 'sm:col-span-2' : ''
+                    field.fieldType === 'textarea' || field.fieldType === 'file'
+                      ? 'sm:col-span-2'
+                      : ''
                   }`}
                 >
                   {field.label}
                   {field.required ? ' *' : ''}
-                  <div className="mt-2">
-                    {renderControlledField(field, values[field.name] || '', onChange, disabled)}
+                  <div className="mt-2 normal-case font-normal tracking-normal">
+                    {renderControlledField(
+                      field,
+                      values[field.name] || '',
+                      files[field.name],
+                      onChange,
+                      onFileChange,
+                      disabled,
+                    )}
                   </div>
                 </label>
               ))}

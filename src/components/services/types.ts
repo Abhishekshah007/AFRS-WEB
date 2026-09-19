@@ -64,6 +64,10 @@ export type ServicesSectionText = {
   infrastructureTitle: string
   infrastructureBody1: string
   infrastructureBody2: string
+  infrastructureBody3: string
+  infrastructureBody4: string
+  infrastructureBody5: string
+  infrastructureBody6: string
   visionTitle: string
   visionBody: string
   missionTitle: string

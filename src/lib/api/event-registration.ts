@@ -8,6 +8,7 @@ type CompleteEventRegistrationBody = {
   transactionId?: string
   transactionDate?: string
   transactionTime?: string
+  paymentMode?: 'upi' | 'bank' | 'paypal'
 }
 
 export async function completeEventRegistration(req: Request) {
@@ -20,11 +21,20 @@ export async function completeEventRegistration(req: Request) {
         transactionId: getFormValue(formData, 'transactionId'),
         transactionDate: getFormValue(formData, 'transactionDate'),
         transactionTime: getFormValue(formData, 'transactionTime'),
+        paymentMode: getFormValue(
+          formData,
+          'paymentMode',
+        ) as CompleteEventRegistrationBody['paymentMode'],
       }
     : ((await req.json().catch(() => ({}))) as CompleteEventRegistrationBody)
 
+  const uploadFile = formData ? await readUploadFile(formData, 'transactionProof') : undefined
+
   if (!body.registrationId) return jsonError('Registration id is required.', 400)
   if (!body.transactionId) return jsonError('Transaction reference is required.', 400)
+  if (!body.transactionDate) return jsonError('Transaction date is required.', 400)
+  if (!body.transactionTime) return jsonError('Transaction time is required.', 400)
+  if (!uploadFile && formData) return jsonError('Transaction proof upload is required.', 400)
 
   const payload = await getPayloadClient()
   const existing = await payload.findByID({
@@ -38,12 +48,11 @@ export async function completeEventRegistration(req: Request) {
   if (existing.paymentStatus === 'paid') {
     return jsonError('This registration has already been verified.', 400)
   }
-
-  const uploadFile = formData ? await readUploadFile(formData, 'transactionProof') : undefined
   const localReq = await createLocalReq({ req: { url: req.url, headers: req.headers } }, payload)
   if (uploadFile) localReq.file = uploadFile
 
-  const reference = existing.paymentReference || `AFRS-${Date.now()}-${String(existing.id).slice(-4)}`
+  const reference =
+    existing.paymentReference || `AFRS-${Date.now()}-${String(existing.id).slice(-4)}`
 
   const updated = await payload.update({
     collection: 'eventRegistrations',
@@ -52,6 +61,7 @@ export async function completeEventRegistration(req: Request) {
       transactionId: body.transactionId,
       transactionDate: body.transactionDate || undefined,
       transactionTime: body.transactionTime || undefined,
+      paymentMode: body.paymentMode || undefined,
       paymentProvider: 'manual',
       paymentStatus: 'pending',
       registrationStatus: 'initiated',

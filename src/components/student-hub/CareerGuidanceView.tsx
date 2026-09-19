@@ -1,5 +1,7 @@
 import Link from 'next/link'
-import { ArrowUpRight, CheckCircle2, Compass, GraduationCap, Microscope } from 'lucide-react'
+import { CheckCircle2 } from 'lucide-react'
+import { CareerGuidanceHero } from '@/components/student-hub/career-guidance/CareerGuidanceHero'
+import { CareerPathFinder } from '@/components/student-hub/career-guidance/CareerPathFinder'
 import { studentHubTokens } from '@/components/student-hub/tokens'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import type { CareerGuidancePageContent } from '@/components/student-hub/career-guidance/types'
@@ -71,106 +73,18 @@ function ChipList({ items }: { items: string[] }) {
 export function CareerGuidanceView({ content }: Props) {
   return (
     <div className="student-hub-page bg-white">
-      <section className="hub-hero-glow career-hero">
-        <div className={`relative z-10 ${studentHubTokens.container}`}>
-          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.08fr)_minmax(340px,0.92fr)] lg:gap-20">
-            <div className="career-hero-copy">
-              <span className="inline-flex items-center rounded-full border border-[var(--hub-primary)]/20 bg-white/80 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--hub-primary)] shadow-sm backdrop-blur">
-                {content.heroEyebrow}
-              </span>
-              <h1 className="mt-6 max-w-3xl text-4xl font-extrabold leading-[1.08] tracking-[-0.03em] text-[var(--hub-text)] sm:text-5xl lg:text-[clamp(3rem,5vw,4.5rem)]">
-                {content.heroTitle}{' '}
-                <span className="text-[var(--hub-primary)]">{content.heroHighlight}</span>
-              </h1>
-              <div className="mt-7 max-w-2xl space-y-4 text-[15px] leading-[1.8] text-slate-600">
-                <p>{content.heroDescription}</p>
-                <p>{content.heroBody}</p>
-              </div>
-              <p className="mt-5 max-w-xl border-l-2 border-[var(--hub-primary)]/40 pl-4 text-sm font-semibold leading-relaxed text-slate-700">
-                {content.heroNote}
-              </p>
-              <div className="mt-8">
-                <CtaLink href={content.heroCtaHref} label={content.heroCtaLabel} />
-              </div>
-            </div>
+      <CareerGuidanceHero
+        heroEyebrow={content.heroEyebrow}
+        heroTitle={content.heroTitle}
+        heroHighlight={content.heroHighlight}
+        heroDescription={content.heroDescription}
+        heroBody={content.heroBody}
+        heroNote={content.heroNote}
+        heroCtaLabel={content.heroCtaLabel}
+        heroCtaHref={content.heroCtaHref}
+      />
 
-            <div className="career-hero-panel relative mx-auto w-full max-w-[430px] lg:mr-0">
-              <div className="career-hero-panel-grid" aria-hidden />
-              <div className="relative z-10 p-6 sm:p-8">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--hub-primary)]">
-                      Your pathway
-                    </p>
-                    <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-[var(--hub-text)]">
-                      Learn with direction.
-                    </h2>
-                  </div>
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[var(--hub-primary)] text-white shadow-lg shadow-[var(--hub-primary)]/20">
-                    <Compass className="h-5 w-5" aria-hidden />
-                  </span>
-                </div>
-                <div className="mt-8 space-y-3">
-                  <div className="career-path-step">
-                    <span className="career-path-icon">
-                      <GraduationCap className="h-4 w-4" aria-hidden />
-                    </span>
-                    <span>
-                      <strong>Academic foundation</strong>
-                      <small>Choose the right direction</small>
-                    </span>
-                    <ArrowUpRight
-                      className="ml-auto h-4 w-4 text-[var(--hub-primary)]"
-                      aria-hidden
-                    />
-                  </div>
-                  <div className="career-path-step">
-                    <span className="career-path-icon">
-                      <Microscope className="h-4 w-4" aria-hidden />
-                    </span>
-                    <span>
-                      <strong>Practical skills</strong>
-                      <small>Build confidence through practice</small>
-                    </span>
-                    <ArrowUpRight
-                      className="ml-auto h-4 w-4 text-[var(--hub-primary)]"
-                      aria-hidden
-                    />
-                  </div>
-                  <div className="career-path-step career-path-step-active">
-                    <span className="career-path-icon">
-                      <Compass className="h-4 w-4" aria-hidden />
-                    </span>
-                    <span>
-                      <strong>Professional growth</strong>
-                      <small>Plan your next opportunity</small>
-                    </span>
-                    <ArrowUpRight className="ml-auto h-4 w-4 text-white" aria-hidden />
-                  </div>
-                </div>
-                <div className="mt-7 flex items-center gap-3 border-t border-slate-200 pt-5 text-xs font-semibold text-slate-500">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden />
-                  Structured guidance for every stage
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="border-b border-slate-100 bg-white">
-        <div
-          className={`${studentHubTokens.container} flex items-center gap-2 py-3 text-xs text-slate-500`}
-        >
-          <Link href="/student-hub" className="hover:text-[var(--hub-primary)]">
-            Student Hub
-          </Link>
-          <span aria-hidden>/</span>
-          <span className="font-semibold text-slate-700">Career Guidance</span>
-        </div>
-      </div>
-
-      <nav className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
+      <nav className="sticky top-0 z-20 border-b border-slate-200 bg-white shadow-sm">
         <div className={`${studentHubTokens.container} overflow-x-auto py-3`}>
           <ul className="flex min-w-max items-center gap-2">
             {content.quickNav.map((item) => (
@@ -311,21 +225,15 @@ export function CareerGuidanceView({ content }: Props) {
 
       <section className={`${studentHubTokens.sectionY} bg-white`}>
         <div className={studentHubTokens.container}>
-          <div className="rounded-2xl border border-brand-100 bg-brand-50 p-6 sm:p-10">
-            <SectionHeading title={content.finderTitle} description={content.finderIntro} />
-            <p className={`mt-4 max-w-3xl text-[15px] leading-relaxed ${studentHubTokens.body}`}>
-              {content.finderDescription}
-            </p>
-            <p className="mt-8 text-center text-sm font-bold uppercase tracking-[0.12em] text-brand-700">
-              {content.finderFormula}
-            </p>
-            <p className="mt-2 text-center text-xs font-semibold uppercase tracking-[0.18em] text-brand-400">
-              Recommended Learning & Development Pathway
-            </p>
-            <p className="mx-auto mt-6 max-w-3xl text-xs leading-relaxed text-slate-500">
-              {content.finderDisclaimer}
-            </p>
-          </div>
+          <AnimateOnScroll>
+            <CareerPathFinder
+              finderTitle={content.finderTitle}
+              finderIntro={content.finderIntro}
+              finderDescription={content.finderDescription}
+              finderFormula={content.finderFormula}
+              finderDisclaimer={content.finderDisclaimer}
+            />
+          </AnimateOnScroll>
         </div>
       </section>
 

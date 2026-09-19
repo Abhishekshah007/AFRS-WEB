@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { resolveMediaUrl } from '@/lib/cms'
+import { resolveMediaUrlOptional } from '@/lib/cms'
 import type { Media, Scientist } from '@/payload-types'
 import type { PaginatedDocs } from 'payload'
 import { SectionHeader } from '@/components/ui/SectionHeader'
@@ -26,8 +26,8 @@ export function ExpertsSection({ scientists }: { scientists: PaginatedDocs<Scien
             {experts.map((expert, index) => {
               const photoUrl =
                 'photo' in expert
-                  ? resolveMediaUrl(expert.photo as Media | number | null | undefined, '')
-                  : ''
+                  ? resolveMediaUrlOptional(expert.photo as Media | number | null | undefined)
+                  : undefined
               const initial = expert.name?.trim().split(/\s+/).pop()?.[0]?.toUpperCase() || '?'
               const cardKey =
                 'id' in expert && expert.id ? String(expert.id) : `${expert.name}-${index}`

@@ -148,7 +148,9 @@ AFRS provides the following types of membership:`,
                         >
                           {plan.badge}
                         </p>
-                        <h3 className="mt-4 text-2xl font-extrabold leading-tight">{plan.title.trim()}</h3>
+                        <h3 className="mt-4 text-2xl font-extrabold leading-tight">
+                          {plan.title.trim()}
+                        </h3>
                       </div>
                       <span
                         className={`inline-flex h-12 w-12 items-center justify-center rounded-2xl ${
@@ -169,7 +171,9 @@ AFRS provides the following types of membership:`,
                     <Link
                       href={plan.href}
                       className={`mt-6 inline-flex items-center gap-2 text-sm font-bold transition ${
-                        isDark ? 'text-white hover:text-slate-200' : 'text-[var(--about-primary)] hover:opacity-80'
+                        isDark
+                          ? 'text-white hover:text-slate-200'
+                          : 'text-[var(--about-primary)] hover:opacity-80'
                       }`}
                     >
                       {ctaLabel} <span aria-hidden>→</span>

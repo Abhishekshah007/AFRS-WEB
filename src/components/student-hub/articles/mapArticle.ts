@@ -1,7 +1,7 @@
 import type { Article } from '@/payload-types'
 import type { ArticleListItem, FeaturedArticle } from '@/components/student-hub/articles/types'
 import { getCategoryLabel } from '@/components/student-hub/articles/categoryStyles'
-import { resolveMediaUrl } from '@/lib/cms'
+import { resolveMediaUrlOptional } from '@/lib/cms'
 import type { Media } from '@/payload-types'
 
 export function mapArticle(doc: Article): ArticleListItem {
@@ -15,7 +15,7 @@ export function mapArticle(doc: Article): ArticleListItem {
     categoryLabel: getCategoryLabel(category),
     authorName: doc.authorName,
     readTimeMinutes: doc.readTimeMinutes ?? 10,
-    coverUrl: resolveMediaUrl(doc.coverImage as number | Media | null | undefined, '') || undefined,
+    coverUrl: resolveMediaUrlOptional(doc.coverImage as number | Media | null | undefined),
     publishedDate: doc.publishedDate ?? undefined,
   }
 }
@@ -29,7 +29,6 @@ export function mapFeaturedArticle(doc: Article): FeaturedArticle {
     coverUrl,
     imageSrc: coverUrl,
     authorTitle: doc.authorTitle ?? undefined,
-    authorAvatarUrl:
-      resolveMediaUrl(doc.authorAvatar as number | Media | null | undefined, '') || undefined,
+    authorAvatarUrl: resolveMediaUrlOptional(doc.authorAvatar as number | Media | null | undefined),
   }
 }

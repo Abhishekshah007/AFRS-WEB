@@ -9,6 +9,9 @@ export const slugField = ({ required = true }: SlugOptions = {}): TextField => (
   required,
   unique: true,
   index: true,
+  admin: {
+    description: 'URL-friendly name for this page. Usually auto-filled from the title.',
+  },
 })
 
 export const excerptField = ({

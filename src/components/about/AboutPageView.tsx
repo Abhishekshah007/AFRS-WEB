@@ -2,7 +2,9 @@ import { AboutHeroSection } from '@/components/about/AboutHeroSection'
 import { AboutFeatureCards } from '@/components/about/AboutFeatureCards'
 import { AboutPillarsSection } from '@/components/about/AboutPillarsSection'
 import { AboutRoadmapSection } from '@/components/about/AboutRoadmapSection'
-import { AchievementsBar } from '@/components/about/AchievementsBar'
+import { OurAchievementsSection } from '@/components/shared/OurAchievementsSection'
+import type { AchievementDisplayItem } from '@/components/shared/OurAchievementsSection'
+import { aboutTokens } from '@/components/about/tokens'
 import { AwardsGallery } from '@/components/about/AwardsGallery'
 import { SiteGallerySection } from '@/components/gallery/SiteGallerySection'
 import type { SiteGalleryItem } from '@/components/gallery/SiteGallerySection'
@@ -14,7 +16,6 @@ import { ValuesSection } from '@/components/about/ValuesSection'
 import { VisionMissionPurpose } from '@/components/about/VisionMissionPurpose'
 import type {
   AboutSectionText,
-  AchievementStat,
   CertificationItem,
   LeaderProfile,
   ListItem,
@@ -24,7 +25,7 @@ export type AboutPageViewProps = {
   sectionText: AboutSectionText
   featuredLeaders: LeaderProfile[]
   committee: LeaderProfile[]
-  achievements: AchievementStat[]
+  achievementStats: AchievementDisplayItem[]
   certifications: CertificationItem[]
   uniqueItems: ListItem[]
   activityItems: ListItem[]
@@ -43,7 +44,7 @@ export function AboutPageView({
   sectionText,
   featuredLeaders,
   committee,
-  achievements,
+  achievementStats,
   certifications,
   uniqueItems,
   activityItems,
@@ -158,7 +159,10 @@ export function AboutPageView({
         proofLabels={sectionText.pillarProofLabels ?? undefined}
       />
 
-      <AchievementsBar stats={achievements} />
+      <OurAchievementsSection
+        items={achievementStats}
+        className={`${aboutTokens.sectionY} bg-[var(--brand-surface)]`}
+      />
 
       <MembershipSection
         reasons={membershipReasons}

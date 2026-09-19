@@ -18,6 +18,15 @@ export const Services: CollectionConfig = {
     slugField(),
     { name: 'icon', type: 'upload', relationTo: 'media' },
     { name: 'banner', type: 'upload', relationTo: 'media' },
+    {
+      name: 'overviewImage',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description:
+          'Image for the “What is …?” section on the service detail page (right column). Falls back to Banner if empty.',
+      },
+    },
     excerptField({ description: 'Short summary shown in cards.' }),
     contentRichTextField(),
     {

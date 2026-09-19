@@ -2,13 +2,19 @@ import type { CollectionConfig } from 'payload'
 
 import { eventRegistrationAccess } from '../access'
 import { ADMIN_GROUPS } from '../config/adminGroups'
-import { registrationContactFields, registrationPaymentFields, registrationPaymentProofFields } from '../fields'
+import { registrationCsvExportEndpoint } from '../endpoints/registrationCsvExport'
+import {
+  registrationContactFields,
+  registrationPaymentFields,
+  registrationPaymentProofFields,
+} from '../fields'
 import { submissionExportField } from '../fields/submissionExport'
 import { registrationSubmissionExportHook } from '../lib/submissions/attachSubmissionExport'
 
 export const CourseRegistrations: CollectionConfig = {
   slug: 'courseRegistrations',
   access: eventRegistrationAccess,
+  endpoints: [registrationCsvExportEndpoint('courseRegistrations')],
   admin: {
     group: ADMIN_GROUPS.EVENTS,
     useAsTitle: 'fullName',
@@ -20,6 +26,11 @@ export const CourseRegistrations: CollectionConfig = {
       'paymentStatus',
       'registrationStatus',
     ],
+    components: {
+      list: {
+        beforeList: ['/components/admin/CourseRegistrationCsvExport'],
+      },
+    },
   },
   hooks: {
     afterChange: [registrationSubmissionExportHook('courseRegistrations')],

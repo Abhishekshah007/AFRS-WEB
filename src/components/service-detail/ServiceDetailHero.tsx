@@ -16,14 +16,14 @@ export function ServiceDetailHero({ title, description, bannerUrl }: ServiceDeta
       className="relative flex min-h-[440px] items-center overflow-hidden py-16 md:h-[580px] md:min-h-0 md:py-0"
       aria-labelledby="service-hero-title"
     >
-      <Image
+      {/* <Image
         src={bannerUrl}
         alt={`${title} — AFSL forensic service`}
         fill
         priority
         sizes="100vw"
         className="object-cover hero-ken-burns"
-      />
+      /> */}
 
       {/* Light misty overlay — matches the bright reference image tone */}
       <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/20 to-white/10 pointer-events-none" />

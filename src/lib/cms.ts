@@ -1,4 +1,5 @@
 import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html'
+import { FALLBACK_BANNER_IMAGE, FALLBACK_LOGO_IMAGE } from '@/lib/constants/assets'
 import type { Media } from '@/payload-types'
 
 type LexicalEditorState = Parameters<typeof convertLexicalToHTML>[0]['data']
@@ -17,15 +18,31 @@ type LexicalRoot = {
 
 export function resolveMediaUrl(
   media: number | Media | null | undefined,
-  fallback: string,
+  fallback: string = FALLBACK_BANNER_IMAGE,
 ): string {
   if (media && typeof media === 'object' && media.url) {
     return media.url
   }
-  return fallback
+  const resolved = fallback.trim()
+  return resolved || FALLBACK_BANNER_IMAGE
 }
 
-export function richTextToPlain(value: LexicalRoot | string | null | undefined, maxLength = 160): string {
+/** Returns a URL only when CMS media is populated — use for avatars where a logo fallback is wrong. */
+export function resolveMediaUrlOptional(
+  media: number | Media | null | undefined,
+): string | undefined {
+  if (media && typeof media === 'object' && media.url) {
+    return media.url
+  }
+  return undefined
+}
+
+export { FALLBACK_BANNER_IMAGE, FALLBACK_LOGO_IMAGE }
+
+export function richTextToPlain(
+  value: LexicalRoot | string | null | undefined,
+  maxLength = 160,
+): string {
   if (!value) return ''
   if (typeof value === 'string') return value.slice(0, maxLength)
 
@@ -108,20 +125,23 @@ function extractHref(attrs: string): string | null {
  * Allow a small set of inline tags so CMS textarea HTML (e.g. links) can render safely.
  */
 export function sanitizeSafeHtml(input: string): string {
-  return input.replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)\b([^>]*)>/g, (match, rawTag: string, attrs: string) => {
-    const tag = rawTag.toLowerCase()
-    if (!SAFE_HTML_TAGS.has(tag)) return ''
+  return input.replace(
+    /<\/?([a-zA-Z][a-zA-Z0-9]*)\b([^>]*)>/g,
+    (match, rawTag: string, attrs: string) => {
+      const tag = rawTag.toLowerCase()
+      if (!SAFE_HTML_TAGS.has(tag)) return ''
 
-    const isClosing = match.startsWith('</')
-    if (tag === 'br') return '<br />'
-    if (isClosing) return `</${tag}>`
+      const isClosing = match.startsWith('</')
+      if (tag === 'br') return '<br />'
+      if (isClosing) return `</${tag}>`
 
-    if (tag === 'a') {
-      const href = extractHref(attrs)
-      if (!href || !isSafeHref(href)) return ''
-      return `<a href="${escapeHtmlText(href)}" rel="noopener noreferrer">`
-    }
+      if (tag === 'a') {
+        const href = extractHref(attrs)
+        if (!href || !isSafeHref(href)) return ''
+        return `<a href="${escapeHtmlText(href)}" rel="noopener noreferrer">`
+      }
 
-    return `<${tag}>`
-  })
+      return `<${tag}>`
+    },
+  )
 }

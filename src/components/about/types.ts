@@ -95,14 +95,6 @@ export type LeaderProfile = {
   }
 }
 
-export type AchievementStat = {
-  value: string
-  label: string
-  tone: 'blue' | 'purple' | 'orange' | 'green' | 'red'
-  numericEnd?: number
-  suffix?: string
-}
-
 export type CertificationItem = {
   title: string
   icon?: string

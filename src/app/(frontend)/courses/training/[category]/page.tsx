@@ -42,6 +42,8 @@ export default async function TrainingCategoryPage({ params }: Props) {
       summary={cat.summary}
       icon={cat.icon}
       programmes={cat.programmes}
+      categorySlug={cat.slug}
+      programmeType="training"
       backHref="/courses#afsl-training"
       intro={cat.intro}
       body={cat.body}

@@ -48,20 +48,38 @@ export function ServiceConsultForm({
     state.status === 'submitting' ? 'Sending…' : state.status === 'success' ? 'Sent' : submitLabel
 
   return (
-    <form action={onSubmit} className="space-y-4">
+    <form action={onSubmit} className="space-y-4" id="service-consult-form" aria-live="polite">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
           Full Name
-          <input name="fullName" disabled={disabled} className={inputClass} required autoComplete="name" />
+          <input
+            name="fullName"
+            disabled={disabled}
+            className={inputClass}
+            required
+            autoComplete="name"
+          />
         </label>
         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
           Email Address
-          <input name="email" type="email" disabled={disabled} className={inputClass} required autoComplete="email" />
+          <input
+            name="email"
+            type="email"
+            disabled={disabled}
+            className={inputClass}
+            required
+            autoComplete="email"
+          />
         </label>
       </div>
       <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
         {formType === 'legalConsultancy' ? 'Consultancy Type' : 'Select Case Type'}
-        <select name="caseType" disabled={disabled} className={inputClass} defaultValue={caseTypes[0]}>
+        <select
+          name="caseType"
+          disabled={disabled}
+          className={inputClass}
+          defaultValue={caseTypes[0]}
+        >
           {caseTypes.map((t) => (
             <option key={t} value={t}>
               {t}
@@ -86,7 +104,11 @@ export function ServiceConsultForm({
       {state.status !== 'idle' && (
         <p
           className={`text-sm ${
-            state.status === 'success' ? 'text-emerald-600' : state.status === 'error' ? 'text-rose-600' : 'text-slate-500'
+            state.status === 'success'
+              ? 'text-emerald-600'
+              : state.status === 'error'
+                ? 'text-rose-600'
+                : 'text-slate-500'
           }`}
         >
           {state.message}

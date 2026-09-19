@@ -1,9 +1,4 @@
-import type {
-  AboutSectionText,
-  AchievementStat,
-  CertificationItem,
-  LeaderProfile,
-} from '@/components/about/types'
+import type { AboutSectionText, CertificationItem, LeaderProfile } from '@/components/about/types'
 const defaultCertifications: CertificationItem[] = [
   {
     icon: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1784837302/afrs/payload/media/AFRS%20certification/1280px-Emblem_of_Madhya_Pradesh.svg_yngo8m.png',
@@ -84,7 +79,7 @@ const defaultActivities = [
     description: 'Expert support for investigations, examinations, and case strategy.',
   },
   {
-    text: 'Workshops, webinars, national and  international conferences',
+    text: 'Workshops, Webinars, National and  International Conferences',
     description: 'Regular platforms for knowledge exchange and professional networking.',
   },
   {
@@ -109,14 +104,6 @@ const defaultActivities = [
     description:
       'Engagement opportunities for students and professionals to contribute to AFRS initiatives.',
   },
-]
-
-const defaultAchievements: AchievementStat[] = [
-  { value: '500+', label: 'Members', tone: 'blue', numericEnd: 500, suffix: '+' },
-  { value: '400+', label: 'Students', tone: 'purple', numericEnd: 400, suffix: '+' },
-  { value: '95+', label: 'Events', tone: 'orange', numericEnd: 95, suffix: '+' },
-  { value: '1', label: 'National Network', tone: 'green', numericEnd: 1, suffix: '' },
-  { value: '1000+', label: 'Followers', tone: 'red', numericEnd: 1000, suffix: '+' },
 ]
 
 const defaultSectionText: AboutSectionText = {
@@ -385,7 +372,6 @@ const fallbackCommittee: LeaderProfile[] = [
 ]
 
 export {
-  defaultAchievements,
   defaultActivities,
   defaultCertifications,
   defaultSectionText,
