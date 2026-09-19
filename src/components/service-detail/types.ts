@@ -4,6 +4,7 @@ export type ServiceDetailData = {
   excerpt: string
   contentPlain: string
   bannerUrl: string
+  overviewImageUrl: string
   category?: string | null
   helpHeading?: string | null
   helpIntro?: string | null

@@ -2,7 +2,13 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getPayloadClient } from '@/lib/payload'
-import { formatEventDate, formatEventType, renderRichTextHtml, resolveMediaUrl, richTextToPlain } from '@/lib/cms'
+import {
+  formatEventDate,
+  formatEventType,
+  renderRichTextHtml,
+  resolveMediaUrl,
+  richTextToPlain,
+} from '@/lib/cms'
 import type { Event as AfrsEvent, Media } from '@/payload-types'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import { buildPageMetadata } from '@/lib/seo/metadata'
@@ -63,7 +69,10 @@ export default async function EventDetailPage({ params }: Props) {
   const evt = result.docs[0] as AfrsEvent | undefined
   if (!evt) notFound()
 
-  const banner = resolveMediaUrl(evt.banner as number | Media | null | undefined, FALLBACK_BANNER_IMAGE)
+  const banner = resolveMediaUrl(
+    evt.banner as number | Media | null | undefined,
+    FALLBACK_BANNER_IMAGE,
+  )
   const summary = evt.excerpt || richTextToPlain(evt.description, 200)
   const descriptionHtml = renderRichTextHtml(evt.description)
 
@@ -100,9 +109,13 @@ export default async function EventDetailPage({ params }: Props) {
       {/* Breadcrumb */}
       <div className="bg-slate-50 border-b border-slate-100">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 py-3 text-xs text-slate-500 flex gap-2 items-center">
-          <Link href="/" className="hover:text-brand-600">Home</Link>
+          <Link href="/" className="hover:text-brand-600">
+            Home
+          </Link>
           <span>/</span>
-          <Link href="/events" className="hover:text-brand-600">Events</Link>
+          <Link href="/events" className="hover:text-brand-600">
+            Events
+          </Link>
           <span>/</span>
           <span className="text-slate-700 font-semibold line-clamp-1">{evt.title}</span>
         </div>
@@ -113,7 +126,14 @@ export default async function EventDetailPage({ params }: Props) {
         <div>
           <AnimateOnScroll>
             <div className="relative min-h-[280px] sm:min-h-[360px] rounded-3xl overflow-hidden shadow-lg bg-slate-50">
-              <Image src={banner} alt={evt.title} fill sizes="(max-width: 1024px) 100vw, 800px" priority className="object-contain p-4 sm:p-6" />
+              <Image
+                src={banner}
+                alt={evt.title}
+                fill
+                sizes="(max-width: 1024px) 100vw, 800px"
+                priority
+                className="object-contain p-4 sm:p-6"
+              />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent" />
             </div>
 
@@ -123,17 +143,24 @@ export default async function EventDetailPage({ params }: Props) {
                   {formatEventType(evt.eventType)}
                 </span>
               )}
-              <h1 className="mt-4 text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">{evt.title}</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
+                {evt.title}
+              </h1>
 
               <div className="mt-5 flex flex-wrap gap-4 text-sm text-slate-600">
                 {evt.startDate && (
-                  <span className="flex items-center gap-1.5">📅 {formatEventDate(evt.startDate)}
+                  <span className="flex items-center gap-1.5">
+                    📅 {formatEventDate(evt.startDate)}
                     {evt.endDate && ` – ${formatEventDate(evt.endDate)}`}
                   </span>
                 )}
-                {evt.startTime && <span className="flex items-center gap-1.5">🕐 {evt.startTime}</span>}
+                {evt.startTime && (
+                  <span className="flex items-center gap-1.5">🕐 {evt.startTime}</span>
+                )}
                 {evt.venue && <span className="flex items-center gap-1.5">📍 {evt.venue}</span>}
-                {evt.mode && <span className="flex items-center gap-1.5 capitalize">🖥 {evt.mode}</span>}
+                {evt.mode && (
+                  <span className="flex items-center gap-1.5 capitalize">🖥 {evt.mode}</span>
+                )}
               </div>
 
               {summary && (
@@ -159,7 +186,10 @@ export default async function EventDetailPage({ params }: Props) {
             {evt.registrationCategories && evt.registrationCategories.length > 0 && (
               <div className="space-y-3 mb-6">
                 {evt.registrationCategories.map((cat) => (
-                  <div key={cat.id} className="flex items-center justify-between rounded-xl bg-slate-50 border border-slate-100 px-4 py-3">
+                  <div
+                    key={cat.id}
+                    className="flex items-center justify-between rounded-xl bg-slate-50 border border-slate-100 px-4 py-3"
+                  >
                     <span className="text-sm font-semibold text-slate-800">{cat.categoryName}</span>
                     <span className="text-sm font-extrabold text-brand-700">
                       {cat.price ? `₹${cat.price.toLocaleString('en-IN')}` : 'Free'}
@@ -194,7 +224,10 @@ export default async function EventDetailPage({ params }: Props) {
             <p className="text-xs text-slate-500 leading-relaxed mb-4">
               For queries about registration, fees, or certificates, contact our support team.
             </p>
-            <Link href={`/events/${evt.slug}/register`} className="text-sm font-bold text-brand-600 hover:text-brand-700">
+            <Link
+              href={`/contact`}
+              className="text-sm font-bold text-brand-600 hover:text-brand-700"
+            >
               Contact Support →
             </Link>
           </div>
@@ -203,5 +236,3 @@ export default async function EventDetailPage({ params }: Props) {
     </div>
   )
 }
-
-

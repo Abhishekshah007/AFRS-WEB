@@ -31,9 +31,14 @@ export function flattenSections(sections?: DynamicFormSection[] | null): Dynamic
 export function validateCustomResponses(
   sections: DynamicFormSection[] | null | undefined,
   responses: Record<string, string>,
+  files: Record<string, File | null | undefined> = {},
 ): string | null {
   for (const field of flattenSections(sections)) {
     if (!field.required) continue
+    if (field.fieldType === 'file') {
+      if (!files[field.name]) return `${field.label} is required.`
+      continue
+    }
     const value = responses[field.name]?.trim()
     if (!value) return `${field.label} is required.`
   }

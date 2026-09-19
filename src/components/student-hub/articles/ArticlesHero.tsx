@@ -187,7 +187,9 @@ export function ArticlesHero({
                         setOpenMore(false)
                       }}
                       className={`w-full rounded-[18px] px-4 py-2 text-left text-sm font-semibold transition hover:bg-[#eef3f9] ${
-                        filter.value === activeTopic ? 'bg-[#eef3f9] text-(--articles-accent)' : 'text-[#071329]'
+                        filter.value === activeTopic
+                          ? 'bg-[#eef3f9] text-(--articles-accent)'
+                          : 'text-[#071329]'
                       }`}
                     >
                       {filter.icon && (

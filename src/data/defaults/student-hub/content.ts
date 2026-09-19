@@ -78,8 +78,8 @@ export const defaultExamPrep: ExamPrepCardData[] = [
   {
     id: 'ugc-net',
     badge: 'Comprehensive Preparation Guidance',
-    title: 'UGC NET',
-    subtitle: 'Forensic Science Paper I & II',
+    title: 'UGC NET-JRF Coaching',
+    subtitle: 'Paper 1: Teaching and Research Aptitude & Paper 2: Forensic Science',
     description:
       'Topic-wise notes, previous-year question analysis, mock test series, and mentor support for the NET.',
     ctaLabel: 'View Preparation Resources',

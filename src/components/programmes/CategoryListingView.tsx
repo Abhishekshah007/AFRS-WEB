@@ -34,6 +34,8 @@ export type CategoryListingViewProps = {
   missionItems?: string[] | null
   extraSections?: { title: string; items: string[]; note?: string | null }[] | null
   disclaimer?: string | null
+  categorySlug?: string
+  programmeType?: 'education' | 'training'
 }
 
 /**
@@ -59,10 +61,14 @@ export function CategoryListingView({
   missionItems,
   extraSections,
   disclaimer,
+  categorySlug,
+  programmeType: programmeTypeProp,
 }: CategoryListingViewProps) {
-  const programmeType = breadcrumbs.some((item) => item.href?.includes('/courses/training'))
-    ? 'training'
-    : 'education'
+  const programmeType =
+    programmeTypeProp ??
+    (breadcrumbs.some((item) => item.href?.includes('/courses/training'))
+      ? 'training'
+      : 'education')
 
   return (
     <div className="programmes-page bg-white min-h-screen">
@@ -87,7 +93,8 @@ export function CategoryListingView({
                     Programmes in {title}
                   </h2>
                   <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-                    {intro || 'Compare duration, delivery mode, and level before sending an enquiry.'}
+                    {intro ||
+                      'Compare duration, delivery mode, and level before sending an enquiry.'}
                   </p>
                 </div>
                 <div className="flex items-center gap-3 rounded-2xl bg-slate-50 px-4 py-3">
@@ -145,7 +152,9 @@ export function CategoryListingView({
                     {vision && (
                       <article className="rounded-2xl border border-slate-100 bg-white p-6">
                         <h3 className="text-lg font-extrabold text-slate-900">Vision</h3>
-                        <p className={`mt-3 text-sm leading-relaxed text-justify ${programmesTokens.body}`}>
+                        <p
+                          className={`mt-3 text-sm leading-relaxed text-justify ${programmesTokens.body}`}
+                        >
                           {vision}
                         </p>
                       </article>
@@ -154,7 +163,9 @@ export function CategoryListingView({
                       <article className="rounded-2xl border border-slate-100 bg-slate-50 p-6">
                         <h3 className="text-lg font-extrabold text-slate-900">Mission</h3>
                         {missionTitle && (
-                          <p className="mt-3 text-sm font-semibold text-slate-700">{missionTitle}</p>
+                          <p className="mt-3 text-sm font-semibold text-slate-700">
+                            {missionTitle}
+                          </p>
                         )}
                         <ul className="mt-4 space-y-2">
                           {missionItems.map((item) => (
@@ -234,7 +245,9 @@ export function CategoryListingView({
           ) : null}
 
           {disclaimer && (
-            <p className="mb-10 text-xs leading-relaxed text-justify text-slate-500">{disclaimer}</p>
+            <p className="mb-10 text-xs leading-relaxed text-justify text-slate-500">
+              {disclaimer}
+            </p>
           )}
 
           {highlightsTitle && (
@@ -281,6 +294,7 @@ export function CategoryListingView({
                       <Link
                         href={`/courses/register?${new URLSearchParams({
                           type: programmeType,
+                          ...(categorySlug ? { categorySlug } : {}),
                           categoryTitle: title,
                           programmeId: prog.id,
                           programmeTitle: prog.title,

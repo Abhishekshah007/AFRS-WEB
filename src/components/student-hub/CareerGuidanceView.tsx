@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import { CheckCircle2 } from 'lucide-react'
+import { CareerGuidanceHero } from '@/components/student-hub/career-guidance/CareerGuidanceHero'
+import { CareerPathFinder } from '@/components/student-hub/career-guidance/CareerPathFinder'
 import { studentHubTokens } from '@/components/student-hub/tokens'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import type { CareerGuidancePageContent } from '@/components/student-hub/career-guidance/types'
@@ -71,41 +73,18 @@ function ChipList({ items }: { items: string[] }) {
 export function CareerGuidanceView({ content }: Props) {
   return (
     <div className="student-hub-page bg-white">
-      <section className="hub-hero-glow py-16 sm:py-20">
-        <div className={`relative z-10 ${studentHubTokens.container} text-center`}>
-          <span className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500 shadow-sm">
-            {content.heroEyebrow}
-          </span>
-          <h1 className="mt-6 text-4xl font-extrabold tracking-tight sm:text-5xl">
-            <span className="text-[var(--hub-text)]">{content.heroTitle} </span>
-            <span className="text-[var(--hub-primary)]">{content.heroHighlight}</span>
-          </h1>
-          <p className="mx-auto mt-5 max-w-3xl text-[15px] leading-relaxed text-slate-500">
-            {content.heroDescription}
-          </p>
-          <p className="mx-auto mt-4 max-w-3xl text-[15px] leading-relaxed text-slate-500">
-            {content.heroBody}
-          </p>
-          <p className="mx-auto mt-4 max-w-2xl text-sm font-medium leading-relaxed text-slate-600">
-            {content.heroNote}
-          </p>
-          <div className="mt-8">
-            <CtaLink href={content.heroCtaHref} label={content.heroCtaLabel} />
-          </div>
-        </div>
-      </section>
+      <CareerGuidanceHero
+        heroEyebrow={content.heroEyebrow}
+        heroTitle={content.heroTitle}
+        heroHighlight={content.heroHighlight}
+        heroDescription={content.heroDescription}
+        heroBody={content.heroBody}
+        heroNote={content.heroNote}
+        heroCtaLabel={content.heroCtaLabel}
+        heroCtaHref={content.heroCtaHref}
+      />
 
-      <div className="border-b border-slate-100 bg-white">
-        <div className={`${studentHubTokens.container} flex items-center gap-2 py-3 text-xs text-slate-500`}>
-          <Link href="/student-hub" className="hover:text-[var(--hub-primary)]">
-            Student Hub
-          </Link>
-          <span aria-hidden>/</span>
-          <span className="font-semibold text-slate-700">Career Guidance</span>
-        </div>
-      </div>
-
-      <nav className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
+      <nav className="sticky top-0 z-20 border-b border-slate-200 bg-white shadow-sm">
         <div className={`${studentHubTokens.container} overflow-x-auto py-3`}>
           <ul className="flex min-w-max items-center gap-2">
             {content.quickNav.map((item) => (
@@ -129,7 +108,11 @@ export function CareerGuidanceView({ content }: Props) {
           </AnimateOnScroll>
           <ChipList items={content.careerPathways} />
           <div className="mt-8">
-            <CtaLink href={content.careersCtaHref} label={`${content.careersCtaLabel} →`} variant="secondary" />
+            <CtaLink
+              href={content.careersCtaHref}
+              label={`${content.careersCtaLabel} →`}
+              variant="secondary"
+            />
           </div>
         </div>
       </section>
@@ -189,7 +172,9 @@ export function CareerGuidanceView({ content }: Props) {
       <section id="internships" className={`${studentHubTokens.sectionY} bg-white`}>
         <div className={studentHubTokens.container}>
           <SectionHeading title={content.internshipsTitle} description={content.internshipsIntro} />
-          <p className={`mt-6 text-sm font-semibold text-slate-700`}>{content.internshipsDescription}</p>
+          <p className={`mt-6 text-sm font-semibold text-slate-700`}>
+            {content.internshipsDescription}
+          </p>
           <ChipList items={content.internships} />
           <p className={`mt-6 text-sm ${studentHubTokens.body}`}>{content.internshipsNote}</p>
           <div className="mt-8">
@@ -214,13 +199,21 @@ export function CareerGuidanceView({ content }: Props) {
               <p className={`mt-6 text-sm ${studentHubTokens.body}`}>{content.examsNote}</p>
               <div className="mt-8 flex flex-wrap gap-3">
                 {content.examLinks.map((link) => (
-                  <CtaLink key={link.href} href={link.href} label={link.label} variant="secondary" />
+                  <CtaLink
+                    key={link.href}
+                    href={link.href}
+                    label={link.label}
+                    variant="secondary"
+                  />
                 ))}
               </div>
             </div>
 
             <div id="research">
-              <SectionHeading title={content.researchTitle} description={content.researchDescription} />
+              <SectionHeading
+                title={content.researchTitle}
+                description={content.researchDescription}
+              />
               <ChipList items={content.researchItems} />
               <div className="mt-8">
                 <CtaLink href={content.researchCtaHref} label={content.researchCtaLabel} />
@@ -232,26 +225,25 @@ export function CareerGuidanceView({ content }: Props) {
 
       <section className={`${studentHubTokens.sectionY} bg-white`}>
         <div className={studentHubTokens.container}>
-          <div className="rounded-2xl border border-brand-100 bg-brand-50 p-6 sm:p-10">
-            <SectionHeading title={content.finderTitle} description={content.finderIntro} />
-            <p className={`mt-4 max-w-3xl text-[15px] leading-relaxed ${studentHubTokens.body}`}>
-              {content.finderDescription}
-            </p>
-            <p className="mt-8 text-center text-sm font-bold uppercase tracking-[0.12em] text-brand-700">
-              {content.finderFormula}
-            </p>
-            <p className="mt-2 text-center text-xs font-semibold uppercase tracking-[0.18em] text-brand-400">
-              Recommended Learning & Development Pathway
-            </p>
-            <p className="mx-auto mt-6 max-w-3xl text-xs leading-relaxed text-slate-500">
-              {content.finderDisclaimer}
-            </p>
-          </div>
+          <AnimateOnScroll>
+            <CareerPathFinder
+              finderTitle={content.finderTitle}
+              finderIntro={content.finderIntro}
+              finderDescription={content.finderDescription}
+              finderFormula={content.finderFormula}
+              finderDisclaimer={content.finderDisclaimer}
+            />
+          </AnimateOnScroll>
         </div>
       </section>
 
-      <section id="guidance" className={`${studentHubTokens.sectionY} bg-[var(--hub-navy)] text-white`}>
-        <div className={`${studentHubTokens.container} grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start`}>
+      <section
+        id="guidance"
+        className={`${studentHubTokens.sectionY} bg-[var(--hub-navy)] text-white`}
+      >
+        <div
+          className={`${studentHubTokens.container} grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start`}
+        >
           <div>
             <h2 className="text-2xl font-extrabold sm:text-3xl">{content.consultationTitle}</h2>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/70">
@@ -279,7 +271,11 @@ export function CareerGuidanceView({ content }: Props) {
               ))}
             </dl>
             <div className="mt-8">
-              <CtaLink href={content.consultationCtaHref} label={content.consultationCtaLabel} variant="light" />
+              <CtaLink
+                href={content.consultationCtaHref}
+                label={content.consultationCtaLabel}
+                variant="light"
+              />
             </div>
           </div>
         </div>
@@ -307,7 +303,10 @@ export function CareerGuidanceView({ content }: Props) {
 
       <section className={`${studentHubTokens.sectionY} bg-slate-50`}>
         <div className={studentHubTokens.container}>
-          <SectionHeading title={content.resourcesTitle} description={content.resourcesDescription} />
+          <SectionHeading
+            title={content.resourcesTitle}
+            description={content.resourcesDescription}
+          />
           <ChipList items={content.resources} />
           <div className="mt-8">
             <CtaLink href={content.resourcesCtaHref} label={content.resourcesCtaLabel} />
@@ -342,7 +341,8 @@ export function CareerGuidanceView({ content }: Props) {
           <h2 className="text-2xl font-extrabold sm:text-3xl">{content.bottomCtaTitle}</h2>
           <p className="mt-4 text-sm font-semibold text-brand-200">{content.bottomCtaIntro}</p>
           <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-white/70">
-            Let AFRS help you plan your next step in Forensic Science. {content.bottomCtaDescription}
+            Let AFRS help you plan your next step in Forensic Science.{' '}
+            {content.bottomCtaDescription}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             {content.bottomCtas.map((cta, index) => (

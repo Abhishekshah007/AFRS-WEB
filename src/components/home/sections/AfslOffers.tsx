@@ -53,13 +53,12 @@ export function AfslOffers() {
 
           {/* Right — image */}
 
-          <div className="relative w-full h-[260px] sm:h-[300px] rounded-xl overflow-hidden">
+          <div className="relative w-full h-65 sm:h-75 rounded-xl overflow-hidden bg-[#f5ead0]">
             <Image
-              src="https://res.cloudinary.com/drrzakkgo/image/upload/v1763210329/ChatGPT_Image_Nov_15_2025_05_30_55_PM_gicx5y.png"
+              src="https://res.cloudinary.com/drrzakkgo/image/upload/v1789656204/afrs/payload/media/AFRS%20SITE%20IMAGEs/HomeScreenAFSLInternshipSection_o6gxcy.png"
               alt="AFRS forensic training session"
               fill
-              sizes="(max-width: 1024px) 100vw, 400px"
-              className="object-cover"
+              className="w-full h-full object-cover"
             />
           </div>
         </div>

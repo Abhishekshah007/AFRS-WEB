@@ -11,8 +11,10 @@ import type { MediaRef } from '@/lib/media'
 type Props = Readonly<{
   config: RegistrationPaymentConfig
   amount?: number
+  currency?: 'INR' | 'USD'
   registrationId?: string
   compact?: boolean
+  participantRegion?: 'indian' | 'international'
 }>
 
 function PaymentInstructions({ instructions }: { instructions: PaymentInstructionsConfig }) {
@@ -29,6 +31,19 @@ function PaymentInstructions({ instructions }: { instructions: PaymentInstructio
           <span className="font-semibold text-slate-800">UPI ID:</span> {instructions.upiId}
         </p>
       ) : null}
+      {instructions.paypalLink ? (
+        <p>
+          <span className="font-semibold text-slate-800">PayPal:</span>{' '}
+          <a
+            href={instructions.paypalLink}
+            target="_blank"
+            rel="noreferrer"
+            className="text-brand-600 underline"
+          >
+            {instructions.paypalLink}
+          </a>
+        </p>
+      ) : null}
       {instructions.note ? <p className="whitespace-pre-line">{instructions.note}</p> : null}
     </div>
   )
@@ -38,7 +53,9 @@ function PaymentMethodCard({ method }: { method: PaymentMethodConfig }) {
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-4">
       <h4 className="text-sm font-semibold text-slate-900">{method.title}</h4>
-      {method.description ? <p className="mt-2 text-sm text-slate-600">{method.description}</p> : null}
+      {method.description ? (
+        <p className="mt-2 text-sm text-slate-600">{method.description}</p>
+      ) : null}
       {method.qrCode ? (
         <div className="mt-4 h-40 overflow-hidden rounded-2xl bg-slate-100 p-3">
           <Image
@@ -67,8 +84,10 @@ function PaymentMethodCard({ method }: { method: PaymentMethodConfig }) {
 export function PaymentInstructionsPanel({
   config,
   amount,
+  currency = 'INR',
   registrationId,
   compact = false,
+  participantRegion,
 }: Props) {
   const methods = config.paymentMethods ?? []
   const instructions = config.paymentInstructions
@@ -81,9 +100,13 @@ export function PaymentInstructionsPanel({
 
       {typeof amount === 'number' ? (
         <div className="rounded-2xl border border-brand-100 bg-brand-50 p-4">
-          <p className="text-xs font-semibold uppercase tracking-wide text-brand-600">Amount to pay</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-brand-600">
+            Amount to pay
+          </p>
           <p className="mt-1 text-3xl font-extrabold text-brand-900">
-            ₹{amount.toLocaleString('en-IN')}
+            {currency === 'USD'
+              ? `$${amount.toLocaleString('en-US')}`
+              : `₹${amount.toLocaleString('en-IN')}`}
           </p>
           {registrationId ? (
             <p className="mt-2 text-xs text-brand-700">
@@ -91,6 +114,14 @@ export function PaymentInstructionsPanel({
             </p>
           ) : null}
         </div>
+      ) : null}
+
+      {participantRegion ? (
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          {participantRegion === 'international'
+            ? 'International participants'
+            : 'Indian participants'}
+        </p>
       ) : null}
 
       {instructions ? <PaymentInstructions instructions={instructions} /> : null}

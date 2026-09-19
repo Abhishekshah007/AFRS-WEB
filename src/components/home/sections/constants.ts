@@ -9,7 +9,7 @@ export const eventCardImages = [
   'https://www.appliedforensicresearchsciences.in/static/media/carousel-7.526a8153933073ab1327.jpeg',
 ]
 export const aboutImage =
-  'https://www.appliedforensicresearchsciences.in/static/media/carousel-9.49c91d30b5585ee2a892.jpeg'
+  'https://res.cloudinary.com/drrzakkgo/image/upload/v1789644471/afrs/payload/media/AFRS%20SITE%20IMAGEs/HomeScreenAboutSection_pexh4x.png'
 export const galleryImages = [
   'https://res.cloudinary.com/drrzakkgo/image/upload/v1777273424/WhatsApp_Image_2026-04-15_at_11.53.12_PM_u2uvdf.jpg',
   'https://res.cloudinary.com/drrzakkgo/image/upload/v1777273424/WhatsApp_Image_2026-04-15_at_11.54.13_PM_gzfbix.jpg',

@@ -1,97 +1,84 @@
 import { NextResponse } from 'next/server'
-import { getFormValue, readUploadFile } from '@/lib/api/form-data'
 import { hasRequiredFields, jsonError } from '@/lib/apiResponses'
+import { validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
+import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
+import { resolveRegistrationConfig } from '@/lib/registration/resolveConfig'
+import { findProgrammeRegistrationContext } from '@/lib/queries/programme-registration'
 import { getPayloadClient } from '@/lib/payload'
-import { createLocalReq } from 'payload'
 
-const KNOWN_COURSE_FIELDS = new Set([
-  'programmeType',
-  'categorySlug',
-  'categoryTitle',
-  'programmeId',
-  'programmeTitle',
-  'programmeDuration',
-  'programmeMode',
-  'fullName',
-  'email',
-  'countryCode',
-  'mobileNumber',
-  'address',
-  'organization',
-  'designation',
-  'qualification',
-  'experienceLevel',
-  'preferredBatch',
-  'message',
-  'transactionId',
-  'transactionDate',
-  'transactionTime',
-  'transactionProof',
-])
-
-function extractCustomResponses(formData: FormData): Record<string, string> {
-  const custom: Record<string, string> = {}
-  for (const [key, value] of formData.entries()) {
-    if (KNOWN_COURSE_FIELDS.has(key) || value instanceof File) continue
-    custom[key] = String(value)
-  }
-  return custom
+type InitiatePayload = {
+  programmeType?: string
+  categorySlug?: string
+  categoryTitle?: string
+  programmeId?: string
+  programmeTitle?: string
+  programmeDuration?: string
+  programmeMode?: string
+  fullName?: string
+  email?: string
+  countryCode?: string
+  mobileNumber?: string
+  organization?: string
+  designation?: string
+  qualification?: string
+  preferredBatch?: string
+  message?: string
+  feeTierId?: string
+  feeTierLabel?: string
+  feeTierCurrency?: 'INR' | 'USD'
+  participantRegion?: 'indian' | 'international'
+  agreedToTerms?: boolean
+  customResponses?: Record<string, string>
 }
 
 export async function POST(req: Request) {
   try {
-    const contentType = req.headers.get('content-type') || ''
-    const formData = contentType.includes('multipart/form-data')
-      ? await req.formData()
-      : null
-
-    const body = formData
-      ? {
-          programmeType: getFormValue(formData, 'programmeType', 'other'),
-          categorySlug: getFormValue(formData, 'categorySlug'),
-          categoryTitle: getFormValue(formData, 'categoryTitle'),
-          programmeId: getFormValue(formData, 'programmeId'),
-          programmeTitle: getFormValue(formData, 'programmeTitle'),
-          programmeDuration: getFormValue(formData, 'programmeDuration'),
-          programmeMode: getFormValue(formData, 'programmeMode'),
-          fullName: getFormValue(formData, 'fullName'),
-          email: getFormValue(formData, 'email'),
-          countryCode: getFormValue(formData, 'countryCode', '+91'),
-          mobileNumber: getFormValue(formData, 'mobileNumber'),
-          address: getFormValue(formData, 'address'),
-          organization: getFormValue(formData, 'organization'),
-          designation: getFormValue(formData, 'designation'),
-          qualification: getFormValue(formData, 'qualification'),
-          experienceLevel: getFormValue(formData, 'experienceLevel', 'student') as
-            | 'student'
-            | 'beginner'
-            | 'professional'
-            | 'faculty',
-          preferredBatch: getFormValue(formData, 'preferredBatch'),
-          message: getFormValue(formData, 'message'),
-          transactionId: getFormValue(formData, 'transactionId'),
-          transactionDate: getFormValue(formData, 'transactionDate'),
-          transactionTime: getFormValue(formData, 'transactionTime'),
-        }
-      : await req.json().catch(() => ({}))
+    const body = (await req.json()) as InitiatePayload
 
     if (!hasRequiredFields(body, ['programmeTitle', 'fullName', 'email', 'mobileNumber'])) {
       return jsonError('Missing required fields.', 400)
     }
 
-    const uploadFile = formData ? await readUploadFile(formData, 'transactionProof') : undefined
-    const customResponses = formData ? extractCustomResponses(formData) : {}
     const payload = await getPayloadClient()
-    const localReq = await createLocalReq({ req: { url: req.url, headers: req.headers } }, payload)
-    if (uploadFile) localReq.file = uploadFile
+    const context = await findProgrammeRegistrationContext(body.programmeId)
+    const registrationForm = context?.registrationForm
+
+    const config = resolveRegistrationConfig({
+      settings: context?.match?.registrationSettings,
+      globalForm: registrationForm,
+    })
+
+    if (config.requireAgreement && !body.agreedToTerms) {
+      return jsonError('You must agree to the registration instructions.', 400)
+    }
+
+    const sections = (registrationForm?.sections || []) as DynamicFormSection[]
+    const customResponses = body.customResponses || {}
+    const customError = validateCustomResponses(sections, customResponses)
+    if (customError) return jsonError(customError, 400)
+
+    const visibleTiers =
+      body.participantRegion === 'international'
+        ? config.feeTiers.filter((tier) => tier.currency === 'USD')
+        : body.participantRegion === 'indian'
+          ? config.feeTiers.filter((tier) => tier.currency === 'INR')
+          : config.feeTiers
+
+    const selectedTier = visibleTiers.find((tier) => tier.id === body.feeTierId) || visibleTiers[0]
+
+    const totalAmount = Number(selectedTier?.amount || 0)
+    const isFree = config.registrationType === 'free' || totalAmount <= 0
 
     const created = await payload.create({
       collection: 'courseRegistrations',
       data: {
-        programmeType: body.programmeType || 'other',
-        categorySlug: body.categorySlug || undefined,
-        categoryTitle: body.categoryTitle || undefined,
-        programmeId: body.programmeId || undefined,
+        programmeType:
+          body.programmeType === 'education' || body.programmeType === 'training'
+            ? body.programmeType
+            : 'other',
+        categorySlug: body.categorySlug || context?.match?.categorySlug || undefined,
+        categoryTitle: body.categoryTitle || context?.match?.categoryTitle || undefined,
+        programmeId: body.programmeId || context?.match?.programmeId || undefined,
         programmeTitle: body.programmeTitle,
         programmeDuration: body.programmeDuration || undefined,
         programmeMode: body.programmeMode || undefined,
@@ -99,23 +86,22 @@ export async function POST(req: Request) {
         email: body.email,
         countryCode: body.countryCode || '+91',
         mobileNumber: body.mobileNumber,
-        address: body.address || undefined,
+        address: undefined,
         organization: body.organization || undefined,
         designation: body.designation || undefined,
         qualification: body.qualification || undefined,
-        experienceLevel: body.experienceLevel || 'student',
         preferredBatch: body.preferredBatch || undefined,
         message: body.message || undefined,
+        feeTierLabel: selectedTier?.label || body.feeTierLabel,
+        feeTierCurrency: selectedTier?.currency || body.feeTierCurrency || 'INR',
+        participantRegion: body.participantRegion || 'indian',
+        agreedToTerms: Boolean(body.agreedToTerms),
         customResponses: Object.keys(customResponses).length ? customResponses : undefined,
-        transactionId: body.transactionId || undefined,
-        transactionDate: body.transactionDate || undefined,
-        transactionTime: body.transactionTime || undefined,
-        totalAmount: 0,
+        totalAmount,
         paymentProvider: 'manual',
-        paymentStatus: 'pending',
-        registrationStatus: 'initiated',
+        paymentStatus: isFree ? 'notRequired' : 'pending',
+        registrationStatus: isFree ? 'confirmed' : 'initiated',
       },
-      req: localReq,
       overrideAccess: true,
     })
 
@@ -123,8 +109,11 @@ export async function POST(req: Request) {
       ok: true,
       registrationId: created.id,
       registrationStatus: created.registrationStatus,
-      message:
-        'Registration received. Our team will verify your payment and confirm your registration.',
+      totalAmount,
+      isFree,
+      message: isFree
+        ? 'Registration received. A confirmation email will be sent shortly.'
+        : 'Registration initiated. Please complete payment details.',
     })
   } catch (error) {
     return jsonError(

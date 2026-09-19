@@ -2,8 +2,9 @@ import { NextResponse } from 'next/server'
 import { hasRequiredFields, jsonError } from '@/lib/apiResponses'
 import { validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
+import { categoriesToFeeTiers, resolveRegistrationConfig } from '@/lib/registration/resolveConfig'
 import { getPayloadClient } from '@/lib/payload'
-import type { Event as AfrsEvent } from '@/payload-types'
+import type { Event as AfrsEvent, RegistrationForm } from '@/payload-types'
 
 type InitiatePayload = {
   eventSlug?: string
@@ -14,10 +15,12 @@ type InitiatePayload = {
   organization?: string
   designation?: string
   areaOfInterest?: string
-  idProofFileName?: string
-  idProofFileSize?: number
   registrationCategoryId?: string
+  feeTierLabel?: string
+  feeTierCurrency?: 'INR' | 'USD'
+  participantRegion?: 'indian' | 'international'
   includeKit?: boolean
+  agreedToTerms?: boolean
   customResponses?: Record<string, string>
 }
 
@@ -35,19 +38,25 @@ export async function POST(req: Request) {
         'organization',
         'designation',
         'areaOfInterest',
-        'registrationCategoryId',
       ])
     ) {
       return jsonError('Missing required fields.', 400)
     }
 
-    const eventResult = await payload.find({
-      collection: 'events',
-      where: { slug: { equals: body.eventSlug }, published: { equals: true } },
-      limit: 1,
-      depth: 0,
-      overrideAccess: false,
-    })
+    const [eventResult, registrationForm] = await Promise.all([
+      payload.find({
+        collection: 'events',
+        where: { slug: { equals: body.eventSlug }, published: { equals: true } },
+        limit: 1,
+        depth: 0,
+        overrideAccess: false,
+      }),
+      payload.findGlobal({
+        slug: 'registrationForm',
+        depth: 0,
+        overrideAccess: false,
+      }) as Promise<RegistrationForm>,
+    ])
 
     const evt = eventResult.docs[0] as AfrsEvent | undefined
     if (!evt) return jsonError('Event not found.', 404)
@@ -55,18 +64,31 @@ export async function POST(req: Request) {
       return jsonError('Registration is closed for this event.', 400)
     }
 
+    const feeTiers = categoriesToFeeTiers(evt.registrationCategories || [])
+    const config = resolveRegistrationConfig({
+      settings: evt.registrationSettings,
+      globalForm: registrationForm,
+      feeTiersOverride: feeTiers,
+    })
+
+    if (config.requireAgreement && !body.agreedToTerms) {
+      return jsonError('You must agree to the registration instructions.', 400)
+    }
+
     const sections = (evt.registrationSections || []) as DynamicFormSection[]
     const customResponses = body.customResponses || {}
     const customError = validateCustomResponses(sections, customResponses)
     if (customError) return jsonError(customError, 400)
 
-    const categories = evt.registrationCategories || []
-    const selected = categories.find((cat) => String(cat.id) === body.registrationCategoryId)
-    if (!selected) return jsonError('Invalid registration category.', 400)
+    const selected = feeTiers.find((tier) => tier.id === body.registrationCategoryId) || feeTiers[0]
+    if (!selected && config.registrationType !== 'free') {
+      return jsonError('Invalid registration category.', 400)
+    }
 
-    const basePrice = Number(selected.price || 0)
+    const basePrice = Number(selected?.amount || 0)
     const kitPrice = body.includeKit && evt.includeKitOption ? Number(evt.kitPrice || 0) : 0
     const totalAmount = basePrice + kitPrice
+    const isFree = config.registrationType === 'free' || totalAmount <= 0
 
     const created = await payload.create({
       collection: 'eventRegistrations',
@@ -81,18 +103,20 @@ export async function POST(req: Request) {
         organization: body.organization,
         designation: body.designation,
         areaOfInterest: body.areaOfInterest,
-        idProofFileName: body.idProofFileName,
-        idProofFileSize: body.idProofFileSize || 0,
-        registrationCategoryId: String(selected.id),
-        registrationCategoryName: selected.categoryName || 'General',
+        registrationCategoryId: String(selected?.id || 'free'),
+        registrationCategoryName: selected?.label || body.feeTierLabel || 'General',
         registrationCategoryPrice: basePrice,
+        feeTierLabel: selected?.label || body.feeTierLabel,
+        feeTierCurrency: selected?.currency || body.feeTierCurrency || 'INR',
+        participantRegion: body.participantRegion || 'indian',
+        agreedToTerms: Boolean(body.agreedToTerms),
         includeKit: Boolean(body.includeKit),
         kitPrice,
         totalAmount,
         customResponses: Object.keys(customResponses).length ? customResponses : undefined,
         paymentProvider: 'manual',
-        paymentStatus: 'pending',
-        registrationStatus: 'initiated',
+        paymentStatus: isFree ? 'notRequired' : 'pending',
+        registrationStatus: isFree ? 'confirmed' : 'initiated',
       },
       overrideAccess: true,
     })
@@ -102,6 +126,10 @@ export async function POST(req: Request) {
       registrationId: created.id,
       eventSlug: evt.slug,
       totalAmount,
+      isFree,
+      message: isFree
+        ? 'Registration received. A confirmation email will be sent shortly.'
+        : 'Registration initiated. Please complete payment details.',
     })
   } catch (error) {
     return jsonError(

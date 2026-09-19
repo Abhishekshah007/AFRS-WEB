@@ -170,6 +170,9 @@ export interface UserAuthOperations {
 export interface Article {
   id: number;
   title: string;
+  /**
+   * URL-friendly name for this page. Usually auto-filled from the title.
+   */
   slug: string;
   /**
    * Short summary shown in cards and listings.
@@ -260,32 +263,6 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    card?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    hero?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
 }
 /**
  * Certifications and recognitions shown on the About page.
@@ -327,9 +304,16 @@ export interface AboutCertification {
 export interface Service {
   id: number;
   title: string;
+  /**
+   * URL-friendly name for this page. Usually auto-filled from the title.
+   */
   slug: string;
   icon?: (number | null) | Media;
   banner?: (number | null) | Media;
+  /**
+   * Image for the “What is …?” section on the service detail page (right column). Falls back to Banner if empty.
+   */
+  overviewImage?: (number | null) | Media;
   /**
    * Short summary shown in cards.
    */
@@ -524,12 +508,20 @@ export interface PartnersLogo {
   createdAt: string;
 }
 /**
+ * Create workshops, webinars, and conferences. The event title auto-generates the URL slug — no technical formatting needed.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "events".
  */
 export interface Event {
   id: number;
+  /**
+   * Public event name shown on the website.
+   */
   title: string;
+  /**
+   * Created automatically from the event title when you save. You do not need to type or generate this.
+   */
   slug: string;
   banner?: (number | null) | Media;
   /**
@@ -558,19 +550,70 @@ export interface Event {
   endDate?: string | null;
   startTime?: string | null;
   venue?: string | null;
+  /**
+   * Add who can register and how much they pay (e.g. Students ₹300). Use price 0 for free entry.
+   */
   registrationCategories?:
     | {
         categoryName?: string | null;
         price?: number | null;
+        currency?: ('INR' | 'USD') | null;
         description?: string | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Control whether registration is free or paid, fee tiers, payment QR/bank details, and instructions participants must accept.
+   */
+  registrationSettings?: {
+    registrationType?: ('free' | 'paid_manual' | 'paid_gateway') | null;
+    /**
+     * Which payment block to show. Use “Both” to let participants choose Indian or International fees.
+     */
+    participantRegion?: ('indian' | 'international' | 'both') | null;
+    /**
+     * When paid, require transaction ID and proof upload before submission.
+     */
+    requirePaymentProof?: boolean | null;
+    /**
+     * Use bank/UPI/QR from Globals → Registration Form. Turn off to override for this item only.
+     */
+    useGlobalPaymentDetails?: boolean | null;
+    /**
+     * Text-only bank/UPI/PayPal overrides. QR codes stay on Globals → Registration Form.
+     */
+    paymentInstructions?: {
+      title?: string | null;
+      accountName?: string | null;
+      accountNumber?: string | null;
+      ifsc?: string | null;
+      swift?: string | null;
+      branchAddress?: string | null;
+      upiId?: string | null;
+      /**
+       * PayPal.me or international payment link.
+       */
+      paypalLink?: string | null;
+      note?: string | null;
+    };
+    /**
+     * Use default instructions from Globals → Registration Form.
+     */
+    useGlobalInstructions?: boolean | null;
+    /**
+     * Shown before payment. Participants must agree to continue.
+     */
+    instructions?: string | null;
+    /**
+     * Require participants to accept instructions before proceeding to payment.
+     */
+    requireAgreement?: boolean | null;
+  };
   includeKitOption?: boolean | null;
   kitPrice?: number | null;
   registrationOpen?: boolean | null;
   /**
-   * Add event-specific questions (e.g. abstract title, nominee category). Shown on the registration form in addition to standard contact fields.
+   * This is the full registration form participants fill in — name, email, WhatsApp, file uploads, etc. Add one or more sections with questions.
    */
   registrationSections?:
     | {
@@ -579,25 +622,31 @@ export interface Event {
         fields?:
           | {
               /**
-               * Internal key — use camelCase, no spaces.
+               * Question shown to the participant (e.g. Full name for certificate).
                */
-              name: string;
               label: string;
               fieldType: 'text' | 'email' | 'tel' | 'textarea' | 'select' | 'date' | 'time' | 'file' | 'number';
               required?: boolean | null;
+              /**
+               * Optional hint inside the input box.
+               */
               placeholder?: string | null;
               /**
-               * Comma-separated options for select fields.
+               * For dropdown only — separate choices with commas (e.g. Student, Professional).
                */
               options?: string | null;
               /**
-               * Rows for textarea fields.
+               * Height for long text fields.
                */
               rows?: number | null;
               /**
-               * Accept attribute for file inputs (e.g. image/*,.pdf).
+               * For file uploads — usually image/*,.pdf is fine.
                */
               accept?: string | null;
+              /**
+               * Auto-generated from the question label — do not edit.
+               */
+              name?: string | null;
               id?: string | null;
             }[]
           | null;
@@ -644,6 +693,14 @@ export interface EventRegistration {
     | number
     | boolean
     | null;
+  /**
+   * Selected fee category label.
+   */
+  feeTierLabel?: string | null;
+  feeTierCurrency?: ('INR' | 'USD') | null;
+  participantRegion?: ('indian' | 'international') | null;
+  paymentMode?: ('upi' | 'bank' | 'paypal') | null;
+  agreedToTerms?: boolean | null;
   /**
    * UPI / bank transaction reference.
    */
@@ -705,6 +762,14 @@ export interface CourseRegistration {
     | number
     | boolean
     | null;
+  /**
+   * Selected fee category label.
+   */
+  feeTierLabel?: string | null;
+  feeTierCurrency?: ('INR' | 'USD') | null;
+  participantRegion?: ('indian' | 'international') | null;
+  paymentMode?: ('upi' | 'bank' | 'paypal') | null;
+  agreedToTerms?: boolean | null;
   /**
    * UPI / bank transaction reference.
    */
@@ -970,6 +1035,7 @@ export interface ServicesSelect<T extends boolean = true> {
   slug?: T;
   icon?: T;
   banner?: T;
+  overviewImage?: T;
   excerpt?: T;
   content?: T;
   category?: T;
@@ -1098,8 +1164,33 @@ export interface EventsSelect<T extends boolean = true> {
     | {
         categoryName?: T;
         price?: T;
+        currency?: T;
         description?: T;
         id?: T;
+      };
+  registrationSettings?:
+    | T
+    | {
+        registrationType?: T;
+        participantRegion?: T;
+        requirePaymentProof?: T;
+        useGlobalPaymentDetails?: T;
+        paymentInstructions?:
+          | T
+          | {
+              title?: T;
+              accountName?: T;
+              accountNumber?: T;
+              ifsc?: T;
+              swift?: T;
+              branchAddress?: T;
+              upiId?: T;
+              paypalLink?: T;
+              note?: T;
+            };
+        useGlobalInstructions?: T;
+        instructions?: T;
+        requireAgreement?: T;
       };
   includeKitOption?: T;
   kitPrice?: T;
@@ -1112,7 +1203,6 @@ export interface EventsSelect<T extends boolean = true> {
         fields?:
           | T
           | {
-              name?: T;
               label?: T;
               fieldType?: T;
               required?: T;
@@ -1120,6 +1210,7 @@ export interface EventsSelect<T extends boolean = true> {
               options?: T;
               rows?: T;
               accept?: T;
+              name?: T;
               id?: T;
             };
         id?: T;
@@ -1152,6 +1243,11 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
   includeKit?: T;
   kitPrice?: T;
   customResponses?: T;
+  feeTierLabel?: T;
+  feeTierCurrency?: T;
+  participantRegion?: T;
+  paymentMode?: T;
+  agreedToTerms?: T;
   transactionId?: T;
   transactionDate?: T;
   transactionTime?: T;
@@ -1192,6 +1288,11 @@ export interface CourseRegistrationsSelect<T extends boolean = true> {
   preferredBatch?: T;
   message?: T;
   customResponses?: T;
+  feeTierLabel?: T;
+  feeTierCurrency?: T;
+  participantRegion?: T;
+  paymentMode?: T;
+  agreedToTerms?: T;
   transactionId?: T;
   transactionDate?: T;
   transactionTime?: T;
@@ -1268,40 +1369,6 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
-  sizes?:
-    | T
-    | {
-        thumbnail?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        card?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        hero?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1764,6 +1831,65 @@ export interface ProgrammesCatalog {
               duration: string;
               mode: string;
               level?: string | null;
+              /**
+               * Control whether registration is free or paid, fee tiers, payment QR/bank details, and instructions participants must accept.
+               */
+              registration?: {
+                registrationType?: ('free' | 'paid_manual' | 'paid_gateway') | null;
+                /**
+                 * Which payment block to show. Use “Both” to let participants choose Indian or International fees.
+                 */
+                participantRegion?: ('indian' | 'international' | 'both') | null;
+                /**
+                 * Fee options for this programme. Leave empty to use global defaults from Registration Form.
+                 */
+                feeTiers?:
+                  | {
+                      label: string;
+                      amount: number;
+                      currency: 'INR' | 'USD';
+                      description?: string | null;
+                      id?: string | null;
+                    }[]
+                  | null;
+                /**
+                 * When paid, require transaction ID and proof upload before submission.
+                 */
+                requirePaymentProof?: boolean | null;
+                /**
+                 * Use bank/UPI/QR from Globals → Registration Form. Turn off to override for this item only.
+                 */
+                useGlobalPaymentDetails?: boolean | null;
+                /**
+                 * Text-only bank/UPI/PayPal overrides. QR codes stay on Globals → Registration Form.
+                 */
+                paymentInstructions?: {
+                  title?: string | null;
+                  accountName?: string | null;
+                  accountNumber?: string | null;
+                  ifsc?: string | null;
+                  swift?: string | null;
+                  branchAddress?: string | null;
+                  upiId?: string | null;
+                  /**
+                   * PayPal.me or international payment link.
+                   */
+                  paypalLink?: string | null;
+                  note?: string | null;
+                };
+                /**
+                 * Use default instructions from Globals → Registration Form.
+                 */
+                useGlobalInstructions?: boolean | null;
+                /**
+                 * Shown before payment. Participants must agree to continue.
+                 */
+                instructions?: string | null;
+                /**
+                 * Require participants to accept instructions before proceeding to payment.
+                 */
+                requireAgreement?: boolean | null;
+              };
             }[]
           | null;
         id?: string | null;
@@ -1825,6 +1951,65 @@ export interface ProgrammesCatalog {
               duration: string;
               mode: string;
               level?: string | null;
+              /**
+               * Control whether registration is free or paid, fee tiers, payment QR/bank details, and instructions participants must accept.
+               */
+              registration?: {
+                registrationType?: ('free' | 'paid_manual' | 'paid_gateway') | null;
+                /**
+                 * Which payment block to show. Use “Both” to let participants choose Indian or International fees.
+                 */
+                participantRegion?: ('indian' | 'international' | 'both') | null;
+                /**
+                 * Fee options for this programme. Leave empty to use global defaults from Registration Form.
+                 */
+                feeTiers?:
+                  | {
+                      label: string;
+                      amount: number;
+                      currency: 'INR' | 'USD';
+                      description?: string | null;
+                      id?: string | null;
+                    }[]
+                  | null;
+                /**
+                 * When paid, require transaction ID and proof upload before submission.
+                 */
+                requirePaymentProof?: boolean | null;
+                /**
+                 * Use bank/UPI/QR from Globals → Registration Form. Turn off to override for this item only.
+                 */
+                useGlobalPaymentDetails?: boolean | null;
+                /**
+                 * Text-only bank/UPI/PayPal overrides. QR codes stay on Globals → Registration Form.
+                 */
+                paymentInstructions?: {
+                  title?: string | null;
+                  accountName?: string | null;
+                  accountNumber?: string | null;
+                  ifsc?: string | null;
+                  swift?: string | null;
+                  branchAddress?: string | null;
+                  upiId?: string | null;
+                  /**
+                   * PayPal.me or international payment link.
+                   */
+                  paypalLink?: string | null;
+                  note?: string | null;
+                };
+                /**
+                 * Use default instructions from Globals → Registration Form.
+                 */
+                useGlobalInstructions?: boolean | null;
+                /**
+                 * Shown before payment. Participants must agree to continue.
+                 */
+                instructions?: string | null;
+                /**
+                 * Require participants to accept instructions before proceeding to payment.
+                 */
+                requireAgreement?: boolean | null;
+              };
             }[]
           | null;
         id?: string | null;
@@ -1884,32 +2069,64 @@ export interface RegistrationForm {
   id: number;
   formTitle: string;
   formSubtitle?: string | null;
+  /**
+   * Build the course registration form. Include at least one Email and one Phone/WhatsApp field so confirmations can be sent.
+   */
   sections?:
     | {
         title: string;
         description?: string | null;
         fields?:
           | {
-              name: string;
+              /**
+               * Question shown to the participant (e.g. Full name for certificate).
+               */
               label: string;
               fieldType: 'text' | 'email' | 'tel' | 'textarea' | 'select' | 'date' | 'time' | 'file' | 'number';
               required?: boolean | null;
+              /**
+               * Optional hint inside the input box.
+               */
               placeholder?: string | null;
               /**
-               * Comma-separated options for select fields.
+               * For dropdown only — separate choices with commas (e.g. Student, Professional).
                */
               options?: string | null;
               /**
-               * Rows for textarea fields.
+               * Height for long text fields.
                */
               rows?: number | null;
               /**
-               * Accept attribute for file inputs.
+               * For file uploads — usually image/*,.pdf is fine.
                */
               accept?: string | null;
+              /**
+               * Auto-generated from the question label — do not edit.
+               */
+              name?: string | null;
               id?: string | null;
             }[]
           | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Default registration instructions shown before payment. Can be overridden per programme or event.
+   */
+  defaultInstructions?: string | null;
+  /**
+   * Default: require agreement checkbox before payment.
+   */
+  requireAgreement?: boolean | null;
+  /**
+   * Default fee tiers for course/training registrations when a programme has none configured.
+   */
+  defaultFeeTiers?:
+    | {
+        label: string;
+        amount: number;
+        currency: 'INR' | 'USD';
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1921,6 +2138,10 @@ export interface RegistrationForm {
     swift?: string | null;
     branchAddress?: string | null;
     upiId?: string | null;
+    /**
+     * PayPal.me or international payment link for international participants.
+     */
+    paypalLink?: string | null;
     note?: string | null;
   };
   paymentMethods?:
@@ -1929,6 +2150,7 @@ export interface RegistrationForm {
         description?: string | null;
         qrCode?: (number | null) | Media;
         link?: string | null;
+        region?: ('indian' | 'international' | 'all') | null;
         id?: string | null;
       }[]
     | null;
@@ -2645,6 +2867,39 @@ export interface ProgrammesCatalogSelect<T extends boolean = true> {
               duration?: T;
               mode?: T;
               level?: T;
+              registration?:
+                | T
+                | {
+                    registrationType?: T;
+                    participantRegion?: T;
+                    feeTiers?:
+                      | T
+                      | {
+                          label?: T;
+                          amount?: T;
+                          currency?: T;
+                          description?: T;
+                          id?: T;
+                        };
+                    requirePaymentProof?: T;
+                    useGlobalPaymentDetails?: T;
+                    paymentInstructions?:
+                      | T
+                      | {
+                          title?: T;
+                          accountName?: T;
+                          accountNumber?: T;
+                          ifsc?: T;
+                          swift?: T;
+                          branchAddress?: T;
+                          upiId?: T;
+                          paypalLink?: T;
+                          note?: T;
+                        };
+                    useGlobalInstructions?: T;
+                    instructions?: T;
+                    requireAgreement?: T;
+                  };
             };
         id?: T;
       };
@@ -2706,6 +2961,39 @@ export interface ProgrammesCatalogSelect<T extends boolean = true> {
               duration?: T;
               mode?: T;
               level?: T;
+              registration?:
+                | T
+                | {
+                    registrationType?: T;
+                    participantRegion?: T;
+                    feeTiers?:
+                      | T
+                      | {
+                          label?: T;
+                          amount?: T;
+                          currency?: T;
+                          description?: T;
+                          id?: T;
+                        };
+                    requirePaymentProof?: T;
+                    useGlobalPaymentDetails?: T;
+                    paymentInstructions?:
+                      | T
+                      | {
+                          title?: T;
+                          accountName?: T;
+                          accountNumber?: T;
+                          ifsc?: T;
+                          swift?: T;
+                          branchAddress?: T;
+                          upiId?: T;
+                          paypalLink?: T;
+                          note?: T;
+                        };
+                    useGlobalInstructions?: T;
+                    instructions?: T;
+                    requireAgreement?: T;
+                  };
             };
         id?: T;
       };
@@ -2771,7 +3059,6 @@ export interface RegistrationFormSelect<T extends boolean = true> {
         fields?:
           | T
           | {
-              name?: T;
               label?: T;
               fieldType?: T;
               required?: T;
@@ -2779,8 +3066,20 @@ export interface RegistrationFormSelect<T extends boolean = true> {
               options?: T;
               rows?: T;
               accept?: T;
+              name?: T;
               id?: T;
             };
+        id?: T;
+      };
+  defaultInstructions?: T;
+  requireAgreement?: T;
+  defaultFeeTiers?:
+    | T
+    | {
+        label?: T;
+        amount?: T;
+        currency?: T;
+        description?: T;
         id?: T;
       };
   paymentInstructions?:
@@ -2793,6 +3092,7 @@ export interface RegistrationFormSelect<T extends boolean = true> {
         swift?: T;
         branchAddress?: T;
         upiId?: T;
+        paypalLink?: T;
         note?: T;
       };
   paymentMethods?:
@@ -2802,6 +3102,7 @@ export interface RegistrationFormSelect<T extends boolean = true> {
         description?: T;
         qrCode?: T;
         link?: T;
+        region?: T;
         id?: T;
       };
   updatedAt?: T;

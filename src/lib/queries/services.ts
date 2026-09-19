@@ -18,14 +18,22 @@ import {
   fallbackDirectors,
   fallbackTeam,
 } from '@/data/defaults/services'
-import { richTextToPlain, resolveMediaUrl } from '@/lib/cms'
+import { richTextToPlain, resolveMediaUrl, resolveMediaUrlOptional } from '@/lib/cms'
 import { getPayloadClient } from '@/lib/payload'
-import { getFeaturedGalleryItems } from '@/lib/queries/gallery'
+import { getFeaturedGalleryItems, mapGalleryDocs } from '@/lib/queries/gallery'
+import { safeQuery } from '@/lib/resilience/safeQuery'
 import { testimonialPlacementWhere } from '@/lib/queries/testimonials'
-import type { Media, Scientist, Service, ServicesPage, SiteSetting, Testimonial } from '@/payload-types'
+import type {
+  Media,
+  Scientist,
+  Service,
+  ServicesPage,
+  SiteSetting,
+  Testimonial,
+} from '@/payload-types'
 
 function toMember(sci: Scientist): DirectorateMember {
-  const photo = resolveMediaUrl(sci.photo as number | Media | null | undefined, '')
+  const photo = resolveMediaUrlOptional(sci.photo as number | Media | null | undefined)
   const initials =
     sci.name
       ?.split(' ')
@@ -158,16 +166,28 @@ function buildServicesContent(cms?: ServicesPage['sectionText']): ServicesPageCo
       source.infrastructureEyebrow,
       defaults.infrastructureEyebrow,
     ),
-    infrastructureTitle: withDefaultString(source.infrastructureTitle, defaults.infrastructureTitle),
-    infrastructureBody1: withDefaultString(source.infrastructureBody1, defaults.infrastructureBody1),
-    infrastructureBody2: withDefaultString(source.infrastructureBody2, defaults.infrastructureBody2),
+    infrastructureTitle: withDefaultString(
+      source.infrastructureTitle,
+      defaults.infrastructureTitle,
+    ),
+    infrastructureBody1: withDefaultString(
+      source.infrastructureBody1,
+      defaults.infrastructureBody1,
+    ),
+    infrastructureBody2: withDefaultString(
+      source.infrastructureBody2,
+      defaults.infrastructureBody2,
+    ),
     visionTitle: withDefaultString(source.visionTitle, defaults.visionTitle),
     visionBody: withDefaultString(source.visionBody, defaults.visionBody),
     missionTitle: withDefaultString(source.missionTitle, defaults.missionTitle),
     missionBody: withDefaultString(source.missionBody, defaults.missionBody),
     directorateEyebrow: withDefaultString(source.directorateEyebrow, defaults.directorateEyebrow),
     directorateTitle: withDefaultString(source.directorateTitle, defaults.directorateTitle),
-    directorateSubtitle: withDefaultString(source.directorateSubtitle, defaults.directorateSubtitle),
+    directorateSubtitle: withDefaultString(
+      source.directorateSubtitle,
+      defaults.directorateSubtitle,
+    ),
     teamEyebrow: withDefaultString(source.teamEyebrow, defaults.teamEyebrow),
     teamTitle: withDefaultString(source.teamTitle, defaults.teamTitle),
     teamSubtitle: withDefaultString(source.teamSubtitle, defaults.teamSubtitle),
@@ -194,15 +214,13 @@ function buildServicesContent(cms?: ServicesPage['sectionText']): ServicesPageCo
       source.reportVerificationLabel,
       defaults.reportVerificationLabel,
     ),
-    certificationStats:
-      source.certificationStats?.length
-        ? source.certificationStats.map((item) => ({
-            label: item.label ?? '',
-            caption: item.caption ?? '',
-          }))
-        : defaults.certificationStats,
-    kitCards:
-      toKitCards(source.kitCards as KitCardData[] | null | undefined) ?? defaults.kitCards,
+    certificationStats: source.certificationStats?.length
+      ? source.certificationStats.map((item) => ({
+          label: item.label ?? '',
+          caption: item.caption ?? '',
+        }))
+      : defaults.certificationStats,
+    kitCards: toKitCards(source.kitCards as KitCardData[] | null | undefined) ?? defaults.kitCards,
     legalLinks:
       toLegalLinks(source.legalLinks as LegalLinkItem[] | null | undefined) ??
       toLegalLinksLegacy(source.legalLinks) ??
@@ -225,37 +243,51 @@ function buildSiteContact(site: SiteSetting | null | undefined): SiteContact {
   }
 }
 
-export async function getServicesPageData(): Promise<ServicesPageViewProps> {
+export function getDefaultServicesPageData(): ServicesPageViewProps {
+  return {
+    content: buildServicesContent(undefined),
+    catalogItems: fallbackCatalog,
+    directors: fallbackDirectors,
+    teamMembers: fallbackTeam,
+    site: buildSiteContact(null),
+    totalVisitors: 200,
+    galleryItems: mapGalleryDocs([]),
+    testimonials: defaultAfslTestimonials,
+  }
+}
+
+async function loadServicesPageData(): Promise<ServicesPageViewProps> {
   const payload = await getPayloadClient()
 
-  const [servicesPage, services, scientists, siteData, galleryItems, testimonials] = await Promise.all([
-    payload.findGlobal({ slug: 'servicesPage', depth: 0, overrideAccess: false }),
-    payload.find({
-      collection: 'services',
-      where: { published: { equals: true } },
-      sort: 'order',
-      limit: 50,
-      depth: 1,
-      overrideAccess: false,
-    }),
-    payload.find({
-      collection: 'scientists',
-      where: { published: { equals: true } },
-      sort: 'order',
-      limit: 200,
-      depth: 1,
-      overrideAccess: false,
-    }),
-    payload.findGlobal({ slug: 'siteSettings', depth: 0, overrideAccess: false }),
-    getFeaturedGalleryItems(4),
-    payload.find({
-      collection: 'testimonials',
-      where: testimonialPlacementWhere('afsl'),
-      limit: 50,
-      depth: 0,
-      overrideAccess: false,
-    }),
-  ])
+  const [servicesPage, services, scientists, siteData, galleryItems, testimonials] =
+    await Promise.all([
+      payload.findGlobal({ slug: 'servicesPage', depth: 0, overrideAccess: false }),
+      payload.find({
+        collection: 'services',
+        where: { published: { equals: true } },
+        sort: 'order',
+        limit: 50,
+        depth: 1,
+        overrideAccess: false,
+      }),
+      payload.find({
+        collection: 'scientists',
+        where: { published: { equals: true } },
+        sort: 'order',
+        limit: 200,
+        depth: 1,
+        overrideAccess: false,
+      }),
+      payload.findGlobal({ slug: 'siteSettings', depth: 0, overrideAccess: false }),
+      getFeaturedGalleryItems(4),
+      payload.find({
+        collection: 'testimonials',
+        where: testimonialPlacementWhere('afsl'),
+        limit: 50,
+        depth: 0,
+        overrideAccess: false,
+      }),
+    ])
 
   const site = siteData as SiteSetting
   const content = buildServicesContent((servicesPage as ServicesPage)?.sectionText)
@@ -306,4 +338,8 @@ export async function getServicesPageData(): Promise<ServicesPageViewProps> {
     galleryItems,
     testimonials: cmsTestimonials.length > 0 ? cmsTestimonials : defaultAfslTestimonials,
   }
+}
+
+export async function getServicesPageData(): Promise<ServicesPageViewProps> {
+  return safeQuery('getServicesPageData', loadServicesPageData, getDefaultServicesPageData())
 }

@@ -10,7 +10,7 @@ export type ExamPrepCardProps = {
  */
 export function ExamPrepCard({ exam }: ExamPrepCardProps) {
   return (
-    <article className="relative flex min-h-[260px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md card-pop sm:min-h-[280px] sm:p-8">
+    <article className="relative flex h-full min-h-[260px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md card-pop sm:min-h-[280px] sm:p-8">
       <span
         className="absolute right-4 top-4 text-6xl opacity-[0.08] pointer-events-none select-none"
         aria-hidden
@@ -32,5 +32,3 @@ export function ExamPrepCard({ exam }: ExamPrepCardProps) {
     </article>
   )
 }
-
-

@@ -42,6 +42,8 @@ export default async function EducationCategoryPage({ params }: Props) {
       summary={cat.summary}
       icon={cat.icon}
       programmes={cat.programmes}
+      categorySlug={cat.slug}
+      programmeType="education"
       backHref="/courses#afrs-education"
       intro={cat.intro}
     />

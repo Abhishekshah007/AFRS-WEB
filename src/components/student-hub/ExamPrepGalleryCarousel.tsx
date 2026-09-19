@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import type { GallerySlide } from '@/components/service-detail/types'
 import { studentHubTokens } from '@/components/student-hub/tokens'
 
@@ -40,14 +40,6 @@ export function ExamPrepGalleryCarousel({
     },
     [active, scrollToIndex],
   )
-
-  useEffect(() => {
-    if (slides.length < 2) return
-    const timer = window.setInterval(() => {
-      scrollToIndex(active + 1)
-    }, 5500)
-    return () => window.clearInterval(timer)
-  }, [active, slides.length, scrollToIndex])
 
   if (slides.length === 0) return null
 

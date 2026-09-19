@@ -1,7 +1,4 @@
-import { getPayloadClient } from '@/lib/payload'
-import { fetchActiveEvents } from '@/lib/queries/events'
-import { testimonialPlacementWhere } from '@/lib/queries/testimonials'
-import type { HomePage, SiteSetting } from '@/payload-types'
+import { getHomePageData } from '@/lib/queries/home'
 import type { Metadata } from 'next'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { buildPageMetadata } from '@/lib/seo/metadata'
@@ -36,11 +33,9 @@ export const metadata: Metadata = buildPageMetadata({
 })
 
 export default async function HomePage() {
-  const payload = await getPayloadClient()
-
-  const [
+  const {
     events,
-    _services,
+    services: _services,
     testimonials,
     scientists,
     galleryItems,
@@ -48,63 +43,11 @@ export default async function HomePage() {
     partnerLogos,
     homePage,
     siteSettings,
-  ] = await Promise.all([
-    fetchActiveEvents(payload, { limit: 3, depth: 1 }),
-    payload.find({
-      collection: 'services',
-      where: { published: { equals: true } },
-      limit: 6,
-      sort: 'order',
-      depth: 1,
-      overrideAccess: false,
-    }),
-    payload.find({
-      collection: 'testimonials',
-      where: testimonialPlacementWhere('afrs'),
-      limit: 50,
-      depth: 1,
-      overrideAccess: false,
-    }),
-    payload.find({
-      collection: 'scientists',
-      where: { published: { equals: true } },
-      limit: 2,
-      sort: 'order',
-      depth: 1,
-      overrideAccess: false,
-    }),
-    payload.find({
-      collection: 'galleryItems',
-      where: { published: { equals: true }, featured: { equals: true } },
-      limit: 4,
-      sort: 'order',
-      depth: 1,
-      overrideAccess: false,
-    }),
-    payload.find({
-      collection: 'impactStats',
-      where: { published: { equals: true } },
-      limit: 5,
-      sort: 'order',
-      overrideAccess: false,
-    }),
-    payload.find({
-      collection: 'partnersLogo',
-      where: { published: { equals: true } },
-      limit: 50,
-      sort: 'order',
-      depth: 1,
-      overrideAccess: false,
-    }),
-    payload.findGlobal({ slug: 'homePage', depth: 1 }),
-    payload.findGlobal({ slug: 'siteSettings' }),
-  ])
+  } = await getHomePageData()
 
-  const home = homePage as HomePage
-  const site = siteSettings as SiteSetting
-  const sectionText = home?.sectionText || {}
-  const heroData = home?.hero || {}
-  const totalVisitors = site?.totalVisitors
+  const sectionText = homePage?.sectionText || {}
+  const heroData = homePage?.hero ?? { title: 'Applied Forensic Research Sciences' }
+  const totalVisitors = siteSettings?.totalVisitors
   const orgJsonLd = withContext([faqPage([...HOME_FAQS])])
 
   return (

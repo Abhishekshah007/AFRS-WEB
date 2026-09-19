@@ -27,6 +27,7 @@ export const ProgrammesCatalog: GlobalConfig = {
     {
       name: 'educationCategories',
       type: 'array',
+      dbName: 'edu_cats',
       defaultValue: defaultEducationCategories,
       fields: [
         { name: 'slug', type: 'text', required: true },
@@ -34,12 +35,13 @@ export const ProgrammesCatalog: GlobalConfig = {
         { name: 'title', type: 'text', required: true },
         { name: 'summary', type: 'textarea', required: true },
         { name: 'intro', type: 'textarea' },
-        { name: 'programmes', type: 'array', fields: programmeItemFields },
+        { name: 'programmes', type: 'array', dbName: 'progs', fields: programmeItemFields },
       ],
     },
     {
       name: 'trainingCategories',
       type: 'array',
+      dbName: 'train_cats',
       defaultValue: defaultTrainingCategories.map((category) => ({
         ...category,
         whoCanApply: category.whoCanApply?.map((text) => ({ text })),
@@ -105,7 +107,7 @@ export const ProgrammesCatalog: GlobalConfig = {
           ],
         },
         { name: 'disclaimer', type: 'textarea' },
-        { name: 'programmes', type: 'array', fields: programmeItemFields },
+        { name: 'programmes', type: 'array', dbName: 'progs', fields: programmeItemFields },
       ],
     },
     {

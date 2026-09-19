@@ -1,5 +1,5 @@
 import type { HubEventCard } from '@/components/programmes/types'
-import { formatEventType, resolveMediaUrl, richTextToPlain } from '@/lib/cms'
+import { FALLBACK_BANNER_IMAGE, formatEventType, resolveMediaUrl, richTextToPlain } from '@/lib/cms'
 import type { Event as AfrsEvent, Media } from '@/payload-types'
 import { eventTypeDisplayLabel } from '@/components/programmes/eventStyles'
 
@@ -18,10 +18,10 @@ export function mapEventToHubCard(evt: AfrsEvent, index = 0): HubEventCard {
       ? evt.eventNature
       : 'national'
 
-  const bannerUrl =
-    evt.banner != null
-      ? resolveMediaUrl(evt.banner as number | Media | null | undefined, '')
-      : undefined
+  const bannerUrl = resolveMediaUrl(
+    evt.banner as number | Media | null | undefined,
+    FALLBACK_BANNER_IMAGE,
+  )
 
   return {
     id: String(evt.id),

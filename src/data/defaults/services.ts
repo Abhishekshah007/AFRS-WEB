@@ -1,4 +1,8 @@
-import type { CatalogItem, DirectorateMember, ServicesPageContent } from '@/components/services/types'
+import type {
+  CatalogItem,
+  DirectorateMember,
+  ServicesPageContent,
+} from '@/components/services/types'
 
 export { defaultServicesCatalog } from '@/data/defaults/services-catalog'
 
@@ -36,7 +40,8 @@ export const fallbackDirectors: DirectorateMember[] = [
   {
     id: 'fallback-director-1',
     name: 'Mr. Rakesh Mia',
-    designation: 'Lab Director',
+    designation:
+      'Author || Forensic Expert || Trainer Designated Partner -AFSL Services India LLP Indore (MP) India.',
     initials: 'RM',
     status: 'active',
     photo:
@@ -46,7 +51,7 @@ export const fallbackDirectors: DirectorateMember[] = [
   {
     id: 'fallback-director-2',
     name: 'Mr. Vijay Panchal',
-    designation: 'Deputy Director',
+    designation: 'Designated Partner -AFSL Services India LLP Indore (MP) India.',
     initials: 'VP',
     status: 'active',
     photo:
@@ -164,15 +169,23 @@ export const defaultServicesPageContent: ServicesPageContent = {
   infrastructureEyebrow: 'Scientific Infrastructure',
   infrastructureTitle: 'About AFSL Laboratory',
   infrastructureBody1:
-    'Applied Forensic Science Laboratory (AFSL Services India LLP) is registered with the Ministry of Corporate Affairs (MCA) and MSME, Government of India, and is an ISO 9001:2015 Certified Forensic Science Laboratory. Our training programs bridge the gap between theoretical knowledge and practical forensic application through hands-on, offline learning using advanced forensic instruments in fingerprint analysis, multimedia forensics, questioned document examination, and trace evidence analysis.',
+    'AFSL Services India LLP is a Forensic Science laboratory registered as an LLP under the Ministry of Corporate Affairs (MCA), Government of India, Registered under the MSME/Udyam framework, and is an ISO 9001:2015 certified Laboratory.',
   infrastructureBody2:
-    'Participants gain real-world exposure through supervised autopsy visits, simulated and actual crime scene visits, field investigations, evidence collection, documentation, scientific report writing, and investigative procedures under expert guidance. Our mission is to build practical skills, professional confidence, and industry-ready forensic professionals who can effectively contribute to justice and society.',
+    'AFSL is engaged in providing forensic examination services, scientific analysis, practical training, and internship programs in various disciplines of forensic science. Our laboratory undertakes the examination of forensic evidence and case related materials using appropriate scientific methods, established examination procedures and professional documentation practices.',
+  infrastructureBody3:
+    'Our disciplines of forensic work include Fingerprint Examination, Questioned Document Examination, Handwriting & Signature Examination, Multimedia Forensics, Trace Evidence Analysis, and other Specialised Forensic examinations, depending on the nature and requirements of a case.',
+  infrastructureBody4:
+    'In addition to forensic services, AFSL places strong emphasis on practical and experiential learning. Our training and internship programs provide students, researchers and professionals with exposure to laboratory procedures, forensic instruments, evidence handling, examination techniques, case documentation and scientific report preparation.',
+  infrastructureBody5:
+    'To strengthen practical understanding, AFSL also facilitates field visits, simulated crime scene exercises, autopsy visits and supervised crime scene exposure, wherever permitted and subject to applicable rules and professional requirements. These experiences help learners understand how forensic principles are applied beyond the classroom and laboratory.',
+  infrastructureBody6:
+    'At AFSL, we believe that forensic science is best understood through a combination of scientific knowledge, practical experience and professional discipline. Our objective is to provide reliable forensic services while creating meaningful learning opportunities that contribute to the development of competent, skilled and responsible forensic professionals.',
   visionTitle: 'Laboratory Vision',
   visionBody:
-    'To be a leading forensic science training and research centre, delivering industry-oriented, hands-on education that bridges academic learning with real-world forensic practice. We strive to develop skilled, ethical, and investigation-ready forensic professionals through advanced laboratory training, crime scene exposure, and experiential learning, contributing to excellence in the justice system.',
+    'Our vision is to establish a leading hands-on training facility where forensic science is brought to life through practical, real-world applications. We aim to equip students and professionals with essential operational skills, a scientific mindset, and a strong ethical foundation necessary for contemporary forensic practice. Our objective is to bridge the gap between theoretical education and field application by providing immersive experiences, including laboratory work, autopsy visits, and actual crime scene investigations. By fostering curiosity, critical thinking, and professional discipline, we seek to cultivate the next generation of forensic experts capable of making meaningful contributions to the justice system. We aspire to serve as a national centre for experiential forensic education, emphasising learning rooted in reality and driven by purpose.',
   missionTitle: 'Our Mission',
   missionBody:
-    'To provide high-quality, practical forensic education through state-of-the-art laboratory facilities, expert mentorship, autopsy exposure, field investigations, and crime scene training. Our mission is to equip students and professionals with technical expertise, scientific thinking, evidence-handling skills, and professional ethics, preparing them to meet the evolving demands of forensic science and the criminal justice system..',
+    'The mission of Applied Forensic Science Laboratory (AFSL) is to provide reliable, scientific, and practical forensic services that support investigations, organisations, legal professionals, and other stakeholders. We undertake forensic work across areas such as Fingerprint Examination, Questioned Documents, Crime Scene Investigation, Digital and Cyber Forensics, and other forensic disciplines, with a focus on accurate examination, proper evidence handling, objective analysis, and clear reporting. We also provide practical forensic training and internship opportunities for students, interns, and professionals through laboratory work, field visits, autopsy visits, crime scene exposure, case-based learning, and expert guidance. We are committed to creating a professional environment where forensic services and practical learning go hand in hand, strengthening forensic skills, promoting scientific and ethical practices, and contributing to evidence-based investigation and the effective delivery of justice.',
   directorateEyebrow: 'Leadership & Expertise',
   directorateTitle: 'Laboratory Directorate',
   directorateSubtitle:

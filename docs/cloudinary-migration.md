@@ -12,7 +12,7 @@ Cloudinary public IDs are deterministic:
 ${CLOUDINARY_MEDIA_PREFIX}/${filename-without-extension}
 ```
 
-The default prefix is `afrs/payload/media`. Originals and generated Payload sizes are uploaded separately using their existing filenames.
+The default prefix is `afrs/payload/media`. Each media item uploads **one** file to Cloudinary (no auto-generated `imageSizes` variants).
 
 ## Installation
 

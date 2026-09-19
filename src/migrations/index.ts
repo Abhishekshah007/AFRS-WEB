@@ -1,10 +1,12 @@
-import * as migration_20260717_000000_drop_cloudinary_media_metadata from './20260717_000000_drop_cloudinary_media_metadata';
-import * as migration_20260726_202731_add_about_certifications from './20260726_202731_add_about_certifications';
-import * as migration_20260817_184500_service_help_cards from './20260817_184500_service_help_cards';
-import * as migration_20260820_142708_add_member_type_to_scientists from './20260820_142708_add_member_type_to_scientists';
-import * as migration_20260903_150000_add_testimonial_display_on from './20260903_150000_add_testimonial_display_on';
-import * as migration_20260904_120000_submission_exports from './20260904_120000_submission_exports';
-import * as migration_20260905_010000_event_custom_fields_and_responses from './20260905_010000_event_custom_fields_and_responses';
+import * as migration_20260717_000000_drop_cloudinary_media_metadata from './20260717_000000_drop_cloudinary_media_metadata'
+import * as migration_20260726_202731_add_about_certifications from './20260726_202731_add_about_certifications'
+import * as migration_20260817_184500_service_help_cards from './20260817_184500_service_help_cards'
+import * as migration_20260820_142708_add_member_type_to_scientists from './20260820_142708_add_member_type_to_scientists'
+import * as migration_20260903_150000_add_testimonial_display_on from './20260903_150000_add_testimonial_display_on'
+import * as migration_20260904_120000_submission_exports from './20260904_120000_submission_exports'
+import * as migration_20260905_010000_event_custom_fields_and_responses from './20260905_010000_event_custom_fields_and_responses'
+import * as migration_20260917_220000_service_overview_image from './20260917_220000_service_overview_image'
+import * as migration_20260918_203000_registration_settings from './20260918_203000_registration_settings'
 
 export const migrations = [
   {
@@ -25,7 +27,7 @@ export const migrations = [
   {
     up: migration_20260820_142708_add_member_type_to_scientists.up,
     down: migration_20260820_142708_add_member_type_to_scientists.down,
-    name: '20260820_142708_add_member_type_to_scientists'
+    name: '20260820_142708_add_member_type_to_scientists',
   },
   {
     up: migration_20260903_150000_add_testimonial_display_on.up,
@@ -42,4 +44,14 @@ export const migrations = [
     down: migration_20260905_010000_event_custom_fields_and_responses.down,
     name: '20260905_010000_event_custom_fields_and_responses',
   },
-];
+  {
+    up: migration_20260917_220000_service_overview_image.up,
+    down: migration_20260917_220000_service_overview_image.down,
+    name: '20260917_220000_service_overview_image',
+  },
+  {
+    up: migration_20260918_203000_registration_settings.up,
+    down: migration_20260918_203000_registration_settings.down,
+    name: '20260918_203000_registration_settings',
+  },
+]
