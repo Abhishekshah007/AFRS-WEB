@@ -27,9 +27,7 @@ export const EventRegistrations: CollectionConfig = {
       'registrationStatus',
     ],
     components: {
-      list: {
-        beforeList: ['/components/admin/EventRegistrationCsvExport'],
-      },
+      beforeList: ['/components/admin/EventRegistrationCsvExport'],
     },
   },
   hooks: {
