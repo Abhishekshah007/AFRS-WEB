@@ -1,5 +1,6 @@
 import { StudentHubView } from '@/components/student-hub/StudentHubView'
 import { getStudentHubContent } from '@/components/student-hub/content'
+import { resolveTotalVisitors } from '@/lib/site/totalVisitors'
 import { getPayloadClient } from '@/lib/payload'
 import { getFeaturedGalleryItems } from '@/lib/queries/gallery'
 import type { SiteSetting } from '@/payload-types'
@@ -25,7 +26,7 @@ export default async function StudentHubPage() {
     <StudentHubView
       resources={content.resources}
       exams={content.exams}
-      totalVisitors={site?.totalVisitors ?? 25847}
+      totalVisitors={resolveTotalVisitors(site)}
       galleryItems={galleryItems}
     />
   )

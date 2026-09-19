@@ -1,6 +1,5 @@
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { getPayloadClient } from '@/lib/payload'
+import { findRegistrationById } from '@/lib/registration/findRegistrationById'
 import type { CourseRegistration } from '@/payload-types'
 import type { Metadata } from 'next'
 
@@ -16,28 +15,18 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function CourseRegistrationConfirmationPage({ params }: Props) {
   const { registrationId } = await params
-  const payload = await getPayloadClient()
+  const record = await findRegistrationById<CourseRegistration>(
+    'courseRegistrations',
+    registrationId,
+  )
 
-  let record: CourseRegistration | null = null
-
-  try {
-    record = (await payload.findByID({
-      collection: 'courseRegistrations',
-      id: registrationId,
-      depth: 0,
-      overrideAccess: true,
-    })) as CourseRegistration
-  } catch {
-    notFound()
-  }
-
-  if (!record) notFound()
-
-  const isFree = Number(record.totalAmount || 0) <= 0 || record.paymentStatus === 'notRequired'
+  const isFree =
+    !record || Number(record.totalAmount || 0) <= 0 || record.paymentStatus === 'notRequired'
+  const amount = Number(record?.totalAmount || 0)
   const amountLabel =
-    record.feeTierCurrency === 'USD'
-      ? `$${Number(record.totalAmount || 0).toLocaleString('en-US')}`
-      : `₹${Number(record.totalAmount || 0).toLocaleString('en-IN')}`
+    record?.feeTierCurrency === 'USD'
+      ? `$${amount.toLocaleString('en-US')}`
+      : `₹${amount.toLocaleString('en-IN')}`
 
   return (
     <div className="programmes-page min-h-screen bg-[var(--prog-surface)]">
@@ -56,27 +45,31 @@ export default async function CourseRegistrationConfirmationPage({ params }: Pro
           <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm space-y-2">
             <p>
               <span className="text-slate-500">Programme:</span>{' '}
-              <span className="font-semibold">{record.programmeTitle}</span>
+              <span className="font-semibold">{record?.programmeTitle || 'Programme'}</span>
             </p>
             <p>
               <span className="text-slate-500">Registration ID:</span>{' '}
-              <span className="font-semibold">{record.id}</span>
+              <span className="font-semibold">{record?.id ?? registrationId}</span>
             </p>
-            {!isFree && record.paymentReference ? (
+            {!isFree && record?.paymentReference ? (
               <p>
                 <span className="text-slate-500">Payment Reference:</span>{' '}
                 <span className="font-semibold">{record.paymentReference}</span>
               </p>
             ) : null}
-            <p>
-              <span className="text-slate-500">Name:</span>{' '}
-              <span className="font-semibold">{record.fullName}</span>
-            </p>
-            <p>
-              <span className="text-slate-500">Email:</span>{' '}
-              <span className="font-semibold">{record.email}</span>
-            </p>
-            {!isFree ? (
+            {record?.fullName ? (
+              <p>
+                <span className="text-slate-500">Name:</span>{' '}
+                <span className="font-semibold">{record.fullName}</span>
+              </p>
+            ) : null}
+            {record?.email ? (
+              <p>
+                <span className="text-slate-500">Email:</span>{' '}
+                <span className="font-semibold">{record.email}</span>
+              </p>
+            ) : null}
+            {record && !isFree ? (
               <p>
                 <span className="text-slate-500">Amount:</span>{' '}
                 <span className="font-extrabold text-brand-700">{amountLabel}</span>

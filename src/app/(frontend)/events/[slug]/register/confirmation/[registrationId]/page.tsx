@@ -1,6 +1,5 @@
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { getPayloadClient } from '@/lib/payload'
+import { findRegistrationById } from '@/lib/registration/findRegistrationById'
 import type { EventRegistration } from '@/payload-types'
 import type { Metadata } from 'next'
 
@@ -15,29 +14,19 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RegistrationConfirmationPage({ params }: Props) {
-  const { registrationId } = await params
-  const payload = await getPayloadClient()
+  const { slug, registrationId } = await params
+  const record = await findRegistrationById<EventRegistration>('eventRegistrations', registrationId)
 
-  let record: EventRegistration | null = null
-
-  try {
-    record = (await payload.findByID({
-      collection: 'eventRegistrations',
-      id: registrationId,
-      depth: 0,
-      overrideAccess: true,
-    })) as EventRegistration
-  } catch {
-    notFound()
-  }
-
-  if (!record) notFound()
-
-  const isFree = Number(record.totalAmount || 0) <= 0 || record.paymentStatus === 'notRequired'
+  const isFree =
+    !record || Number(record.totalAmount || 0) <= 0 || record.paymentStatus === 'notRequired'
+  const amount = Number(record?.totalAmount || 0)
   const amountLabel =
-    record.feeTierCurrency === 'USD'
-      ? `$${Number(record.totalAmount || 0).toLocaleString('en-US')}`
-      : `₹${Number(record.totalAmount || 0).toLocaleString('en-IN')}`
+    record?.feeTierCurrency === 'USD'
+      ? `$${amount.toLocaleString('en-US')}`
+      : `₹${amount.toLocaleString('en-IN')}`
+
+  const eventTitle = record?.eventTitle || 'your event'
+  const eventSlug = record?.eventSlug || slug
 
   return (
     <div className="bg-[#F4F6FB] min-h-screen">
@@ -49,34 +38,38 @@ export default async function RegistrationConfirmationPage({ params }: Props) {
           <h1 className="mt-2 text-3xl font-extrabold text-slate-900">Thank you for registering</h1>
           <p className="mt-3 text-slate-600">
             {isFree
-              ? 'Your seat has been reserved. No payment is required for this event.'
+              ? 'Your registration has been received. No payment is required for this event.'
               : 'Our team will verify your payment and confirm your registration shortly.'}
           </p>
 
           <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm space-y-2">
             <p>
               <span className="text-slate-500">Event:</span>{' '}
-              <span className="font-semibold">{record.eventTitle}</span>
+              <span className="font-semibold">{eventTitle}</span>
             </p>
             <p>
               <span className="text-slate-500">Registration ID:</span>{' '}
-              <span className="font-semibold">{record.id}</span>
+              <span className="font-semibold">{record?.id ?? registrationId}</span>
             </p>
-            {!isFree && record.paymentReference ? (
+            {!isFree && record?.paymentReference ? (
               <p>
                 <span className="text-slate-500">Payment Reference:</span>{' '}
                 <span className="font-semibold">{record.paymentReference}</span>
               </p>
             ) : null}
-            <p>
-              <span className="text-slate-500">Name:</span>{' '}
-              <span className="font-semibold">{record.fullName}</span>
-            </p>
-            <p>
-              <span className="text-slate-500">Email:</span>{' '}
-              <span className="font-semibold">{record.email}</span>
-            </p>
-            {!isFree ? (
+            {record?.fullName ? (
+              <p>
+                <span className="text-slate-500">Name:</span>{' '}
+                <span className="font-semibold">{record.fullName}</span>
+              </p>
+            ) : null}
+            {record?.email ? (
+              <p>
+                <span className="text-slate-500">Email:</span>{' '}
+                <span className="font-semibold">{record.email}</span>
+              </p>
+            ) : null}
+            {record && !isFree ? (
               <p>
                 <span className="text-slate-500">Amount:</span>{' '}
                 <span className="font-extrabold text-brand-700">{amountLabel}</span>
@@ -86,7 +79,7 @@ export default async function RegistrationConfirmationPage({ params }: Props) {
 
           <div className="mt-7 flex gap-3">
             <Link
-              href={`/events/${record.eventSlug}`}
+              href={`/events/${eventSlug}`}
               className="h-11 px-5 rounded-xl border border-slate-300 text-slate-700 font-semibold inline-flex items-center"
             >
               Back to Event

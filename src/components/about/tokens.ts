@@ -23,9 +23,9 @@ export const ABOUT_IMAGES = {
   hero:
     'https://www.appliedforensicresearchsciences.in/static/media/carousel-10.6bcf7e5d176fb7d57b28.jpeg',
   vision:
-    'https://res.cloudinary.com/drrzakkgo/image/upload/v1771598995/fksf2djlhilr2qbhrivx.jpg',
+    'https://res.cloudinary.com/drrzakkgo/image/upload/v1789855215/afrs/payload/media/AFRS%20SITE%20IMAGEs/ABOUT_US/vision.png',
   mission:
-    'https://www.appliedforensicresearchsciences.in/static/media/carousel-6.37510e2cbc3800979dc5.jpeg',
+    'https://res.cloudinary.com/drrzakkgo/image/upload/v1789855558/afrs/payload/media/AFRS%20SITE%20IMAGEs/ABOUT_US/mision.png',
   purpose:
     'https://res.cloudinary.com/drrzakkgo/image/upload/v1761223493/WhatsApp_Image_2025-10-18_at_7.02.05_PM_zepm0d.jpg',
   award1:

@@ -9,6 +9,8 @@ import {
   isMaintenanceModeEnabled,
   shouldRedirectToMaintenance,
 } from '@/lib/resilience/maintenance'
+import { isBrokenSlug } from '@/hooks/autoSlugFromTitle'
+import { slugify } from '@/lib/utils/slugify'
 import { safeQuery } from '@/lib/resilience/safeQuery'
 
 describe('resolveMediaUrl', () => {
@@ -78,6 +80,21 @@ describe('maintenance mode', () => {
   it('allows static asset paths', () => {
     expect(isMaintenanceBypassPath('/assets/logo.png')).toBe(true)
     expect(isMaintenanceBypassPath('/_next/static/chunk.js')).toBe(true)
+  })
+})
+
+describe('event slug generation', () => {
+  it('detects broken slugs like ----', () => {
+    expect(isBrokenSlug('----')).toBe(true)
+    expect(isBrokenSlug('')).toBe(true)
+    expect(isBrokenSlug('s')).toBe(true)
+    expect(isBrokenSlug('forensic-application-of-computational-techniques')).toBe(false)
+  })
+
+  it('slugifies titles for URLs', () => {
+    expect(slugify('Forensic Application of Computational Techniques')).toBe(
+      'forensic-application-of-computational-techniques',
+    )
   })
 })
 

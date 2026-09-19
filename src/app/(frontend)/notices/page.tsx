@@ -1,5 +1,5 @@
 import { getPayloadClient } from '@/lib/payload'
-import { formatEventDate } from '@/lib/cms'
+import { formatEventDate, formatNoticeDate } from '@/lib/cms'
 import type { Event as AfrsEvent, Notice } from '@/payload-types'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import { PageHero } from '@/components/marketing/PageHero'
@@ -22,14 +22,6 @@ const tagColors: Record<string, string> = {
   General: 'bg-slate-100 text-slate-600',
 }
 
-function formatNoticeDate(value?: string | null) {
-  if (!value) return ''
-  return new Date(value).toLocaleDateString('en-IN', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  })
-}
 
 export default async function NoticesPage() {
   const payload = await getPayloadClient()

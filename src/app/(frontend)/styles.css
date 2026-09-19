@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "./styles/tokens.css";
 @import "./styles/base.css";
+@import "./styles/visitor-bar.css";
 @import "./styles/pages/about.css";
 @import "./styles/pages/service-detail.css";
 @import "./styles/pages/student-hub.css";

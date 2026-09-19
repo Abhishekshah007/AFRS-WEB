@@ -8,6 +8,7 @@ import type {
   GalleryItem,
   HomePage,
   ImpactStat,
+  Notice,
   PartnersLogo,
   Scientist,
   Service,
@@ -15,6 +16,8 @@ import type {
   Testimonial,
 } from '@/payload-types'
 import type { PaginatedDocs } from 'payload'
+import type { HomeFaqItem, HomeNoticeBoardItem } from '@/lib/queries/home-content'
+import { mapHomeNotices, resolveHomeFaqs } from '@/lib/queries/home-content'
 
 export type HomePageData = {
   events: PaginatedDocs<AfrsEvent>
@@ -26,6 +29,8 @@ export type HomePageData = {
   partnerLogos: PaginatedDocs<PartnersLogo>
   homePage: HomePage | null
   siteSettings: SiteSetting | null
+  notices: HomeNoticeBoardItem[]
+  faqs: HomeFaqItem[]
   cmsAvailable: boolean
 }
 
@@ -39,6 +44,8 @@ const EMPTY_HOME: HomePageData = {
   partnerLogos: emptyPaginatedDocs<PartnersLogo>(),
   homePage: null,
   siteSettings: null,
+  notices: mapHomeNotices([]),
+  faqs: resolveHomeFaqs(null),
   cmsAvailable: false,
 }
 
@@ -58,6 +65,7 @@ export async function getHomePageData(): Promise<HomePageData> {
         partnerLogos,
         homePage,
         siteSettings,
+        noticeDocs,
       ] = await Promise.all([
         fetchActiveEvents(payload, { limit: 3, depth: 1 }),
         payload.find({
@@ -116,7 +124,17 @@ export async function getHomePageData(): Promise<HomePageData> {
           depth: 0,
           overrideAccess: false,
         }) as Promise<SiteSetting>,
+        payload.find({
+          collection: 'notices',
+          where: { published: { equals: true } },
+          sort: ['-noticeDate', 'order'],
+          limit: 3,
+          depth: 0,
+          overrideAccess: false,
+        }),
       ])
+
+      const resolvedHomePage = homePage as HomePage
 
       return {
         events,
@@ -126,8 +144,10 @@ export async function getHomePageData(): Promise<HomePageData> {
         galleryItems,
         impactStats,
         partnerLogos,
-        homePage,
+        homePage: resolvedHomePage,
         siteSettings,
+        notices: mapHomeNotices(noticeDocs.docs as Notice[]),
+        faqs: resolveHomeFaqs(resolvedHomePage),
         cmsAvailable: true,
       }
     },

@@ -47,3 +47,29 @@
   filter: none !important;
   transform: none !important;
 }
+
+/* Text wraps around a naturally sized emblem — no stretched side column. */
+.afsl-about-wrap {
+  overflow: hidden;
+}
+
+.afsl-about-emblem {
+  float: none;
+  display: block;
+  width: min(220px, 58%);
+  margin: 0 auto 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .afsl-about-emblem {
+    float: right;
+    width: 220px;
+    margin: 0.15rem 0 1.25rem 2rem;
+  }
+}
+
+.afsl-about-wrap::after {
+  content: '';
+  display: table;
+  clear: both;
+}

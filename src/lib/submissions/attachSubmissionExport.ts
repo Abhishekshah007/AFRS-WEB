@@ -4,6 +4,7 @@ import {
   flattenDocForEmail,
   sendSubmissionNotification,
 } from '@/lib/email/sendSubmissionNotification'
+import { logCmsError } from '@/lib/resilience/logger'
 import { buildSubmissionDocx, slugifyExportName } from '@/lib/submissions/generateSubmissionDocx'
 import type { SubmissionFormType } from '@/fields/submissionExport'
 
@@ -91,6 +92,8 @@ export async function attachSubmissionExport({
   const slug = slugifyExportName(title)
   const fileName = `${slug}-${doc.id}-${Date.now()}.docx`
 
+  // Do not pass `req` here — nested writes would join the parent DB transaction.
+  // If Cloudinary/DOCX fails, that must not roll back the registration itself.
   const media = await req.payload.create({
     collection: 'media',
     data: {
@@ -102,7 +105,6 @@ export async function attachSubmissionExport({
       name: fileName,
       size: buffer.length,
     },
-    req,
     overrideAccess: true,
   })
 
@@ -113,7 +115,6 @@ export async function attachSubmissionExport({
       exportDocument: media.id,
     },
     context: { [SKIP_CONTEXT]: true },
-    req,
     overrideAccess: true,
   })
 }
@@ -215,24 +216,32 @@ export function registrationSubmissionExportHook(
         ? `Course Registration — ${String(doc.programmeTitle || 'Programme')}`
         : `Event Registration — ${String(doc.eventTitle || 'Event')}`
 
-    await attachSubmissionExport({
-      req,
-      collection,
-      doc,
-      title,
-      extraLines: [{ label: 'Export Version', value: created ? 'Initial' : 'Updated' }],
-      replaceExisting: !created,
-    })
+    try {
+      await attachSubmissionExport({
+        req,
+        collection,
+        doc,
+        title,
+        extraLines: [{ label: 'Export Version', value: created ? 'Initial' : 'Updated' }],
+        replaceExisting: !created,
+      })
+    } catch (error) {
+      logCmsError('registrationExport', error, { collection, id: doc.id })
+    }
 
     if (created || proofAdded) {
-      await notifyByEmail({
-        kind: collection === 'courseRegistrations' ? 'courseRegistration' : 'eventRegistration',
-        title:
-          collection === 'courseRegistrations'
-            ? String(doc.programmeTitle || doc.fullName || 'Course')
-            : String(doc.eventTitle || doc.fullName || 'Event'),
-        doc,
-      })
+      try {
+        await notifyByEmail({
+          kind: collection === 'courseRegistrations' ? 'courseRegistration' : 'eventRegistration',
+          title:
+            collection === 'courseRegistrations'
+              ? String(doc.programmeTitle || doc.fullName || 'Course')
+              : String(doc.eventTitle || doc.fullName || 'Event'),
+          doc,
+        })
+      } catch (error) {
+        logCmsError('registrationNotify', error, { collection, id: doc.id })
+      }
     }
 
     if (created && typeof doc.email === 'string' && doc.email.trim()) {
@@ -244,17 +253,21 @@ export function registrationSubmissionExportHook(
           ? String(doc.programmeTitle || 'Programme')
           : String(doc.eventTitle || 'Event')
 
-      await sendRegistrantConfirmation({
-        kind: collection === 'courseRegistrations' ? 'courseRegistration' : 'eventRegistration',
-        to: doc.email.trim(),
-        fullName: typeof doc.fullName === 'string' ? doc.fullName : 'Participant',
-        programmeOrEventTitle,
-        registrationId: doc.id,
-        totalAmount,
-        currency: doc.feeTierCurrency === 'USD' ? 'USD' : 'INR',
-        isFree,
-        paymentPending: !isFree && paymentStatus === 'pending',
-      })
+      try {
+        await sendRegistrantConfirmation({
+          kind: collection === 'courseRegistrations' ? 'courseRegistration' : 'eventRegistration',
+          to: doc.email.trim(),
+          fullName: typeof doc.fullName === 'string' ? doc.fullName : 'Participant',
+          programmeOrEventTitle,
+          registrationId: doc.id,
+          totalAmount,
+          currency: doc.feeTierCurrency === 'USD' ? 'USD' : 'INR',
+          isFree,
+          paymentPending: !isFree && paymentStatus === 'pending',
+        })
+      } catch (error) {
+        logCmsError('registrantConfirmation', error, { collection, id: doc.id })
+      }
     }
   }
 }

@@ -1,4 +1,4 @@
-import { getUgcNetAchievers, getUgcNetPageContent } from '@/components/student-hub/content'
+import { getExamPrepAchievers, getUgcNetPageContent } from '@/components/student-hub/content'
 import { UgcNetPageView } from '@/components/student-hub/UgcNetPageView'
 import { getPublishedGallerySlides } from '@/lib/queries/gallery'
 import { buildPageMetadata } from '@/lib/seo/metadata'
@@ -13,7 +13,7 @@ export const metadata: Metadata = buildPageMetadata({
 export default async function UgcNetPage() {
   const [content, achievers, gallerySlides] = await Promise.all([
     getUgcNetPageContent(),
-    getUgcNetAchievers(),
+    getExamPrepAchievers('ugc-net'),
     getPublishedGallerySlides(),
   ])
 

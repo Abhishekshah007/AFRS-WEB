@@ -1,6 +1,5 @@
-import { getUgcNetAchievers } from '@/components/student-hub/content'
+import { getCuetPageContent, getExamPrepAchievers } from '@/components/student-hub/content'
 import { UgcNetPageView } from '@/components/student-hub/UgcNetPageView'
-import { defaultCuetPageContent } from '@/data/defaults/student-hub/cuet'
 import { getPublishedGallerySlides } from '@/lib/queries/gallery'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
@@ -13,15 +12,16 @@ export const metadata: Metadata = buildPageMetadata({
 })
 
 export default async function CuetPage() {
-  const [achievers, gallerySlides] = await Promise.all([
-    getUgcNetAchievers(),
+  const [content, achievers, gallerySlides] = await Promise.all([
+    getCuetPageContent(),
+    getExamPrepAchievers('cuet'),
     getPublishedGallerySlides(),
   ])
 
   return (
     <div className="student-hub-page min-h-screen hub-surface">
       <UgcNetPageView
-        content={defaultCuetPageContent}
+        content={content}
         achievers={achievers}
         gallerySlides={gallerySlides}
       />

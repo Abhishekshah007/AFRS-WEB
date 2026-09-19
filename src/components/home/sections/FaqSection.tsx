@@ -1,17 +1,24 @@
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
+import type { HomeFaqItem } from '@/lib/queries/home-content'
 import { CONTAINER, SECTION } from './constants'
-import { HOME_FAQS } from './faqs'
+import type { SectionText } from './types'
 
-export function FaqSection() {
-  const faqs = HOME_FAQS
-
+export function FaqSection({
+  faqs,
+  sectionText,
+}: {
+  faqs: HomeFaqItem[]
+  sectionText?: SectionText
+}) {
   return (
     <section className={`${SECTION} bg-white section-glow-top`}>
       <div className={`${CONTAINER} max-w-3xl`}>
         <SectionHeader
-          title="Frequently Asked Questions"
-          subtitle="Quick answers about programs, registration, and services."
+          title={sectionText?.faqHeading || 'Frequently Asked Questions'}
+          subtitle={
+            sectionText?.faqDescription || 'Quick answers about programs, registration, and services.'
+          }
         />
         <AnimateOnScroll stagger className="space-y-3">
           {faqs.map((faq) => (

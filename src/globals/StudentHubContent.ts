@@ -6,8 +6,13 @@ import {
   defaultExamPrep,
   defaultUgcNetAchievers,
 } from '@/data/defaults/student-hub/content'
+import { defaultCuetAchievers } from '@/data/defaults/student-hub/cuet'
+import { defaultFactAchievers } from '@/data/defaults/student-hub/fact'
 import { ADMIN_GROUPS } from '../config/adminGroups'
 import { careerGuidancePageFields } from './fields/careerGuidancePage'
+import { cuetPageFields } from './fields/cuetPage'
+import { examAchieversField } from './fields/examAchievers'
+import { factPageFields } from './fields/factPage'
 import { ugcNetPageFields } from './fields/ugcNetPage'
 
 export const StudentHubContent: GlobalConfig = {
@@ -15,7 +20,7 @@ export const StudentHubContent: GlobalConfig = {
   access: editorManagedGlobalAccess,
   admin: {
     group: ADMIN_GROUPS.STUDENT_HUB,
-    description: 'Student hub resources, exam prep cards, and achievers.',
+    description: 'Student hub resources, exam prep pages, cards, and achievers.',
   },
   fields: [
     {
@@ -48,17 +53,12 @@ export const StudentHubContent: GlobalConfig = {
         { name: 'watermark', type: 'text', required: true },
       ],
     },
-    {
-      name: 'ugcNetAchievers',
-      type: 'array',
-      defaultValue: defaultUgcNetAchievers,
-      fields: [
-        { name: 'name', type: 'text', required: true },
-        { name: 'title', type: 'text' },
-        { name: 'photo', type: 'upload', relationTo: 'media' },
-      ],
-    },
+    examAchieversField('ugcNetAchievers', 'UGC-NET Achievers', defaultUgcNetAchievers),
+    examAchieversField('factAchievers', 'FACT Achievers', defaultFactAchievers),
+    examAchieversField('cuetAchievers', 'CUET Achievers', defaultCuetAchievers),
     ...ugcNetPageFields,
+    ...factPageFields,
+    ...cuetPageFields,
     ...careerGuidancePageFields,
   ],
 }

@@ -6,6 +6,7 @@ import type { Article } from '@/payload-types'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 import type { Where } from 'payload'
+import { buildArticleSearchOrClause } from '@/lib/queries/search'
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Forensic Insights & Articles',
@@ -34,9 +35,7 @@ export default async function StudentHubArticlesPage({ searchParams }: Props) {
   }
 
   if (q?.trim()) {
-    andClauses.push({
-      or: [{ title: { contains: q.trim() } }, { excerpt: { contains: q.trim() } }, { authorName: { contains: q.trim() } }],
-    })
+    andClauses.push(buildArticleSearchOrClause(q))
   }
 
   const where: Where = { and: andClauses }

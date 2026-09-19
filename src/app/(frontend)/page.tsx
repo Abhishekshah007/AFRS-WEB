@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import { faqPage, withContext } from '@/lib/seo/schema'
-import { HOME_FAQS } from '@/components/home/sections/faqs'
 import {
   AboutSection,
   AchievementsSection,
@@ -43,12 +42,13 @@ export default async function HomePage() {
     partnerLogos,
     homePage,
     siteSettings,
+    notices,
+    faqs,
   } = await getHomePageData()
 
   const sectionText = homePage?.sectionText || {}
   const heroData = homePage?.hero ?? { title: 'Applied Forensic Research Sciences' }
-  const totalVisitors = siteSettings?.totalVisitors
-  const orgJsonLd = withContext([faqPage([...HOME_FAQS])])
+  const orgJsonLd = withContext([faqPage(faqs)])
 
   return (
     <div className="min-h-screen">
@@ -66,11 +66,11 @@ export default async function HomePage() {
       <ExpertsSection scientists={scientists} />
       <TestimonialsSection testimonials={testimonials} />
       <MediaResourcesSection />
-      <LatestNewsSection />
-      <CommunityBannerSection totalVisitors={totalVisitors ?? undefined} />
+      <LatestNewsSection items={notices} sectionText={sectionText} />
+      <CommunityBannerSection siteSettings={siteSettings} />
       <GallerySection galleryItems={galleryItems} />
       <PartnerLogosSection partnerLogos={partnerLogos} />
-      <FaqSection />
+      <FaqSection faqs={faqs} sectionText={sectionText} />
     </div>
   )
 }
