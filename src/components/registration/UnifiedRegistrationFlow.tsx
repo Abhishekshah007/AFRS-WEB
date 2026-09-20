@@ -235,7 +235,7 @@ export function UnifiedRegistrationFlow({
 
     const registrationId = String(data.registrationId)
     if (!showPayment || data.isFree) {
-      router.push(confirmationPath(registrationId))
+      router.push(data.redirectTo || confirmationPath(registrationId))
       return
     }
 

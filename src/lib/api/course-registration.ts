@@ -1,5 +1,6 @@
 import { jsonError } from '@/lib/apiResponses'
 import { getFormValue, readUploadFile } from '@/lib/api/form-data'
+import { buildCourseConfirmationUrl } from '@/lib/registration/confirmationToken'
 import { getPayloadClient } from '@/lib/payload'
 import { createLocalReq } from 'payload'
 
@@ -78,6 +79,6 @@ export async function completeCourseRegistration(req: Request) {
     paymentReference: reference,
     message:
       'Payment details submitted. Our team will verify your transaction and confirm your registration.',
-    redirectTo: `/courses/register/confirmation/${updated.id}`,
+    redirectTo: buildCourseConfirmationUrl(updated.id),
   })
 }

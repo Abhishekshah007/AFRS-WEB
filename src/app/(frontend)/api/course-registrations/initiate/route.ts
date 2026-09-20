@@ -4,6 +4,7 @@ import { validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 import { resolveRegistrationConfig } from '@/lib/registration/resolveConfig'
 import { findProgrammeRegistrationContext } from '@/lib/queries/programme-registration'
+import { buildCourseConfirmationUrl } from '@/lib/registration/confirmationToken'
 import { getPayloadClient } from '@/lib/payload'
 
 type InitiatePayload = {
@@ -114,6 +115,7 @@ export async function POST(req: Request) {
       message: isFree
         ? 'Registration received. A confirmation email will be sent shortly.'
         : 'Registration initiated. Please complete payment details.',
+      redirectTo: isFree ? buildCourseConfirmationUrl(created.id) : undefined,
     })
   } catch (error) {
     return jsonError(

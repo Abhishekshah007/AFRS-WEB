@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 
 import { resolveMediaUrl, resolveMediaUrlOptional } from '@/lib/cms'
 import { FALLBACK_BANNER_IMAGE, FALLBACK_LOGO_IMAGE } from '@/lib/constants/assets'
@@ -111,5 +111,38 @@ describe('default page data', () => {
     expect(data.catalogItems.length).toBeGreaterThan(0)
     expect(data.directors.length).toBeGreaterThan(0)
     expect(data.site.phone).toBeTruthy()
+  })
+})
+
+describe('registration confirmation token', () => {
+  const originalSecret = process.env.PAYLOAD_SECRET
+
+  beforeEach(() => {
+    process.env.PAYLOAD_SECRET = 'test-secret-for-confirmation-token'
+  })
+
+  afterEach(() => {
+    process.env.PAYLOAD_SECRET = originalSecret
+  })
+
+  it('creates and verifies event-scoped tokens', async () => {
+    const {
+      buildEventConfirmationUrl,
+      verifyRegistrationConfirmationToken,
+    } = await import('@/lib/registration/confirmationToken')
+
+    const url = buildEventConfirmationUrl(42, 'forensic-workshop')
+    const token = new URL(url, 'http://localhost').searchParams.get('token')
+
+    expect(token).toBeTruthy()
+    expect(
+      verifyRegistrationConfirmationToken(42, { kind: 'event', eventSlug: 'forensic-workshop' }, token),
+    ).toBe(true)
+    expect(
+      verifyRegistrationConfirmationToken(42, { kind: 'event', eventSlug: 'other-event' }, token),
+    ).toBe(false)
+    expect(verifyRegistrationConfirmationToken(99, { kind: 'event', eventSlug: 'forensic-workshop' }, token)).toBe(
+      false,
+    )
   })
 })

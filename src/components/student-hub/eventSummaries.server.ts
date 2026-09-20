@@ -1,6 +1,7 @@
 import { formatEventDate } from '@/lib/cms'
 import { getPayloadClient } from '@/lib/payload'
 import { fetchActiveEvents } from '@/lib/queries/events'
+import { resolveEventSlug } from '@/lib/utils/slugify'
 import type { Event as AfrsEvent } from '@/payload-types'
 
 export type StudentHubEventSummary = {
@@ -33,23 +34,35 @@ export async function getUpcomingStudentHubEvents(limit = 4): Promise<StudentHub
   const events = eventResult.docs as AfrsEvent[]
   const featuredEvent = events[0]
 
+  const featuredSlug = featuredEvent
+    ? resolveEventSlug(featuredEvent.slug, String(featuredEvent.id))
+    : undefined
+
   return {
-    featured: featuredEvent
-      ? {
-          slug: featuredEvent.slug,
-          startDateLabel: formatEventDate(featuredEvent.startDate),
-          startTime: featuredEvent.startTime,
-          venue: featuredEvent.venue,
-          registrationOpen: featuredEvent.registrationOpen,
-        }
-      : null,
-    events: events.map((event) => ({
-      id: event.id,
-      slug: event.slug,
-      title: event.title,
-      eventType: event.eventType,
-      startDateLabel: formatEventDate(event.startDate),
-      registrationOpen: event.registrationOpen,
-    })),
+    featured:
+      featuredEvent && featuredSlug
+        ? {
+            slug: featuredSlug,
+            startDateLabel: formatEventDate(featuredEvent.startDate),
+            startTime: featuredEvent.startTime,
+            venue: featuredEvent.venue,
+            registrationOpen: featuredEvent.registrationOpen,
+          }
+        : null,
+    events: events.flatMap((event) => {
+      const eventSlug = resolveEventSlug(event.slug, String(event.id))
+      if (!eventSlug) return []
+
+      return [
+        {
+          id: event.id,
+          slug: eventSlug,
+          title: event.title,
+          eventType: event.eventType,
+          startDateLabel: formatEventDate(event.startDate),
+          registrationOpen: event.registrationOpen,
+        },
+      ]
+    }),
   }
 }

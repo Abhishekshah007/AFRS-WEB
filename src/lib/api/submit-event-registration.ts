@@ -9,6 +9,8 @@ import {
 import { normalizeDynamicSections } from '@/lib/registration/normalizeDynamicSections'
 import { categoriesToFeeTiers, resolveRegistrationConfig } from '@/lib/registration/resolveConfig'
 import { getPayloadClient } from '@/lib/payload'
+import { resolveEventSlug } from '@/lib/utils/slugify'
+import { buildEventConfirmationUrl } from '@/lib/registration/confirmationToken'
 import { logCmsError } from '@/lib/resilience/logger'
 import { createLocalReq } from 'payload'
 import type { File as PayloadFile } from 'payload'
@@ -58,6 +60,8 @@ export async function submitEventRegistration(req: Request) {
 
   const evt = eventResult.docs[0] as AfrsEvent | undefined
   if (!evt) return jsonError('Event not found.', 404)
+  const resolvedEventSlug = resolveEventSlug(evt.slug, eventSlug)
+  if (!resolvedEventSlug) return jsonError('Event is missing a valid slug.', 400)
   if (evt.registrationOpen === false) {
     return jsonError('Registration is closed for this event.', 400)
   }
@@ -136,14 +140,14 @@ export async function submitEventRegistration(req: Request) {
     return jsonError('Please upload your payment screenshot / proof.', 400)
   }
 
-  let transactionProofId: number | string | undefined
+  let transactionProofId: number | undefined
   if (transactionProof) {
     const proofMedia = await createMediaFile(
       payload,
       transactionProof,
       `${evt.title} — payment proof`,
     )
-    transactionProofId = proofMedia.id
+    transactionProofId = typeof proofMedia.id === 'number' ? proofMedia.id : undefined
   }
 
   const reference = `AFRS-${Date.now()}`
@@ -152,7 +156,7 @@ export async function submitEventRegistration(req: Request) {
     collection: 'eventRegistrations',
     data: {
       event: evt.id,
-      eventSlug: evt.slug,
+      eventSlug: resolvedEventSlug,
       eventTitle: evt.title,
       fullName: contact.fullName,
       email: contact.email,
@@ -198,7 +202,7 @@ export async function submitEventRegistration(req: Request) {
   if (!saved) {
     logCmsError('submitEventRegistration', new Error('Registration created but not persisted'), {
       id: created.id,
-      eventSlug: evt.slug,
+      eventSlug: resolvedEventSlug,
     })
     return jsonError(
       'Registration could not be saved. Please try again or contact AFRS support.',
@@ -209,8 +213,8 @@ export async function submitEventRegistration(req: Request) {
   return Response.json({
     ok: true,
     registrationId: saved.id,
-    eventSlug: evt.slug,
-    redirectTo: `/events/${evt.slug}/register/confirmation/${saved.id}`,
+    eventSlug: resolvedEventSlug,
+    redirectTo: buildEventConfirmationUrl(saved.id, resolvedEventSlug),
     message: isFree
       ? 'Registration received. A confirmation email will be sent shortly.'
       : 'Registration received. Our team will verify your payment and confirm your seat.',

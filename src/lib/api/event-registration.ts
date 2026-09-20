@@ -1,5 +1,7 @@
 import { jsonError } from '@/lib/apiResponses'
 import { getFormValue, readUploadFile } from '@/lib/api/form-data'
+import { buildEventConfirmationUrl } from '@/lib/registration/confirmationToken'
+import { resolveEventSlug } from '@/lib/utils/slugify'
 import { getPayloadClient } from '@/lib/payload'
 import { createLocalReq } from 'payload'
 
@@ -71,13 +73,16 @@ export async function completeEventRegistration(req: Request) {
     overrideAccess: true,
   })
 
+  const eventSlug = resolveEventSlug(updated.eventSlug)
+  if (!eventSlug) return jsonError('Registration is missing a valid event slug.', 500)
+
   return Response.json({
     ok: true,
     registrationId: updated.id,
     paymentReference: reference,
-    eventSlug: updated.eventSlug,
+    eventSlug,
     message:
       'Payment details submitted. Our team will verify your transaction and confirm your registration.',
-    redirectTo: `/events/${updated.eventSlug}/register/confirmation/${updated.id}`,
+    redirectTo: buildEventConfirmationUrl(updated.id, eventSlug),
   })
 }

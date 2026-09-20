@@ -9,6 +9,15 @@ export function slugify(value: string): string {
     .slice(0, 80)
 }
 
+/** Prefer CMS slug; fall back to route param when legacy rows lack slug. */
+export function resolveEventSlug(
+  slug: string | null | undefined,
+  fallback?: string,
+): string | undefined {
+  const value = slug?.trim() || fallback?.trim()
+  return value || undefined
+}
+
 /** camelCase key for storing dynamic form answers (no spaces, editor-friendly). */
 export function fieldKeyFromLabel(label: string, index = 0): string {
   const words = label

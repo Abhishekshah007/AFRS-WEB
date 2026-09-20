@@ -6,6 +6,7 @@ import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 import { normalizeDynamicSections } from '@/lib/registration/normalizeDynamicSections'
 import { categoriesToFeeTiers, resolveRegistrationConfig } from '@/lib/registration/resolveConfig'
 import { EventRegistrationFlow } from '@/components/events/EventRegistrationFlow'
+import { resolveEventSlug } from '@/lib/utils/slugify'
 import type { Event as AfrsEvent, Media, RegistrationForm } from '@/payload-types'
 import type { Metadata } from 'next'
 
@@ -41,6 +42,8 @@ export default async function EventRegisterPage({ params }: Props) {
 
   const evt = result.docs[0] as AfrsEvent | undefined
   if (!evt || evt.registrationOpen === false) notFound()
+  const eventSlug = resolveEventSlug(evt.slug, slug)
+  if (!eventSlug) notFound()
 
   const banner = resolveMediaUrl(
     evt.banner as number | Media | null | undefined,
@@ -66,7 +69,7 @@ export default async function EventRegisterPage({ params }: Props) {
       config={config}
       customSections={customSections}
       event={{
-        slug: evt.slug,
+        slug: eventSlug,
         title: evt.title,
         banner,
         eventType: evt.eventType || 'Workshop',
