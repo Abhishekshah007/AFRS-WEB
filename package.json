@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "@playwright/test": "1.58.2",
+    "@types/jsdom": "^30.0.0",
     "@types/node": "22.19.9",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
@@ -63,6 +64,7 @@
     "node": "^18.20.2 || >=20.9.0",
     "pnpm": "^9 || ^10"
   },
+  "packageManager": "pnpm@10.33.0",
   "pnpm": {
     "onlyBuiltDependencies": [
       "sharp",
