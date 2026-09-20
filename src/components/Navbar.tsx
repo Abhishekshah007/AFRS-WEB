@@ -48,43 +48,6 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
   const brandTitle = settings?.brandTitle || 'Applied Forensic Research Sciences'
   const topLeftText = settings?.topBarLeftText || '+91-9926692487'
   const topLeftText2 = settings?.topBarLeftText2 || 'afrsciences@gmail.com'
-  const topLeftText3 = settings?.topBarLeftText3 || [
-    {
-      icon: 9,
-      label: 'Facebook',
-      url: 'https://www.facebook.com/share/1BiD8xBRKc/',
-    },
-    {
-      icon: 10,
-      label: 'Instagram',
-      url: 'https://instagram.com/afrsciences',
-    },
-    {
-      icon: 11,
-      label: 'LinkedIn',
-      url: 'https://www.linkedin.com/company/afrsciences',
-    },
-    {
-      icon: 12,
-      label: 'Twitter',
-      url: 'https://twitter.com/afrsciences',
-    },
-    {
-      icon: 13,
-      label: 'YouTube',
-      url: 'https://www.youtube.com/c/AppliedforensicscienceforjusticeStudentGroup/videos',
-    },
-    {
-      icon: 14,
-      label: 'WhatsApp',
-      url: 'https://api.whatsapp.com/send/?phone=9926692487&text&type=phone_number&app_absent=0',
-    },
-    {
-      icon: 15,
-      label: 'Telegram',
-      url: 'https://t.me/afsjstudent',
-    },
-  ]
 
   const topBarEnabled = settings?.topBarEnabled ?? true
 

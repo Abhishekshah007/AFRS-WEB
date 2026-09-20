@@ -1,10 +1,8 @@
-import Link from 'next/link'
 import Image from 'next/image'
 import type { ArticleDetailData } from '@/components/student-hub/articles/detail/types'
 import { formatArticleDate } from '@/components/student-hub/articles/detail/buildArticleDetail'
 import { getCategoryTagClass } from '@/components/student-hub/articles/categoryStyles'
 import { ArticleShareActions } from '@/components/student-hub/articles/detail/ArticleShareActions'
-import { studentHubTokens } from '@/components/student-hub/tokens'
 
 export type ArticleDetailHeroProps = {
   article: ArticleDetailData

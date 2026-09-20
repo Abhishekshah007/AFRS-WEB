@@ -6,15 +6,26 @@ import {
   defaultExamPrep,
   defaultUgcNetAchievers,
 } from '@/data/defaults/student-hub/content'
+import { defaultCuetAchievers } from '@/data/defaults/student-hub/cuet'
+import { defaultFactAchievers } from '@/data/defaults/student-hub/fact'
 import { getPayloadClient } from '@/lib/payload'
 import { resolveMediaUrlOptional } from '@/lib/cms'
 import { buildCareerGuidancePageContent } from '@/lib/queries/career-guidance'
+import { buildCuetPageContent } from '@/lib/queries/cuet'
+import { buildFactPageContent } from '@/lib/queries/fact'
 import { buildUgcNetPageContent } from '@/lib/queries/ugc-net'
 import type { Media } from '@/payload-types'
 
 export { defaultAcademicResources, defaultExamPrep, defaultUgcNetAchievers }
 
-type UgcAchiever = {
+export type ExamPrepAchiever = {
+  id: string
+  name: string
+  title: string
+  photoUrl: string
+}
+
+type AchieverSource = {
   name: string
   title?: string | null
   photo?: number | Media | null
@@ -23,9 +34,49 @@ type UgcAchiever = {
 type StudentHubContentGlobal = {
   academicResources?: ResourceCardData[]
   examPrep?: ExamPrepCardData[]
-  ugcNetAchievers?: UgcAchiever[]
+  ugcNetAchievers?: AchieverSource[]
+  factAchievers?: AchieverSource[]
+  cuetAchievers?: AchieverSource[]
   ugcNetPage?: Partial<UgcNetPageContent> | null
+  factPage?: Partial<UgcNetPageContent> | null
+  cuetPage?: Partial<UgcNetPageContent> | null
   careerGuidancePage?: Partial<CareerGuidancePageContent> | null
+}
+
+const examAchieverDefaults = {
+  'ugc-net': defaultUgcNetAchievers,
+  fact: defaultFactAchievers,
+  cuet: defaultCuetAchievers,
+} as const
+
+const examAchieverFields = {
+  'ugc-net': 'ugcNetAchievers',
+  fact: 'factAchievers',
+  cuet: 'cuetAchievers',
+} as const satisfies Record<keyof typeof examAchieverDefaults, keyof StudentHubContentGlobal>
+
+export type ExamPrepSlug = keyof typeof examAchieverDefaults
+
+function mapAchievers(
+  items: AchieverSource[] | undefined,
+  defaults: { name: string; title?: string }[],
+  idPrefix: string,
+): ExamPrepAchiever[] {
+  if (items?.length) {
+    return items.map((achiever, index) => ({
+      id: `${idPrefix}-${index + 1}`,
+      name: achiever.name,
+      title: achiever.title || '',
+      photoUrl: resolveMediaUrlOptional(achiever.photo) ?? '',
+    }))
+  }
+
+  return defaults.map((achiever, index) => ({
+    id: `${idPrefix}-d-${index + 1}`,
+    name: achiever.name,
+    title: achiever.title || '',
+    photoUrl: '',
+  }))
 }
 
 function withDefaultExams(cms?: ExamPrepCardData[]): ExamPrepCardData[] {
@@ -57,58 +108,48 @@ export async function getStudentHubContent() {
   }
 }
 
-export async function getUgcNetAchievers() {
+async function loadStudentHubGlobal(depth = 0): Promise<StudentHubContentGlobal | null> {
   try {
     const payload = await getPayloadClient()
-    const global = (await payload.findGlobal({
+    return (await payload.findGlobal({
       slug: 'studentHubContent',
-      depth: 1,
+      depth,
       overrideAccess: false,
     })) as StudentHubContentGlobal
-    if (global.ugcNetAchievers?.length) {
-      return global.ugcNetAchievers.map((a, i) => ({
-        id: `a-${i + 1}`,
-        name: a.name,
-        title: a.title || '',
-        photoUrl: resolveMediaUrlOptional(a.photo as number | Media | null | undefined) ?? '',
-      }))
-    }
-  } catch {}
+  } catch {
+    return null
+  }
+}
 
-  return defaultUgcNetAchievers.map((a, i) => ({
-    id: `d-${i + 1}`,
-    name: a.name,
-    title: '',
-    photoUrl: '',
-  }))
+export async function getExamPrepAchievers(exam: ExamPrepSlug): Promise<ExamPrepAchiever[]> {
+  const global = await loadStudentHubGlobal(1)
+  const field = examAchieverFields[exam]
+  const cmsItems = global?.[field] as AchieverSource[] | undefined
+
+  return mapAchievers(cmsItems, examAchieverDefaults[exam], exam)
+}
+
+/** @deprecated Use getExamPrepAchievers('ugc-net') */
+export async function getUgcNetAchievers() {
+  return getExamPrepAchievers('ugc-net')
 }
 
 export async function getUgcNetPageContent() {
-  try {
-    const payload = await getPayloadClient()
-    const global = (await payload.findGlobal({
-      slug: 'studentHubContent',
-      depth: 0,
-      overrideAccess: false,
-    })) as StudentHubContentGlobal
+  const global = await loadStudentHubGlobal(0)
+  return buildUgcNetPageContent(global?.ugcNetPage)
+}
 
-    return buildUgcNetPageContent(global.ugcNetPage)
-  } catch {
-    return buildUgcNetPageContent()
-  }
+export async function getFactPageContent() {
+  const global = await loadStudentHubGlobal(0)
+  return buildFactPageContent(global?.factPage)
+}
+
+export async function getCuetPageContent() {
+  const global = await loadStudentHubGlobal(0)
+  return buildCuetPageContent(global?.cuetPage)
 }
 
 export async function getCareerGuidancePageContent() {
-  try {
-    const payload = await getPayloadClient()
-    const global = (await payload.findGlobal({
-      slug: 'studentHubContent',
-      depth: 0,
-      overrideAccess: false,
-    })) as StudentHubContentGlobal
-
-    return buildCareerGuidancePageContent(global.careerGuidancePage)
-  } catch {
-    return buildCareerGuidancePageContent()
-  }
+  const global = await loadStudentHubGlobal(0)
+  return buildCareerGuidancePageContent(global?.careerGuidancePage)
 }

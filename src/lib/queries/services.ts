@@ -19,6 +19,7 @@ import {
   fallbackTeam,
 } from '@/data/defaults/services'
 import { richTextToPlain, resolveMediaUrl, resolveMediaUrlOptional } from '@/lib/cms'
+import { resolveTotalVisitors } from '@/lib/site/totalVisitors'
 import { getPayloadClient } from '@/lib/payload'
 import { getFeaturedGalleryItems, mapGalleryDocs } from '@/lib/queries/gallery'
 import { safeQuery } from '@/lib/resilience/safeQuery'
@@ -254,7 +255,7 @@ export function getDefaultServicesPageData(): ServicesPageViewProps {
     directors: fallbackDirectors,
     teamMembers: fallbackTeam,
     site: buildSiteContact(null),
-    totalVisitors: 200,
+    totalVisitors: resolveTotalVisitors(null),
     galleryItems: mapGalleryDocs([]),
     testimonials: defaultAfslTestimonials,
   }
@@ -338,7 +339,7 @@ async function loadServicesPageData(): Promise<ServicesPageViewProps> {
     directors: resolvedDirectors,
     teamMembers: resolvedTeamMembers,
     site: buildSiteContact(site),
-    totalVisitors: site?.totalVisitors || 200,
+    totalVisitors: resolveTotalVisitors(site),
     galleryItems,
     testimonials: cmsTestimonials.length > 0 ? cmsTestimonials : defaultAfslTestimonials,
   }

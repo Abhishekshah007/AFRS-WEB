@@ -1,11 +1,21 @@
 /** Lowercase URL-safe slug for event pages and form field keys. */
 export function slugify(value: string): string {
   return value
+    .normalize('NFKD')
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
     .slice(0, 80)
+}
+
+/** Prefer CMS slug; fall back to route param when legacy rows lack slug. */
+export function resolveEventSlug(
+  slug: string | null | undefined,
+  fallback?: string,
+): string | undefined {
+  const value = slug?.trim() || fallback?.trim()
+  return value || undefined
 }
 
 /** camelCase key for storing dynamic form answers (no spaces, editor-friendly). */

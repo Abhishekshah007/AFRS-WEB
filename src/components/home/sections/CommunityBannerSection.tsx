@@ -1,8 +1,11 @@
 import { VisitorCounterBar } from '../../student-hub/VisitorCounterBar'
+import { resolveTotalVisitors } from '@/lib/site/totalVisitors'
+import type { SiteSetting } from '@/payload-types'
 
-export function CommunityBannerSection({ totalVisitors }: { totalVisitors?: number }) {
-  const count =
-    typeof totalVisitors === 'number' ? totalVisitors : 25000
-
-  return <VisitorCounterBar totalVisitors={count} />
+export function CommunityBannerSection({
+  siteSettings,
+}: {
+  siteSettings?: Pick<SiteSetting, 'totalVisitors'> | null
+}) {
+  return <VisitorCounterBar totalVisitors={resolveTotalVisitors(siteSettings)} />
 }

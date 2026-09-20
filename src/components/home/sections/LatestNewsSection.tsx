@@ -1,39 +1,32 @@
 import Link from 'next/link'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
+import type { HomeNoticeBoardItem } from '@/lib/queries/home-content'
 import { CONTAINER, SECTION } from './constants'
+import type { SectionText } from './types'
 
-export function LatestNewsSection() {
-  const items = [
-    {
-      title: 'New batch for Digital Forensics certification opens soon',
-      date: 'May 2026',
-      href: '/articles',
-    },
-    {
-      title: 'AFRS partners with leading universities for internship programs',
-      date: 'Apr 2026',
-      href: '/articles',
-    },
-    {
-      title: 'Workshop on questioned document examination — registration live',
-      date: 'Mar 2026',
-      href: '/events',
-    },
-  ]
-
+export function LatestNewsSection({
+  items,
+  sectionText,
+}: {
+  items: HomeNoticeBoardItem[]
+  sectionText?: SectionText
+}) {
   return (
     <section className={`${SECTION} bg-white section-glow-top`} id="noticeBoard">
       <div className={`${CONTAINER} max-w-3xl`}>
         <SectionHeader
-          title="Notice Board"
-          subtitle="Stay updated with AFRS announcements and publications."
+          title={sectionText?.noticeBoardHeading || 'Notice Board'}
+          subtitle={
+            sectionText?.noticeBoardDescription ||
+            'Stay updated with AFRS announcements and publications.'
+          }
         />
         <AnimateOnScroll>
           <ul className="divide-y divide-slate-100 border border-slate-100 rounded-2xl overflow-hidden">
             {items.map((item) => (
               <li
-                key={item.title}
+                key={item.id}
                 className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-5 hover:bg-slate-50 transition"
               >
                 <div>
@@ -50,6 +43,11 @@ export function LatestNewsSection() {
             ))}
           </ul>
         </AnimateOnScroll>
+        <p className="mt-4 text-center">
+          <Link href="/notices" className="text-sm font-semibold text-brand-600 hover:text-brand-700">
+            View all notices →
+          </Link>
+        </p>
       </div>
     </section>
   )

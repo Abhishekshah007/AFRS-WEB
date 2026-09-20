@@ -25,7 +25,10 @@ Near Collectorate office, Indore,`,
       name: 'totalVisitors',
       type: 'number',
       defaultValue: 0,
-      admin: { description: 'Manually updated visitor count shown in the visitor bar.' },
+      admin: {
+        description:
+          'All-time visitor total shown in the site-wide visitor bar (home, courses, student hub, services). Update from your analytics dashboard (e.g. Google Analytics total users/sessions). Leave at 0 until you publish a figure—the site uses a shared default until then.',
+      },
     },
     {
       name: 'mapEmbedUrl',

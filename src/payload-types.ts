@@ -468,7 +468,7 @@ export interface ImpactStat {
   createdAt: string;
 }
 /**
- * Official announcements shown on the Notice Board page.
+ * Official announcements shown on the home page Notice Board and /notices page.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "notices".
@@ -520,9 +520,9 @@ export interface Event {
    */
   title: string;
   /**
-   * Created automatically from the event title when you save. You do not need to type or generate this.
+   * Auto-generated from the event title when you save.
    */
-  slug: string;
+  slug?: string | null;
   banner?: (number | null) | Media;
   /**
    * Short summary shown in cards and listings.
@@ -658,6 +658,8 @@ export interface Event {
   createdAt: string;
 }
 /**
+ * People who registered for events. This is the list used for attendance and certificates.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "eventRegistrations".
  */
@@ -727,6 +729,8 @@ export interface EventRegistration {
   createdAt: string;
 }
 /**
+ * People who registered for education and training programmes.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "courseRegistrations".
  */
@@ -1424,7 +1428,7 @@ export interface SiteSetting {
   email?: string | null;
   address?: string | null;
   /**
-   * Manually updated visitor count shown in the visitor bar.
+   * All-time visitor total shown in the site-wide visitor bar (home, courses, student hub, services). Update from your analytics dashboard (e.g. Google Analytics total users/sessions). Leave at 0 until you publish a figure—the site uses a shared default until then.
    */
   totalVisitors?: number | null;
   /**
@@ -1519,7 +1523,7 @@ export interface FooterSetting {
   createdAt?: string | null;
 }
 /**
- * Home page hero and section copy.
+ * Home page hero, section copy, notice board headings, and FAQs.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "homePage".
@@ -1547,7 +1551,21 @@ export interface HomePage {
     aboutHeading?: string | null;
     aboutDescription1?: string | null;
     aboutDescription2?: string | null;
+    noticeBoardHeading?: string | null;
+    noticeBoardDescription?: string | null;
+    faqHeading?: string | null;
+    faqDescription?: string | null;
   };
+  /**
+   * Home page FAQ accordion and SEO FAQ schema.
+   */
+  faqs?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2158,7 +2176,7 @@ export interface RegistrationForm {
   createdAt?: string | null;
 }
 /**
- * Student hub resources, exam prep cards, and achievers.
+ * Student hub resources, exam prep pages, cards, and achievers.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "studentHubContent".
@@ -2189,7 +2207,32 @@ export interface StudentHubContent {
         watermark: string;
       }[]
     | null;
+  /**
+   * Achiever cards shown on the UGC-NET exam prep page.
+   */
   ugcNetAchievers?:
+    | {
+        name: string;
+        title?: string | null;
+        photo?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Achiever cards shown on the FACT exam prep page.
+   */
+  factAchievers?:
+    | {
+        name: string;
+        title?: string | null;
+        photo?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Achiever cards shown on the CUET exam prep page.
+   */
+  cuetAchievers?:
     | {
         name: string;
         title?: string | null;
@@ -2201,6 +2244,232 @@ export interface StudentHubContent {
    * UGC-NET / JRF page copy and structured content.
    */
   ugcNetPage?: {
+    heroEyebrow?: string | null;
+    heroTitlePrefix?: string | null;
+    heroTitleHighlight?: string | null;
+    heroDescription?: string | null;
+    heroCtaLabel?: string | null;
+    heroMetricEyebrow?: string | null;
+    heroMetricValue?: string | null;
+    overviewTitle?: string | null;
+    overviewSubtitle?: string | null;
+    overviewDescription?: string | null;
+    overviewBody?: string | null;
+    whyChooseTitle?: string | null;
+    whyChooseItems?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    programmeTitle?: string | null;
+    paperOneTitle?: string | null;
+    paperOneDescription?: string | null;
+    paperTwoTitle?: string | null;
+    paperTwoDescription?: string | null;
+    benefitsTitle?: string | null;
+    benefits?:
+      | {
+          title: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+    learningTitle?: string | null;
+    learningFlow?: string | null;
+    learningSteps?:
+      | {
+          label: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+    audienceTitle?: string | null;
+    audienceItems?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    audienceNote?: string | null;
+    featuresTitle?: string | null;
+    features?:
+      | {
+          feature: string;
+          details: string;
+          id?: string | null;
+        }[]
+      | null;
+    batchTitle?: string | null;
+    batchDetails?:
+      | {
+          label: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    batchCtaLabel?: string | null;
+    registrationTitle?: string | null;
+    registrationSteps?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    facultyTitle?: string | null;
+    facultyDescription?: string | null;
+    resourcesTitle?: string | null;
+    resourceItems?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    supportTitle?: string | null;
+    supportDescription?: string | null;
+    faqTitle?: string | null;
+    faqs?:
+      | {
+          question: string;
+          answer: string;
+          id?: string | null;
+        }[]
+      | null;
+    bottomCtaTitle?: string | null;
+    bottomCtaDescription?: string | null;
+    bottomCtaTagline?: string | null;
+    bottomCtaPrimaryLabel?: string | null;
+    bottomCtaSecondaryLabel?: string | null;
+    bottomCtaContactLabel?: string | null;
+    achieversEyebrow?: string | null;
+    achieversTitle?: string | null;
+    statsValue?: string | null;
+    statsDescription?: string | null;
+    quickNav?:
+      | {
+          label: string;
+          href: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * FACT / FACT Plus page copy and structured content.
+   */
+  factPage?: {
+    heroEyebrow?: string | null;
+    heroTitlePrefix?: string | null;
+    heroTitleHighlight?: string | null;
+    heroDescription?: string | null;
+    heroCtaLabel?: string | null;
+    heroMetricEyebrow?: string | null;
+    heroMetricValue?: string | null;
+    overviewTitle?: string | null;
+    overviewSubtitle?: string | null;
+    overviewDescription?: string | null;
+    overviewBody?: string | null;
+    whyChooseTitle?: string | null;
+    whyChooseItems?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    programmeTitle?: string | null;
+    paperOneTitle?: string | null;
+    paperOneDescription?: string | null;
+    paperTwoTitle?: string | null;
+    paperTwoDescription?: string | null;
+    benefitsTitle?: string | null;
+    benefits?:
+      | {
+          title: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+    learningTitle?: string | null;
+    learningFlow?: string | null;
+    learningSteps?:
+      | {
+          label: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+    audienceTitle?: string | null;
+    audienceItems?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    audienceNote?: string | null;
+    featuresTitle?: string | null;
+    features?:
+      | {
+          feature: string;
+          details: string;
+          id?: string | null;
+        }[]
+      | null;
+    batchTitle?: string | null;
+    batchDetails?:
+      | {
+          label: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    batchCtaLabel?: string | null;
+    registrationTitle?: string | null;
+    registrationSteps?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    facultyTitle?: string | null;
+    facultyDescription?: string | null;
+    resourcesTitle?: string | null;
+    resourceItems?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    supportTitle?: string | null;
+    supportDescription?: string | null;
+    faqTitle?: string | null;
+    faqs?:
+      | {
+          question: string;
+          answer: string;
+          id?: string | null;
+        }[]
+      | null;
+    bottomCtaTitle?: string | null;
+    bottomCtaDescription?: string | null;
+    bottomCtaTagline?: string | null;
+    bottomCtaPrimaryLabel?: string | null;
+    bottomCtaSecondaryLabel?: string | null;
+    bottomCtaContactLabel?: string | null;
+    achieversEyebrow?: string | null;
+    achieversTitle?: string | null;
+    statsValue?: string | null;
+    statsDescription?: string | null;
+    quickNav?:
+      | {
+          label: string;
+          href: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * CUET Forensic Science (SCQP13) page copy and structured content.
+   */
+  cuetPage?: {
     heroEyebrow?: string | null;
     heroTitlePrefix?: string | null;
     heroTitleHighlight?: string | null;
@@ -2587,6 +2856,17 @@ export interface HomePageSelect<T extends boolean = true> {
         aboutHeading?: T;
         aboutDescription1?: T;
         aboutDescription2?: T;
+        noticeBoardHeading?: T;
+        noticeBoardDescription?: T;
+        faqHeading?: T;
+        faqDescription?: T;
+      };
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -3146,7 +3426,247 @@ export interface StudentHubContentSelect<T extends boolean = true> {
         photo?: T;
         id?: T;
       };
+  factAchievers?:
+    | T
+    | {
+        name?: T;
+        title?: T;
+        photo?: T;
+        id?: T;
+      };
+  cuetAchievers?:
+    | T
+    | {
+        name?: T;
+        title?: T;
+        photo?: T;
+        id?: T;
+      };
   ugcNetPage?:
+    | T
+    | {
+        heroEyebrow?: T;
+        heroTitlePrefix?: T;
+        heroTitleHighlight?: T;
+        heroDescription?: T;
+        heroCtaLabel?: T;
+        heroMetricEyebrow?: T;
+        heroMetricValue?: T;
+        overviewTitle?: T;
+        overviewSubtitle?: T;
+        overviewDescription?: T;
+        overviewBody?: T;
+        whyChooseTitle?: T;
+        whyChooseItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        programmeTitle?: T;
+        paperOneTitle?: T;
+        paperOneDescription?: T;
+        paperTwoTitle?: T;
+        paperTwoDescription?: T;
+        benefitsTitle?: T;
+        benefits?:
+          | T
+          | {
+              title?: T;
+              desc?: T;
+              id?: T;
+            };
+        learningTitle?: T;
+        learningFlow?: T;
+        learningSteps?:
+          | T
+          | {
+              label?: T;
+              desc?: T;
+              id?: T;
+            };
+        audienceTitle?: T;
+        audienceItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        audienceNote?: T;
+        featuresTitle?: T;
+        features?:
+          | T
+          | {
+              feature?: T;
+              details?: T;
+              id?: T;
+            };
+        batchTitle?: T;
+        batchDetails?:
+          | T
+          | {
+              label?: T;
+              value?: T;
+              id?: T;
+            };
+        batchCtaLabel?: T;
+        registrationTitle?: T;
+        registrationSteps?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        facultyTitle?: T;
+        facultyDescription?: T;
+        resourcesTitle?: T;
+        resourceItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        supportTitle?: T;
+        supportDescription?: T;
+        faqTitle?: T;
+        faqs?:
+          | T
+          | {
+              question?: T;
+              answer?: T;
+              id?: T;
+            };
+        bottomCtaTitle?: T;
+        bottomCtaDescription?: T;
+        bottomCtaTagline?: T;
+        bottomCtaPrimaryLabel?: T;
+        bottomCtaSecondaryLabel?: T;
+        bottomCtaContactLabel?: T;
+        achieversEyebrow?: T;
+        achieversTitle?: T;
+        statsValue?: T;
+        statsDescription?: T;
+        quickNav?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+      };
+  factPage?:
+    | T
+    | {
+        heroEyebrow?: T;
+        heroTitlePrefix?: T;
+        heroTitleHighlight?: T;
+        heroDescription?: T;
+        heroCtaLabel?: T;
+        heroMetricEyebrow?: T;
+        heroMetricValue?: T;
+        overviewTitle?: T;
+        overviewSubtitle?: T;
+        overviewDescription?: T;
+        overviewBody?: T;
+        whyChooseTitle?: T;
+        whyChooseItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        programmeTitle?: T;
+        paperOneTitle?: T;
+        paperOneDescription?: T;
+        paperTwoTitle?: T;
+        paperTwoDescription?: T;
+        benefitsTitle?: T;
+        benefits?:
+          | T
+          | {
+              title?: T;
+              desc?: T;
+              id?: T;
+            };
+        learningTitle?: T;
+        learningFlow?: T;
+        learningSteps?:
+          | T
+          | {
+              label?: T;
+              desc?: T;
+              id?: T;
+            };
+        audienceTitle?: T;
+        audienceItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        audienceNote?: T;
+        featuresTitle?: T;
+        features?:
+          | T
+          | {
+              feature?: T;
+              details?: T;
+              id?: T;
+            };
+        batchTitle?: T;
+        batchDetails?:
+          | T
+          | {
+              label?: T;
+              value?: T;
+              id?: T;
+            };
+        batchCtaLabel?: T;
+        registrationTitle?: T;
+        registrationSteps?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        facultyTitle?: T;
+        facultyDescription?: T;
+        resourcesTitle?: T;
+        resourceItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        supportTitle?: T;
+        supportDescription?: T;
+        faqTitle?: T;
+        faqs?:
+          | T
+          | {
+              question?: T;
+              answer?: T;
+              id?: T;
+            };
+        bottomCtaTitle?: T;
+        bottomCtaDescription?: T;
+        bottomCtaTagline?: T;
+        bottomCtaPrimaryLabel?: T;
+        bottomCtaSecondaryLabel?: T;
+        bottomCtaContactLabel?: T;
+        achieversEyebrow?: T;
+        achieversTitle?: T;
+        statsValue?: T;
+        statsDescription?: T;
+        quickNav?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+      };
+  cuetPage?:
     | T
     | {
         heroEyebrow?: T;

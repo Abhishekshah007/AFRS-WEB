@@ -1,5 +1,7 @@
 import { sendChatEscalationEmails } from '@/lib/email/chatEscalation'
 import type { ChatMessage } from '@/lib/chatbot/provider'
+import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
+import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -11,7 +13,14 @@ export async function POST(req: Request) {
       userPhone?: string
       reason?: string
       messages?: ChatMessage[]
+      turnstileToken?: string
     }
+
+    const blocked = await enforcePublicApiGuards(req, {
+      rateLimit: PUBLIC_RATE_LIMITS.chatEscalate,
+      turnstileToken: body.turnstileToken,
+    })
+    if (blocked) return blocked
 
     const userEmail = body.userEmail?.trim().toLowerCase() || ''
     if (!userEmail || !EMAIL_RE.test(userEmail)) {

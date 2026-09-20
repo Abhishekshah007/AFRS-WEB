@@ -11,8 +11,8 @@ type DynamicFormFieldsProps = {
   sections: DynamicFormSection[]
   values: Record<string, string>
   files: Record<string, File | null>
-  onChange: (name: string, value: string) => void
-  onFileChange: (name: string, file: File | null) => void
+  onChange: (_name: string, _value: string) => void
+  onFileChange: (_name: string, _file: File | null) => void
   disabled?: boolean
 }
 
@@ -20,8 +20,8 @@ function renderControlledField(
   field: DynamicFormField,
   value: string,
   file: File | null | undefined,
-  onChange: (name: string, value: string) => void,
-  onFileChange: (name: string, file: File | null) => void,
+  onChange: (_name: string, _value: string) => void,
+  onFileChange: (_name: string, _file: File | null) => void,
   disabled: boolean,
 ) {
   const shared = {

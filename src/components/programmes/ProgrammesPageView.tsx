@@ -50,7 +50,7 @@ export function ProgrammesPageView({
         archive={archive}
         gallery={gallery}
       />
-      <VisitorCounterBar totalVisitors={totalVisitors} icon="👑" />
+      <VisitorCounterBar totalVisitors={totalVisitors} />
     </div>
   )
 }

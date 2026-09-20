@@ -84,6 +84,15 @@ export function formatEventDate(date: string | null | undefined): string {
   })
 }
 
+export function formatNoticeDate(date: string | null | undefined): string {
+  if (!date) return ''
+  return new Date(date).toLocaleDateString('en-IN', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
+}
+
 export function formatEventType(value: string | null | undefined): string {
   if (!value) return ''
   return value.charAt(0).toUpperCase() + value.slice(1)

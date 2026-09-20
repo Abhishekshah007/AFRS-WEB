@@ -34,12 +34,10 @@ export const Events: CollectionConfig = {
       },
     },
     {
-      ...slugField(),
+      ...slugField({ required: false }),
       admin: {
-        position: 'sidebar',
-        readOnly: true,
-        description:
-          'Created automatically from the event title when you save. You do not need to type or generate this.',
+        hidden: true,
+        description: 'Auto-generated from the event title when you save.',
       },
     },
     { name: 'banner', type: 'upload', relationTo: 'media', label: 'Event poster / banner' },

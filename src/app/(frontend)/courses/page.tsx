@@ -14,6 +14,7 @@ import type { ArchiveItem, GalleryThumb, ResourcePerson } from '@/components/pro
 import { getPayloadClient } from '@/lib/payload'
 import { fetchProgrammeHubEvents } from '@/lib/programmeEvents'
 import { resolveMediaUrl } from '@/lib/cms'
+import { resolveTotalVisitors } from '@/lib/site/totalVisitors'
 import type { Media, Scientist, SiteSetting } from '@/payload-types'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
@@ -196,7 +197,7 @@ export default async function CoursesPage() {
       resourcePersons={resourcePersons}
       archive={archiveItems}
       gallery={gallery}
-      totalVisitors={site?.totalVisitors ?? 25847}
+      totalVisitors={resolveTotalVisitors(site)}
       trainingChecklist={cmsChecklist}
     />
   )

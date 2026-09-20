@@ -13,11 +13,16 @@ import { registrationSubmissionExportHook } from '../lib/submissions/attachSubmi
 
 export const EventRegistrations: CollectionConfig = {
   slug: 'eventRegistrations',
+  labels: {
+    singular: 'Event Registration',
+    plural: 'Event Registrations',
+  },
   access: eventRegistrationAccess,
   endpoints: [registrationCsvExportEndpoint('eventRegistrations')],
   admin: {
     group: ADMIN_GROUPS.EVENTS,
     useAsTitle: 'fullName',
+    description: 'People who registered for events. This is the list used for attendance and certificates.',
     defaultColumns: [
       'fullName',
       'email',

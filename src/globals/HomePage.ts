@@ -2,13 +2,13 @@ import type { GlobalConfig } from 'payload'
 
 import { editorManagedGlobalAccess } from '../access'
 import { ADMIN_GROUPS } from '../config/adminGroups'
-
+import { defaultHomeFaqs } from '../data/defaults/home'
 export const HomePage: GlobalConfig = {
   slug: 'homePage',
   access: editorManagedGlobalAccess,
   admin: {
     group: ADMIN_GROUPS.PAGES,
-    description: 'Home page hero and section copy.',
+    description: 'Home page hero, section copy, notice board headings, and FAQs.',
   },
   fields: [
     {
@@ -70,6 +70,28 @@ export const HomePage: GlobalConfig = {
           defaultValue:
             'We bridge the gap between academic theory and practical application, providing students and professionals with the tools they need to excel in the field of forensic investigation.',
         },
+        { name: 'noticeBoardHeading', type: 'text', defaultValue: 'Notice Board' },
+        {
+          name: 'noticeBoardDescription',
+          type: 'text',
+          defaultValue: 'Stay updated with AFRS announcements and publications.',
+        },
+        { name: 'faqHeading', type: 'text', defaultValue: 'Frequently Asked Questions' },
+        {
+          name: 'faqDescription',
+          type: 'text',
+          defaultValue: 'Quick answers about programs, registration, and services.',
+        },
+      ],
+    },
+    {
+      name: 'faqs',
+      type: 'array',
+      admin: { description: 'Home page FAQ accordion and SEO FAQ schema.' },
+      defaultValue: defaultHomeFaqs,
+      fields: [
+        { name: 'question', type: 'text', required: true },
+        { name: 'answer', type: 'textarea', required: true },
       ],
     },
   ],

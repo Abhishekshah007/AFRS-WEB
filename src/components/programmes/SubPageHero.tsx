@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { HeroStagger, HeroStaggerItem } from '@/components/motion/HeroStagger'
-import { resolveIcon } from '@/components/ui/iconMap'
+import { renderIcon } from '@/components/ui/iconMap'
 
 export type BreadcrumbItem = {
   label: string
@@ -19,7 +19,6 @@ export type SubPageHeroProps = {
  * Compact hero for programme category and events listing sub-pages.
  */
 export function SubPageHero({ breadcrumbs, eyebrow, title, description, icon }: SubPageHeroProps) {
-  const Icon = resolveIcon(icon)
   return (
     <div className="programmes-sub-hero relative w-full overflow-hidden text-white">
       {/* Radial glow top-right */}
@@ -67,7 +66,7 @@ export function SubPageHero({ breadcrumbs, eyebrow, title, description, icon }: 
                 className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-white/20 bg-white/15 text-white shadow-lg shadow-black/10 backdrop-blur-md"
                 aria-hidden
               >
-                <Icon className="h-8 w-8" strokeWidth={1.7} />
+                {renderIcon(icon, { className: 'h-8 w-8', strokeWidth: 1.7 })}
               </span>
             )}
 

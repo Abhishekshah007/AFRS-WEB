@@ -14,7 +14,6 @@ import {
   Fingerprint,
   FlaskConical,
   Gavel,
-  GraduationCap,
   Microscope,
   Phone,
   ShieldCheck,
@@ -196,53 +195,48 @@ export function ServicesPageView({
 
       <section className="bg-brand-soft py-20">
         <div className={CONTAINER}>
-          <div>
-            <div className="rounded-[28px] bg-white p-8 shadow-[0_18px_55px_rgba(33,44,68,0.06)] lg:p-10">
-              <div className="grid gap-10 lg:grid-cols-[1fr_480px]">
-                <div>
-                  <Eyebrow>{content.infrastructureEyebrow}</Eyebrow>
-                  <h2 className="mt-3 text-[31px] font-black tracking-[-0.01em]">
-                    {content.infrastructureTitle}
-                  </h2>
-                  <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176] text-justify">
-                    {content.infrastructureBody1}
-                  </p>
-                  <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176] text-justify">
-                    {content.infrastructureBody2}
-                  </p>
-                  <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176] text-justify">
-                    {content.infrastructureBody3}
-                  </p>
-                  <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176] text-justify">
-                    {content.infrastructureBody4}
-                  </p>
-                  <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176] text-justify">
-                    {content.infrastructureBody5}
-                  </p>
-                  <p className="mt-5 max-w-[480px] text-[14px] font-medium leading-7 text-[#536176] text-justify">
-                    {content.infrastructureBody6}
-                  </p>
-                  <div className="mt-8 grid max-w-[420px] grid-cols-3 gap-4">
-                    {content.certificationStats.map((stat) => (
-                      <div
-                        key={stat.caption}
-                        className="border-t border-[#dfe7f2] pt-4 text-center"
-                      >
-                        <p className="text-[18px] font-black text-brand-burgundy">{stat.label}</p>
-                        <p className="mt-1 text-[8px] font-extrabold uppercase tracking-[0.14em] text-[#9aa7b8]">
-                          {stat.caption}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
+          <div className="rounded-[28px] bg-white p-8 shadow-[0_18px_55px_rgba(33,44,68,0.06)] lg:p-10">
+            <Eyebrow>{content.infrastructureEyebrow}</Eyebrow>
+            <h2 className="mt-3 text-[31px] font-black tracking-[-0.01em] text-slate-900">
+              {content.infrastructureTitle}
+            </h2>
+
+            <div className="afsl-about-wrap mt-6">
+              <figure className="afsl-about-emblem relative m-0">
+                <Image
+                  src={AFRSLogo}
+                  alt="AFSL Laboratory emblem"
+                  width={220}
+                  height={220}
+                  className="h-[220px] w-[220px] max-w-full object-contain"
+                />
+                <div
+                  className="absolute -right-2 -top-2 flex h-10 w-10 items-center justify-center rounded-[10px] bg-brand-burgundy text-white shadow-md"
+                  aria-hidden
+                >
+                  <Award className="h-4 w-4" />
                 </div>
-                <div className="relative min-h-[330px] rounded-[14px] bg-white shadow-[0_16px_40px_rgba(24,31,43,0.16)]">
-                  <Image src={AFRSLogo} alt="AFSL Logo" className="h-full w-full contain-content" />
-                  <div className="absolute right-[-16px] top-[-18px] flex h-16 w-16 items-center justify-center rounded-[14px] bg-brand-burgundy text-white shadow-xl">
-                    <Award className="h-6 w-6" />
-                  </div>
-                </div>
+              </figure>
+
+              <div className="space-y-4 text-[15px] font-medium leading-7 text-[#536176] text-justify">
+                <p>{content.infrastructureBody1}</p>
+                <p>{content.infrastructureBody2}</p>
+                <p>{content.infrastructureBody3}</p>
+                <p>{content.infrastructureBody4}</p>
+                <p>{content.infrastructureBody5}</p>
+                <p>{content.infrastructureBody6}</p>
               </div>
+            </div>
+
+            <div className="mt-8 grid max-w-[420px] grid-cols-3 gap-4">
+              {content.certificationStats.map((stat) => (
+                <div key={stat.caption} className="border-t border-[#dfe7f2] pt-4 text-center">
+                  <p className="text-[18px] font-black text-brand-burgundy">{stat.label}</p>
+                  <p className="mt-1 text-[8px] font-extrabold uppercase tracking-[0.14em] text-[#9aa7b8]">
+                    {stat.caption}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -749,9 +743,7 @@ export function ServicesPageView({
       </section>
       <AfslTestimonialsSection testimonials={testimonials} />
       <SiteGallerySection items={galleryItems} className="bg-brand-soft" />
-      <section className="bg-brand-soft">
-        <VisitorCounterBar totalVisitors={totalVisitors} icon="📈" />
-      </section>
+      <VisitorCounterBar totalVisitors={totalVisitors} />
       {/* 
       <Modal
         isOpen={!!selectedCategory}

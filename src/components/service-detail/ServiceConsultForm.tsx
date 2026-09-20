@@ -1,7 +1,9 @@
 'use client'
 
+import { useState } from 'react'
 import type { SubmissionFormType } from '@/fields/submissionExport'
 import { useContactFormSubmit } from '@/hooks/useContactFormSubmit'
+import { TurnstileField } from '@/components/security/TurnstileField'
 
 const inputClass =
   'mt-2 w-full h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-800 outline-none transition focus:border-[var(--svc-primary)] focus:ring-2 focus:ring-[var(--svc-primary)]/20'
@@ -22,6 +24,7 @@ export function ServiceConsultForm({
   caseTypes = ['New case', 'Ongoing investigation', 'Expert opinion', 'Training inquiry'],
   submitLabel = 'Send Message',
 }: ServiceConsultFormProps) {
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
   const { state, disabled, onSubmit } = useContactFormSubmit({
     successMessage:
       formType === 'legalConsultancy'
@@ -42,6 +45,7 @@ export function ServiceConsultForm({
         formType,
       }
     },
+    turnstileToken,
   })
 
   const buttonLabel =
@@ -101,6 +105,7 @@ export function ServiceConsultForm({
           required
         />
       </label>
+      <TurnstileField onTokenChange={setTurnstileToken} />
       {state.status !== 'idle' && (
         <p
           className={`text-sm ${

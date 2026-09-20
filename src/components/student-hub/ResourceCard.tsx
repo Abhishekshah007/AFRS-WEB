@@ -1,9 +1,8 @@
 import Link from 'next/link'
 import type { ResourceCardData } from '@/components/student-hub/types'
-import { resolveIcon } from '../ui/iconMap'
+import { renderIcon } from '../ui/iconMap'
 
 export function ResourceCard({ resource }: { resource: ResourceCardData }) {
-  const Icon = resolveIcon(resource.icon)
 
   if (resource.featured) {
     // Wide horizontal card — "Practical Learning" layout
@@ -13,7 +12,10 @@ export function ResourceCard({ resource }: { resource: ResourceCardData }) {
           className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${resource.iconBg}`}
           aria-hidden
         >
-          <Icon className={`h-7 w-7 ${resource.iconColor}`} strokeWidth={1.8} />
+          {renderIcon(resource.icon, {
+            className: `h-7 w-7 ${resource.iconColor}`,
+            strokeWidth: 1.8,
+          })}
         </span>
         <div className="flex flex-col flex-1 min-w-0">
           <h3 className="text-[17px] font-extrabold text-slate-900 tracking-tight">
@@ -39,7 +41,10 @@ export function ResourceCard({ resource }: { resource: ResourceCardData }) {
         className={`flex h-12 w-12 items-center justify-center rounded-xl ${resource.iconBg}`}
         aria-hidden
       >
-        <Icon className={`h-6 w-6 ${resource.iconColor}`} strokeWidth={1.8} />
+        {renderIcon(resource.icon, {
+          className: `h-6 w-6 ${resource.iconColor}`,
+          strokeWidth: 1.8,
+        })}
       </span>
       <h3 className="mt-5 text-[16px] font-extrabold text-slate-900 tracking-tight">
         {resource.title}

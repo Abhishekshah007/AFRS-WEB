@@ -17,7 +17,7 @@ import type { SectionText } from './types'
 
 export function AFRSFeatureCards({
   sectionText,
-  events,
+  events: _events,
 }: {
   sectionText: SectionText
   events: PaginatedDocs<AfrsEvent>

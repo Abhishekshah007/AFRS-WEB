@@ -1,8 +1,11 @@
 'use client'
 
+import { useState } from 'react'
 import { useContactFormSubmit } from '@/hooks/useContactFormSubmit'
+import { TurnstileField } from '@/components/security/TurnstileField'
 
 export function ContactForm() {
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
   const { state, disabled, buttonLabel, onSubmit } = useContactFormSubmit({
     mapFormData: (formData) => ({
       fullName: String(formData.get('fullName') || '').trim(),
@@ -12,6 +15,7 @@ export function ContactForm() {
       message: String(formData.get('message') || '').trim(),
       formType: 'contact',
     }),
+    turnstileToken,
   })
 
   return (
@@ -78,6 +82,8 @@ export function ContactForm() {
           />
         </label>
       </div>
+
+      <TurnstileField onTokenChange={setTurnstileToken} />
 
       {state.status !== 'idle' && (
         <p

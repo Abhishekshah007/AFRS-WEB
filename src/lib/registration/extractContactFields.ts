@@ -97,7 +97,9 @@ export function extractContactFields(
 export function validateContactFields(contact: ExtractedContactFields): string | null {
   if (!contact.fullName)
     return 'Please enter your full name (as it should appear on the certificate).'
-  if (!contact.email) return 'Please enter a valid email address.'
+  if (!contact.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email)) {
+    return 'Please enter a valid email address.'
+  }
   if (!contact.mobileNumber) return 'Please enter your mobile / WhatsApp number.'
   return null
 }

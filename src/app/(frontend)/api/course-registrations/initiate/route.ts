@@ -4,7 +4,10 @@ import { validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 import { resolveRegistrationConfig } from '@/lib/registration/resolveConfig'
 import { findProgrammeRegistrationContext } from '@/lib/queries/programme-registration'
+import { buildCourseConfirmationUrl } from '@/lib/registration/confirmationToken'
 import { getPayloadClient } from '@/lib/payload'
+import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
+import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
 
 type InitiatePayload = {
   programmeType?: string
@@ -29,11 +32,18 @@ type InitiatePayload = {
   participantRegion?: 'indian' | 'international'
   agreedToTerms?: boolean
   customResponses?: Record<string, string>
+  turnstileToken?: string
 }
 
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as InitiatePayload
+
+    const blocked = await enforcePublicApiGuards(req, {
+      rateLimit: PUBLIC_RATE_LIMITS.registration,
+      turnstileToken: body.turnstileToken,
+    })
+    if (blocked) return blocked
 
     if (!hasRequiredFields(body, ['programmeTitle', 'fullName', 'email', 'mobileNumber'])) {
       return jsonError('Missing required fields.', 400)
@@ -114,6 +124,7 @@ export async function POST(req: Request) {
       message: isFree
         ? 'Registration received. A confirmation email will be sent shortly.'
         : 'Registration initiated. Please complete payment details.',
+      redirectTo: isFree ? buildCourseConfirmationUrl(created.id) : undefined,
     })
   } catch (error) {
     return jsonError(

@@ -207,3 +207,5 @@ export const defaultCuetPageContent: UgcNetPageContent = {
     { label: 'Register', href: '#register' },
   ],
 }
+
+export const defaultCuetAchievers: { name: string; title?: string }[] = []

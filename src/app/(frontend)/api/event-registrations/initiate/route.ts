@@ -4,6 +4,9 @@ import { validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 import { categoriesToFeeTiers, resolveRegistrationConfig } from '@/lib/registration/resolveConfig'
 import { getPayloadClient } from '@/lib/payload'
+import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
+import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
+import { resolveEventSlug } from '@/lib/utils/slugify'
 import type { Event as AfrsEvent, RegistrationForm } from '@/payload-types'
 
 type InitiatePayload = {
@@ -22,11 +25,19 @@ type InitiatePayload = {
   includeKit?: boolean
   agreedToTerms?: boolean
   customResponses?: Record<string, string>
+  turnstileToken?: string
 }
 
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as InitiatePayload
+
+    const blocked = await enforcePublicApiGuards(req, {
+      rateLimit: PUBLIC_RATE_LIMITS.registration,
+      turnstileToken: body.turnstileToken,
+    })
+    if (blocked) return blocked
+
     const payload = await getPayloadClient()
 
     if (
@@ -60,6 +71,8 @@ export async function POST(req: Request) {
 
     const evt = eventResult.docs[0] as AfrsEvent | undefined
     if (!evt) return jsonError('Event not found.', 404)
+    const eventSlug = resolveEventSlug(evt.slug, body.eventSlug)
+    if (!eventSlug) return jsonError('Event is missing a valid slug.', 400)
     if (evt.registrationOpen === false) {
       return jsonError('Registration is closed for this event.', 400)
     }
@@ -94,7 +107,7 @@ export async function POST(req: Request) {
       collection: 'eventRegistrations',
       data: {
         event: evt.id,
-        eventSlug: evt.slug,
+        eventSlug,
         eventTitle: evt.title,
         fullName: body.fullName,
         email: body.email,

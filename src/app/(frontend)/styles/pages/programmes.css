@@ -19,6 +19,3 @@
   animation: heroMeshShift 15s ease infinite;
 }
 
-.programmes-page .hub-visitor-bar {
-  background: linear-gradient(90deg, var(--brand-deep-wine) 0%, var(--brand-burgundy) 50%, var(--brand-deep-wine) 100%);
-}

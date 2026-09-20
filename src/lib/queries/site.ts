@@ -15,6 +15,8 @@ export async function getSiteSettings(): Promise<SiteSetting | null> {
   }
 }
 
+export { resolveTotalVisitors } from '@/lib/site/totalVisitors'
+
 export function buildWhatsAppUrl(phone: string | null | undefined, message: string): string | null {
   if (!phone) return null
   const digits = phone.replace(/\D/g, '')

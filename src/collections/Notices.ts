@@ -11,7 +11,7 @@ export const Notices: CollectionConfig = {
     group: ADMIN_GROUPS.CONTENT,
     useAsTitle: 'title',
     defaultColumns: ['title', 'tag', 'noticeDate', 'published'],
-    description: 'Official announcements shown on the Notice Board page.',
+    description: 'Official announcements shown on the home page Notice Board and /notices page.',
   },
   fields: [
     { name: 'title', type: 'text', required: true },

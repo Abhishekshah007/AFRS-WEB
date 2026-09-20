@@ -202,3 +202,5 @@ export const defaultFactPageContent: UgcNetPageContent = {
     { label: 'Register', href: '#register' },
   ],
 }
+
+export const defaultFactAchievers: { name: string; title?: string }[] = []

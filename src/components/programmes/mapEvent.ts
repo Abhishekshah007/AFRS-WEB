@@ -1,5 +1,6 @@
 import type { HubEventCard } from '@/components/programmes/types'
 import { FALLBACK_BANNER_IMAGE, formatEventType, resolveMediaUrl, richTextToPlain } from '@/lib/cms'
+import { resolveEventSlug } from '@/lib/utils/slugify'
 import type { Event as AfrsEvent, Media } from '@/payload-types'
 import { eventTypeDisplayLabel } from '@/components/programmes/eventStyles'
 
@@ -25,7 +26,7 @@ export function mapEventToHubCard(evt: AfrsEvent, index = 0): HubEventCard {
 
   return {
     id: String(evt.id),
-    slug: evt.slug,
+    slug: resolveEventSlug(evt.slug, String(evt.id)) ?? String(evt.id),
     title: evt.title,
     description: evt.excerpt ?? richTextToPlain(evt.description, 140),
     eventType: type,

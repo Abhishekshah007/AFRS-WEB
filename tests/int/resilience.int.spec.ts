@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 
 import { resolveMediaUrl, resolveMediaUrlOptional } from '@/lib/cms'
 import { FALLBACK_BANNER_IMAGE, FALLBACK_LOGO_IMAGE } from '@/lib/constants/assets'
@@ -9,6 +9,8 @@ import {
   isMaintenanceModeEnabled,
   shouldRedirectToMaintenance,
 } from '@/lib/resilience/maintenance'
+import { isBrokenSlug } from '@/hooks/autoSlugFromTitle'
+import { slugify } from '@/lib/utils/slugify'
 import { safeQuery } from '@/lib/resilience/safeQuery'
 
 describe('resolveMediaUrl', () => {
@@ -81,6 +83,21 @@ describe('maintenance mode', () => {
   })
 })
 
+describe('event slug generation', () => {
+  it('detects broken slugs like ----', () => {
+    expect(isBrokenSlug('----')).toBe(true)
+    expect(isBrokenSlug('')).toBe(true)
+    expect(isBrokenSlug('s')).toBe(true)
+    expect(isBrokenSlug('forensic-application-of-computational-techniques')).toBe(false)
+  })
+
+  it('slugifies titles for URLs', () => {
+    expect(slugify('Forensic Application of Computational Techniques')).toBe(
+      'forensic-application-of-computational-techniques',
+    )
+  })
+})
+
 describe('default page data', () => {
   it('returns usable about page fallback', () => {
     const data = getDefaultAboutPageData()
@@ -94,5 +111,78 @@ describe('default page data', () => {
     expect(data.catalogItems.length).toBeGreaterThan(0)
     expect(data.directors.length).toBeGreaterThan(0)
     expect(data.site.phone).toBeTruthy()
+  })
+})
+
+describe('registration confirmation token', () => {
+  const originalSecret = process.env.PAYLOAD_SECRET
+
+  beforeEach(() => {
+    process.env.PAYLOAD_SECRET = 'test-secret-for-confirmation-token'
+  })
+
+  afterEach(() => {
+    process.env.PAYLOAD_SECRET = originalSecret
+  })
+
+  it('creates and verifies event-scoped tokens', async () => {
+    const {
+      buildEventConfirmationUrl,
+      verifyRegistrationConfirmationToken,
+    } = await import('@/lib/registration/confirmationToken')
+
+    const url = buildEventConfirmationUrl(42, 'forensic-workshop')
+    const token = new URL(url, 'http://localhost').searchParams.get('token')
+
+    expect(token).toBeTruthy()
+    expect(
+      verifyRegistrationConfirmationToken(42, { kind: 'event', eventSlug: 'forensic-workshop' }, token),
+    ).toBe(true)
+    expect(
+      verifyRegistrationConfirmationToken(42, { kind: 'event', eventSlug: 'other-event' }, token),
+    ).toBe(false)
+    expect(verifyRegistrationConfirmationToken(99, { kind: 'event', eventSlug: 'forensic-workshop' }, token)).toBe(
+      false,
+    )
+  })
+})
+
+describe('rate limiting', () => {
+  it('blocks requests after the configured limit', async () => {
+    const { checkRateLimit } = await import('@/lib/security/rateLimit')
+
+    const key = `test-${Date.now()}`
+
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      const result = checkRateLimit(key, 3, 60_000)
+      expect(result.allowed).toBe(true)
+    }
+
+    const blocked = checkRateLimit(key, 3, 60_000)
+    expect(blocked.allowed).toBe(false)
+    expect(blocked.remaining).toBe(0)
+  })
+})
+
+describe('turnstile verification', () => {
+  it('skips verification when secret is not configured', async () => {
+    const originalSecret = process.env.TURNSTILE_SECRET_KEY
+    delete process.env.TURNSTILE_SECRET_KEY
+
+    const { verifyTurnstileToken } = await import('@/lib/security/turnstile')
+    await expect(verifyTurnstileToken(undefined)).resolves.toBe(true)
+
+    if (originalSecret) process.env.TURNSTILE_SECRET_KEY = originalSecret
+  })
+
+  it('treats placeholder site keys as not configured', async () => {
+    const originalSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY = '...'
+
+    const { isTurnstileConfiguredClient } = await import('@/lib/security/turnstileConfig')
+    expect(isTurnstileConfiguredClient()).toBe(false)
+
+    if (originalSiteKey) process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY = originalSiteKey
+    else delete process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
   })
 })
