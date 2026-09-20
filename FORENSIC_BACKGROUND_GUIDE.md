@@ -43,7 +43,7 @@ Your hero section now includes dynamic forensic-themed background elements that 
 The `ForensicBackground` component is already integrated into your hero section:
 
 ```tsx
-// src/components/home/sections.tsx
+// src/components/home/sections/HeroSection.tsx
 export function HeroSection({ heroData }: { heroData: HeroData }) {
   return (
     <section className="relative overflow-hidden text-white pt-16 pb-20">
@@ -139,28 +139,51 @@ import { ForensicBackgroundEnhanced } from '@/components/home/ForensicBackground
 
 ## Applying to Other Sections
 
-### Example: Services Section with Forensic Theme
+### Example: Impact Section with Forensic Theme
 
 ```tsx
-export function ServicesSection() {
+import { ForensicBackgroundEnhanced } from '@/components/home/ForensicBackgroundEnhanced'
+
+export function ImpactSection() {
   return (
-    <section className="relative bg-slate-50 overflow-hidden py-20">
-      {/* Add forensic background for visual continuity */}
-      <ForensicBackgroundEnhanced 
-        intensity="subtle" 
-        animationStyle="float"
-        showAccents={false}
+    <section className="relative overflow-hidden bg-gradient-to-r from-indigo-600 to-blue-600 py-16 text-white">
+      <ForensicBackgroundEnhanced
+        intensity="moderate"
+        animationStyle="spiral"
+        showGridPattern={true}
       />
-      
-      <div className="relative z-10">
-        {/* Your services content here */}
+
+      <div className="relative z-10 max-w-6xl mx-auto px-4">
+        {/* Impact stats content */}
       </div>
     </section>
   )
 }
 ```
 
-### Example: Impact Stats with Forensic Elements
+### Example: Secondary Section with Subtle Background
+
+```tsx
+import { ForensicBackgroundEnhanced } from '@/components/home/ForensicBackgroundEnhanced'
+
+export function ForensicTrainingProgram() {
+  return (
+    <section className="relative bg-slate-50 overflow-hidden py-20">
+      <ForensicBackgroundEnhanced
+        intensity="subtle"
+        animationStyle="float"
+        showAccents={false}
+      />
+
+      <div className="relative z-10">
+        {/* Training programme content */}
+      </div>
+    </section>
+  )
+}
+```
+
+### Example: Stats Block (alternate layout)
 
 ```tsx
 export function ImpactStatsSection() {

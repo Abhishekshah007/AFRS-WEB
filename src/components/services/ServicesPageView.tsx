@@ -1,6 +1,5 @@
 'use client'
 
-// import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -19,13 +18,12 @@ import {
   ShieldCheck,
   Users,
 } from 'lucide-react'
-// import { Modal } from '@/components/ui/Modal'
 import { LabInquiryForm } from '@/components/services/LabInquiryForm'
 import { AfslTestimonialsSection } from '@/components/services/AfslTestimonialsSection'
 import type { AfslTestimonial } from '@/components/services/AfslTestimonialsSection'
 import { VisitorCounterBar } from '@/components/student-hub/VisitorCounterBar'
-import { SiteGallerySection } from '@/components/gallery/SiteGallerySection'
-import type { SiteGalleryItem } from '@/components/gallery/SiteGallerySection'
+import { SiteGalleryPreviewSection } from '@/components/gallery/SiteGalleryPreviewSection'
+import type { GalleryThumb } from '@/components/programmes/types'
 import type {
   CatalogItem,
   DirectorateMember,
@@ -55,72 +53,10 @@ export type ServicesPageViewProps = {
   teamMembers: DirectorateMember[]
   site: SiteContact
   totalVisitors: number
-  galleryItems: SiteGalleryItem[]
+  galleryPreview: GalleryThumb[]
+  galleryViewAllHref: string
   testimonials: AfslTestimonial[]
 }
-
-// const clientCategories = [
-//   {
-//     id: 'law-enforcement',
-//     label: 'Law Enforcement Agencies',
-//     description: 'State & Central Police Departments, CBI, and investigative bureaus',
-//     icon: ShieldCheck,
-//     count: '15+',
-//     clients: [
-//       { name: 'Mumbai Police', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/mumbai_police_j9k2l3.png' },
-//       { name: 'Delhi Police', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/delhi_police_m5n8o1.png' },
-//       { name: 'Central Bureau of Investigation', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/cbi_p2q5r8.png' },
-//       { name: 'State Police - Maharashatra', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/maharashatra_police_s9t2u5.png' },
-//       { name: 'State Police - Gujarat', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/gujarat_police_v6w3x9.png' },
-//       { name: 'State Police - Rajasthan', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/rajasthan_police_y7z1a4.png' },
-//     ],
-//   },
-//   {
-//     id: 'judiciary',
-//     label: 'Judiciary & Legal Bodies',
-//     description: 'District Courts, High Courts, and legal institutions across India',
-//     icon: Gavel,
-//     count: '50+',
-//     clients: [
-//       { name: 'Supreme Court of India', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/supreme_court_b8c3d6.png' },
-//       { name: 'High Court - Mumbai', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/mumbai_hc_e2f7g1.png' },
-//       { name: 'High Court - Delhi', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/delhi_hc_h5i9j2.png' },
-//       { name: 'District Court - Indore', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/indore_dc_k3l6m8.png' },
-//       { name: 'National Commission for Women', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/ncw_n9o4p7.png' },
-//       { name: 'Law Institute of India', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/law_institute_q5r8s2.png' },
-//     ],
-//   },
-//   {
-//     id: 'insurance-corporate',
-//     label: 'Insurance & Corporate',
-//     description: 'Insurance companies and corporate entities for fraud investigation',
-//     icon: BriefcaseBusiness,
-//     count: '25+',
-//     clients: [
-//       { name: 'HDFC Insurance', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/hdfc_insurance_t1u4v6.png' },
-//       { name: 'ICICI Lombard', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/icici_lombard_w7x2y9.png' },
-//       { name: 'Bajaj Insurance', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/bajaj_insurance_z3a8b5.png' },
-//       { name: 'Reliance Corporation', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/reliance_c6d1e4.png' },
-//       { name: 'TCS', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/tcs_f9g2h7.png' },
-//       { name: 'Infosys', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/infosys_i5j8k3.png' },
-//     ],
-//   },
-//   {
-//     id: 'educational',
-//     label: 'Educational Institutions',
-//     description: 'Universities and forensic science programs for training and research',
-//     icon: GraduationCap,
-//     count: '40+',
-//     clients: [
-//       { name: 'University of Delhi', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/du_l1m4n6.png' },
-//       { name: 'Mumbai University', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/mumbai_uni_o7p2q9.png' },
-//       { name: 'Gujarat University', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/guj_uni_r5s8t3.png' },
-//       { name: 'Rajasthan University', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/raj_uni_u1v4w7.png' },
-//       { name: 'Chandigarh University', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/chandigarh_uni_x9y2z6.png' },
-//       { name: 'Amity University', logo: 'https://res.cloudinary.com/drrzakkgo/image/upload/v1783008139/afrs-2026-assets/amity_uni_a3b6c1.png' },
-//     ],
-//   },
-// ]
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
@@ -137,10 +73,10 @@ export function ServicesPageView({
   teamMembers,
   site,
   totalVisitors,
-  galleryItems,
+  galleryPreview,
+  galleryViewAllHref,
   testimonials,
 }: ServicesPageViewProps) {
-  // const [selectedCategory, setSelectedCategory] = useState<typeof clientCategories[0] | null>(null)
   const services = catalogItems.length > 0 ? catalogItems : defaultServicesCatalog
   const serviceOptions = services.map((c) => c.title)
   const people = teamMembers
@@ -742,41 +678,15 @@ export function ServicesPageView({
         </div>
       </section>
       <AfslTestimonialsSection testimonials={testimonials} />
-      <SiteGallerySection items={galleryItems} className="bg-brand-soft" />
+      <SiteGalleryPreviewSection
+        photos={galleryPreview}
+        viewAllHref={galleryViewAllHref}
+        viewAllLabel="View all laboratory photos"
+        className="bg-brand-soft"
+        title="AFSL Laboratory Gallery"
+        subtitle="Explore our forensic laboratory facilities, instrumentation, and casework environments."
+      />
       <VisitorCounterBar totalVisitors={totalVisitors} />
-      {/* 
-      <Modal
-        isOpen={!!selectedCategory}
-        onClose={() => setSelectedCategory(null)}
-        title={selectedCategory?.label || ''}
-      >
-        <div className="space-y-4">
-          <p className="text-[13px] font-medium text-[#687487]">
-            {selectedCategory?.description}
-          </p>
-          <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3">
-            {selectedCategory?.clients.map((client) => (
-              <div
-                key={client.name}
-                className="flex flex-col items-center gap-3 rounded-[12px] border border-[#e5ebf4] bg-[#FBF6EC] p-6 text-center transition hover:shadow-md"
-              >
-                <div className="relative h-16 w-16 overflow-hidden rounded-lg bg-white">
-                  <Image
-                    src={client.logo}
-                    alt={client.name}
-                    fill
-                    className="object-contain p-2"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none'
-                    }}
-                  />
-                </div>
-                <p className="text-[12px] font-bold text-[#1A0C0F]">{client.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Modal> */}
     </div>
   )
 }

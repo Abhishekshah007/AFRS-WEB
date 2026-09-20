@@ -19,6 +19,7 @@ export type ServiceDetailViewProps = {
   service: ServiceDetailData
   helpCards: HelpCardItem[]
   gallerySlides: GallerySlide[]
+  galleryViewAllHref?: string
   contact: SiteContactInfo
 }
 
@@ -60,6 +61,7 @@ export function ServiceDetailView({
   service,
   helpCards,
   gallerySlides,
+  galleryViewAllHref,
   contact,
 }: ServiceDetailViewProps) {
   const overviewTitle = `What is ${service.title}?`
@@ -84,7 +86,7 @@ export function ServiceDetailView({
         title={service.helpHeading || undefined}
         subtitle={service.helpIntro || undefined}
       />
-      <InvestigationGallery slides={gallerySlides} />
+      <InvestigationGallery slides={gallerySlides} viewAllHref={galleryViewAllHref} />
       <ExpertConsultationSection
         serviceTitle={service.title}
         serviceSlug={service.slug}

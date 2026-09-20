@@ -21,7 +21,9 @@ import {
 import { richTextToPlain, resolveMediaUrl, resolveMediaUrlOptional } from '@/lib/cms'
 import { resolveTotalVisitors } from '@/lib/site/totalVisitors'
 import { getPayloadClient } from '@/lib/payload'
-import { getFeaturedGalleryItems, mapGalleryDocs } from '@/lib/queries/gallery'
+import { getGalleryPreviewPhotos } from '@/lib/queries/gallery'
+import { galleryHref, GALLERY_PAGE_PRESETS } from '@/lib/gallery/constants'
+import type { GalleryThumb } from '@/components/programmes/types'
 import { safeQuery } from '@/lib/resilience/safeQuery'
 import { testimonialPlacementWhere } from '@/lib/queries/testimonials'
 import type {
@@ -248,6 +250,15 @@ function buildSiteContact(site: SiteSetting | null | undefined): SiteContact {
   }
 }
 
+function buildDefaultAfslGalleryPreview(): GalleryThumb[] {
+  const { categories } = GALLERY_PAGE_PRESETS.afsl
+  return Array.from({ length: 4 }, (_, index) => ({
+    id: `afsl-preview-${index}`,
+    src: fallbackBanners[index % fallbackBanners.length],
+    alt: 'AFSL laboratory',
+  })).slice(0, categories.length > 0 ? 4 : 0)
+}
+
 export function getDefaultServicesPageData(): ServicesPageViewProps {
   return {
     content: buildServicesContent(undefined),
@@ -256,7 +267,8 @@ export function getDefaultServicesPageData(): ServicesPageViewProps {
     teamMembers: fallbackTeam,
     site: buildSiteContact(null),
     totalVisitors: resolveTotalVisitors(null),
-    galleryItems: mapGalleryDocs([]),
+    galleryPreview: buildDefaultAfslGalleryPreview(),
+    galleryViewAllHref: galleryHref('lab', 'afsl'),
     testimonials: defaultAfslTestimonials,
   }
 }
@@ -264,7 +276,7 @@ export function getDefaultServicesPageData(): ServicesPageViewProps {
 async function loadServicesPageData(): Promise<ServicesPageViewProps> {
   const payload = await getPayloadClient()
 
-  const [servicesPage, services, scientists, siteData, galleryItems, testimonials] =
+  const [servicesPage, services, scientists, siteData, galleryPreview, testimonials] =
     await Promise.all([
       payload.findGlobal({ slug: 'servicesPage', depth: 0, overrideAccess: false }),
       payload.find({
@@ -284,7 +296,7 @@ async function loadServicesPageData(): Promise<ServicesPageViewProps> {
         overrideAccess: false,
       }),
       payload.findGlobal({ slug: 'siteSettings', depth: 0, overrideAccess: false }),
-      getFeaturedGalleryItems(4),
+      getGalleryPreviewPhotos(GALLERY_PAGE_PRESETS.afsl),
       payload.find({
         collection: 'testimonials',
         where: testimonialPlacementWhere('afsl'),
@@ -340,7 +352,8 @@ async function loadServicesPageData(): Promise<ServicesPageViewProps> {
     teamMembers: resolvedTeamMembers,
     site: buildSiteContact(site),
     totalVisitors: resolveTotalVisitors(site),
-    galleryItems,
+    galleryPreview,
+    galleryViewAllHref: galleryHref('lab', 'afsl'),
     testimonials: cmsTestimonials.length > 0 ? cmsTestimonials : defaultAfslTestimonials,
   }
 }

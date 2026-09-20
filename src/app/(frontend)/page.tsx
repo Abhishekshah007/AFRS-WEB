@@ -34,10 +34,8 @@ export const metadata: Metadata = buildPageMetadata({
 export default async function HomePage() {
   const {
     events,
-    services: _services,
     testimonials,
     scientists,
-    galleryItems,
     impactStats,
     partnerLogos,
     homePage,
@@ -68,7 +66,7 @@ export default async function HomePage() {
       <MediaResourcesSection />
       <LatestNewsSection items={notices} sectionText={sectionText} />
       <CommunityBannerSection siteSettings={siteSettings} />
-      <GallerySection galleryItems={galleryItems} />
+      <GallerySection />
       <PartnerLogosSection partnerLogos={partnerLogos} />
       <FaqSection faqs={faqs} sectionText={sectionText} />
     </div>

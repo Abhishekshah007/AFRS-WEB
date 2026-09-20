@@ -1,7 +1,6 @@
 import { ProgrammesPageView } from '@/components/programmes/ProgrammesPageView'
 import { defaultArchive } from '@/components/programmes/content'
 import {
-  getDefaultGallery,
   getDefaultResourcePersons,
   getTrainingChecklist,
 } from '@/components/programmes/content.server'
@@ -10,12 +9,13 @@ import {
   getArchiveFilterLinks,
   trainingOptionsForHub,
 } from '@/components/programmes/catalog'
-import type { ArchiveItem, GalleryThumb, ResourcePerson } from '@/components/programmes/types'
+import type { ArchiveItem, ResourcePerson } from '@/components/programmes/types'
 import { getPayloadClient } from '@/lib/payload'
 import { fetchProgrammeHubEvents } from '@/lib/programmeEvents'
-import { resolveMediaUrl } from '@/lib/cms'
 import { resolveTotalVisitors } from '@/lib/site/totalVisitors'
-import type { Media, Scientist, SiteSetting } from '@/payload-types'
+import { GALLERY_PAGE_PRESETS, galleryHref } from '@/lib/gallery/constants'
+import { getGalleryThumbs } from '@/lib/queries/gallery'
+import type { ResourcePerson as CmsResourcePerson, SiteSetting } from '@/payload-types'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 import type { Where } from 'payload'
@@ -79,8 +79,8 @@ export default async function CoursesPage() {
   const [
     site,
     { upcoming: upcomingEvents, ongoing: ongoingEvents },
-    scientistsResult,
-    galleryResult,
+    resourcePersonsResult,
+    gallery,
     nationalCount,
     intlCount,
     workshopCount,
@@ -89,27 +89,19 @@ export default async function CoursesPage() {
     educationProgrammes,
     trainingOptions,
     fallbackResourcePersons,
-    fallbackGallery,
     cmsChecklist,
   ] = await Promise.all([
     payload.findGlobal({ slug: 'siteSettings', depth: 0 }) as Promise<SiteSetting>,
     fetchProgrammeHubEvents({ limit: 24 }),
     payload.find({
-      collection: 'scientists',
+      collection: 'resourcePersons',
       where: { published: { equals: true } },
       sort: 'order',
-      limit: 4,
+      limit: 200,
       depth: 1,
       overrideAccess: false,
     }),
-    payload.find({
-      collection: 'galleryItems',
-      where: { published: { equals: true } },
-      sort: 'order',
-      limit: 6,
-      depth: 1,
-      overrideAccess: false,
-    }),
+    getGalleryThumbs({ ...GALLERY_PAGE_PRESETS.courses, limit: 6 }),
     payload.count({
       collection: 'events',
       where: completedEventWhere({ eventNature: { equals: 'national' } }),
@@ -134,33 +126,25 @@ export default async function CoursesPage() {
     educationProgrammesForHub(),
     trainingOptionsForHub(),
     getDefaultResourcePersons(),
-    getDefaultGallery(),
     getTrainingChecklist(),
   ])
 
   const resourcePersons: ResourcePerson[] =
-    scientistsResult.docs.length > 0
-      ? (scientistsResult.docs as Scientist[]).slice(0, 2).map((s) => ({
-          id: String(s.id),
-          name: s.name,
-          title: s.designation,
-          photoUrl: s.photo && typeof s.photo === 'object' && s.photo.url ? s.photo.url : undefined,
-          initials: initialsFromName(s.name),
-          bio: s.bio,
+    resourcePersonsResult.docs.length > 0
+      ? (resourcePersonsResult.docs as CmsResourcePerson[]).map((person) => ({
+          id: String(person.id),
+          name: person.name,
+          title: person.title,
+          photoUrl:
+            person.photo && typeof person.photo === 'object' && person.photo.url
+              ? person.photo.url
+              : undefined,
+          initials: initialsFromName(person.name),
+          bio: person.bio,
         }))
       : fallbackResourcePersons
 
-  const gallery: GalleryThumb[] =
-    galleryResult.docs.length > 0
-      ? galleryResult.docs.map((item, i) => ({
-          id: String(item.id),
-          src: resolveMediaUrl(
-            item.image as number | Media | null | undefined,
-            fallbackGallery[i % fallbackGallery.length]?.src || fallbackGallery[0].src,
-          ),
-          alt: item.title,
-        }))
-      : fallbackGallery
+  const galleryViewAllHref = galleryHref('events', 'afrs')
 
   const archive: ArchiveItem[] = [
     {
@@ -197,6 +181,7 @@ export default async function CoursesPage() {
       resourcePersons={resourcePersons}
       archive={archiveItems}
       gallery={gallery}
+      galleryViewAllHref={galleryViewAllHref}
       totalVisitors={resolveTotalVisitors(site)}
       trainingChecklist={cmsChecklist}
     />

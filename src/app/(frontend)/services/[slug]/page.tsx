@@ -1,15 +1,13 @@
 import { notFound } from 'next/navigation'
 import { ServiceDetailView } from '@/components/service-detail/ServiceDetailView'
-import {
-  defaultGallerySlides,
-  defaultHelpCards,
-  featuresToHelpCards,
-} from '@/components/service-detail/buildServiceContent'
-import type { GallerySlide, ServiceDetailData } from '@/components/service-detail/types'
+import { defaultHelpCards, featuresToHelpCards } from '@/components/service-detail/buildServiceContent'
+import type { ServiceDetailData } from '@/components/service-detail/types'
 import { SERVICE_DETAIL_IMAGES } from '@/components/service-detail/tokens'
 import { resolveMediaUrl, richTextToPlain } from '@/lib/cms'
+import { serviceGalleryHref } from '@/lib/gallery/constants'
+import { getServiceGallerySlides } from '@/lib/queries/gallery'
 import { getPayloadClient } from '@/lib/payload'
-import type { GalleryItem, Media, Service, SiteSetting } from '@/payload-types'
+import type { Media, Service, SiteSetting } from '@/payload-types'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { breadcrumbList, withContext } from '@/lib/seo/schema'
@@ -56,7 +54,7 @@ export default async function ServiceDetailPage({ params }: Props) {
   const { slug } = await params
   const payload = await getPayloadClient()
 
-  const [serviceResult, siteSettings, galleryResult] = await Promise.all([
+  const [serviceResult, siteSettings] = await Promise.all([
     payload.find({
       collection: 'services',
       where: { slug: { equals: slug }, published: { equals: true } },
@@ -65,14 +63,6 @@ export default async function ServiceDetailPage({ params }: Props) {
       overrideAccess: false,
     }),
     payload.findGlobal({ slug: 'siteSettings', depth: 0 }),
-    payload.find({
-      collection: 'galleryItems',
-      where: { published: { equals: true } },
-      sort: 'order',
-      limit: 4,
-      depth: 1,
-      overrideAccess: false,
-    }),
   ])
 
   const srv = serviceResult.docs[0] as Service | undefined
@@ -106,18 +96,14 @@ export default async function ServiceDetailPage({ params }: Props) {
 
   const helpCards = featuresToHelpCards(srv.features)
 
-  const gallerySlides: GallerySlide[] =
-    galleryResult.docs.length > 0
-      ? (galleryResult.docs as GalleryItem[]).map((g, i) => ({
-          id: String(g.id),
-          src: resolveMediaUrl(
-            g.image as number | Media | null | undefined,
-            defaultGallerySlides()[i]?.src ?? SERVICE_DETAIL_IMAGES.galleryLab,
-          ),
-          alt: g.title ?? g.label,
-          caption: g.label ?? g.title ?? 'Investigation',
-        }))
-      : defaultGallerySlides()
+  const gallerySlides = await getServiceGallerySlides({
+    serviceId: srv.id,
+    serviceTitle: srv.title,
+    serviceSlug: srv.slug,
+    bannerUrl,
+    overviewImageUrl,
+    brand: 'afsl',
+  })
 
   return (
     <>
@@ -143,6 +129,7 @@ export default async function ServiceDetailPage({ params }: Props) {
         service={service}
         helpCards={helpCards.length ? helpCards : defaultHelpCards()}
         gallerySlides={gallerySlides}
+        galleryViewAllHref={serviceGalleryHref(srv.slug)}
         contact={{
           phone: site?.phone || '+91-9926692487',
           email: site?.email || 'afrsciences@gmail.com',

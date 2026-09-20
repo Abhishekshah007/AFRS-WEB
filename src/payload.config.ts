@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { resendAdapter } from '@payloadcms/email-resend'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { cloudStoragePlugin } from '@payloadcms/plugin-cloud-storage'
@@ -10,9 +11,12 @@ import { collections } from './config/collections'
 import { globals } from './config/globals'
 import { Users } from './collections/Users'
 import { cloudinaryStorageAdapter } from './storage/cloudinary/adapter'
+import { resolveResendFrom } from './lib/email/resendFrom'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+const { defaultFromAddress, defaultFromName } = resolveResendFrom()
 
 export default buildConfig({
   admin: {
@@ -25,6 +29,11 @@ export default buildConfig({
   globals,
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
+  email: resendAdapter({
+    defaultFromAddress,
+    defaultFromName,
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },

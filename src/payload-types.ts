@@ -73,6 +73,7 @@ export interface Config {
     galleryItems: GalleryItem;
     testimonials: Testimonial;
     scientists: Scientist;
+    resourcePersons: ResourcePerson;
     impactStats: ImpactStat;
     notices: Notice;
     partnersLogo: PartnersLogo;
@@ -95,6 +96,7 @@ export interface Config {
     galleryItems: GalleryItemsSelect<false> | GalleryItemsSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     scientists: ScientistsSelect<false> | ScientistsSelect<true>;
+    resourcePersons: ResourcePersonsSelect<false> | ResourcePersonsSelect<true>;
     impactStats: ImpactStatsSelect<false> | ImpactStatsSelect<true>;
     notices: NoticesSelect<false> | NoticesSelect<true>;
     partnersLogo: PartnersLogoSelect<false> | PartnersLogoSelect<true>;
@@ -372,6 +374,8 @@ export interface Service {
   createdAt: string;
 }
 /**
+ * Shared image library. Set Category + Brand for hub tiles. Link a Service for that service detail page gallery.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "galleryItems".
  */
@@ -380,10 +384,25 @@ export interface GalleryItem {
   title: string;
   label: string;
   image: number | Media;
-  category?: ('lab' | 'training' | 'tech' | 'events' | 'other') | null;
+  /**
+   * Lab, Training, and Events appear on category hub tiles and /gallery filters.
+   */
+  category: 'lab' | 'training' | 'events' | 'other';
+  /**
+   * AFRS pages show AFRS + Both. AFSL pages show AFSL + Both.
+   */
+  brand: 'afrs' | 'afsl' | 'both';
+  /**
+   * Link to the AFSL service whose detail page should show this image.
+   */
+  service?: (number | null) | Service;
+  /**
+   * Optional. Used for UGC NET, FACT, or CUET teaching galleries.
+   */
+  examProgram?: ('ugc-net' | 'fact' | 'cuet') | null;
   published?: boolean | null;
   /**
-   * Show on home page gallery.
+   * When checked, this image is preferred as the category hub tile cover for its category.
    */
   featured?: boolean | null;
   /**
@@ -444,6 +463,35 @@ export interface Scientist {
   published?: boolean | null;
   /**
    * Lower numbers appear first within the same section.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Experts and faculty shown in the Resource Persons section on the Courses / Programmes page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "resourcePersons".
+ */
+export interface ResourcePerson {
+  id: number;
+  name: string;
+  /**
+   * Role or specialty shown under the name.
+   */
+  title: string;
+  bio?: string | null;
+  /**
+   * Square profile photo recommended.
+   */
+  photo?: (number | null) | Media;
+  /**
+   * Unpublished people are hidden from the public site.
+   */
+  published?: boolean | null;
+  /**
+   * Lower numbers appear first in the list and modal.
    */
   order?: number | null;
   updatedAt: string;
@@ -903,6 +951,10 @@ export interface PayloadLockedDocument {
         value: number | Scientist;
       } | null)
     | ({
+        relationTo: 'resourcePersons';
+        value: number | ResourcePerson;
+      } | null)
+    | ({
         relationTo: 'impactStats';
         value: number | ImpactStat;
       } | null)
@@ -1068,6 +1120,9 @@ export interface GalleryItemsSelect<T extends boolean = true> {
   label?: T;
   image?: T;
   category?: T;
+  brand?: T;
+  service?: T;
+  examProgram?: T;
   published?: T;
   featured?: T;
   order?: T;
@@ -1098,6 +1153,20 @@ export interface ScientistsSelect<T extends boolean = true> {
   designation?: T;
   memberType?: T;
   status?: T;
+  bio?: T;
+  photo?: T;
+  published?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "resourcePersons_select".
+ */
+export interface ResourcePersonsSelect<T extends boolean = true> {
+  name?: T;
+  title?: T;
   bio?: T;
   photo?: T;
   published?: T;

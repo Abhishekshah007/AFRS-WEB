@@ -2,7 +2,7 @@ import { StudentHubView } from '@/components/student-hub/StudentHubView'
 import { getStudentHubContent } from '@/components/student-hub/content'
 import { resolveTotalVisitors } from '@/lib/site/totalVisitors'
 import { getPayloadClient } from '@/lib/payload'
-import { getFeaturedGalleryItems } from '@/lib/queries/gallery'
+import { getGalleryForPage } from '@/lib/queries/gallery'
 import type { SiteSetting } from '@/payload-types'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
@@ -19,7 +19,7 @@ export default async function StudentHubPage() {
   const [site, content, galleryItems] = await Promise.all([
     payload.findGlobal({ slug: 'siteSettings', depth: 0 }) as Promise<SiteSetting>,
     getStudentHubContent(),
-    getFeaturedGalleryItems(4),
+    getGalleryForPage('studentHub'),
   ])
 
   return (

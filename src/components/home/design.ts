@@ -60,12 +60,6 @@ export const UI = {
     'inline-flex h-11 items-center justify-center rounded-xl px-6 text-sm font-bold transition',
 }
 
-export const GRADIENT = {
-  hero: UI.heroGradient,
-  afsl: UI.afslGradient,
-  quickLinks: UI.quickLinksGradient,
-}
-
 export const TYPOGRAPHY = {
   hero: DESIGN_SYSTEM.typography.h1,
 

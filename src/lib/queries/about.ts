@@ -18,7 +18,7 @@ import {
 } from '@/data/defaults/about'
 import { resolveMediaUrl, resolveMediaUrlOptional } from '@/lib/cms'
 import { getPayloadClient } from '@/lib/payload'
-import { getFeaturedGalleryItems, mapGalleryDocs } from '@/lib/queries/gallery'
+import { getGalleryForPage, mapGalleryDocs } from '@/lib/queries/gallery'
 import { safeQuery } from '@/lib/resilience/safeQuery'
 import { membershipWhatsAppHref } from '@/lib/queries/site'
 import type { AboutCertification, AboutPage, ImpactStat, Media, SiteSetting } from '@/payload-types'
@@ -230,7 +230,7 @@ async function loadAboutPageData(): Promise<AboutPageViewProps> {
         depth: 1,
         overrideAccess: false,
       }),
-      getFeaturedGalleryItems(4),
+      getGalleryForPage('about'),
     ])
 
   const about = aboutPage as AboutPage

@@ -10,7 +10,7 @@ import type { Metadata } from 'next'
 import { EventHubCard } from '@/components/programmes/EventHubCard'
 import { mapEventToHubCard } from '@/components/programmes/mapEvent'
 import { SiteGallerySection } from '@/components/gallery/SiteGallerySection'
-import { getFeaturedGalleryItems } from '@/lib/queries/gallery'
+import { getGalleryForPage } from '@/lib/queries/gallery'
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Forensic Science Events',
@@ -37,7 +37,7 @@ export default async function EventsPage() {
       depth: 1,
       overrideAccess: false,
     }),
-    getFeaturedGalleryItems(4),
+    getGalleryForPage('events'),
   ])
 
   return (

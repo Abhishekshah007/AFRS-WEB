@@ -1,11 +1,22 @@
 import Image from 'next/image'
-import { getPayloadClient } from '@/lib/payload'
+import { notFound } from 'next/navigation'
 import { resolveMediaUrl } from '@/lib/cms'
 import type { GalleryItem, Media } from '@/payload-types'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import { PageHero } from '@/components/marketing/PageHero'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
+import {
+  GalleryCategoryNav,
+  parseGalleryPageCategory,
+} from '@/components/gallery/GalleryCategoryNav'
+import { getGalleryPageItems, resolvePublishedServiceBySlug } from '@/lib/queries/gallery'
+import {
+  GALLERY_BRANDS,
+  galleryCategoryLabel,
+  isGalleryBrand,
+  parseGalleryServiceSlug,
+} from '@/lib/gallery/constants'
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'AFRS Gallery',
@@ -16,56 +27,65 @@ export const metadata: Metadata = buildPageMetadata({
 
 import { FALLBACK_BANNER_IMAGE } from '@/lib/constants/assets'
 
-const categories = [
-  { value: 'all', label: 'All' },
-  { value: 'lab', label: 'Lab' },
-  { value: 'training', label: 'Training' },
-  { value: 'tech', label: 'Technology' },
-  { value: 'events', label: 'Events' },
-  { value: 'other', label: 'Other' },
-]
+type Props = {
+  searchParams: Promise<{ category?: string; brand?: string; service?: string }>
+}
 
-export default async function GalleryPage() {
-  const payload = await getPayloadClient()
-  const { docs } = await payload.find({
-    collection: 'galleryItems',
-    where: { published: { equals: true } },
-    sort: 'order',
-    limit: 60,
-    depth: 1,
-    overrideAccess: false,
+function brandLabel(brand: string): string {
+  return GALLERY_BRANDS.find((item) => item.value === brand)?.label ?? brand.toUpperCase()
+}
+
+export default async function GalleryPage({ searchParams }: Props) {
+  const { category: categoryParam, brand: brandParam, service: serviceParam } = await searchParams
+  const activeCategory = parseGalleryPageCategory(categoryParam)
+  const serviceSlug = parseGalleryServiceSlug(serviceParam)
+  const service = serviceSlug ? await resolvePublishedServiceBySlug(serviceSlug) : null
+
+  if (serviceSlug && !service) notFound()
+
+  const activeBrand = service ? 'afsl' : isGalleryBrand(brandParam) ? brandParam : 'afrs'
+
+  const docs = await getGalleryPageItems({
+    brand: activeBrand,
+    category: activeCategory === 'all' ? undefined : activeCategory,
+    serviceId: service?.id,
   })
+
+  const filterParts = [
+    service ? service.title : null,
+    activeBrand !== 'afrs' ? brandLabel(activeBrand) : null,
+    activeCategory === 'all' ? (service ? 'All categories' : 'All categories') : galleryCategoryLabel(activeCategory),
+  ].filter(Boolean)
+
+  const heroTitle = service
+    ? `Gallery — ${service.title}`
+    : activeBrand === 'afsl'
+      ? 'Gallery — AFSL Laboratory'
+      : 'Gallery — AFRS in Action'
 
   return (
     <div>
       <PageHero
         eyebrow="VIRTUAL MUSEUM"
-        title="Gallery — AFRS in Action"
+        title={heroTitle}
         subtitle="A visual journey through our forensic science labs, training events, and community initiatives."
       />
 
-      <div className="bg-white border-b border-slate-100 sticky top-[68px] z-40">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16">
-          <div className="flex gap-1 py-2 overflow-x-auto no-scrollbar">
-            {categories.map((cat, i) => (
-              <span
-                key={cat.value}
-                className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold cursor-pointer transition ${
-                  i === 0 ? 'bg-brand-600 text-white' : 'text-slate-500 hover:bg-slate-100'
-                }`}
-              >
-                {cat.label}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
+      <GalleryCategoryNav
+        activeCategory={activeCategory}
+        brand={activeBrand}
+        serviceSlug={service?.slug}
+      />
 
       <section className="py-12 lg:py-16">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16">
+          <p className="mb-6 text-sm font-semibold text-slate-500">
+            Showing: <span className="text-slate-800">{filterParts.join(' · ')}</span>
+          </p>
+
           {docs.length === 0 ? (
             <p className="text-center text-slate-400 py-20">
-              Gallery content coming soon. Check back later.
+              No gallery images for this selection yet. Try another filter or check back later.
             </p>
           ) : (
             <AnimateOnScroll stagger>

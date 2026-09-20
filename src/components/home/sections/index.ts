@@ -8,7 +8,6 @@ export {
 export { HeroSection } from './HeroSection'
 export { AFRSFeatureCards } from './AFRSFeatureCards'
 export { ForensicTrainingProgram } from './ForensicTrainingProgram'
-export { ServicesSection } from './ServicesSection'
 export { EventsSection } from './EventsSection'
 export { AboutSection } from './AboutSection'
 export { InternshipProgramSection } from './InternshipProgramSection'
