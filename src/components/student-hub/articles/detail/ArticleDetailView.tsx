@@ -10,7 +10,6 @@ import { AuthorBioCard } from '@/components/student-hub/articles/detail/AuthorBi
 import { ReadNextSection } from '@/components/student-hub/articles/detail/ReadNextSection'
 import { RelatedArticlesSidebar } from '@/components/student-hub/articles/detail/RelatedArticlesSidebar'
 import { TableOfContents } from '@/components/student-hub/articles/detail/TableOfContents'
-import { studentHubTokens } from '@/components/student-hub/tokens'
 
 export type ArticleDetailViewProps = {
   article: ArticleDetailData

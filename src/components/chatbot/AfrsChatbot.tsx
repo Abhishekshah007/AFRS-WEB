@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { CHATBOT_SUGGESTIONS } from '@/lib/chatbot/knowledge'
 import type { ChatMessage } from '@/lib/chatbot/provider'
+import { TurnstileField } from '@/components/security/TurnstileField'
+import { isTurnstileConfiguredClient } from '@/lib/security/turnstileClient'
 
 type AfrsChatbotProps = {
   phone?: string
@@ -17,6 +19,21 @@ const WELCOME: ChatMessage = {
   role: 'assistant',
   content:
     'Hello! I am the **AFRS assistant**. Ask me about courses, events, AFSL forensic services, registrations, or how to contact our team.',
+}
+
+function loadStoredMessages(): ChatMessage[] {
+  if (typeof window === 'undefined') return [WELCOME]
+
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY)
+    if (!raw) return [WELCOME]
+    const parsed = JSON.parse(raw) as ChatMessage[]
+    if (Array.isArray(parsed) && parsed.length > 0) return parsed
+  } catch {
+    /* ignore */
+  }
+
+  return [WELCOME]
 }
 
 function renderInlineMarkdown(text: string) {
@@ -47,27 +64,18 @@ export function AfrsChatbot({ phone = '+91-9926692487', email = 'afrsciences@gma
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
-  const [messages, setMessages] = useState<ChatMessage[]>([WELCOME])
+  const [messages, setMessages] = useState<ChatMessage[]>(loadStoredMessages)
   const [showEscalate, setShowEscalate] = useState(false)
   const [escalateEmail, setEscalateEmail] = useState('')
   const [escalateName, setEscalateName] = useState('')
   const [escalatePhone, setEscalatePhone] = useState('')
+  const [escalateTurnstileToken, setEscalateTurnstileToken] = useState<string | null>(null)
+  const turnstileRequired = isTurnstileConfiguredClient()
   const [escalateLoading, setEscalateLoading] = useState(false)
   const [escalateDone, setEscalateDone] = useState(false)
   const [suggestsHuman, setSuggestsHuman] = useState(false)
   const listRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
-
-  useEffect(() => {
-    try {
-      const raw = sessionStorage.getItem(STORAGE_KEY)
-      if (!raw) return
-      const parsed = JSON.parse(raw) as ChatMessage[]
-      if (Array.isArray(parsed) && parsed.length > 0) setMessages(parsed)
-    } catch {
-      /* ignore */
-    }
-  }, [])
 
   useEffect(() => {
     try {
@@ -121,6 +129,7 @@ export function AfrsChatbot({ phone = '+91-9926692487', email = 'afrsciences@gma
 
   const submitEscalation = useCallback(async () => {
     if (escalateLoading || !escalateEmail.trim()) return
+    if (turnstileRequired && !escalateTurnstileToken) return
     setEscalateLoading(true)
     try {
       const res = await fetch('/api/chat/escalate', {
@@ -132,6 +141,7 @@ export function AfrsChatbot({ phone = '+91-9926692487', email = 'afrsciences@gma
           userPhone: escalatePhone.trim() || undefined,
           messages,
           reason: suggestsHuman ? 'Bot suggested human help' : 'Visitor requested human help',
+          turnstileToken: escalateTurnstileToken || undefined,
         }),
       })
       const data = await res.json()
@@ -157,7 +167,18 @@ export function AfrsChatbot({ phone = '+91-9926692487', email = 'afrsciences@gma
     } finally {
       setEscalateLoading(false)
     }
-  }, [escalateEmail, escalateLoading, escalateName, escalatePhone, email, messages, phone, suggestsHuman])
+  }, [
+    escalateEmail,
+    escalateLoading,
+    escalateName,
+    escalatePhone,
+    escalateTurnstileToken,
+    email,
+    messages,
+    phone,
+    suggestsHuman,
+    turnstileRequired,
+  ])
 
   return (
     <>
@@ -273,6 +294,7 @@ export function AfrsChatbot({ phone = '+91-9926692487', email = 'afrsciences@gma
                 placeholder="Phone (optional)"
                 className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-400"
               />
+              <TurnstileField onTokenChange={setEscalateTurnstileToken} />
               <div className="flex gap-2">
                 <button
                   type="button"
@@ -283,7 +305,11 @@ export function AfrsChatbot({ phone = '+91-9926692487', email = 'afrsciences@gma
                 </button>
                 <button
                   type="button"
-                  disabled={escalateLoading || !escalateEmail.trim()}
+                  disabled={
+                    escalateLoading ||
+                    !escalateEmail.trim() ||
+                    (turnstileRequired && !escalateTurnstileToken)
+                  }
                   onClick={() => void submitEscalation()}
                   className="flex-1 rounded-lg bg-brand-700 px-3 py-2 text-xs font-semibold text-white disabled:opacity-50"
                 >

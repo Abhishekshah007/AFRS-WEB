@@ -5,7 +5,6 @@ import Image from 'next/image'
 import { FALLBACK_LOGO_IMAGE } from '@/lib/constants/assets'
 import { resolveMediaUrl } from '@/lib/cms'
 import type { MediaRef } from '@/lib/media'
-import type { Media } from '@/payload-types'
 
 type Item = {
   id?: number | string

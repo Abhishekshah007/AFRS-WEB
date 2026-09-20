@@ -1,3 +1,4 @@
+import { createElement, type SVGProps } from 'react'
 import {
   Award,
   BarChart2,
@@ -71,4 +72,11 @@ export function resolveIcon(name?: string | null): LucideIcon {
   const normalised = name.trim().toLowerCase()
   const match = Object.entries(iconMap).find(([key]) => key.toLowerCase() === normalised)
   return match?.[1] ?? fallbackIcon
+}
+
+export function renderIcon(
+  name: string | null | undefined,
+  props: SVGProps<SVGSVGElement> & { strokeWidth?: number },
+) {
+  return createElement(resolveIcon(name), props)
 }

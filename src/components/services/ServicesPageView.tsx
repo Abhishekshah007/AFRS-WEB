@@ -14,7 +14,6 @@ import {
   Fingerprint,
   FlaskConical,
   Gavel,
-  GraduationCap,
   Microscope,
   Phone,
   ShieldCheck,

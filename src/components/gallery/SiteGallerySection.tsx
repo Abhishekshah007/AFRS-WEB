@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import Link from 'next/link'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { DESIGN_SYSTEM } from '@/lib/design-system'

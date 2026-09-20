@@ -1,11 +1,19 @@
 import { getLiveChatKnowledge } from '@/lib/chatbot/liveKnowledge'
 import { generateChatReply, suggestsHumanHelp, type ChatMessage } from '@/lib/chatbot/provider'
+import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
+import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
 
 const MAX_MESSAGES = 20
 const MAX_MESSAGE_LENGTH = 1200
 
 export async function POST(req: Request) {
   try {
+    const blocked = await enforcePublicApiGuards(req, {
+      rateLimit: PUBLIC_RATE_LIMITS.chat,
+      requireTurnstile: false,
+    })
+    if (blocked) return blocked
+
     const body = (await req.json()) as { messages?: ChatMessage[] }
     const messages = (body.messages || []).filter(
       (m) =>

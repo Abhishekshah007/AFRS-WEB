@@ -146,3 +146,43 @@ describe('registration confirmation token', () => {
     )
   })
 })
+
+describe('rate limiting', () => {
+  it('blocks requests after the configured limit', async () => {
+    const { checkRateLimit } = await import('@/lib/security/rateLimit')
+
+    const key = `test-${Date.now()}`
+
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      const result = checkRateLimit(key, 3, 60_000)
+      expect(result.allowed).toBe(true)
+    }
+
+    const blocked = checkRateLimit(key, 3, 60_000)
+    expect(blocked.allowed).toBe(false)
+    expect(blocked.remaining).toBe(0)
+  })
+})
+
+describe('turnstile verification', () => {
+  it('skips verification when secret is not configured', async () => {
+    const originalSecret = process.env.TURNSTILE_SECRET_KEY
+    delete process.env.TURNSTILE_SECRET_KEY
+
+    const { verifyTurnstileToken } = await import('@/lib/security/turnstile')
+    await expect(verifyTurnstileToken(undefined)).resolves.toBe(true)
+
+    if (originalSecret) process.env.TURNSTILE_SECRET_KEY = originalSecret
+  })
+
+  it('treats placeholder site keys as not configured', async () => {
+    const originalSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY = '...'
+
+    const { isTurnstileConfiguredClient } = await import('@/lib/security/turnstileConfig')
+    expect(isTurnstileConfiguredClient()).toBe(false)
+
+    if (originalSiteKey) process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY = originalSiteKey
+    else delete process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+  })
+})

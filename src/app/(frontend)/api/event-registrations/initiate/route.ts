@@ -4,6 +4,8 @@ import { validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 import { categoriesToFeeTiers, resolveRegistrationConfig } from '@/lib/registration/resolveConfig'
 import { getPayloadClient } from '@/lib/payload'
+import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
+import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
 import { resolveEventSlug } from '@/lib/utils/slugify'
 import type { Event as AfrsEvent, RegistrationForm } from '@/payload-types'
 
@@ -23,11 +25,19 @@ type InitiatePayload = {
   includeKit?: boolean
   agreedToTerms?: boolean
   customResponses?: Record<string, string>
+  turnstileToken?: string
 }
 
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as InitiatePayload
+
+    const blocked = await enforcePublicApiGuards(req, {
+      rateLimit: PUBLIC_RATE_LIMITS.registration,
+      turnstileToken: body.turnstileToken,
+    })
+    if (blocked) return blocked
+
     const payload = await getPayloadClient()
 
     if (

@@ -1,11 +1,12 @@
 import { getPayload } from 'payload'
 import config from '../../src/payload.config.js'
 
+/** Must be superAdmin — Users collection create/read-all requires admin access. */
 export const testUser = {
   name: 'Test User',
   email: 'dev@payloadcms.com',
   password: 'test',
-  role: 'student' as const,
+  role: 'superAdmin' as const,
 }
 
 /**
@@ -14,7 +15,6 @@ export const testUser = {
 export async function seedTestUser(): Promise<void> {
   const payload = await getPayload({ config })
 
-  // Delete existing test user if any
   await payload.delete({
     collection: 'users',
     where: {
@@ -24,7 +24,6 @@ export async function seedTestUser(): Promise<void> {
     },
   })
 
-  // Create fresh test user
   await payload.create({
     collection: 'users',
     data: testUser,

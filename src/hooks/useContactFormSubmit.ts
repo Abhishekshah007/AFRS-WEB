@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import type { SubmissionFormType } from '@/fields/submissionExport'
 import type { FormSubmitState } from '@/domain/registration/types'
+import { isTurnstileConfiguredClient } from '@/lib/security/turnstileClient'
 
 export type ContactMessagePayload = {
   fullName: string
@@ -18,25 +19,29 @@ export type ContactMessagePayload = {
 type Options = {
   endpoint?: string
   successMessage?: string
-  mapFormData?: (formData: FormData) => ContactMessagePayload
+  mapFormData?: (_formData: FormData) => ContactMessagePayload
+  turnstileToken?: string | null
 }
 
-const defaultMapFormData = (formData: FormData): ContactMessagePayload => ({
-  fullName: String(formData.get('fullName') || '').trim(),
-  mobile: String(formData.get('mobile') || '').trim(),
-  email: String(formData.get('email') || '').trim(),
-  subject: String(formData.get('subject') || '').trim(),
-  message: String(formData.get('message') || '').trim(),
+const defaultMapFormData = (_formData: FormData): ContactMessagePayload => ({
+  fullName: String(_formData.get('fullName') || '').trim(),
+  mobile: String(_formData.get('mobile') || '').trim(),
+  email: String(_formData.get('email') || '').trim(),
+  subject: String(_formData.get('subject') || '').trim(),
+  message: String(_formData.get('message') || '').trim(),
   formType: 'contact',
 })
 
 export function useContactFormSubmit({
-  endpoint = '/api/contactMessages',
+  endpoint = '/api/contact-messages/submit',
   successMessage = 'Message sent successfully. We will contact you soon.',
   mapFormData = defaultMapFormData,
+  turnstileToken = null,
 }: Options = {}) {
   const [state, setState] = useState<FormSubmitState>({ status: 'idle' })
   const disabled = state.status === 'submitting'
+  const turnstileRequired = isTurnstileConfiguredClient()
+  const captchaPending = turnstileRequired && !turnstileToken
 
   const buttonLabel = useMemo(() => {
     if (state.status === 'submitting') return 'Sending...'
@@ -52,6 +57,11 @@ export function useContactFormSubmit({
       return
     }
 
+    if (captchaPending) {
+      setState({ status: 'error', message: 'Please complete the security check.' })
+      return
+    }
+
     setState({ status: 'submitting' })
     try {
       const res = await fetch(endpoint, {
@@ -60,12 +70,13 @@ export function useContactFormSubmit({
         body: JSON.stringify({
           ...payload,
           formType: payload.formType || 'contact',
+          turnstileToken: turnstileToken || undefined,
         }),
       })
 
       if (!res.ok) {
-        const text = await res.text().catch(() => '')
-        throw new Error(text || 'Failed to send message')
+        const data = (await res.json().catch(() => null)) as { error?: string } | null
+        throw new Error(data?.error || 'Failed to send message')
       }
 
       setState({ status: 'success', message: successMessage })
@@ -77,5 +88,11 @@ export function useContactFormSubmit({
     }
   }
 
-  return { state, disabled, buttonLabel, onSubmit }
+  return {
+    state,
+    disabled: disabled || captchaPending,
+    buttonLabel,
+    onSubmit,
+    turnstileRequired,
+  }
 }

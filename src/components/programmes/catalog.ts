@@ -98,7 +98,7 @@ function isStaleProgrammeList(programmes: ProgrammeListItem[] | undefined): bool
 function mergeBySlug<T extends { slug: string; programmes: ProgrammeListItem[] }>(
   cms: T[] | undefined,
   defaults: T[],
-  mergeItem: (cmsItem: T | undefined, defaultItem: T) => T,
+  mergeItem: (_cmsItem: T | undefined, _defaultItem: T) => T,
 ): T[] {
   const cmsBySlug = new Map((cms ?? []).filter((item) => item?.slug).map((item) => [item.slug, item]))
   const seen = new Set<string>()

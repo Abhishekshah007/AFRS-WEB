@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { DynamicFormFields } from '@/components/forms/DynamicFormFields'
 import { PaymentInstructionsPanel } from '@/components/forms/PaymentInstructionsPanel'
+import { TurnstileField } from '@/components/security/TurnstileField'
 import type {
   FeeTier,
   ParticipantRegion,
@@ -18,6 +19,7 @@ import {
   filterPaymentMethodsByRegion,
   formatFeeAmount,
 } from '@/lib/registration/resolveConfig'
+import { isTurnstileConfiguredClient } from '@/lib/security/turnstileClient'
 
 type ContactFormState = {
   fullName: string
@@ -46,9 +48,9 @@ type Props = {
   submitEndpoint?: string
   initiateEndpoint?: string
   completeEndpoint?: string
-  confirmationPath: (registrationId: string) => string
+  confirmationPath: (_registrationId: string) => string
   eventSlug?: string
-  buildInitiatePayload?: (input: {
+  buildInitiatePayload?: (_input: {
     form: ContactFormState
     selectedTier: FeeTier | undefined
     participantRegion: 'indian' | 'international'
@@ -84,6 +86,8 @@ export function UnifiedRegistrationFlow({
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const turnstileRequired = isTurnstileConfiguredClient()
   const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [participantRegion, setParticipantRegion] = useState<'indian' | 'international'>(
     config.participantRegion === 'international' ? 'international' : 'indian',
@@ -181,6 +185,11 @@ export function UnifiedRegistrationFlow({
       }
     }
 
+    if (turnstileRequired && !turnstileToken) {
+      setError('Please complete the security check.')
+      return false
+    }
+
     setError('')
     return true
   }
@@ -206,6 +215,7 @@ export function UnifiedRegistrationFlow({
     if (paymentForm.transactionDate) body.set('transactionDate', paymentForm.transactionDate)
     if (paymentForm.transactionTime) body.set('transactionTime', paymentForm.transactionTime)
     if (paymentForm.transactionProof) body.set('transactionProof', paymentForm.transactionProof)
+    if (turnstileToken) body.set('turnstileToken', turnstileToken)
 
     const res = await fetch(submitEndpoint, { method: 'POST', body })
     const data = await res.json()
@@ -219,8 +229,8 @@ export function UnifiedRegistrationFlow({
     const res = await fetch(initiateEndpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(
-        buildInitiatePayload({
+      body: JSON.stringify({
+        ...buildInitiatePayload({
           form,
           selectedTier,
           participantRegion: activeRegion === 'international' ? 'international' : 'indian',
@@ -228,7 +238,8 @@ export function UnifiedRegistrationFlow({
           includeKit,
           agreedToTerms,
         }),
-      ),
+        turnstileToken: turnstileToken || undefined,
+      }),
     })
     const data = await res.json()
     if (!res.ok) throw new Error(data.error || 'Unable to submit registration')
@@ -251,6 +262,7 @@ export function UnifiedRegistrationFlow({
     body.set('transactionDate', paymentForm.transactionDate)
     body.set('transactionTime', paymentForm.transactionTime)
     if (paymentForm.transactionProof) body.set('transactionProof', paymentForm.transactionProof)
+    if (turnstileToken) body.set('turnstileToken', turnstileToken)
 
     const completeRes = await fetch(completeEndpoint, { method: 'POST', body })
     const completeData = await completeRes.json()
@@ -556,6 +568,8 @@ export function UnifiedRegistrationFlow({
 
           {error && <p className="text-sm text-rose-600">{error}</p>}
 
+          <TurnstileField onTokenChange={setTurnstileToken} />
+
           <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <div>
               <p className="text-xs text-slate-500">TOTAL</p>
@@ -566,7 +580,7 @@ export function UnifiedRegistrationFlow({
             <button
               type="button"
               onClick={handleSubmit}
-              disabled={loading}
+              disabled={loading || (turnstileRequired && !turnstileToken)}
               className="h-12 px-8 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold disabled:opacity-60"
             >
               {loading ? 'Submitting…' : 'Submit registration'}

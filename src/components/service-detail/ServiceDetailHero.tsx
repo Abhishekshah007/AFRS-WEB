@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { HeroStagger, HeroStaggerItem } from '@/components/motion/HeroStagger'
 import { serviceDetailTokens } from '@/components/service-detail/tokens'
@@ -10,7 +9,7 @@ export type ServiceDetailHeroProps = {
   bannerUrl: string
 }
 
-export function ServiceDetailHero({ title, description, bannerUrl }: ServiceDetailHeroProps) {
+export function ServiceDetailHero({ title, description, bannerUrl: _bannerUrl }: ServiceDetailHeroProps) {
   return (
     <section
       className="relative flex min-h-[440px] items-center overflow-hidden py-16 md:h-[580px] md:min-h-0 md:py-0"

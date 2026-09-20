@@ -1,6 +1,8 @@
 import { jsonError } from '@/lib/apiResponses'
 import { getFormValue, readUploadFile } from '@/lib/api/form-data'
 import { buildEventConfirmationUrl } from '@/lib/registration/confirmationToken'
+import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
+import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
 import { resolveEventSlug } from '@/lib/utils/slugify'
 import { getPayloadClient } from '@/lib/payload'
 import { createLocalReq } from 'payload'
@@ -16,6 +18,12 @@ type CompleteEventRegistrationBody = {
 export async function completeEventRegistration(req: Request) {
   const contentType = req.headers.get('content-type') || ''
   const formData = contentType.includes('multipart/form-data') ? await req.formData() : null
+
+  const blocked = await enforcePublicApiGuards(req, {
+    rateLimit: PUBLIC_RATE_LIMITS.registration,
+    turnstileToken: formData ? getFormValue(formData, 'turnstileToken') : undefined,
+  })
+  if (blocked) return blocked
 
   const body: CompleteEventRegistrationBody = formData
     ? {

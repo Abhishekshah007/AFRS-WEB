@@ -12,6 +12,8 @@ import { getPayloadClient } from '@/lib/payload'
 import { resolveEventSlug } from '@/lib/utils/slugify'
 import { buildEventConfirmationUrl } from '@/lib/registration/confirmationToken'
 import { logCmsError } from '@/lib/resilience/logger'
+import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
+import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
 import { createLocalReq } from 'payload'
 import type { File as PayloadFile } from 'payload'
 import type { Event as AfrsEvent, RegistrationForm } from '@/payload-types'
@@ -39,6 +41,13 @@ export async function submitEventRegistration(req: Request) {
   }
 
   const formData = await req.formData()
+
+  const blocked = await enforcePublicApiGuards(req, {
+    rateLimit: PUBLIC_RATE_LIMITS.registration,
+    turnstileToken: getFormValue(formData, 'turnstileToken'),
+  })
+  if (blocked) return blocked
+
   const eventSlug = getFormValue(formData, 'eventSlug')
   if (!eventSlug) return jsonError('Event is required.', 400)
 

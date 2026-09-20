@@ -1,11 +1,14 @@
 'use client'
 
+import { useState } from 'react'
 import { useContactFormSubmit } from '@/hooks/useContactFormSubmit'
+import { TurnstileField } from '@/components/security/TurnstileField'
 
 const inputClass =
   'mt-2 w-full h-11 rounded-[8px] border border-[#eadcc0] bg-white px-4 text-[12px] font-semibold text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/15'
 
 export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] }) {
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
   const { state, disabled, onSubmit } = useContactFormSubmit({
     successMessage: 'Inquiry received. Our lab team will contact you within 24 hours.',
     mapFormData: (formData) => ({
@@ -17,6 +20,7 @@ export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] })
       message: String(formData.get('message') || '').trim(),
       formType: 'labInquiry',
     }),
+    turnstileToken,
   })
 
   const buttonLabel =
@@ -84,6 +88,8 @@ export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] })
       </label>
 
       <input name="mobile" type="hidden" value="" />
+
+      <TurnstileField onTokenChange={setTurnstileToken} />
 
       {state.status !== 'idle' && (
         <p
