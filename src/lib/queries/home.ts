@@ -5,13 +5,11 @@ import { emptyPaginatedDocs } from '@/lib/resilience/emptyPaginated'
 import { safeQuery } from '@/lib/resilience/safeQuery'
 import type {
   Event as AfrsEvent,
-  GalleryItem,
   HomePage,
   ImpactStat,
   Notice,
   PartnersLogo,
   Scientist,
-  Service,
   SiteSetting,
   Testimonial,
 } from '@/payload-types'
@@ -21,10 +19,8 @@ import { mapHomeNotices, resolveHomeFaqs } from '@/lib/queries/home-content'
 
 export type HomePageData = {
   events: PaginatedDocs<AfrsEvent>
-  services: PaginatedDocs<Service>
   testimonials: PaginatedDocs<Testimonial>
   scientists: PaginatedDocs<Scientist>
-  galleryItems: PaginatedDocs<GalleryItem>
   impactStats: PaginatedDocs<ImpactStat>
   partnerLogos: PaginatedDocs<PartnersLogo>
   homePage: HomePage | null
@@ -36,10 +32,8 @@ export type HomePageData = {
 
 const EMPTY_HOME: HomePageData = {
   events: emptyPaginatedDocs<AfrsEvent>(),
-  services: emptyPaginatedDocs<Service>(),
   testimonials: emptyPaginatedDocs<Testimonial>(),
   scientists: emptyPaginatedDocs<Scientist>(),
-  galleryItems: emptyPaginatedDocs<GalleryItem>(),
   impactStats: emptyPaginatedDocs<ImpactStat>(),
   partnerLogos: emptyPaginatedDocs<PartnersLogo>(),
   homePage: null,
@@ -57,10 +51,8 @@ export async function getHomePageData(): Promise<HomePageData> {
 
       const [
         events,
-        services,
         testimonials,
         scientists,
-        galleryItems,
         impactStats,
         partnerLogos,
         homePage,
@@ -68,14 +60,6 @@ export async function getHomePageData(): Promise<HomePageData> {
         noticeDocs,
       ] = await Promise.all([
         fetchActiveEvents(payload, { limit: 3, depth: 1 }),
-        payload.find({
-          collection: 'services',
-          where: { published: { equals: true } },
-          limit: 6,
-          sort: 'order',
-          depth: 1,
-          overrideAccess: false,
-        }),
         payload.find({
           collection: 'testimonials',
           where: testimonialPlacementWhere('afrs'),
@@ -87,14 +71,6 @@ export async function getHomePageData(): Promise<HomePageData> {
           collection: 'scientists',
           where: { published: { equals: true } },
           limit: 2,
-          sort: 'order',
-          depth: 1,
-          overrideAccess: false,
-        }),
-        payload.find({
-          collection: 'galleryItems',
-          where: { published: { equals: true }, featured: { equals: true } },
-          limit: 4,
           sort: 'order',
           depth: 1,
           overrideAccess: false,
@@ -138,10 +114,8 @@ export async function getHomePageData(): Promise<HomePageData> {
 
       return {
         events,
-        services,
         testimonials,
         scientists,
-        galleryItems,
         impactStats,
         partnerLogos,
         homePage: resolvedHomePage,

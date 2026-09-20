@@ -69,10 +69,17 @@ flowchart TD
 
 - Public route chain: `src/app/(frontend)/*/page.tsx` loads CMS data through `src/lib/payload.ts` and `src/lib/cms.ts`, then renders feature components under `src/components/*`.
 - Registration route chain: `src/app/(frontend)/api/*/initiate/route.ts` uses `src/lib/apiResponses.ts` for shared validation/error JSON, then creates Payload registration records.
-- Student Hub event chain: `student-hub/ugc-net/page.tsx` and `student-hub/fact/page.tsx` both use `src/components/student-hub/eventSummaries.server.ts`, which fetches published upcoming events and maps them into `UgcNetExperience` props.
+- Student Hub exam-prep chain: `student-hub/ugc-net/page.tsx`, `student-hub/fact/page.tsx`, and `student-hub/cuet/page.tsx` load CMS page content and achievers via `src/components/student-hub/content.ts`, gallery slides via `src/lib/queries/gallery.ts`, and render `UgcNetPageView`.
+- Gallery chain: page presets live in `src/lib/gallery/constants.ts`; hub tiles use `SiteGallerySection`, photo previews use `SiteGalleryPreviewSection`, and `/gallery` filters via `GalleryCategoryNav` + `getGalleryPageItems()`.
 - Payload schema chain: `src/payload.config.ts` registers every collection/global, storage adapter, database adapter, editor, and generated type output.
 - Access-control chain: collection/global configs depend on named presets in `src/access/index.ts`, keeping repeated permission rules in one place.
 - Media chain: `src/storage/cloudinary/*` is wired into Payload through `src/payload.config.ts`; frontend media display resolves URLs through `src/lib/cms.ts`.
+
+## Dev Tooling
+
+- `pnpm dev` — standard Next.js dev server.
+- `pnpm devsafe` — deletes `.next` with a cross-platform Node command, then starts dev (use when cache corruption causes 404/500 on nested routes).
+- On Windows, do not use `rm -rf .next` manually in scripts; use `pnpm devsafe` or PowerShell `Remove-Item -Recurse -Force .next`.
 
 ## Refactor Boundary
 

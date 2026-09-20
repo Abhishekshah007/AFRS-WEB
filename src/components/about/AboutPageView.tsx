@@ -182,18 +182,12 @@ export function AboutPageView({
         cardBody={sectionText.roadmapCardBody ?? undefined}
       />
 
-      {/* <AwardsGallery
-        title={sectionText.awardsTitle ?? undefined}
-        subtitle={sectionText.awardsSubtitle ?? undefined}
-        callout={sectionText.awardsCallout ?? undefined}
-        imageAlts={[
-          sectionText.awardsImageAlt1 ?? 'AFRS laboratory research',
-          sectionText.awardsImageAlt2 ?? 'AFRS training session',
-          sectionText.awardsImageAlt3 ?? 'AFRS team recognition',
-        ]}
-      /> */}
-
-      <SiteGallerySection items={galleryItems} title="Awards & Recognition" subtitle="" />
+      <SiteGallerySection
+        items={galleryItems}
+        size="compact"
+        title="Awards & Recognition"
+        subtitle=""
+      />
     </div>
   )
 }

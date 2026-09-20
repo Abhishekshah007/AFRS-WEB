@@ -1,18 +1,20 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { useCallback, useRef } from 'react'
 import type { GallerySlide } from '@/components/service-detail/types'
 import { serviceDetailTokens } from '@/components/service-detail/tokens'
 
 export type InvestigationGalleryProps = {
   slides: GallerySlide[]
+  viewAllHref?: string
 }
 
 /**
  * Bento gallery with horizontal scroll controls for keyboard and pointer users.
  */
-export function InvestigationGallery({ slides }: InvestigationGalleryProps) {
+export function InvestigationGallery({ slides, viewAllHref }: InvestigationGalleryProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const scrollBy = useCallback((direction: 'prev' | 'next') => {
@@ -41,7 +43,16 @@ export function InvestigationGallery({ slides }: InvestigationGalleryProps) {
               A glimpse into our laboratory, field work, and analytical workflows.
             </p>
           </div>
-          <div className="flex gap-2" role="group" aria-label="Gallery navigation">
+          <div className="flex flex-wrap items-center gap-3">
+            {viewAllHref ? (
+              <Link
+                href={viewAllHref}
+                className="inline-flex h-10 items-center rounded-full border-2 border-[var(--svc-primary)] px-4 text-sm font-bold text-[var(--svc-primary)] transition hover:bg-[var(--svc-primary-soft)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+              >
+                View full gallery
+              </Link>
+            ) : null}
+            <div className="flex gap-2" role="group" aria-label="Gallery navigation">
             <button
               type="button"
               onClick={() => scrollBy('prev')}
@@ -58,6 +69,7 @@ export function InvestigationGallery({ slides }: InvestigationGalleryProps) {
             >
               →
             </button>
+            </div>
           </div>
         </div>
 

@@ -7,6 +7,7 @@ import { Events } from '../collections/Events'
 import { GalleryItems } from '../collections/GalleryItems'
 import { ImpactStats } from '../collections/ImpactStats'
 import { Media } from '../collections/Media'
+import { ResourcePersons } from '../collections/ResourcePersons'
 import { Scientists } from '../collections/Scientists'
 import { Services } from '../collections/Services'
 import { Testimonials } from '../collections/Testimonials'
@@ -23,6 +24,7 @@ export const collections = [
   GalleryItems,
   Testimonials,
   Scientists,
+  ResourcePersons,
   ImpactStats,
   Notices,
   PartnersLogo,

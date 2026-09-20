@@ -21,6 +21,7 @@ export type ProgrammesPageViewProps = {
   resourcePersons: ResourcePerson[]
   archive: ArchiveItem[]
   gallery: GalleryThumb[]
+  galleryViewAllHref?: string
   totalVisitors: number
   trainingChecklist: string[]
 }
@@ -36,6 +37,7 @@ export function ProgrammesPageView({
   resourcePersons,
   archive,
   gallery,
+  galleryViewAllHref,
   totalVisitors,
   trainingChecklist,
 }: ProgrammesPageViewProps) {
@@ -49,6 +51,7 @@ export function ProgrammesPageView({
         resourcePersons={resourcePersons}
         archive={archive}
         gallery={gallery}
+        galleryViewAllHref={galleryViewAllHref}
       />
       <VisitorCounterBar totalVisitors={totalVisitors} />
     </div>

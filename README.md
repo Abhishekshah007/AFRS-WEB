@@ -1,67 +1,97 @@
-# Payload Blank Template
+# AFRS Web App
 
-This template comes configured with the bare minimum to get started on anything you need.
+Public website and CMS for **Applied Forensic Research Sciences (AFRS)** and **AFSL** laboratory services.
 
-## Quick start
+Built with **Next.js 16**, **Payload CMS 3**, **PostgreSQL**, **Cloudinary**, and **Resend**.
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+## Live URLs
 
-## Quick Start - local setup
+| URL | Purpose |
+|-----|---------|
+| `/` | AFRS homepage |
+| `/admin` | Payload CMS admin panel |
+| `/services` | AFSL forensic services |
+| `/student-hub` | Student resources & exam prep |
+| `/gallery` | Full photo gallery with filters |
 
-To spin up this template locally, follow these steps:
+Configure the canonical site URL with `NEXT_PUBLIC_SITE_URL` (see [Environment variables](./docs/environment.md)).
 
-### Clone
+## Documentation
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+| Guide | Audience | Description |
+|-------|----------|-------------|
+| [**Deployment**](./docs/deployment.md) | DevOps / deploy | Vercel checklist, migrations, domain, go-live |
+| [**Environment variables**](./docs/environment.md) | DevOps / deploy | Every `.env` key explained |
+| [**Local development**](./docs/local-development.md) | Developers | First-time setup on your machine |
+| [**CMS editor guide**](./docs/cms-editor-guide.md) | Content team | Galleries, pages, events, forms |
+| [**Architecture map**](./docs/architecture-map.md) | Developers | Code layout and data flows |
+| [**Cloudinary migration**](./docs/cloudinary-migration.md) | DevOps | One-time media migration to Cloudinary |
 
-### Development
+## Quick start (local)
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+```bash
+pnpm install
+cp .env.example .env   # fill in values — see docs/environment.md
+pnpm dev
+```
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+Open [http://localhost:3000](http://localhost:3000). Admin: [http://localhost:3000/admin](http://localhost:3000/admin).
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+If nested routes return 404/500 after crashes, clear the cache:
 
-#### Docker (Optional)
+```bash
+pnpm devsafe
+```
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+## Common commands
 
-To do so, follow these steps:
+| Command | Purpose |
+|---------|---------|
+| `pnpm dev` | Start dev server |
+| `pnpm devsafe` | Clear `.next` cache, then dev (Windows-safe) |
+| `pnpm build` | Production build |
+| `pnpm start` | Run production server locally |
+| `pnpm lint` | ESLint |
+| `pnpm test` | Integration + E2E tests |
+| `pnpm generate:types` | Regenerate `payload-types.ts` after schema changes |
+| `pnpm payload migrate` | Run pending DB migrations |
+| `pnpm import:resource-persons` | Bulk import resource persons from Word doc |
 
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+## Tech stack
 
-## How it works
+- **Framework:** Next.js App Router + React 19
+- **CMS:** Payload 3 (Lexical editor, Postgres adapter)
+- **Database:** PostgreSQL (Neon, Supabase, or Vercel Postgres)
+- **Media:** Cloudinary via `@payloadcms/plugin-cloud-storage`
+- **Email:** Resend (`@payloadcms/email-resend` + custom notification helpers)
+- **Forms:** Cloudflare Turnstile (production)
+- **Hosting:** Vercel (recommended)
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+## Project structure
 
-### Collections
+```text
+src/
+├── app/(frontend)/     Public pages & API routes
+├── app/(payload)/      Admin panel & Payload REST/GraphQL
+├── collections/        CMS collections
+├── globals/            CMS globals (Home, About, Site Settings, …)
+├── components/         React UI by feature area
+├── lib/                Queries, email, security, CMS helpers
+└── migrations/         Postgres schema migrations
+```
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+See [architecture-map.md](./docs/architecture-map.md) for dependency chains.
 
-- #### Users (Authentication)
+## Before you deploy
 
-  Users are auth-enabled collections that have access to the admin panel.
+1. Read [deployment.md](./docs/deployment.md) end-to-end.
+2. Set all **required** variables in Vercel (see [environment.md](./docs/environment.md)).
+3. Run `pnpm payload migrate` against the production database.
+4. Verify Resend domain + Turnstile production keys.
+5. Run `pnpm build` and `pnpm test` locally.
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+## Support for developers
 
-- #### Media
+Payload docs: [payloadcms.com/docs](https://payloadcms.com/docs)
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
-
-### Docker
-
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
-
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
-
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
-
-## Questions
-
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+AI / agent rules for this repo: [AGENTS.md](./AGENTS.md)

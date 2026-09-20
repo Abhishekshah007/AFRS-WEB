@@ -12,6 +12,7 @@ export type ResourceArchiveGalleryProps = {
   resourcePersons: ResourcePerson[]
   archive: ArchiveItem[]
   gallery: GalleryThumb[]
+  galleryViewAllHref?: string
 }
 
 /**
@@ -21,6 +22,7 @@ export function ResourceArchiveGallery({
   resourcePersons,
   archive,
   gallery,
+  galleryViewAllHref = '/gallery',
 }: ResourceArchiveGalleryProps) {
   const [selectedPerson, setSelectedPerson] = useState<ResourcePerson | null>(null)
   const [showAllPeople, setShowAllPeople] = useState(false)
@@ -53,7 +55,7 @@ export function ResourceArchiveGallery({
             <div>
               <h3 className="font-extrabold text-slate-900 text-lg mb-5">Resource Persons</h3>
               <ul className="space-y-3">
-                {resourcePersons.map((person) => (
+                {resourcePersons.slice(0, 3).map((person) => (
                   <li key={person.id}>
                     <button
                       type="button"
@@ -139,7 +141,7 @@ export function ResourceArchiveGallery({
                   </div>
                 ))}
                 <Link
-                  href="/gallery"
+                  href={galleryViewAllHref}
                   className="flex aspect-[4/3] flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-white text-slate-500 hover:border-[var(--prog-primary)] hover:text-[var(--prog-primary)] transition card-pop"
                 >
                   <span className="text-2xl mb-1" aria-hidden>

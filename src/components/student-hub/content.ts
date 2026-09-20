@@ -129,11 +129,6 @@ export async function getExamPrepAchievers(exam: ExamPrepSlug): Promise<ExamPrep
   return mapAchievers(cmsItems, examAchieverDefaults[exam], exam)
 }
 
-/** @deprecated Use getExamPrepAchievers('ugc-net') */
-export async function getUgcNetAchievers() {
-  return getExamPrepAchievers('ugc-net')
-}
-
 export async function getUgcNetPageContent() {
   const global = await loadStudentHubGlobal(0)
   return buildUgcNetPageContent(global?.ugcNetPage)

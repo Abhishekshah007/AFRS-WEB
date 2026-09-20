@@ -8,6 +8,8 @@ import * as migration_20260905_010000_event_custom_fields_and_responses from './
 import * as migration_20260917_220000_service_overview_image from './20260917_220000_service_overview_image'
 import * as migration_20260918_203000_registration_settings from './20260918_203000_registration_settings'
 
+import * as migration_20260921_010000_gallery_placement_fields from './20260921_010000_gallery_placement_fields'
+
 export const migrations = [
   {
     up: migration_20260717_000000_drop_cloudinary_media_metadata.up,
@@ -53,5 +55,10 @@ export const migrations = [
     up: migration_20260918_203000_registration_settings.up,
     down: migration_20260918_203000_registration_settings.down,
     name: '20260918_203000_registration_settings',
+  },
+  {
+    up: migration_20260921_010000_gallery_placement_fields.up,
+    down: migration_20260921_010000_gallery_placement_fields.down,
+    name: '20260921_010000_gallery_placement_fields',
   },
 ]

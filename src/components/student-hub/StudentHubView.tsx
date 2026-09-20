@@ -30,7 +30,13 @@ export function StudentHubView({
       <AcademicResourcesSection resources={resources} />
       <ExamExcellenceSection exams={exams} />
       <QuizCareerSection />
-      <SiteGallerySection items={galleryItems} className={studentHubTokens.surface} />
+      <SiteGallerySection
+        items={galleryItems}
+        size="compact"
+        title="Student Hub Gallery"
+        subtitle="Training sessions, workshops, and student events from across AFRS programmes."
+        className={studentHubTokens.surface}
+      />
       <VisitorCounterBar totalVisitors={totalVisitors} />
     </div>
   )

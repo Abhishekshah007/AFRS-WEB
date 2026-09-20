@@ -12,6 +12,8 @@ import {
 import { isBrokenSlug } from '@/hooks/autoSlugFromTitle'
 import { slugify } from '@/lib/utils/slugify'
 import { safeQuery } from '@/lib/resilience/safeQuery'
+import { GALLERY_PAGE_PRESETS, galleryHref, serviceGalleryHref } from '@/lib/gallery/constants'
+import { buildPublishedGalleryWhere } from '@/lib/queries/gallery'
 
 describe('resolveMediaUrl', () => {
   it('returns populated media url when available', () => {
@@ -94,6 +96,49 @@ describe('event slug generation', () => {
   it('slugifies titles for URLs', () => {
     expect(slugify('Forensic Application of Computational Techniques')).toBe(
       'forensic-application-of-computational-techniques',
+    )
+  })
+})
+
+describe('gallery page presets', () => {
+  it('defines page-specific category and brand rules', () => {
+    expect(GALLERY_PAGE_PRESETS.afsl.categories).toEqual(['lab'])
+    expect(GALLERY_PAGE_PRESETS.afsl.brand).toBe('afsl')
+    expect(GALLERY_PAGE_PRESETS.courses.categories).toEqual(['events'])
+    expect(GALLERY_PAGE_PRESETS.studentHub.categories).toEqual(['training', 'events'])
+  })
+
+  it('builds brand-aware gallery links', () => {
+    expect(galleryHref('lab', 'afsl')).toBe('/gallery?category=lab&brand=afsl')
+    expect(galleryHref('events', 'afrs')).toBe('/gallery?category=events')
+  })
+
+  it('builds multi-category where clauses', () => {
+    const where = buildPublishedGalleryWhere({
+      brand: 'afrs',
+      categories: ['training', 'events'],
+    })
+
+    expect(where).toEqual({
+      and: [
+        { published: { equals: true } },
+        { or: [{ brand: { equals: 'afrs' } }, { brand: { equals: 'both' } }] },
+        { category: { in: ['training', 'events'] } },
+      ],
+    })
+  })
+
+  it('builds service-specific gallery where clauses', () => {
+    const where = buildPublishedGalleryWhere({ serviceId: 12 })
+
+    expect(where).toEqual({
+      and: [{ published: { equals: true } }, { service: { equals: 12 } }],
+    })
+  })
+
+  it('builds service gallery links', () => {
+    expect(serviceGalleryHref('crime-scene-investigation')).toBe(
+      '/gallery?service=crime-scene-investigation',
     )
   })
 })
