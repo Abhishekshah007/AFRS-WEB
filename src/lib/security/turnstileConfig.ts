@@ -30,7 +30,7 @@ function isValidTurnstileKey(value: string | undefined): value is string {
 }
 
 export function getTurnstileSiteKey(): string | null {
-  const value = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+  const value = process.env.FRONTEND_TURNSTILE_SITE_KEY
   return isValidTurnstileKey(value) ? value.trim() : null
 }
 

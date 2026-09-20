@@ -44,7 +44,7 @@ describe('safeQuery', () => {
   })
 
   it('returns fallback and logs on failure', async () => {
-    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => { })
     const result = await safeQuery(
       'test-failure',
       async () => {
@@ -176,13 +176,13 @@ describe('turnstile verification', () => {
   })
 
   it('treats placeholder site keys as not configured', async () => {
-    const originalSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
-    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY = '...'
+    const originalSiteKey = process.env.FRONTEND_TURNSTILE_SITE_KEY
+    process.env.FRONTEND_TURNSTILE_SITE_KEY = '...'
 
     const { isTurnstileConfiguredClient } = await import('@/lib/security/turnstileConfig')
     expect(isTurnstileConfiguredClient()).toBe(false)
 
-    if (originalSiteKey) process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY = originalSiteKey
-    else delete process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+    if (originalSiteKey) process.env.FRONTEND_TURNSTILE_SITE_KEY = originalSiteKey
+    else delete process.env.FRONTEND_TURNSTILE_SITE_KEY
   })
 })
