@@ -9,10 +9,11 @@ import { DEFAULT_FEE_TIERS, DEFAULT_REGISTRATION_INSTRUCTIONS } from '@/lib/regi
 
 export const RegistrationForm: GlobalConfig = {
   slug: 'registrationForm',
+  label: 'Course registration form',
   access: editorManagedGlobalAccess,
   admin: {
     group: ADMIN_GROUPS.EVENTS,
-    description: 'Configure the course registration form fields and payment instructions.',
+    description: 'Fields, fee tiers, and payment instructions for the course registration form.',
   },
   hooks: {
     beforeChange: [normalizeRegistrationFormSectionsData],

@@ -7,11 +7,17 @@ import { orderField, publishedField } from '../fields/publishing'
 
 export const Services: CollectionConfig = {
   slug: 'services',
+  labels: {
+    singular: 'Service listing',
+    plural: 'Service listings',
+  },
   access: editorManagedPublishedAccess,
   admin: {
     group: ADMIN_GROUPS.CONTENT,
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'published', 'order'],
+    description:
+      'Each listing becomes a forensic / AFSL service page. Use Services page (AFSL) for the landing-page copy.',
   },
   fields: [
     { name: 'title', type: 'text', required: true },

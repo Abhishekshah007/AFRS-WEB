@@ -24,6 +24,30 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    meta: {
+      titleSuffix: ' — AFRS Content Studio',
+      description: 'Manage the Applied Forensic Research Sciences public website.',
+      icons: [
+        {
+          rel: 'icon',
+          type: 'image/png',
+          url: '/assets/logo.png',
+        },
+      ],
+    },
+    components: {
+      graphics: {
+        Logo: '/components/admin/graphics/Logo',
+        Icon: '/components/admin/graphics/Icon',
+      },
+      beforeLogin: ['/components/admin/AdminLoginIntro'],
+      actions: ['/components/admin/AdminViewSite'],
+      views: {
+        dashboard: {
+          Component: '/components/admin/dashboard/AdminDashboard',
+        },
+      },
+    },
   },
   collections,
   globals,

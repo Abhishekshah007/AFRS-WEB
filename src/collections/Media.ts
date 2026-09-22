@@ -5,8 +5,13 @@ import { ADMIN_GROUPS } from '../config/adminGroups'
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  labels: {
+    singular: 'File',
+    plural: 'Media library',
+  },
   admin: {
     group: ADMIN_GROUPS.SYSTEM,
+    description: 'Photos, logos, and documents used on the website. Upload here, then pick the file in other screens.',
   },
   access: {
     read: isPublic,

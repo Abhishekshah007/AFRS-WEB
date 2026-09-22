@@ -12,6 +12,10 @@ import { normalizeRegistrationSectionsData } from '../hooks/normalizeRegistratio
 
 export const Events: CollectionConfig = {
   slug: 'events',
+  labels: {
+    singular: 'Event',
+    plural: 'Events',
+  },
   access: eventManagedPublishedAccess,
   admin: {
     group: ADMIN_GROUPS.EVENTS,

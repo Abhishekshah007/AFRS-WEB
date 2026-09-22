@@ -13,10 +13,11 @@ import {
 
 export const ServicesPage: GlobalConfig = {
   slug: 'servicesPage',
+  label: 'Services page (AFSL)',
   access: editorManagedGlobalAccess,
   admin: {
     group: ADMIN_GROUPS.PAGES,
-    description: 'Services (AFSL) page section copy and static lists.',
+    description: 'Copy and lists on the AFSL Services landing page. Individual services are under Service listings.',
   },
   fields: [
     {

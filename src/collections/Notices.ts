@@ -6,6 +6,10 @@ import { orderField, publishedField } from '../fields/publishing'
 
 export const Notices: CollectionConfig = {
   slug: 'notices',
+  labels: {
+    singular: 'Notice',
+    plural: 'Notices',
+  },
   access: editorManagedPublishedAccess,
   admin: {
     group: ADMIN_GROUPS.CONTENT,

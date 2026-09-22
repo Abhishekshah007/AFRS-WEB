@@ -23,3 +23,307 @@
   @layer utilities {
     @import 'tailwindcss/utilities.css';
   }
+
+/* AFRS Content Studio — admin chrome */
+:root {
+  --afrs-wine: #3b010b;
+  --afrs-maroon: #560b18;
+  --afrs-burgundy: #75162d;
+  --afrs-gold: #f2d9a0;
+  --afrs-champagne: #f2e5c6;
+  --afrs-soft: #fbf6ec;
+  --afrs-ink: #1a0c0f;
+  --afrs-muted: #6b5348;
+}
+
+html[data-theme='light'] {
+  --theme-bg: var(--afrs-soft);
+  --theme-input-bg: #fffdf8;
+  --theme-elevation-0: #fffdf8;
+  --theme-elevation-50: var(--afrs-soft);
+  --theme-elevation-100: var(--afrs-champagne);
+  --theme-success-500: var(--afrs-burgundy);
+  --theme-success-600: var(--afrs-maroon);
+}
+
+.nav__brand {
+  gap: 0.5rem;
+}
+
+.afrs-admin-logo,
+.afrs-admin-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.afrs-admin-logo img,
+.afrs-admin-icon img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #fff;
+  padding: 2px;
+}
+
+.afrs-admin-logo__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.afrs-admin-logo__text strong {
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  color: var(--afrs-wine);
+}
+
+.afrs-admin-logo__text span {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--afrs-muted);
+}
+
+html[data-theme='dark'] .afrs-admin-logo__text strong {
+  color: var(--afrs-gold);
+}
+
+html[data-theme='dark'] .afrs-admin-logo__text span {
+  color: var(--afrs-champagne);
+}
+
+.afrs-admin-view-site {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--afrs-gold);
+  border-radius: 999px;
+  background: var(--afrs-wine);
+  color: #fff !important;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+
+.afrs-admin-view-site:hover {
+  background: var(--afrs-maroon);
+}
+
+.btn--style-primary,
+.login__form .btn {
+  background: var(--afrs-wine) !important;
+  border-color: var(--afrs-wine) !important;
+  color: #fff !important;
+}
+
+.btn--style-primary:hover,
+.login__form .btn:hover {
+  background: var(--afrs-maroon) !important;
+  border-color: var(--afrs-maroon) !important;
+}
+
+.template-minimal .afrs-admin-logo img {
+  width: 48px;
+  height: 48px;
+}
+
+.afrs-admin-login-intro {
+  max-width: 28rem;
+  margin: 0 auto 1.5rem;
+  text-align: center;
+}
+
+.afrs-admin-login-intro__kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--afrs-burgundy);
+}
+
+.afrs-admin-login-intro h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.75rem;
+  color: var(--afrs-wine);
+}
+
+.afrs-admin-login-intro p {
+  margin: 0;
+  color: var(--afrs-muted);
+  line-height: 1.5;
+}
+
+.afrs-dashboard {
+  padding-bottom: 3rem;
+}
+
+.afrs-dashboard__hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: flex-start;
+  padding: 1.75rem 1.75rem 1.5rem;
+  margin-bottom: 1.25rem;
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, #3b010b 0%, #560b18 46%, #75162d 100%);
+  color: #fff;
+  box-shadow: 0 16px 40px rgba(59, 1, 11, 0.22);
+}
+
+.afrs-dashboard__kicker {
+  margin: 0 0 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--afrs-gold);
+}
+
+.afrs-dashboard__hero h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.85rem;
+  color: #fff;
+}
+
+.afrs-dashboard__lede,
+.afrs-dashboard__role {
+  margin: 0;
+  max-width: 42rem;
+  color: var(--afrs-champagne);
+  line-height: 1.55;
+}
+
+.afrs-dashboard__role {
+  margin-top: 0.65rem;
+  font-size: 0.85rem;
+}
+
+.afrs-dashboard__site-link {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  background: var(--afrs-gold);
+  color: var(--afrs-wine) !important;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none !important;
+}
+
+.afrs-dashboard__site-link:hover {
+  filter: brightness(1.05);
+}
+
+.afrs-dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 2rem;
+}
+
+.afrs-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--theme-elevation-150, #eadfc8);
+  border-radius: 12px;
+  background: var(--theme-elevation-0, #fff);
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.afrs-stat:hover {
+  border-color: var(--afrs-gold);
+  box-shadow: 0 8px 20px rgba(59, 1, 11, 0.08);
+}
+
+.afrs-stat__value {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--afrs-wine);
+  line-height: 1.1;
+}
+
+.afrs-stat__label {
+  font-size: 0.82rem;
+  color: var(--afrs-muted);
+}
+
+.afrs-dashboard__section {
+  margin-bottom: 1.85rem;
+}
+
+.afrs-dashboard__section-head h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.15rem;
+}
+
+.afrs-dashboard__section-head p {
+  margin: 0 0 0.85rem;
+  color: var(--afrs-muted);
+}
+
+.afrs-dashboard__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.75rem;
+}
+
+.afrs-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-height: 7.25rem;
+  padding: 1rem 1.05rem;
+  border: 1px solid var(--theme-elevation-150, #eadfc8);
+  border-radius: 12px;
+  background: var(--theme-elevation-0, #fff);
+  text-decoration: none !important;
+  color: inherit !important;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.afrs-card:hover {
+  border-color: var(--afrs-burgundy);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(59, 1, 11, 0.08);
+}
+
+.afrs-card strong {
+  color: var(--afrs-wine);
+  font-size: 0.98rem;
+}
+
+.afrs-card span {
+  color: var(--afrs-muted);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+html[data-theme='dark'] .afrs-stat__value,
+html[data-theme='dark'] .afrs-card strong {
+  color: var(--afrs-gold);
+}
+
+@media (max-width: 900px) {
+  .afrs-dashboard__hero {
+    flex-direction: column;
+  }
+
+  .afrs-dashboard__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .afrs-dashboard__stats {
+    grid-template-columns: 1fr;
+  }
+}

@@ -6,10 +6,11 @@ import { aboutPageSectionFields } from '../fields/aboutPage'
 
 export const AboutPage: GlobalConfig = {
   slug: 'aboutPage',
+  label: 'About page',
   access: editorManagedGlobalAccess,
   admin: {
     group: ADMIN_GROUPS.PAGES,
-    description: 'About page hero image and all section copy.',
+    description: 'About page hero image and all section copy (story, vision, mission, and more).',
   },
   fields: [
     {

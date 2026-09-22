@@ -11,6 +11,10 @@ import {
 
 export const GalleryItems: CollectionConfig = {
   slug: 'galleryItems',
+  labels: {
+    singular: 'Gallery item',
+    plural: 'Gallery',
+  },
   access: editorManagedPublishedAccess,
   admin: {
     group: ADMIN_GROUPS.CONTENT,

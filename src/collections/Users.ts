@@ -6,9 +6,15 @@ import { ADMIN_GROUPS } from '../config/adminGroups'
 export const Users: CollectionConfig = {
   slug: 'users',
   auth: true,
+  labels: {
+    singular: 'Staff account',
+    plural: 'Staff accounts',
+  },
   admin: {
     group: ADMIN_GROUPS.SYSTEM,
     useAsTitle: 'email',
+    description: 'People who can sign in to this studio. Super Admins assign roles.',
+    defaultColumns: ['name', 'email', 'role'],
   },
   access: {
     create: isAdmin,
