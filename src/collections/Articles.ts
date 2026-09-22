@@ -8,11 +8,17 @@ import { featuredField, publishedField } from '../fields/publishing'
 
 export const Articles: CollectionConfig = {
   slug: 'articles',
+  labels: {
+    singular: 'Article',
+    plural: 'Articles',
+  },
   access: editorManagedPublishedAccess,
   admin: {
     group: ADMIN_GROUPS.CONTENT,
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'featured', 'published', 'publishedDate'],
+    description:
+      'Student Hub articles and news. Set Published to show the post on the website.',
   },
   fields: [
     { name: 'title', type: 'text', required: true },

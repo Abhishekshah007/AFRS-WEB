@@ -23,6 +23,11 @@ import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { default as default_c5b25ed3914598eb00fbaa34766a875d } from '../../../components/admin/EventRegistrationCsvExport'
 import { default as default_1daa4857192dacfa730f5407ea3c73ae } from '../../../components/admin/CourseRegistrationCsvExport'
+import { default as default_8c7579001d094aae258586b09a2f4a85 } from '../../../components/admin/graphics/Icon'
+import { default as default_da4f7e8a6c72793056168c73c78f997f } from '../../../components/admin/graphics/Logo'
+import { default as default_16b140fe9784521d525996e445b244c5 } from '../../../components/admin/AdminViewSite'
+import { default as default_bf23aa2596a07d96b3e3888a24fdce7b } from '../../../components/admin/AdminLoginIntro'
+import { default as default_9dc2172bae09397c6a37919b63de56e1 } from '../../../components/admin/dashboard/AdminDashboard'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
@@ -51,5 +56,10 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "/components/admin/EventRegistrationCsvExport#default": default_c5b25ed3914598eb00fbaa34766a875d,
   "/components/admin/CourseRegistrationCsvExport#default": default_1daa4857192dacfa730f5407ea3c73ae,
+  "/components/admin/graphics/Icon#default": default_8c7579001d094aae258586b09a2f4a85,
+  "/components/admin/graphics/Logo#default": default_da4f7e8a6c72793056168c73c78f997f,
+  "/components/admin/AdminViewSite#default": default_16b140fe9784521d525996e445b244c5,
+  "/components/admin/AdminLoginIntro#default": default_bf23aa2596a07d96b3e3888a24fdce7b,
+  "/components/admin/dashboard/AdminDashboard#default": default_9dc2172bae09397c6a37919b63de56e1,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

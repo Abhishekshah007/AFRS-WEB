@@ -18,10 +18,11 @@ import { programmeItemFields } from '../fields/programmes'
 
 export const ProgrammesCatalog: GlobalConfig = {
   slug: 'programmesCatalog',
+  label: 'Courses catalog',
   access: editorManagedGlobalAccess,
   admin: {
     group: ADMIN_GROUPS.PROGRAMMES,
-    description: 'Education and training programme categories and fallbacks.',
+    description: 'Education and training programme cards, categories, and fallback gallery images.',
   },
   fields: [
     {

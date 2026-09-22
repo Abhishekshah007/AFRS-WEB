@@ -5,10 +5,11 @@ import { ADMIN_GROUPS } from '../config/adminGroups'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'siteSettings',
+  label: 'Site identity',
   access: editorManagedGlobalAccess,
   admin: {
     group: ADMIN_GROUPS.SITE_SETTINGS,
-    description: 'Core site identity, contact details, and social links.',
+    description: 'Institute name, logo, phone, email, address, visitor count, and social links used across the site.',
   },
   fields: [
     { name: 'siteName', type: 'text', defaultValue: 'Applied Forensic Research Sciences Institute' },

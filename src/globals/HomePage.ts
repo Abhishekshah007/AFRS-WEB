@@ -5,10 +5,11 @@ import { ADMIN_GROUPS } from '../config/adminGroups'
 import { defaultHomeFaqs } from '../data/defaults/home'
 export const HomePage: GlobalConfig = {
   slug: 'homePage',
+  label: 'Home page',
   access: editorManagedGlobalAccess,
   admin: {
     group: ADMIN_GROUPS.PAGES,
-    description: 'Home page hero, section copy, notice board headings, and FAQs.',
+    description: 'Home page hero, section headings, notice-board titles, and FAQs.',
   },
   fields: [
     {

@@ -17,10 +17,11 @@ import { ugcNetPageFields } from './fields/ugcNetPage'
 
 export const StudentHubContent: GlobalConfig = {
   slug: 'studentHubContent',
+  label: 'Student Hub pages',
   access: editorManagedGlobalAccess,
   admin: {
     group: ADMIN_GROUPS.STUDENT_HUB,
-    description: 'Student hub resources, exam prep pages, cards, and achievers.',
+    description: 'Student Hub resources, exam-prep pages (UGC-NET, CUET, FACT), cards, and achievers.',
   },
   fields: [
     {

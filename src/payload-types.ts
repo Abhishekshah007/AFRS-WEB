@@ -166,6 +166,8 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Student Hub articles and news. Set Published to show the post on the website.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "articles".
  */
@@ -247,6 +249,8 @@ export interface Article {
   createdAt: string;
 }
 /**
+ * Photos, logos, and documents used on the website. Upload here, then pick the file in other screens.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
@@ -300,6 +304,8 @@ export interface AboutCertification {
   createdAt: string;
 }
 /**
+ * Each listing becomes a forensic / AFSL service page. Use Services page (AFSL) for the landing-page copy.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "services".
  */
@@ -413,6 +419,8 @@ export interface GalleryItem {
   createdAt: string;
 }
 /**
+ * Quotes shown on Home, Services, or other selected pages.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "testimonials".
  */
@@ -498,6 +506,8 @@ export interface ResourcePerson {
   createdAt: string;
 }
 /**
+ * Headline statistics shown in impact strips (for example students trained).
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "impactStats".
  */
@@ -540,6 +550,8 @@ export interface Notice {
   createdAt: string;
 }
 /**
+ * Organisation logos in the partners carousel. Upload the logo under Media first if needed.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "partnersLogo".
  */
@@ -848,6 +860,8 @@ export interface CourseRegistration {
   createdAt: string;
 }
 /**
+ * Messages from contact, consult, and other public forms. Start with items marked New.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contactMessages".
  */
@@ -876,6 +890,8 @@ export interface ContactMessage {
   createdAt: string;
 }
 /**
+ * People who can sign in to this studio. Super Admins assign roles.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -1484,7 +1500,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
- * Core site identity, contact details, and social links.
+ * Institute name, logo, phone, email, address, visitor count, and social links used across the site.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "siteSettings".
@@ -1520,7 +1536,7 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
- * Top bar, branding, and main navigation.
+ * Top bar contact details, branding, and the main website menus.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "headerSettings".
@@ -1565,7 +1581,7 @@ export interface HeaderSetting {
   createdAt?: string | null;
 }
 /**
- * Footer about text, link columns, and copyright.
+ * Footer about text, link columns, and copyright line.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footerSettings".
@@ -1592,7 +1608,7 @@ export interface FooterSetting {
   createdAt?: string | null;
 }
 /**
- * Home page hero, section copy, notice board headings, and FAQs.
+ * Home page hero, section headings, notice-board titles, and FAQs.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "homePage".
@@ -1639,7 +1655,7 @@ export interface HomePage {
   createdAt?: string | null;
 }
 /**
- * About page hero image and all section copy.
+ * About page hero image and all section copy (story, vision, mission, and more).
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "aboutPage".
@@ -1803,7 +1819,7 @@ export interface AboutPage {
   createdAt?: string | null;
 }
 /**
- * Services (AFSL) page section copy and static lists.
+ * Copy and lists on the AFSL Services landing page. Individual services are under Service listings.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "servicesPage".
@@ -1896,7 +1912,7 @@ export interface ServicesPage {
   createdAt?: string | null;
 }
 /**
- * Education and training programme categories and fallbacks.
+ * Education and training programme cards, categories, and fallback gallery images.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "programmesCatalog".
@@ -2147,7 +2163,7 @@ export interface ProgrammesCatalog {
   createdAt?: string | null;
 }
 /**
- * Configure the course registration form fields and payment instructions.
+ * Fields, fee tiers, and payment instructions for the course registration form.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "registrationForm".
@@ -2245,7 +2261,7 @@ export interface RegistrationForm {
   createdAt?: string | null;
 }
 /**
- * Student hub resources, exam prep pages, cards, and achievers.
+ * Student Hub resources, exam-prep pages (UGC-NET, CUET, FACT), cards, and achievers.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "studentHubContent".

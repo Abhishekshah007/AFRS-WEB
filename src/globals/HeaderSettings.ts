@@ -6,10 +6,11 @@ import { linkArrayField } from '../fields'
 
 export const HeaderSettings: GlobalConfig = {
   slug: 'headerSettings',
+  label: 'Header & navigation',
   access: editorManagedGlobalAccess,
   admin: {
     group: ADMIN_GROUPS.SITE_SETTINGS,
-    description: 'Top bar, branding, and main navigation.',
+    description: 'Top bar contact details, branding, and the main website menus.',
   },
   fields: [
     { name: 'topBarEnabled', type: 'checkbox', defaultValue: true },

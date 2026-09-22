@@ -1,12 +1,12 @@
 /** Centralized admin sidebar groups — single source of truth for nav organization. */
 export const ADMIN_GROUPS = {
-  CONTENT: 'Content',
-  EVENTS: 'Events & Programmes',
+  CONTENT: 'Website content',
+  EVENTS: 'Events & registrations',
   INBOX: 'Inbox',
-  SYSTEM: 'System',
-  SITE_SETTINGS: 'Site Settings',
-  PAGES: 'Pages',
-  PROGRAMMES: 'Programmes',
+  SYSTEM: 'Accounts & files',
+  SITE_SETTINGS: 'Site-wide settings',
+  PAGES: 'Page copy',
+  PROGRAMMES: 'Courses & training',
   STUDENT_HUB: 'Student Hub',
 } as const
 

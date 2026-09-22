@@ -30,7 +30,7 @@ test.describe('Admin Panel', () => {
     await page.goto('/admin/collections/users', { waitUntil: 'load' })
     await expect(page).toHaveURL(/\/admin\/collections\/users/)
     await waitForAdminShell(page)
-    await expect(page.getByRole('heading', { name: 'Users' })).toBeVisible({ timeout: 30_000 })
+    await expect(page.getByRole('heading', { name: 'Staff accounts' })).toBeVisible({ timeout: 30_000 })
   })
 
   test('can navigate to edit view', async () => {

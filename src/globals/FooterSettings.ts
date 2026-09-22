@@ -6,10 +6,11 @@ import { linkItemFields } from '../fields'
 
 export const FooterSettings: GlobalConfig = {
   slug: 'footerSettings',
+  label: 'Footer',
   access: editorManagedGlobalAccess,
   admin: {
     group: ADMIN_GROUPS.SITE_SETTINGS,
-    description: 'Footer about text, link columns, and copyright.',
+    description: 'Footer about text, link columns, and copyright line.',
   },
   fields: [
     {

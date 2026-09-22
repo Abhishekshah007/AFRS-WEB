@@ -8,10 +8,15 @@ import { testimonialDisplayOptions } from '@/lib/queries/testimonials'
 export const Testimonials: CollectionConfig = {
   slug: 'testimonials',
   access: editorManagedPublishedAccess,
+  labels: {
+    singular: 'Testimonial',
+    plural: 'Testimonials',
+  },
   admin: {
     group: ADMIN_GROUPS.CONTENT,
     useAsTitle: 'name',
     defaultColumns: ['name', 'title', 'displayOn', 'published'],
+    description: 'Quotes shown on Home, Services, or other selected pages.',
   },
   fields: [
     { name: 'name', type: 'text', required: true },
