@@ -30,6 +30,10 @@
 
 No deploy step is duplicated in GitHub Actions — Vercel builds after merge.
 
+## Tool versions
+
+CI uses **Node 22** (see workflow) and **pnpm** from `packageManager` in `package.json` (`pnpm/action-setup` reads it automatically — do not also set `version:` in the workflow).
+
 ## Local parity
 
 ```bash
