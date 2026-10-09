@@ -35,6 +35,10 @@ export default async function SearchPage({ searchParams }: Props) {
       />
 
       <div className="max-w-[860px] mx-auto px-4 sm:px-6 py-12 lg:py-16">
+        <p className="mb-4 text-sm text-slate-500">
+          Use the search icon in the header or type here. Enter at least 2 characters — we match
+          published articles, events, and forensic services.
+        </p>
         <form method="GET" action="/search" className="flex gap-3">
           <input
             name="q"

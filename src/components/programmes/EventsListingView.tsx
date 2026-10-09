@@ -78,7 +78,7 @@ export function EventsListingView({
                   <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
                     {tab === 'completed'
                       ? 'Browse completed AFRS events, workshops, webinars, and conferences from the archive.'
-                      : 'Find active and upcoming forensic learning opportunities with the current filters applied.'}
+                      : 'Events move to Ongoing on the start date and to Completed after the end date (set both dates in the CMS for accurate scheduling).'}
                   </p>
                 </div>
                 {(initialNature !== 'all' || initialType) && (

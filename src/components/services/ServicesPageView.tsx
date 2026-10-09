@@ -463,7 +463,7 @@ export function ServicesPageView({
                 </p>
                 <div className="mt-8">
                   <Link
-                    href="/https://afrs-web.vercel.app/#service-consult-form"
+                    href="#service-consult-form"
                     className="inline-flex rounded-[6px] bg-about-primary-soft text-about-primary px-7 py-3 text-[12px] font-extrabold"
                   >
                     {content.legalCtaLabel}
@@ -623,7 +623,7 @@ export function ServicesPageView({
         </div>
       </section>
 
-      <section id="lab-inquiry" className="bg-white py-20">
+      <section id="service-consult-form" className="bg-white py-20 scroll-mt-28">
         <div className={`${CONTAINER} grid gap-12 lg:grid-cols-[1fr_520px] lg:items-center`}>
           <div>
             <div>

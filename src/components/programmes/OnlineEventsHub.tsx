@@ -34,7 +34,8 @@ export function OnlineEventsHub({ upcoming, ongoing }: OnlineEventsHubProps) {
               Online Events Hub
             </h2>
             <p className={`mt-3 text-sm ${programmesTokens.body}`}>
-              Connect, Learn, and Grow with Global Experts
+              Connect, Learn, and Grow with Global Experts. Tabs update automatically from event
+              start and end dates.
             </p>
           </header>
         </AnimateOnScroll>

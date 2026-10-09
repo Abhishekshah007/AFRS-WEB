@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { UnifiedRegistrationFlow } from '@/components/registration/UnifiedRegistrationFlow'
 import type { FeeTier, ResolvedRegistrationConfig } from '@/domain/registration/types'
+import type { DeliveryMode } from '@/lib/registration/deliveryMode'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 
 type EventCategory = FeeTier
@@ -13,7 +14,7 @@ type EventRegistrationData = {
   title: string
   banner: string
   eventType: string
-  mode: string
+  mode: DeliveryMode | string
   dateLabel: string
   timeLabel: string
   locationLabel: string
@@ -68,6 +69,12 @@ export function EventRegistrationFlow({ event, config, customSections = [] }: Pr
         includeKitOption={event.includeKitOption}
         kitPrice={event.kitPrice}
         sidebar={sidebar}
+        instructionsInSidebar
+        deliveryMode={
+          event.mode === 'online' || event.mode === 'offline' || event.mode === 'hybrid'
+            ? event.mode
+            : 'hybrid'
+        }
         backLink={{ href: '/events', label: 'Back to Events' }}
         eventSlug={event.slug}
         submitEndpoint="/api/event-registrations/submit"

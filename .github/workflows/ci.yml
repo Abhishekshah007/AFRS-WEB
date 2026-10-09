@@ -1,0 +1,84 @@
+# Quality gate for every PR and push to main/dev.
+# CD (deploy) stays on Vercel — connect the repo in Vercel dashboard.
+name: CI
+
+on:
+  pull_request:
+    branches: [main, dev]
+  push:
+    branches: [main, dev]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: afrs_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d afrs_ci"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      CI: true
+      NODE_OPTIONS: --no-deprecation
+      # Mirror .env.example — dummy values safe for CI only (see docs/ci-cd.md).
+      PAYLOAD_SECRET: ci-payload-secret-at-least-32-characters-long
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/afrs_ci
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      CLOUDINARY_CLOUD_NAME: ci-cloud
+      CLOUDINARY_API_KEY: ci-key
+      CLOUDINARY_API_SECRET: ci-secret
+      RESEND_API_KEY: re_ci_dummy_key_for_build_only
+      RESEND_FROM_EMAIL: CI <ci@example.com>
+      SUBMISSION_NOTIFY_EMAIL: ci@example.com
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: 1x00000000000000000000AA
+      TURNSTILE_SECRET_KEY: 1x0000000000000000000000000000000AA
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm exec tsc --noEmit
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Apply database migrations
+        run: pnpm payload migrate
+
+      - name: Integration tests
+        run: pnpm test:int
+
+      - name: Production build
+        run: pnpm build
+        env:
+          NODE_OPTIONS: --no-deprecation --max-old-space-size=8000

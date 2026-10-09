@@ -19,6 +19,8 @@ import {
   filterPaymentMethodsByRegion,
   formatFeeAmount,
 } from '@/lib/registration/resolveConfig'
+import type { DeliveryMode } from '@/lib/registration/deliveryMode'
+import { parseDeliveryMode, shouldOfferPayPal } from '@/lib/registration/deliveryMode'
 import { isTurnstileConfiguredClient } from '@/lib/security/turnstileClient'
 
 type ContactFormState = {
@@ -43,6 +45,9 @@ type Props = {
   includeKitOption?: boolean
   kitPrice?: number
   sidebar?: ReactNode
+  /** Show registration instructions under the left event/programme card. */
+  instructionsInSidebar?: boolean
+  deliveryMode?: DeliveryMode
   backLink: { href: string; label: string }
   /** Single multipart submit (events). */
   submitEndpoint?: string
@@ -72,6 +77,8 @@ export function UnifiedRegistrationFlow({
   includeKitOption = false,
   kitPrice = 0,
   sidebar,
+  instructionsInSidebar = false,
+  deliveryMode: deliveryModeProp,
   backLink,
   submitEndpoint,
   initiateEndpoint,
@@ -117,6 +124,12 @@ export function UnifiedRegistrationFlow({
 
   const activeRegion: ParticipantRegion =
     config.participantRegion === 'both' ? participantRegion : config.participantRegion
+
+  const deliveryMode = deliveryModeProp ?? parseDeliveryMode('hybrid')
+  const showPaypalOption = shouldOfferPayPal(
+    activeRegion === 'international' ? 'international' : 'indian',
+    deliveryMode,
+  )
 
   const visibleTiers = useMemo(
     () => feeTiersForRegion(feeTiers, activeRegion),
@@ -298,10 +311,41 @@ export function UnifiedRegistrationFlow({
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[320px_1fr] items-start">
-        {sidebar ? <aside className="space-y-4">{sidebar}</aside> : null}
+        {sidebar || (instructionsInSidebar && config.requireAgreement) ? (
+          <aside className="space-y-4">
+            {sidebar}
+            {instructionsInSidebar && config.requireAgreement ? (
+              <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-4">
+                <div>
+                  <h3 className="font-extrabold text-slate-900 text-lg">
+                    Registration instructions
+                  </h3>
+                  <p className="mt-1 text-sm text-red-600 font-semibold">
+                    Please read carefully before filling the form.
+                  </p>
+                </div>
+                <div className="max-h-[28rem] overflow-y-auto rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700 whitespace-pre-line">
+                  {config.instructions}
+                </div>
+                <label className="flex items-start gap-3 rounded-xl border border-slate-200 p-4 text-sm text-slate-700">
+                  <input
+                    type="checkbox"
+                    className="mt-1"
+                    checked={agreedToTerms}
+                    onChange={(e) => setAgreedToTerms(e.target.checked)}
+                  />
+                  <span>
+                    I have read, understood, and agree to all instructions, terms and conditions,
+                    and the non-refundable policy of Applied Forensic Research Sciences.
+                  </span>
+                </label>
+              </section>
+            ) : null}
+          </aside>
+        ) : null}
 
         <main className="space-y-5">
-          {config.requireAgreement && (
+          {config.requireAgreement && !instructionsInSidebar && (
             <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-4">
               <div>
                 <h3 className="font-extrabold text-slate-900 text-xl">
@@ -343,6 +387,10 @@ export function UnifiedRegistrationFlow({
                       setParticipantRegion(region)
                       const nextTiers = feeTiersForRegion(feeTiers, region)
                       setSelectedTierId(nextTiers[0]?.id || '')
+                      const paypal = shouldOfferPayPal(region, deliveryMode)
+                      setPaymentMode(
+                        region === 'international' ? (paypal ? 'paypal' : 'bank') : 'upi',
+                      )
                     }}
                     className={`rounded-xl border p-4 text-left ${participantRegion === region ? 'border-brand-500 bg-brand-50' : 'border-slate-200'}`}
                   >
@@ -488,6 +536,7 @@ export function UnifiedRegistrationFlow({
                 amount={total}
                 currency={selectedTier?.currency || 'INR'}
                 participantRegion={activeRegion === 'international' ? 'international' : 'indian'}
+                deliveryMode={deliveryMode}
               />
 
               <div className="space-y-3">
@@ -496,7 +545,9 @@ export function UnifiedRegistrationFlow({
                 </p>
                 <div className="grid gap-2 sm:grid-cols-3">
                   {(activeRegion === 'international'
-                    ? (['paypal', 'bank'] as PaymentMode[])
+                    ? showPaypalOption
+                      ? (['paypal', 'bank'] as PaymentMode[])
+                      : (['bank'] as PaymentMode[])
                     : (['upi', 'bank'] as PaymentMode[])
                   ).map((mode) => (
                     <label
