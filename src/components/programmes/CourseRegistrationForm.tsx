@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { BookOpen } from 'lucide-react'
 import { UnifiedRegistrationFlow } from '@/components/registration/UnifiedRegistrationFlow'
 import type { ResolvedRegistrationConfig } from '@/domain/registration/types'
+import { parseDeliveryMode } from '@/lib/registration/deliveryMode'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 
 type CourseRegistrationDetails = {
@@ -70,6 +71,8 @@ export function CourseRegistrationForm({ details, config, customSections = [] }:
         feeTiers={config.feeTiers}
         customSections={customSections}
         sidebar={sidebar}
+        instructionsInSidebar
+        deliveryMode={parseDeliveryMode(details.programmeMode)}
         backLink={{ href: '/courses', label: 'Back to Programmes' }}
         initiateEndpoint="/api/course-registrations/initiate"
         completeEndpoint="/api/course-registrations/complete"

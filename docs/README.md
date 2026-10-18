@@ -7,6 +7,7 @@ Guides for deploying and operating the AFRS web app.
 | Document | Description |
 |----------|-------------|
 | [deployment.md](./deployment.md) | **Start here before go-live** — Vercel, migrations, domain, checklist |
+| [ci-cd.md](./ci-cd.md) | GitHub Actions CI, Vercel CD, branch protection, release flow |
 | [environment.md](./environment.md) | Every environment variable explained |
 | [local-development.md](./local-development.md) | Developer machine setup |
 

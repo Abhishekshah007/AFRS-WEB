@@ -166,13 +166,15 @@ Verify Cloudinary env vars and that `res.cloudinary.com` is allowed (already in 
 ## Ongoing releases
 
 1. Develop on feature branch → PR → merge to `main`.
-2. Run new migrations if schema changed: `pnpm payload migrate`.
-3. After schema changes: `pnpm generate:types` (commit if types changed).
-4. Vercel auto-deploys on push.
-5. Smoke-test production using section 6 above.
+2. **GitHub Actions CI** must pass on the PR (see [ci-cd.md](./ci-cd.md)).
+3. Run new migrations if schema changed: `pnpm payload migrate` or the **Migrate production database** workflow.
+4. After schema changes: `pnpm generate:types` (commit if types changed).
+5. Vercel auto-deploys on push to `main`.
+6. Smoke-test production using section 6 above.
 
 ## Related docs
 
+- [CI/CD (GitHub Actions + Vercel)](./ci-cd.md)
 - [Environment variables](./environment.md)
 - [CMS editor guide](./cms-editor-guide.md) — share with content team after go-live
 - [Architecture map](./architecture-map.md)

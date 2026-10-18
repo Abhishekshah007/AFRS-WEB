@@ -1,18 +1,16 @@
 import type { FeeTier, RegistrationSettingsSource } from '@/domain/registration/types'
 
-export const DEFAULT_REGISTRATION_INSTRUCTIONS = `Applicants are strictly advised to read all instructions before proceeding.
+export const DEFAULT_REGISTRATION_INSTRUCTIONS = `Please enter your Full Name, College/Institution Name, Course Name, and College Location exactly as you want them to appear on your certificate. No changes will be made later.
 
-By submitting this form, you acknowledge and accept all terms and policies of Applied Forensic Research Sciences.
-
-• All information must be accurate, complete, and true.
-• Your full name must match the name on your certificate — no changes after submission.
-• A valid email and WhatsApp-enabled mobile number are required for updates and certificate delivery.
-• Registration is confirmed only after successful payment through official channels.
-• All program fees are strictly non-refundable and non-transferable.
-• Requests for modification after submission will not be entertained.
-• Certificates are issued based on the information provided and program completion criteria.
-
-Applicants must retain a copy of the payment confirmation for future reference. In case of technical issues, contact official support before re-registering.`
+• Provide a valid Email ID and Phone Number to receive confirmation and program updates.
+• Double-check all details for correct spelling and proper format before submitting the form.
+• Registration fees are strictly non-refundable and non-transferable under any circumstances.
+• Upload or provide a valid payment proof (screenshot/transaction ID) if required for verification.
+• Submit only one registration per participant. Multiple entries may lead to disqualification.
+• Ensure you complete your registration before the deadline to confirm your participation.
+• All communication regarding the program (joining link, updates, instructions) will be shared via Email/WhatsApp.
+• Participants are expected to maintain professional conduct and discipline throughout the program.
+• Certificates will be issued only after successful participation/attendance as per the program guidelines.`
 
 export const DEFAULT_FEE_TIERS_INDIAN: FeeTier[] = [
   { id: 'student-inr', label: 'Students', amount: 300, currency: 'INR' },

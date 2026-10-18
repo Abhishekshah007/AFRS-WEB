@@ -1,3 +1,5 @@
+import { isOtherSelectValue } from '@/lib/forms/studyJobStatusOptions'
+
 export type DynamicFormField = {
   name: string
   label: string
@@ -28,6 +30,10 @@ export function flattenSections(sections?: DynamicFormSection[] | null): Dynamic
   return sections.flatMap((section) => section.fields ?? [])
 }
 
+export function otherFieldKey(fieldName: string): string {
+  return `${fieldName}__other`
+}
+
 export function validateCustomResponses(
   sections: DynamicFormSection[] | null | undefined,
   responses: Record<string, string>,
@@ -41,6 +47,10 @@ export function validateCustomResponses(
     }
     const value = responses[field.name]?.trim()
     if (!value) return `${field.label} is required.`
+    if (field.fieldType === 'select' && isOtherSelectValue(value)) {
+      const other = responses[otherFieldKey(field.name)]?.trim()
+      if (!other) return `Please specify your answer for ${field.label}.`
+    }
   }
   return null
 }

@@ -70,7 +70,15 @@ export const Events: CollectionConfig = {
       ],
     },
     { name: 'startDate', type: 'date', required: true, label: 'Start date' },
-    { name: 'endDate', type: 'date', label: 'End date (optional)' },
+    {
+      name: 'endDate',
+      type: 'date',
+      label: 'End date',
+      admin: {
+        description:
+          'Recommended. The website moves events from Upcoming → Ongoing → Completed automatically using start and end dates.',
+      },
+    },
     {
       name: 'startTime',
       type: 'text',

@@ -7,7 +7,7 @@ import { CONTAINER, SECTION } from './constants'
 
 export function MediaResourcesSection() {
   const items = [
-    { label: 'Virtual Museum', href: 'https://nfsmuseums.com/s', icon: Landmark },
+    { label: 'Virtual Museum', href: 'https://nfsmuseums.com/', icon: Landmark },
 
     {
       label: 'Youtube Channel',

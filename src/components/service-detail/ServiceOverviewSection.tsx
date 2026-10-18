@@ -38,7 +38,7 @@ export function ServiceOverviewSection({
               >
                 {title}
               </h2>
-              <div className="mt-6 space-y-4">
+              <div className="mt-6 space-y-4 text-justify">
                 {paragraphs.map((p, i) => (
                   <p
                     key={i}

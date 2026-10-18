@@ -152,7 +152,8 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
           >
             <Link
               href="/search"
-              aria-label="Search"
+              aria-label="Search site — articles, events, and services"
+              title="Search site (articles, events, services)"
               className="hidden sm:flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/80 text-slate-600 hover:bg-brand-beige hover:text-brand hover:border-brand-gold transition"
             >
               <svg

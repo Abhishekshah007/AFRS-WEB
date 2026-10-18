@@ -92,6 +92,10 @@ export const RegistrationForm: GlobalConfig = {
     {
       name: 'paymentMethods',
       type: 'array',
+      admin: {
+        description:
+          'Add separate QR entries for AFRS and AFSL if needed. Set region to International for PayPal/online training; Indian/offline entries should be QR + bank only (no PayPal link).',
+      },
       fields: [
         { name: 'title', type: 'text', required: true },
         { name: 'description', type: 'textarea' },

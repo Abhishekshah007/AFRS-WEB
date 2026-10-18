@@ -2,7 +2,8 @@
 
 import type { ChangeEvent } from 'react'
 import type { DynamicFormField, DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
-import { parseOptions } from '@/lib/forms/dynamicFormTypes'
+import { otherFieldKey, parseOptions } from '@/lib/forms/dynamicFormTypes'
+import { isOtherSelectValue } from '@/lib/forms/studyJobStatusOptions'
 
 const inputClass =
   'w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:ring-2 focus:ring-slate-100'
@@ -119,29 +120,53 @@ export function DynamicFormFields({
           </div>
           {section.fields?.length ? (
             <div className="grid gap-4 sm:grid-cols-2">
-              {section.fields.map((field) => (
-                <label
-                  key={field.name}
-                  className={`text-xs font-bold uppercase tracking-[0.08em] text-slate-500 ${
-                    field.fieldType === 'textarea' || field.fieldType === 'file'
-                      ? 'sm:col-span-2'
-                      : ''
-                  }`}
-                >
-                  {field.label}
-                  {field.required ? ' *' : ''}
-                  <div className="mt-2 normal-case font-normal tracking-normal">
-                    {renderControlledField(
-                      field,
-                      values[field.name] || '',
-                      files[field.name],
-                      onChange,
-                      onFileChange,
-                      disabled,
-                    )}
+              {section.fields.map((field) => {
+                const showOther =
+                  field.fieldType === 'select' && isOtherSelectValue(values[field.name] || '')
+                const otherKey = otherFieldKey(field.name)
+
+                return (
+                  <div
+                    key={field.name}
+                    className={
+                      field.fieldType === 'textarea' || field.fieldType === 'file'
+                        ? 'sm:col-span-2'
+                        : ''
+                    }
+                  >
+                    <label
+                      className={`block text-xs font-bold uppercase tracking-[0.08em] text-slate-500`}
+                    >
+                      {field.label}
+                      {field.required ? ' *' : ''}
+                      <div className="mt-2 normal-case font-normal tracking-normal">
+                        {renderControlledField(
+                          field,
+                          values[field.name] || '',
+                          files[field.name],
+                          onChange,
+                          onFileChange,
+                          disabled,
+                        )}
+                      </div>
+                    </label>
+                    {showOther ? (
+                      <label className="mt-3 block text-xs font-bold uppercase tracking-[0.08em] text-slate-500">
+                        Please specify *
+                        <input
+                          type="text"
+                          disabled={disabled}
+                          required
+                          className={`${inputClass} mt-2`}
+                          placeholder="Enter your study / job status"
+                          value={values[otherKey] || ''}
+                          onChange={(e) => onChange(otherKey, e.target.value)}
+                        />
+                      </label>
+                    ) : null}
                   </div>
-                </label>
-              ))}
+                )
+              })}
             </div>
           ) : null}
         </section>
