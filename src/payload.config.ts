@@ -12,6 +12,8 @@ import { globals } from './config/globals'
 import { Users } from './collections/Users'
 import { cloudinaryStorageAdapter } from './storage/cloudinary/adapter'
 import { resolveResendFrom } from './lib/email/resendFrom'
+import { siteCacheRevalidationPlugin } from './plugins/siteCacheRevalidation'
+import { adminExperiencePlugin } from './plugins/adminExperiencePlugin'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -42,6 +44,8 @@ export default buildConfig({
       },
       beforeLogin: ['/components/admin/AdminLoginIntro'],
       actions: ['/components/admin/AdminViewSite'],
+      Nav: '/components/admin/nav/AdminNav',
+      header: ['/components/admin/AdminStudioHeader'],
       views: {
         dashboard: {
           Component: '/components/admin/dashboard/AdminDashboard',
@@ -68,6 +72,8 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
+    adminExperiencePlugin(),
+    siteCacheRevalidationPlugin(),
     cloudStoragePlugin({
       collections: {
         media: {

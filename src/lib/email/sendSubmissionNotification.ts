@@ -4,6 +4,7 @@ type SubmissionEmailKind =
   | 'serviceConsult'
   | 'legalConsultancy'
   | 'courseRegistration'
+  | 'courseRequest'
   | 'eventRegistration'
 
 const kindLabels: Record<SubmissionEmailKind, string> = {
@@ -12,6 +13,7 @@ const kindLabels: Record<SubmissionEmailKind, string> = {
   serviceConsult: 'Service consultation',
   legalConsultancy: 'Legal consultancy request',
   courseRegistration: 'Course / training registration',
+  courseRequest: 'Course / training interest request',
   eventRegistration: 'Event registration',
 }
 

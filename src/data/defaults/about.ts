@@ -299,9 +299,9 @@ const fallbackLeaders: LeaderProfile[] = [
       'Student and professional development are at the heart of AFRS. We are committed to providing practical, research-driven training that empowers individuals to excel in forensic science and contribute to a safer society.',
     bio: 'A visionary leader with over 15 years of experience in forensic education and administration.',
     socials: {
-      linkedin: 'https://in.linkedin.com/in/rakesh-mia%F0%9F%87%AE%F0%9F%87%B3-2b9787182',
-      instagram: 'https://instagram.com/rakesh_mia?utm_medium=copy_link',
-      facebook: 'https://www.facebook.com/rakesh.mia.144',
+      linkedin: 'https://www.linkedin.com/in/rakesh-mia-🇮🇳-2b9787182?utm_source=share_via&utm_content=profile&utm_medium=member_android',
+      instagram: 'https://www.instagram.com/rakesh_mia?cplk=MTdwc3o5MW43eDZsaQ==',
+      facebook: 'https://www.facebook.com/share/1Jkomu2x3D/',
     },
   },
   {
@@ -315,9 +315,9 @@ const fallbackLeaders: LeaderProfile[] = [
       'Strengthening the bridge between academic theory and practical application is our mission. AFRS equips students and professionals with the skills and knowledge necessary to excel in forensic investigation, evidence handling, and court-ready reporting.',
     bio: 'An expert in criminal investigation techniques with a passion for student mentorship.',
     socials: {
-      linkedin: 'https://in.linkedin.com/in/vijay-panchal-8631261b0',
-      instagram: 'https://instagram.com/vijay_panchal9977?utm_medium=copy_link',
-      facebook: 'https://www.facebook.com/profile.php?id=100017360178631',
+      linkedin: 'https://www.linkedin.com/in/vijay-panchal-8631261b0?utm_source=share_via&utm_content=profile&utm_medium=member_android',
+      instagram: 'https://www.facebook.com/share/1C4jtpiSLT/',
+      facebook: 'https://www.facebook.com/share/1C4jtpiSLT/',
     },
   },
 ]

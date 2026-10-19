@@ -2,6 +2,10 @@
 
 How to manage content in **Payload Admin** (`/admin`) for the AFRS public website.
 
+## Forms and inquiries
+
+For every public form (contact, course interest, events, what is missing for UGC/FACT/CUET), see **[form-matrix.md](./form-matrix.md)** — where submissions land in admin and who gets email.
+
 ## Admin basics
 
 - **Published** items appear on the live site; drafts do not (where applicable).

@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server'
 import { hasRequiredFields, jsonError } from '@/lib/apiResponses'
 import { validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
-import { resolveRegistrationConfig } from '@/lib/registration/resolveConfig'
 import { findProgrammeRegistrationContext } from '@/lib/queries/programme-registration'
 import { buildCourseConfirmationUrl } from '@/lib/registration/confirmationToken'
 import { getPayloadClient } from '@/lib/payload'
@@ -26,11 +25,6 @@ type InitiatePayload = {
   qualification?: string
   preferredBatch?: string
   message?: string
-  feeTierId?: string
-  feeTierLabel?: string
-  feeTierCurrency?: 'INR' | 'USD'
-  participantRegion?: 'indian' | 'international'
-  agreedToTerms?: boolean
   customResponses?: Record<string, string>
   turnstileToken?: string
 }
@@ -53,31 +47,10 @@ export async function POST(req: Request) {
     const context = await findProgrammeRegistrationContext(body.programmeId)
     const registrationForm = context?.registrationForm
 
-    const config = resolveRegistrationConfig({
-      settings: context?.match?.registrationSettings,
-      globalForm: registrationForm,
-    })
-
-    if (config.requireAgreement && !body.agreedToTerms) {
-      return jsonError('You must agree to the registration instructions.', 400)
-    }
-
     const sections = (registrationForm?.sections || []) as DynamicFormSection[]
     const customResponses = body.customResponses || {}
     const customError = validateCustomResponses(sections, customResponses)
     if (customError) return jsonError(customError, 400)
-
-    const visibleTiers =
-      body.participantRegion === 'international'
-        ? config.feeTiers.filter((tier) => tier.currency === 'USD')
-        : body.participantRegion === 'indian'
-          ? config.feeTiers.filter((tier) => tier.currency === 'INR')
-          : config.feeTiers
-
-    const selectedTier = visibleTiers.find((tier) => tier.id === body.feeTierId) || visibleTiers[0]
-
-    const totalAmount = Number(selectedTier?.amount || 0)
-    const isFree = config.registrationType === 'free' || totalAmount <= 0
 
     const created = await payload.create({
       collection: 'courseRegistrations',
@@ -102,15 +75,16 @@ export async function POST(req: Request) {
         qualification: body.qualification || undefined,
         preferredBatch: body.preferredBatch || undefined,
         message: body.message || undefined,
-        feeTierLabel: selectedTier?.label || body.feeTierLabel,
-        feeTierCurrency: selectedTier?.currency || body.feeTierCurrency || 'INR',
-        participantRegion: body.participantRegion || 'indian',
-        agreedToTerms: Boolean(body.agreedToTerms),
+        requestOnly: true,
+        feeTierLabel: undefined,
+        feeTierCurrency: undefined,
+        participantRegion: undefined,
+        agreedToTerms: false,
         customResponses: Object.keys(customResponses).length ? customResponses : undefined,
-        totalAmount,
+        totalAmount: 0,
         paymentProvider: 'manual',
-        paymentStatus: isFree ? 'notRequired' : 'pending',
-        registrationStatus: isFree ? 'confirmed' : 'initiated',
+        paymentStatus: 'notRequired',
+        registrationStatus: 'initiated',
       },
       overrideAccess: true,
     })
@@ -119,12 +93,11 @@ export async function POST(req: Request) {
       ok: true,
       registrationId: created.id,
       registrationStatus: created.registrationStatus,
-      totalAmount,
-      isFree,
-      message: isFree
-        ? 'Registration received. A confirmation email will be sent shortly.'
-        : 'Registration initiated. Please complete payment details.',
-      redirectTo: isFree ? buildCourseConfirmationUrl(created.id) : undefined,
+      totalAmount: 0,
+      isFree: true,
+      message:
+        'Your request has been received. Our team will contact you when the batch schedule is confirmed. No payment is due now.',
+      redirectTo: buildCourseConfirmationUrl(created.id),
     })
   } catch (error) {
     return jsonError(

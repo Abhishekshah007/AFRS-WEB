@@ -37,7 +37,7 @@ export function CourseRegistrationForm({ details, config, customSections = [] }:
         <div className="bg-gradient-to-br from-[var(--prog-primary)] to-brand-500 p-6 text-white">
           <BookOpen className="h-8 w-8" />
           <p className="mt-5 text-xs font-extrabold uppercase tracking-[0.18em] text-white/75">
-            Course Registration
+            Course Interest Request
           </p>
           <h1 className="mt-2 text-2xl font-extrabold leading-tight">{details.programmeTitle}</h1>
         </div>
@@ -67,7 +67,8 @@ export function CourseRegistrationForm({ details, config, customSections = [] }:
     <div className="programmes-page min-h-screen bg-[var(--prog-surface)]">
       <UnifiedRegistrationFlow
         variant="course"
-        config={config}
+        requestOnly
+        config={{ ...config, requireAgreement: false }}
         feeTiers={config.feeTiers}
         customSections={customSections}
         sidebar={sidebar}
@@ -79,10 +80,7 @@ export function CourseRegistrationForm({ details, config, customSections = [] }:
         confirmationPath={(id) => `/courses/register/confirmation/${id}`}
         buildInitiatePayload={({
           form,
-          selectedTier,
-          participantRegion,
           customResponses,
-          agreedToTerms,
         }) => ({
           programmeType: details.programmeType,
           categorySlug: details.categorySlug || '',
@@ -100,11 +98,6 @@ export function CourseRegistrationForm({ details, config, customSections = [] }:
           qualification: form.qualification,
           preferredBatch: form.preferredBatch,
           message: form.message,
-          feeTierId: selectedTier?.id,
-          feeTierLabel: selectedTier?.label,
-          feeTierCurrency: selectedTier?.currency,
-          participantRegion,
-          agreedToTerms,
           customResponses,
         })}
       />

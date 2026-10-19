@@ -37,11 +37,27 @@ export const Users: CollectionConfig = {
         },
       },
       options: [
-        { label: 'Super Admin', value: 'superAdmin' },
-        { label: 'Content Editor', value: 'contentEditor' },
-        { label: 'Event Manager', value: 'eventManager' },
-        { label: 'Student', value: 'student' },
+        {
+          label: 'Super Admin',
+          value: 'superAdmin',
+        },
+        {
+          label: 'Content Editor',
+          value: 'contentEditor',
+        },
+        {
+          label: 'Event Manager',
+          value: 'eventManager',
+        },
+        {
+          label: 'Student',
+          value: 'student',
+        },
       ],
+      admin: {
+        description:
+          'Controls the sidebar and permissions. Super Admin: full access + Staff menu access. Content Editor: daily content & inquiries. Event Manager: courses/events & registrations. Student: no studio access.',
+      },
     },
   ],
 }

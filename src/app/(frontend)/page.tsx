@@ -42,6 +42,7 @@ export default async function HomePage() {
     siteSettings,
     notices,
     faqs,
+    cmsAvailable,
   } = await getHomePageData()
 
   const sectionText = homePage?.sectionText || {}
@@ -61,7 +62,7 @@ export default async function HomePage() {
       <FutureSection />
       <AchievementsSection />
       <TrustedPartnerSection />
-      <ExpertsSection scientists={scientists} />
+      <ExpertsSection scientists={scientists} usePlaceholderExperts={!cmsAvailable} />
       <TestimonialsSection testimonials={testimonials} />
       <MediaResourcesSection />
       <LatestNewsSection items={notices} sectionText={sectionText} />

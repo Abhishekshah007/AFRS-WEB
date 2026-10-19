@@ -14,19 +14,21 @@ import { registrationSubmissionExportHook } from '../lib/submissions/attachSubmi
 export const CourseRegistrations: CollectionConfig = {
   slug: 'courseRegistrations',
   labels: {
-    singular: 'Course Registration',
-    plural: 'Course Registrations',
+    singular: 'Course Request',
+    plural: 'Course Requests',
   },
   access: eventRegistrationAccess,
   endpoints: [registrationCsvExportEndpoint('courseRegistrations')],
   admin: {
     group: ADMIN_GROUPS.EVENTS,
     useAsTitle: 'fullName',
-    description: 'People who registered for education and training programmes.',
+    description:
+      'Incoming course and training interest requests. No payment is due until the batch is scheduled.',
     defaultColumns: [
       'fullName',
       'email',
       'programmeTitle',
+      'requestOnly',
       'totalAmount',
       'paymentStatus',
       'registrationStatus',
@@ -55,6 +57,15 @@ export const CourseRegistrations: CollectionConfig = {
     { name: 'programmeTitle', type: 'text', required: true },
     { name: 'programmeDuration', type: 'text' },
     { name: 'programmeMode', type: 'text' },
+    {
+      name: 'requestOnly',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description:
+          'Interest request only. Contact the requester after the batch is scheduled; do not collect payment before then.',
+      },
+    },
 
     ...registrationContactFields(),
 

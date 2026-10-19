@@ -19,6 +19,8 @@ import {
 import { resolveMediaUrl, resolveMediaUrlOptional } from '@/lib/cms'
 import { getPayloadClient } from '@/lib/payload'
 import { getGalleryForPage, mapGalleryDocs } from '@/lib/queries/gallery'
+import { SITE_CACHE_TAGS } from '@/lib/cache/siteCacheTags'
+import { withSiteCache } from '@/lib/cache/withSiteCache'
 import { safeQuery } from '@/lib/resilience/safeQuery'
 import { membershipWhatsAppHref } from '@/lib/queries/site'
 import type { AboutCertification, AboutPage, ImpactStat, Media, SiteSetting } from '@/payload-types'
@@ -293,6 +295,8 @@ async function loadAboutPageData(): Promise<AboutPageViewProps> {
   }
 }
 
+const loadAboutPageDataCached = withSiteCache('about-page-data', [SITE_CACHE_TAGS.about], loadAboutPageData)
+
 export async function getAboutPageData(): Promise<AboutPageViewProps> {
-  return safeQuery('getAboutPageData', loadAboutPageData, getDefaultAboutPageData())
+  return safeQuery('getAboutPageData', () => loadAboutPageDataCached(), getDefaultAboutPageData())
 }

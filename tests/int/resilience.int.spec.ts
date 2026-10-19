@@ -14,6 +14,12 @@ import { slugify } from '@/lib/utils/slugify'
 import { safeQuery } from '@/lib/resilience/safeQuery'
 import { GALLERY_PAGE_PRESETS, galleryHref, serviceGalleryHref } from '@/lib/gallery/constants'
 import { buildPublishedGalleryWhere } from '@/lib/queries/gallery'
+import {
+  revalidatePlanForCollection,
+  revalidatePlanForGlobal,
+} from '@/lib/cache/revalidateMap'
+import { SITE_CACHE_TAGS } from '@/lib/cache/siteCacheTags'
+import { mapHomeNotices, resolveHomeFaqs } from '@/lib/queries/home-content'
 
 describe('resolveMediaUrl', () => {
   it('returns populated media url when available', () => {
@@ -140,6 +146,45 @@ describe('gallery page presets', () => {
     expect(serviceGalleryHref('crime-scene-investigation')).toBe(
       '/gallery?service=crime-scene-investigation',
     )
+  })
+})
+
+describe('site cache revalidation map', () => {
+  it('includes home and notices paths for notice saves', () => {
+    const plan = revalidatePlanForCollection('notices')
+    expect(plan?.paths).toContain('/')
+    expect(plan?.paths).toContain('/notices')
+    expect(plan?.tags).toContain(SITE_CACHE_TAGS.notices)
+  })
+
+  it('includes service detail path when slug is present', () => {
+    const plan = revalidatePlanForCollection('services', { slug: 'dna-analysis' })
+    expect(plan?.paths).toContain('/services/dna-analysis')
+  })
+
+  it('revalidates layout when media changes', () => {
+    const plan = revalidatePlanForCollection('media')
+    expect(plan?.layout).toBe(true)
+  })
+
+  it('maps header settings to layout invalidation', () => {
+    const plan = revalidatePlanForGlobal('headerSettings')
+    expect(plan?.layout).toBe(true)
+  })
+})
+
+describe('home content fallbacks', () => {
+  it('does not show placeholder notices when CMS returned an empty list', () => {
+    expect(mapHomeNotices([])).toEqual([])
+  })
+
+  it('uses placeholder notices only when CMS is unavailable', () => {
+    expect(mapHomeNotices([], { usePlaceholderDefaults: true }).length).toBeGreaterThan(0)
+  })
+
+  it('uses placeholder FAQs only when requested', () => {
+    expect(resolveHomeFaqs(null)).toEqual([])
+    expect(resolveHomeFaqs(null, { usePlaceholderDefaults: true }).length).toBeGreaterThan(0)
   })
 })
 

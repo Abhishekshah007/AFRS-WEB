@@ -43,9 +43,14 @@ export const eventManagedPublishedAccess: CollectionConfig['access'] = {
     delete: isAdmin,
 }
 
+export const isAdminEditorOrEventManager: Access = ({ req: { user } }) => {
+    const role = getRole(user)
+    return Boolean(role && ['superAdmin', 'contentEditor', 'eventManager'].includes(role))
+}
+
 export const eventRegistrationAccess: CollectionConfig['access'] = {
     create: isPublic,
-    read: isAdminOrEventManager,
+    read: isAdminEditorOrEventManager,
     update: isAdminOrEventManager,
     delete: isAdmin,
 }

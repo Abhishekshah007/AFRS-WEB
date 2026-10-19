@@ -23,25 +23,32 @@ export function LatestNewsSection({
           }
         />
         <AnimateOnScroll>
-          <ul className="divide-y divide-slate-100 border border-slate-100 rounded-2xl overflow-hidden">
-            {items.map((item) => (
-              <li
-                key={item.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-5 hover:bg-slate-50 transition"
-              >
-                <div>
-                  <p className="font-semibold text-slate-900 text-sm">{item.title}</p>
-                  <p className="text-xs text-slate-400 mt-1">{item.date}</p>
-                </div>
-                <Link
-                  href={item.href}
-                  className="text-sm font-bold text-brand-600 hover:text-brand-700 shrink-0"
+          {items.length === 0 ? (
+            <p className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-5 py-8 text-center text-sm text-slate-500">
+              No published notices right now. Add notices in the admin panel and mark them{' '}
+              <strong>Published on website</strong>.
+            </p>
+          ) : (
+            <ul className="divide-y divide-slate-100 border border-slate-100 rounded-2xl overflow-hidden">
+              {items.map((item) => (
+                <li
+                  key={item.id}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-5 hover:bg-slate-50 transition"
                 >
-                  Read More →
-                </Link>
-              </li>
-            ))}
-          </ul>
+                  <div>
+                    <p className="font-semibold text-slate-900 text-sm">{item.title}</p>
+                    <p className="text-xs text-slate-400 mt-1">{item.date}</p>
+                  </div>
+                  <Link
+                    href={item.href}
+                    className="text-sm font-bold text-brand-600 hover:text-brand-700 shrink-0"
+                  >
+                    Read More →
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </AnimateOnScroll>
         <p className="mt-4 text-center">
           <Link href="/notices" className="text-sm font-semibold text-brand-600 hover:text-brand-700">
