@@ -232,7 +232,12 @@ export function registrationSubmissionExportHook(
     if (created || proofAdded) {
       try {
         await notifyByEmail({
-          kind: collection === 'courseRegistrations' ? 'courseRegistration' : 'eventRegistration',
+          kind:
+            collection === 'courseRegistrations'
+              ? doc.requestOnly === true
+                ? 'courseRequest'
+                : 'courseRegistration'
+              : 'eventRegistration',
           title:
             collection === 'courseRegistrations'
               ? String(doc.programmeTitle || doc.fullName || 'Course')
@@ -264,6 +269,7 @@ export function registrationSubmissionExportHook(
           currency: doc.feeTierCurrency === 'USD' ? 'USD' : 'INR',
           isFree,
           paymentPending: !isFree && paymentStatus === 'pending',
+          requestOnly: collection === 'courseRegistrations' && doc.requestOnly === true,
         })
       } catch (error) {
         logCmsError('registrantConfirmation', error, { collection, id: doc.id })

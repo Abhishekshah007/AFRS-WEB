@@ -8,8 +8,23 @@ import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import { TYPOGRAPHY, UI } from '../design'
 import { CONTAINER, fallbackScientists, SECTION } from './constants'
 
-export function ExpertsSection({ scientists }: { scientists: PaginatedDocs<Scientist> }) {
-  const experts = scientists.docs.length ? scientists.docs : fallbackScientists
+export function ExpertsSection({
+  scientists,
+  usePlaceholderExperts = false,
+}: {
+  scientists: PaginatedDocs<Scientist>
+  usePlaceholderExperts?: boolean
+}) {
+  const experts =
+    scientists.docs.length > 0
+      ? scientists.docs
+      : usePlaceholderExperts
+        ? fallbackScientists
+        : []
+
+  if (experts.length === 0) {
+    return null
+  }
 
   return (
     <section className={`${SECTION} bg-white section-glow-top`}>

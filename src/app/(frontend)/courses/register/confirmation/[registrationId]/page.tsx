@@ -46,6 +46,7 @@ export default async function CourseRegistrationConfirmationPage({ params, searc
     <RegistrationConfirmationView
       variant="course"
       isFree={isFree}
+      isRequestOnly={record.requestOnly === true}
       subjectTitle={record.programmeTitle || 'Programme'}
       registrationId={String(record.id)}
       registrantName={record.fullName}

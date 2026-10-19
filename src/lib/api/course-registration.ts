@@ -54,6 +54,12 @@ export async function completeCourseRegistration(req: Request) {
   })
 
   if (!existing) return jsonError('Registration not found.', 404)
+  if (existing.requestOnly) {
+    return jsonError(
+      'This course is currently collecting interest requests only. Payment is not due until the batch is scheduled.',
+      400,
+    )
+  }
   if (existing.paymentStatus === 'paid') {
     return jsonError('This registration has already been verified.', 400)
   }

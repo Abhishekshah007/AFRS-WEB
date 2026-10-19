@@ -103,7 +103,10 @@ export const Services: CollectionConfig = {
         },
       ],
     },
-    publishedField(),
+    publishedField({
+      description:
+        'Required for this service to appear on /services and to get its own public page at /services/your-slug.',
+    }),
     orderField(),
   ],
 }

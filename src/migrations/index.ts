@@ -9,6 +9,7 @@ import * as migration_20260917_220000_service_overview_image from './20260917_22
 import * as migration_20260918_203000_registration_settings from './20260918_203000_registration_settings'
 
 import * as migration_20260921_010000_gallery_placement_fields from './20260921_010000_gallery_placement_fields'
+import * as migration_20261019_032600_course_request_only from './20261019_032600_course_request_only'
 
 export const migrations = [
   {
@@ -60,5 +61,10 @@ export const migrations = [
     up: migration_20260921_010000_gallery_placement_fields.up,
     down: migration_20260921_010000_gallery_placement_fields.down,
     name: '20260921_010000_gallery_placement_fields',
+  },
+  {
+    up: migration_20261019_032600_course_request_only.up,
+    down: migration_20261019_032600_course_request_only.down,
+    name: '20261019_032600_course_request_only',
   },
 ]

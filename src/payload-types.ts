@@ -125,6 +125,7 @@ export interface Config {
     programmesCatalog: ProgrammesCatalog;
     registrationForm: RegistrationForm;
     studentHubContent: StudentHubContent;
+    adminAccess: AdminAccess;
   };
   globalsSelect: {
     siteSettings: SiteSettingsSelect<false> | SiteSettingsSelect<true>;
@@ -136,6 +137,7 @@ export interface Config {
     programmesCatalog: ProgrammesCatalogSelect<false> | ProgrammesCatalogSelect<true>;
     registrationForm: RegistrationFormSelect<false> | RegistrationFormSelect<true>;
     studentHubContent: StudentHubContentSelect<false> | StudentHubContentSelect<true>;
+    adminAccess: AdminAccessSelect<false> | AdminAccessSelect<true>;
   };
   locale: null;
   widgets: {
@@ -244,6 +246,9 @@ export interface Article {
    * Show as Editor's Choice
    */
   featured?: boolean | null;
+  /**
+   * When unchecked, this entry is saved but hidden on the public website. Logged-in editors can still see it in the admin panel.
+   */
   published?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -295,6 +300,9 @@ export interface AboutCertification {
    * Optional public URL to a certificate PDF, verification page, or proof.
    */
   certificateUrl?: string | null;
+  /**
+   * When unchecked, this entry is saved but hidden on the public website. Logged-in editors can still see it in the admin panel.
+   */
   published?: boolean | null;
   /**
    * Lower numbers appear first.
@@ -371,6 +379,9 @@ export interface Service {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Required for this service to appear on /services and to get its own public page at /services/your-slug.
+   */
   published?: boolean | null;
   /**
    * Lower numbers appear first.
@@ -406,6 +417,9 @@ export interface GalleryItem {
    * Optional. Used for UGC NET, FACT, or CUET teaching galleries.
    */
   examProgram?: ('ugc-net' | 'fact' | 'cuet') | null;
+  /**
+   * When unchecked, this entry is saved but hidden on the public website. Logged-in editors can still see it in the admin panel.
+   */
   published?: boolean | null;
   /**
    * When checked, this image is preferred as the category hub tile cover for its category.
@@ -435,6 +449,9 @@ export interface Testimonial {
   displayOn: 'afrs' | 'afsl' | 'both';
   rating: number;
   image?: (number | null) | Media;
+  /**
+   * When unchecked, this entry is saved but hidden on the public website. Logged-in editors can still see it in the admin panel.
+   */
   published?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -517,6 +534,9 @@ export interface ImpactStat {
   value: string;
   description?: string | null;
   tone?: ('indigo' | 'blue' | 'purple' | 'emerald' | 'orange') | null;
+  /**
+   * When unchecked, this entry is saved but hidden on the public website. Logged-in editors can still see it in the admin panel.
+   */
   published?: boolean | null;
   /**
    * Lower numbers appear first.
@@ -541,6 +561,9 @@ export interface Notice {
    * Optional link for more details.
    */
   href?: string | null;
+  /**
+   * When unchecked, this entry is saved but hidden on the public website. Logged-in editors can still see it in the admin panel.
+   */
   published?: boolean | null;
   /**
    * Lower numbers appear first.
@@ -559,6 +582,9 @@ export interface PartnersLogo {
   id: number;
   name: string;
   logo?: (number | null) | Media;
+  /**
+   * When unchecked, this entry is saved but hidden on the public website. Logged-in editors can still see it in the admin panel.
+   */
   published?: boolean | null;
   /**
    * Lower numbers appear first.
@@ -607,6 +633,9 @@ export interface Event {
   eventType?: ('workshop' | 'webinar' | 'conference' | 'training') | null;
   mode?: ('online' | 'offline' | 'hybrid') | null;
   startDate: string;
+  /**
+   * Recommended. The website moves events from Upcoming → Ongoing → Completed automatically using start and end dates.
+   */
   endDate?: string | null;
   startTime?: string | null;
   venue?: string | null;
@@ -713,6 +742,9 @@ export interface Event {
         id?: string | null;
       }[]
     | null;
+  /**
+   * When unchecked, this entry is saved but hidden on the public website. Logged-in editors can still see it in the admin panel.
+   */
   published?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -789,7 +821,7 @@ export interface EventRegistration {
   createdAt: string;
 }
 /**
- * People who registered for education and training programmes.
+ * Incoming course and training interest requests. No payment is due until the batch is scheduled.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "courseRegistrations".
@@ -803,6 +835,10 @@ export interface CourseRegistration {
   programmeTitle: string;
   programmeDuration?: string | null;
   programmeMode?: string | null;
+  /**
+   * Interest request only. Contact the requester after the batch is scheduled; do not collect payment before then.
+   */
+  requestOnly?: boolean | null;
   fullName: string;
   email: string;
   countryCode?: string | null;
@@ -898,6 +934,9 @@ export interface ContactMessage {
 export interface User {
   id: number;
   name: string;
+  /**
+   * Controls the sidebar and permissions. Super Admin: full access + Staff menu access. Content Editor: daily content & inquiries. Event Manager: courses/events & registrations. Student: no studio access.
+   */
   role: 'superAdmin' | 'contentEditor' | 'eventManager' | 'student';
   updatedAt: string;
   createdAt: string;
@@ -1365,6 +1404,7 @@ export interface CourseRegistrationsSelect<T extends boolean = true> {
   programmeTitle?: T;
   programmeDuration?: T;
   programmeMode?: T;
+  requestOnly?: T;
   fullName?: T;
   email?: T;
   countryCode?: T;
@@ -2247,6 +2287,9 @@ export interface RegistrationForm {
     paypalLink?: string | null;
     note?: string | null;
   };
+  /**
+   * Add separate QR entries for AFRS and AFSL if needed. Set region to International for PayPal/online training; Indian/offline entries should be QR + bank only (no PayPal link).
+   */
   paymentMethods?:
     | {
         title: string;
@@ -2823,6 +2866,63 @@ export interface StudentHubContent {
         }[]
       | null;
   };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Super Admin only. Hide sidebar items per role on top of default permissions. Staff still cannot open hidden items if collection access denies them.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "adminAccess".
+ */
+export interface AdminAccess {
+  id: number;
+  /**
+   * Add extra hidden menu items per role. Defaults are already applied in code.
+   */
+  roleMenus?:
+    | {
+        role: 'contentEditor' | 'eventManager' | 'student';
+        hiddenCollections?:
+          | {
+              slug:
+                | 'articles'
+                | 'aboutCertifications'
+                | 'courseRegistrations'
+                | 'eventRegistrations'
+                | 'events'
+                | 'galleryItems'
+                | 'impactStats'
+                | 'scientists'
+                | 'media'
+                | 'notices'
+                | 'partnersLogo'
+                | 'resourcePersons'
+                | 'services'
+                | 'users'
+                | 'testimonials'
+                | 'contactMessages';
+              id?: string | null;
+            }[]
+          | null;
+        hiddenGlobals?:
+          | {
+              slug:
+                | 'aboutPage'
+                | 'registrationForm'
+                | 'programmesCatalog'
+                | 'footerSettings'
+                | 'headerSettings'
+                | 'homePage'
+                | 'servicesPage'
+                | 'siteSettings'
+                | 'studentHubContent';
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -4020,6 +4120,33 @@ export interface StudentHubContentSelect<T extends boolean = true> {
               href?: T;
               id?: T;
             };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "adminAccess_select".
+ */
+export interface AdminAccessSelect<T extends boolean = true> {
+  roleMenus?:
+    | T
+    | {
+        role?: T;
+        hiddenCollections?:
+          | T
+          | {
+              slug?: T;
+              id?: T;
+            };
+        hiddenGlobals?:
+          | T
+          | {
+              slug?: T;
+              id?: T;
+            };
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;

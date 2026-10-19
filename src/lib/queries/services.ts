@@ -24,6 +24,8 @@ import { getPayloadClient } from '@/lib/payload'
 import { getGalleryPreviewPhotos } from '@/lib/queries/gallery'
 import { galleryHref, GALLERY_PAGE_PRESETS } from '@/lib/gallery/constants'
 import type { GalleryThumb } from '@/components/programmes/types'
+import { SITE_CACHE_TAGS } from '@/lib/cache/siteCacheTags'
+import { withSiteCache } from '@/lib/cache/withSiteCache'
 import { safeQuery } from '@/lib/resilience/safeQuery'
 import { testimonialPlacementWhere } from '@/lib/queries/testimonials'
 import type {
@@ -309,22 +311,19 @@ async function loadServicesPageData(): Promise<ServicesPageViewProps> {
   const site = siteData as SiteSetting
   const content = buildServicesContent((servicesPage as ServicesPage)?.sectionText)
 
-  const catalogItems: CatalogItem[] =
-    services.docs.length > 0
-      ? services.docs.map((s, i) => {
-          const srv = s as Service
-          return {
-            id: srv.id,
-            title: srv.title,
-            slug: srv.slug,
-            desc: srv.excerpt || richTextToPlain(srv.content, 120),
-            banner: resolveMediaUrl(
-              srv.banner as number | Media | null | undefined,
-              fallbackBanners[i % fallbackBanners.length],
-            ),
-          }
-        })
-      : fallbackCatalog
+  const catalogItems: CatalogItem[] = services.docs.map((s, i) => {
+    const srv = s as Service
+    return {
+      id: srv.id,
+      title: srv.title,
+      slug: srv.slug,
+      desc: srv.excerpt || richTextToPlain(srv.content, 120),
+      banner: resolveMediaUrl(
+        srv.banner as number | Media | null | undefined,
+        fallbackBanners[i % fallbackBanners.length],
+      ),
+    }
+  })
 
   const cmsScientists = scientists.docs as Scientist[]
   const directors = cmsScientists
@@ -333,9 +332,6 @@ async function loadServicesPageData(): Promise<ServicesPageViewProps> {
   const teamMembers = cmsScientists
     .filter((scientist) => scientist.memberType !== 'director')
     .map(toMember)
-
-  const resolvedDirectors = cmsScientists.length === 0 ? fallbackDirectors : directors
-  const resolvedTeamMembers = cmsScientists.length === 0 ? fallbackTeam : teamMembers
 
   const cmsTestimonials: AfslTestimonial[] = (testimonials.docs as Testimonial[]).map((item) => ({
     id: item.id,
@@ -348,16 +344,18 @@ async function loadServicesPageData(): Promise<ServicesPageViewProps> {
   return {
     content,
     catalogItems,
-    directors: resolvedDirectors,
-    teamMembers: resolvedTeamMembers,
+    directors,
+    teamMembers,
     site: buildSiteContact(site),
     totalVisitors: resolveTotalVisitors(site),
     galleryPreview,
     galleryViewAllHref: galleryHref('lab', 'afsl'),
-    testimonials: cmsTestimonials.length > 0 ? cmsTestimonials : defaultAfslTestimonials,
+    testimonials: cmsTestimonials,
   }
 }
 
+const loadServicesPageDataCached = withSiteCache('services-page-data', [SITE_CACHE_TAGS.services], loadServicesPageData)
+
 export async function getServicesPageData(): Promise<ServicesPageViewProps> {
-  return safeQuery('getServicesPageData', loadServicesPageData, getDefaultServicesPageData())
+  return safeQuery('getServicesPageData', () => loadServicesPageDataCached(), getDefaultServicesPageData())
 }

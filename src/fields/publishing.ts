@@ -4,6 +4,9 @@ type PublishedOptions = { defaultValue?: boolean; description?: string }
 type OrderOptions = { description?: string }
 type FeaturedOptions = { description?: string; defaultValue?: boolean }
 
+const DEFAULT_PUBLISHED_DESCRIPTION =
+  'When unchecked, this entry is saved but hidden on the public website. Logged-in editors can still see it in the admin panel.'
+
 export const publishedField = ({
   defaultValue = false,
   description,
@@ -11,7 +14,11 @@ export const publishedField = ({
   name: 'published',
   type: 'checkbox',
   defaultValue,
-  ...(description ? { admin: { description } } : {}),
+  label: 'Published on website',
+  admin: {
+    position: 'sidebar',
+    description: description ?? DEFAULT_PUBLISHED_DESCRIPTION,
+  },
 })
 
 export const orderField = ({

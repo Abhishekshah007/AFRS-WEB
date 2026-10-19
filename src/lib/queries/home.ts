@@ -15,6 +15,8 @@ import type {
 } from '@/payload-types'
 import type { PaginatedDocs } from 'payload'
 import type { HomeFaqItem, HomeNoticeBoardItem } from '@/lib/queries/home-content'
+import { SITE_CACHE_TAGS } from '@/lib/cache/siteCacheTags'
+import { withSiteCache } from '@/lib/cache/withSiteCache'
 import { mapHomeNotices, resolveHomeFaqs } from '@/lib/queries/home-content'
 
 export type HomePageData = {
@@ -38,27 +40,24 @@ const EMPTY_HOME: HomePageData = {
   partnerLogos: emptyPaginatedDocs<PartnersLogo>(),
   homePage: null,
   siteSettings: null,
-  notices: mapHomeNotices([]),
-  faqs: resolveHomeFaqs(null),
+  notices: mapHomeNotices([], { usePlaceholderDefaults: true }),
+  faqs: resolveHomeFaqs(null, { usePlaceholderDefaults: true }),
   cmsAvailable: false,
 }
 
-export async function getHomePageData(): Promise<HomePageData> {
-  return safeQuery(
-    'getHomePageData',
-    async () => {
-      const payload = await getPayloadClient()
+async function loadHomePageData(): Promise<HomePageData> {
+  const payload = await getPayloadClient()
 
-      const [
-        events,
-        testimonials,
-        scientists,
-        impactStats,
-        partnerLogos,
-        homePage,
-        siteSettings,
-        noticeDocs,
-      ] = await Promise.all([
+  const [
+    events,
+    testimonials,
+    scientists,
+    impactStats,
+    partnerLogos,
+    homePage,
+    siteSettings,
+    noticeDocs,
+  ] = await Promise.all([
         fetchActiveEvents(payload, { limit: 3, depth: 1 }),
         payload.find({
           collection: 'testimonials',
@@ -108,23 +107,29 @@ export async function getHomePageData(): Promise<HomePageData> {
           depth: 0,
           overrideAccess: false,
         }),
-      ])
+  ])
 
-      const resolvedHomePage = homePage as HomePage
+  const resolvedHomePage = homePage as HomePage
 
-      return {
-        events,
-        testimonials,
-        scientists,
-        impactStats,
-        partnerLogos,
-        homePage: resolvedHomePage,
-        siteSettings,
-        notices: mapHomeNotices(noticeDocs.docs as Notice[]),
-        faqs: resolveHomeFaqs(resolvedHomePage),
-        cmsAvailable: true,
-      }
-    },
-    EMPTY_HOME,
-  )
+  return {
+    events,
+    testimonials,
+    scientists,
+    impactStats,
+    partnerLogos,
+    homePage: resolvedHomePage,
+    siteSettings,
+    notices: mapHomeNotices(noticeDocs.docs as Notice[]),
+    faqs: resolveHomeFaqs(resolvedHomePage),
+    cmsAvailable: true,
+  }
+}
+
+const loadHomePageDataCached = withSiteCache('home-page-data', [
+  SITE_CACHE_TAGS.home,
+  SITE_CACHE_TAGS.notices,
+], loadHomePageData)
+
+export async function getHomePageData(): Promise<HomePageData> {
+  return safeQuery('getHomePageData', () => loadHomePageDataCached(), EMPTY_HOME)
 }

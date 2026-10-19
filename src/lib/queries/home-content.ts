@@ -14,7 +14,15 @@ export type HomeNoticeBoardItem = {
   href: string
 }
 
-export function resolveHomeFaqs(homePage?: HomePage | null): HomeFaqItem[] {
+type ContentFallbackOptions = {
+  /** Use bundled defaults only when the CMS is unavailable (not when the list is intentionally empty). */
+  usePlaceholderDefaults?: boolean
+}
+
+export function resolveHomeFaqs(
+  homePage?: HomePage | null,
+  options?: ContentFallbackOptions,
+): HomeFaqItem[] {
   const cmsFaqs = homePage?.faqs
 
   if (Array.isArray(cmsFaqs) && cmsFaqs.length > 0) {
@@ -30,17 +38,27 @@ export function resolveHomeFaqs(homePage?: HomePage | null): HomeFaqItem[] {
     }
   }
 
-  return defaultHomeFaqs.map(({ question, answer }) => ({ q: question, a: answer }))
+  if (options?.usePlaceholderDefaults) {
+    return defaultHomeFaqs.map(({ question, answer }) => ({ q: question, a: answer }))
+  }
+
+  return []
 }
 
-export function mapHomeNotices(notices: Notice[]): HomeNoticeBoardItem[] {
+export function mapHomeNotices(
+  notices: Notice[],
+  options?: ContentFallbackOptions,
+): HomeNoticeBoardItem[] {
   if (notices.length === 0) {
-    return defaultHomeNoticeBoardItems.map((item, index) => ({
-      id: `fallback-${index}`,
-      title: item.title,
-      date: item.date,
-      href: item.href,
-    }))
+    if (options?.usePlaceholderDefaults) {
+      return defaultHomeNoticeBoardItems.map((item, index) => ({
+        id: `fallback-${index}`,
+        title: item.title,
+        date: item.date,
+        href: item.href,
+      }))
+    }
+    return []
   }
 
   return notices.map((notice) => ({

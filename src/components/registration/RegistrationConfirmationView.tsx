@@ -3,6 +3,7 @@ import Link from 'next/link'
 export type RegistrationConfirmationDetails = {
   variant: 'event' | 'course'
   isFree: boolean
+  isRequestOnly?: boolean
   subjectTitle: string
   registrationId: string
   registrantName?: string | null
@@ -53,6 +54,7 @@ export function GenericRegistrationConfirmation({
 export function RegistrationConfirmationView({
   variant,
   isFree,
+  isRequestOnly = false,
   subjectTitle,
   registrationId,
   registrantName,
@@ -69,13 +71,21 @@ export function RegistrationConfirmationView({
       <div className="max-w-3xl mx-auto px-4 py-14">
         <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
           <p className="text-sm font-bold text-emerald-600">
-            {isFree ? 'REGISTRATION RECEIVED' : 'PAYMENT DETAILS SUBMITTED'}
+            {isRequestOnly
+              ? 'INTEREST REQUEST RECEIVED'
+              : isFree
+                ? 'REGISTRATION RECEIVED'
+                : 'PAYMENT DETAILS SUBMITTED'}
           </p>
-          <h1 className="mt-2 text-3xl font-extrabold text-slate-900">Thank you for registering</h1>
+          <h1 className="mt-2 text-3xl font-extrabold text-slate-900">
+            {isRequestOnly ? 'Thank you for your interest' : 'Thank you for registering'}
+          </h1>
           <p className="mt-3 text-slate-600">
-            {isFree
-              ? 'Your registration has been received. No payment is required.'
-              : 'Our team will verify your payment and confirm your registration shortly.'}
+            {isRequestOnly
+              ? 'Your request has been received. No payment is due now. Our team will contact you when the batch schedule is confirmed and share payment instructions then.'
+              : isFree
+                ? 'Your registration has been received. No payment is required.'
+                : 'Our team will verify your payment and confirm your registration shortly.'}
           </p>
 
           <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm space-y-2">
@@ -84,7 +94,7 @@ export function RegistrationConfirmationView({
               <span className="font-semibold">{subjectTitle}</span>
             </p>
             <p>
-              <span className="text-slate-500">Registration ID:</span>{' '}
+              <span className="text-slate-500">{isRequestOnly ? 'Request ID:' : 'Registration ID:'}</span>{' '}
               <span className="font-semibold">{registrationId}</span>
             </p>
             {registrantName ? (

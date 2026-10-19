@@ -7,6 +7,7 @@ import { RegistrationForm } from '../globals/RegistrationForm'
 import { ServicesPage } from '../globals/ServicesPage'
 import { SiteSettings } from '../globals/SiteSettings'
 import { StudentHubContent } from '../globals/StudentHubContent'
+import { AdminAccess } from '../globals/AdminAccess'
 
 /** Globals registered in logical admin-nav order. */
 export const globals = [
@@ -23,4 +24,5 @@ export const globals = [
   RegistrationForm,
   // Student Hub
   StudentHubContent,
+  AdminAccess,
 ]

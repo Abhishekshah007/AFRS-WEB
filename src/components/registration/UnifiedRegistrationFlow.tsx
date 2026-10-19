@@ -37,6 +37,7 @@ type ContactFormState = {
 
 type Props = {
   variant: 'event' | 'course'
+  requestOnly?: boolean
   /** When true, only CMS-defined sections are shown (no hardcoded personal info blocks). */
   cmsFormOnly?: boolean
   config: ResolvedRegistrationConfig
@@ -70,6 +71,7 @@ const inputClass =
 
 export function UnifiedRegistrationFlow({
   variant,
+  requestOnly = false,
   cmsFormOnly = false,
   config,
   feeTiers,
@@ -88,7 +90,7 @@ export function UnifiedRegistrationFlow({
   buildInitiatePayload,
 }: Props) {
   const router = useRouter()
-  const isPaid = config.registrationType !== 'free'
+  const isPaid = !requestOnly && config.registrationType !== 'free'
   const showPayment = isPaid && config.requirePaymentProof
 
   const [loading, setLoading] = useState(false)
@@ -167,7 +169,7 @@ export function UnifiedRegistrationFlow({
       }
     }
 
-    if (config.requireAgreement && !agreedToTerms) {
+    if (!requestOnly && config.requireAgreement && !agreedToTerms) {
       setError('Please read and accept the registration instructions.')
       return false
     }
@@ -345,7 +347,7 @@ export function UnifiedRegistrationFlow({
         ) : null}
 
         <main className="space-y-5">
-          {config.requireAgreement && !instructionsInSidebar && (
+          {!requestOnly && config.requireAgreement && !instructionsInSidebar && (
             <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-4">
               <div>
                 <h3 className="font-extrabold text-slate-900 text-xl">
@@ -373,7 +375,7 @@ export function UnifiedRegistrationFlow({
             </section>
           )}
 
-          {config.participantRegion === 'both' && (
+          {!requestOnly && config.participantRegion === 'both' && (
             <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-3">
               <h3 className="font-extrabold text-slate-900">
                 {config.requireAgreement ? '2. Participant Type' : '1. Participant Type'}
@@ -485,7 +487,7 @@ export function UnifiedRegistrationFlow({
             </section>
           ) : null}
 
-          {visibleTiers.length > 0 && (
+          {!requestOnly && visibleTiers.length > 0 && (
             <section className="rounded-2xl border border-slate-200 bg-white p-5 space-y-4 shadow-sm">
               <h3 className="font-extrabold text-slate-900">
                 {isPaid ? 'Registration fees' : 'Registration category'}
@@ -617,16 +619,36 @@ export function UnifiedRegistrationFlow({
             </section>
           )}
 
+          {requestOnly && (
+            <section className="rounded-2xl border border-blue-200 bg-blue-50 p-5 text-sm text-blue-950">
+              <h3 className="font-extrabold">Request a place — no payment now</h3>
+              <p className="mt-1 leading-6">
+                Submit your interest and our team will contact you when the batch schedule is
+                confirmed. Please do not make a payment until you receive the schedule and payment
+                instructions from AFRS.
+              </p>
+            </section>
+          )}
+
           {error && <p className="text-sm text-rose-600">{error}</p>}
 
           <TurnstileField onTokenChange={setTurnstileToken} />
 
           <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <div>
-              <p className="text-xs text-slate-500">TOTAL</p>
-              <p className="text-3xl font-extrabold text-slate-900">
-                {isPaid ? formatFeeAmount(total, selectedTier?.currency || 'INR') : 'Free'}
-              </p>
+              {requestOnly ? (
+                <>
+                  <p className="text-xs text-slate-500">PAYMENT</p>
+                  <p className="text-lg font-extrabold text-slate-900">Not due now</p>
+                </>
+              ) : (
+                <>
+                  <p className="text-xs text-slate-500">TOTAL</p>
+                  <p className="text-3xl font-extrabold text-slate-900">
+                    {isPaid ? formatFeeAmount(total, selectedTier?.currency || 'INR') : 'Free'}
+                  </p>
+                </>
+              )}
             </div>
             <button
               type="button"
@@ -634,7 +656,7 @@ export function UnifiedRegistrationFlow({
               disabled={loading || (turnstileRequired && !turnstileToken)}
               className="h-12 px-8 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold disabled:opacity-60"
             >
-              {loading ? 'Submitting…' : 'Submit registration'}
+              {loading ? 'Submitting…' : requestOnly ? 'Submit request' : 'Submit registration'}
             </button>
           </div>
         </main>

@@ -23,6 +23,7 @@ export async function sendRegistrantConfirmation({
   currency = 'INR',
   isFree,
   paymentPending,
+  requestOnly = false,
 }: {
   kind: RegistrantConfirmationKind
   to: string
@@ -33,6 +34,7 @@ export async function sendRegistrantConfirmation({
   currency?: 'INR' | 'USD'
   isFree: boolean
   paymentPending: boolean
+  requestOnly?: boolean
 }): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY
   const from = process.env.RESEND_FROM_EMAIL || 'AFRS Notifications <onboarding@resend.dev>'
@@ -49,28 +51,32 @@ export async function sendRegistrantConfirmation({
       ? `$${totalAmount.toLocaleString('en-US')}`
       : `₹${totalAmount.toLocaleString('en-IN')}`
 
-  const statusLine = isFree
-    ? 'Your registration has been received. No payment is required for this programme.'
-    : paymentPending
-      ? 'Your registration has been received. Our team will verify your payment and confirm your seat shortly.'
-      : 'Your registration has been received and is being processed.'
+  const statusLine = requestOnly
+    ? 'Your interest request has been received. No payment is due now. Our team will contact you when the batch schedule is confirmed and share payment instructions then.'
+    : isFree
+      ? 'Your registration has been received. No payment is required for this programme.'
+      : paymentPending
+        ? 'Your registration has been received. Our team will verify your payment and confirm your seat shortly.'
+        : 'Your registration has been received and is being processed.'
 
-  const subject = `[AFRS] Registration received — ${programmeOrEventTitle}`
+  const subject = requestOnly
+    ? `[AFRS] Course request received — ${programmeOrEventTitle}`
+    : `[AFRS] Registration received — ${programmeOrEventTitle}`
   const html = `
     <div style="font-family:Arial,sans-serif;color:#0f172a;max-width:560px;">
       <h2 style="margin:0 0 12px;">Thank you, ${escapeHtml(fullName)}</h2>
       <p style="margin:0 0 16px;color:#475569;">
-        We have received your ${escapeHtml(kindLabels[kind])} for
+        We have received your ${requestOnly ? 'interest request' : escapeHtml(kindLabels[kind])} for
         <strong>${escapeHtml(programmeOrEventTitle)}</strong>.
       </p>
       <p style="margin:0 0 16px;color:#475569;">${escapeHtml(statusLine)}</p>
       <table style="border-collapse:collapse;width:100%;margin:16px 0;">
         <tr>
-          <td style="padding:8px 12px;border:1px solid #e2e8f0;font-weight:600;">Registration ID</td>
+          <td style="padding:8px 12px;border:1px solid #e2e8f0;font-weight:600;">${requestOnly ? 'Request ID' : 'Registration ID'}</td>
           <td style="padding:8px 12px;border:1px solid #e2e8f0;">${escapeHtml(String(registrationId))}</td>
         </tr>
         ${
-          !isFree
+          !requestOnly && !isFree
             ? `<tr>
           <td style="padding:8px 12px;border:1px solid #e2e8f0;font-weight:600;">Amount</td>
           <td style="padding:8px 12px;border:1px solid #e2e8f0;">${escapeHtml(amountLabel)}</td>
