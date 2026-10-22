@@ -1,5 +1,10 @@
 import type { MetadataRoute } from 'next'
 import { getPayloadClient } from '@/lib/payload'
+import {
+  defaultEducationCategories,
+  defaultTrainingCategories,
+} from '@/data/defaults/programmes/catalog'
+import { defaultServicesCatalog } from '@/data/defaults/services-catalog'
 import { getSiteUrl } from '@/lib/seo/site'
 
 const STATIC_PATHS = [
@@ -22,6 +27,8 @@ const STATIC_PATHS = [
   '/notices',
   '/privacy',
   '/terms',
+  ...defaultEducationCategories.map((category) => `/courses/education/${category.slug}`),
+  ...defaultTrainingCategories.map((category) => `/courses/training/${category.slug}`),
 ] as const
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -93,6 +100,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     return [...staticEntries, ...serviceEntries, ...eventEntries, ...articleEntries]
   } catch {
-    return staticEntries
+    const fallbackServices: MetadataRoute.Sitemap = defaultServicesCatalog.map((service) => ({
+      url: `${origin}/services/${service.slug}`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    }))
+    return [...staticEntries, ...fallbackServices]
   }
 }

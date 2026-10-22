@@ -2,6 +2,7 @@ import type { GlobalConfig } from 'payload'
 
 import { editorManagedGlobalAccess } from '../access'
 import { ADMIN_GROUPS } from '../config/adminGroups'
+import { DEFAULT_SITE_ADDRESS } from '../data/defaults/siteContact'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'siteSettings',
@@ -17,10 +18,18 @@ export const SiteSettings: GlobalConfig = {
     { name: 'phone', type: 'text', defaultValue: '+91-9926692487' },
     { name: 'email', type: 'text', defaultValue: 'afrsciences@gmail.com' },
     {
+      name: 'labEmail',
+      type: 'text',
+      defaultValue: 'afslindore23@gmail.com',
+      admin: { description: 'AFSL laboratory inquiries — footer and contact page.' },
+    },
+    {
       name: 'address',
       type: 'textarea',
-      defaultValue: `8/1 2nd floor, Moti Tabela,
-Near Collectorate office, Indore,`,
+      defaultValue: DEFAULT_SITE_ADDRESS,
+      admin: {
+        description: 'Shown in footer and contact page. Include head office and regional offices.',
+      },
     },
     {
       name: 'totalVisitors',

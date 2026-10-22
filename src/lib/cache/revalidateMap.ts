@@ -61,8 +61,10 @@ export function revalidatePlanForCollection(
       return plan(['/gallery', '/services'], [SITE_CACHE_TAGS.gallery, SITE_CACHE_TAGS.services])
     case 'impactStats':
     case 'partnersLogo':
+    case 'sitePopups':
       return plan(['/'], [SITE_CACHE_TAGS.home])
     case 'aboutCertifications':
+    case 'founders':
       return plan(['/about'], [SITE_CACHE_TAGS.about])
     case 'resourcePersons':
       return plan(

@@ -7,6 +7,8 @@ export const BRAND_SHORT = 'AFRS'
 export const BRAND_LEGAL = 'Applied Forensic Research Sciences Institute'
 export const AFSL_NAME = 'Applied Forensic Science Laboratory'
 export const DEFAULT_OG_IMAGE = '/assets/logo.png'
+/** Google AdSense publisher used in the site-wide verification meta tag. */
+export const ADSENSE_ACCOUNT = 'ca-pub-8288475343941232'
 
 export function getSiteUrl(): string {
   const raw =

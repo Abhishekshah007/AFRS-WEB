@@ -272,7 +272,8 @@ export const defaultArchiveFilterLinks: ArchiveFilterLinks = {
   nationalEvents: '/courses/events?schedule=completed&nature=national',
   internationalEvents: '/courses/events?schedule=completed&nature=international',
   workshops: '/courses/events?schedule=completed&type=workshop',
-  webinars: '/courses/events?schedule=completed&type=webinar',
+  conferences: '/courses/events?schedule=completed&type=conference',
+  fdp: '/courses/events?schedule=completed&type=fdp',
 }
 
 /** Placeholder programme IDs from the previous catalog, used to detect stale CMS rows. */

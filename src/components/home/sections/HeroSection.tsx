@@ -8,6 +8,13 @@ import { CONTAINER, heroPanelImage } from './constants'
 import type { HeroData } from './types'
 
 export function HeroSection({ heroData }: { heroData: HeroData }) {
+  const secondaryCTAUrl = heroData.secondaryCTAUrl || '/contact'
+  const secondaryCTALabel = heroData.secondaryCTALabel || 'Contact Now'
+  const isAboutLink = secondaryCTAUrl.split(/[?#]/, 1)[0].replace(/\/+$/, '') === '/about'
+  const secondaryCTAText =
+    isAboutLink && /^(learn more|read more)$/i.test(secondaryCTALabel.trim())
+      ? 'Learn about AFRS'
+      : secondaryCTALabel
   const heroImageSrc = resolveMediaUrl(
     (heroData as HeroData & { heroImage?: number | Media | null })?.heroImage,
     heroPanelImage,
@@ -37,10 +44,10 @@ export function HeroSection({ heroData }: { heroData: HeroData }) {
               {heroData.primaryCTALabel || 'Explore Now'}
             </Link>
             <Link
-              href={heroData.secondaryCTAUrl || '/contact'}
+              href={secondaryCTAUrl}
               className="inline-flex h-12 items-center justify-center rounded-full border-2 border-white bg-white/95 text-slate-900 hover:bg-white px-8 text-sm font-bold transition"
             >
-              {heroData.secondaryCTALabel || 'Contact Now'}
+              {secondaryCTAText}
             </Link>
           </div>
           <div className="mt-8 flex flex-wrap gap-6 text-sm text-white/90">

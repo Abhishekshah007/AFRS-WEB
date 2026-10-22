@@ -14,7 +14,7 @@ type Variant = 'afrs' | 'afsl'
 
 const variantStyles = {
   afrs: {
-    card: 'rounded-2xl border border-slate-100 bg-white p-8 text-center shadow-sm',
+    card: 'card-pop rounded-2xl border border-slate-100 bg-white p-8 text-center shadow-sm',
     avatar: 'bg-brand-100 text-brand-600 text-xl font-bold',
     name: 'font-bold text-slate-900',
     title: 'text-xs text-slate-400 mt-1',
@@ -22,7 +22,7 @@ const variantStyles = {
     stars: 'text-amber-400 text-sm tracking-widest',
   },
   afsl: {
-    card: 'rounded-[16px] border border-[#dce4ef] bg-[#FBF6EC] p-8 text-center shadow-sm',
+    card: 'card-pop rounded-[16px] border border-[#dce4ef] bg-[#FBF6EC] p-8 text-center shadow-sm',
     avatar: 'bg-[#75162D] text-lg font-black text-white',
     name: 'font-black text-[#1A0C0F]',
     title: 'mt-1 text-[11px] font-bold uppercase tracking-wide text-[#687487]',

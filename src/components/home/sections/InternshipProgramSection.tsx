@@ -25,6 +25,7 @@ export function InternshipProgramSection() {
                 eyebrow="Career Catalyst"
                 className="mb-0 max-w-none mx-0"
                 title="Forensic Science Internship Program in India"
+                textAlign="justify"
                 subtitle="Join our highly structured internship programs designed to provide genuine practical exposure. Gain first-hand experience in professional laboratory settings and field investigations under the supervision of senior scientists."
               />
 

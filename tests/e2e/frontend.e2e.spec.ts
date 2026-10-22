@@ -69,6 +69,58 @@ test.describe('Registration privacy', () => {
   })
 })
 
+test.describe('SEO and AdSense', () => {
+  test('homepage exposes AdSense, language, JSON-LD and skip link', async ({ page }) => {
+    await page.goto('/', gotoOptions)
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en-IN')
+    await expect(page.locator('meta[name="google-adsense-account"]')).toHaveAttribute(
+      'content',
+      'ca-pub-8288475343941232',
+    )
+    await expect(page.locator('script[type="application/ld+json"]').first()).toBeAttached()
+    await expect(page.getByRole('link', { name: 'Skip to main content' })).toHaveAttribute(
+      'href',
+      '#main-content',
+    )
+    await expect(page.locator('#main-content')).toBeVisible()
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/$/)
+  })
+
+  test('search stays noindex', async ({ page }) => {
+    await page.goto('/search', gotoOptions)
+    const robots = page.locator('meta[name="robots"]')
+    await expect(robots).toHaveAttribute('content', /noindex/i)
+  })
+
+  test('robots, sitemap and ads.txt are published', async ({ request }) => {
+    const robots = await request.get('/robots.txt')
+    expect(robots.ok()).toBeTruthy()
+    const robotsBody = await robots.text()
+    expect(robotsBody).toContain('Allow: /')
+    expect(robotsBody).toContain('Disallow: /admin')
+    expect(robotsBody).toContain('Sitemap:')
+
+    const sitemap = await request.get('/sitemap.xml')
+    expect(sitemap.ok()).toBeTruthy()
+    const sitemapBody = await sitemap.text()
+    expect(sitemapBody).toContain('<urlset')
+    expect(sitemapBody).toContain('/about')
+    expect(sitemapBody).toContain('/services')
+
+    const ads = await request.get('/ads.txt')
+    expect(ads.ok()).toBeTruthy()
+    expect(await ads.text()).toContain('google.com, pub-8288475343941232, DIRECT, f08c47fec0942fa0')
+  })
+
+  test('legacy article URL permanently redirects', async ({ request }) => {
+    const response = await request.get('/articles', { maxRedirects: 0 })
+    expect(response.status()).toBeGreaterThanOrEqual(300)
+    expect(response.status()).toBeLessThan(400)
+    const location = response.headers().location || ''
+    expect(location).toContain('/student-hub/articles')
+  })
+})
+
 test.describe('Public API guards', () => {
   test('rejects empty chat payload', async ({ request }) => {
     const response = await request.post('/api/chat', {

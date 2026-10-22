@@ -7,6 +7,7 @@ export type SectionHeaderProps = {
   eyebrow?: string
   align?: 'left' | 'center'
   light?: boolean
+  textAlign?: 'left' | 'center' | 'justify'
   className?: string
   titleClassName?: string
   subtitleClassName?: string
@@ -25,6 +26,7 @@ export function SectionHeader({
   subtitle,
   eyebrow,
   align = 'center',
+  textAlign,
   light = false,
   className = '',
   titleClassName = '',
@@ -34,8 +36,15 @@ export function SectionHeader({
   fullWidth = false,
 }: Readonly<SectionHeaderProps>) {
   const alignClass = align === 'center' ? 'text-center mx-auto' : 'text-left'
-  const justifyClass = align === 'left' && !fullWidth ? 'text-justify' : ''
   const maxW = fullWidth ? 'w-full max-w-none' : align === 'center' ? 'max-w-3xl' : 'max-w-2xl'
+
+  const effectiveTextAlign = textAlign ?? (align === 'center' ? 'center' : 'left')
+
+  const subtitleAlignmentClass = {
+    left: 'text-left',
+    center: 'text-center',
+    justify: 'text-justify',
+  }[effectiveTextAlign]
 
   const textColor = light ? 'text-white' : 'text-slate-900'
   const subtitleColor = light ? 'text-white/80' : 'text-slate-500'
@@ -50,14 +59,17 @@ export function SectionHeader({
       )}
 
       {align === 'center' && accent && (
-        <span className="mx-auto mb-6 block h-1.5 w-12 rounded-full bg-brand-600" aria-hidden />
+        <span
+          className="mx-auto mb-6 block h-1.5 w-12 rounded-full bg-brand-600"
+          aria-hidden="true"
+        />
       )}
 
       <h2 className={`${DESIGN_SYSTEM.typography.h2} ${textColor} ${titleClassName}`}>{title}</h2>
 
       {subtitle && (
         <p
-          className={`mt-4 ${DESIGN_SYSTEM.typography.bodyLarge} ${subtitleColor} ${justifyClass} ${subtitleClassName}`}
+          className={`mt-4  ${DESIGN_SYSTEM.typography.bodyLarge} ${subtitleColor} ${subtitleAlignmentClass} ${subtitleClassName}`}
         >
           {subtitle}
         </p>

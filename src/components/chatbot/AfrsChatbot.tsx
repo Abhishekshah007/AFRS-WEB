@@ -2,7 +2,10 @@
 
 import { Headphones, MessageCircle, Send, X } from 'lucide-react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { isAfslPath } from '@/lib/site/afslPath'
+import { DEFAULT_LAB_EMAIL } from '@/data/defaults/siteContact'
 import { CHATBOT_SUGGESTIONS } from '@/lib/chatbot/knowledge'
 import type { ChatMessage } from '@/lib/chatbot/provider'
 import { TurnstileField } from '@/components/security/TurnstileField'
@@ -11,6 +14,7 @@ import { isTurnstileConfiguredClient } from '@/lib/security/turnstileClient'
 type AfrsChatbotProps = {
   phone?: string
   email?: string
+  labEmail?: string
 }
 
 const STORAGE_KEY = 'afrs-chat-session-v1'
@@ -60,7 +64,13 @@ function renderInlineMarkdown(text: string) {
   })
 }
 
-export function AfrsChatbot({ phone = '+91-9926692487', email = 'afrsciences@gmail.com' }: AfrsChatbotProps) {
+export function AfrsChatbot({
+  phone = '+91-9926692487',
+  email = 'afrsciences@gmail.com',
+  labEmail = DEFAULT_LAB_EMAIL,
+}: AfrsChatbotProps) {
+  const pathname = usePathname()
+  const contactEmail = isAfslPath(pathname) ? labEmail : email
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -117,14 +127,14 @@ export function AfrsChatbot({ phone = '+91-9926692487', email = 'afrsciences@gma
           ...prev,
           {
             role: 'assistant',
-            content: `I am having trouble connecting right now. Please [contact our team](/contact) at ${phone} or ${email}.`,
+            content: `I am having trouble connecting right now. Please [contact our team](/contact) at ${phone} or ${contactEmail}.`,
           },
         ])
       } finally {
         setLoading(false)
       }
     },
-    [email, loading, messages, phone],
+    [contactEmail, loading, messages, phone],
   )
 
   const submitEscalation = useCallback(async () => {
@@ -161,7 +171,7 @@ export function AfrsChatbot({ phone = '+91-9926692487', email = 'afrsciences@gma
         ...prev,
         {
           role: 'assistant',
-          content: `We could not send email right now. Please [contact us](/contact) at ${phone} or ${email}.`,
+          content: `We could not send email right now. Please [contact us](/contact) at ${phone} or ${contactEmail}.`,
         },
       ])
     } finally {
@@ -173,7 +183,7 @@ export function AfrsChatbot({ phone = '+91-9926692487', email = 'afrsciences@gma
     escalateName,
     escalatePhone,
     escalateTurnstileToken,
-    email,
+    contactEmail,
     messages,
     phone,
     suggestsHuman,

@@ -3,6 +3,7 @@ import type { AboutPageViewProps } from '@/components/about/AboutPageView'
 import type {
   AboutSectionText,
   CertificationItem,
+  LeaderProfile,
   ListItem,
   MembershipPlan,
 } from '@/components/about/types'
@@ -16,14 +17,14 @@ import {
   fallbackCommittee,
   fallbackLeaders,
 } from '@/data/defaults/about'
-import { resolveMediaUrl, resolveMediaUrlOptional } from '@/lib/cms'
+import { resolveMediaUrl, resolveMediaUrlOptional, isSafeHref } from '@/lib/cms'
 import { getPayloadClient } from '@/lib/payload'
 import { getGalleryForPage, mapGalleryDocs } from '@/lib/queries/gallery'
 import { SITE_CACHE_TAGS } from '@/lib/cache/siteCacheTags'
 import { withSiteCache } from '@/lib/cache/withSiteCache'
 import { safeQuery } from '@/lib/resilience/safeQuery'
 import { membershipWhatsAppHref } from '@/lib/queries/site'
-import type { AboutCertification, AboutPage, ImpactStat, Media, SiteSetting } from '@/payload-types'
+import type { AboutCertification, AboutPage, Founder, ImpactStat, Media, SiteSetting } from '@/payload-types'
 
 type CmsTextRow = { text?: string | null }
 type CmsListRow = CmsTextRow & { description?: string | null }
@@ -162,6 +163,50 @@ function buildAboutSectionText(
   }
 }
 
+function socialUrl(value: string | null | undefined): string | undefined {
+  const href = value?.trim()
+  return href && isSafeHref(href) ? href : undefined
+}
+
+function initialsFromName(name: string): string {
+  const withoutTitle = name.replace(/^(mr|mrs|ms|dr)\.?\s+/i, '').trim()
+  const parts = withoutTitle.split(/\s+/).filter(Boolean)
+  const letters = parts.slice(0, 2).map((part) => part[0]?.toUpperCase() ?? '')
+  return letters.join('') || name.slice(0, 2).toUpperCase()
+}
+
+function toFounderProfile(doc: Founder): LeaderProfile {
+  return {
+    id: String(doc.id),
+    name: doc.name,
+    designation: doc.designation,
+    initials: initialsFromName(doc.name),
+    photoUrl: resolveMediaUrlOptional(doc.photo as number | Media | null | undefined),
+    message: doc.message?.trim() || null,
+    bio: doc.bio?.trim() || null,
+    socials: {
+      linkedin: socialUrl(doc.linkedin),
+      instagram: socialUrl(doc.instagram),
+      facebook: socialUrl(doc.facebook),
+    },
+  }
+}
+
+function withFallbackMessages(
+  leaders: LeaderProfile[],
+  sectionText: AboutSectionText,
+): LeaderProfile[] {
+  return leaders.map((leader) => {
+    if (leader.id === 'rakesh' && sectionText.rakeshMessage) {
+      return { ...leader, message: sectionText.rakeshMessage }
+    }
+    if (leader.id === 'vijay' && sectionText.vijayMessage) {
+      return { ...leader, message: sectionText.vijayMessage }
+    }
+    return leader
+  })
+}
+
 function resolveWhatsappPhone(
   siteSettings: SiteSetting | null | undefined,
 ): string | null | undefined {
@@ -212,7 +257,7 @@ export function getDefaultAboutPageData(): AboutPageViewProps {
 async function loadAboutPageData(): Promise<AboutPageViewProps> {
   const payload = await getPayloadClient()
 
-  const [aboutPage, siteSettings, impactStats, certificationsResult, galleryItems] =
+  const [aboutPage, siteSettings, impactStats, certificationsResult, galleryItems, foundersResult] =
     await Promise.all([
       payload.findGlobal({ slug: 'aboutPage', depth: 1, overrideAccess: false }),
       payload.findGlobal({ slug: 'siteSettings', depth: 0, overrideAccess: false }),
@@ -233,6 +278,14 @@ async function loadAboutPageData(): Promise<AboutPageViewProps> {
         overrideAccess: false,
       }),
       getGalleryForPage('about'),
+      payload.find({
+        collection: 'founders',
+        where: { published: { equals: true } },
+        sort: 'order',
+        limit: 20,
+        depth: 1,
+        overrideAccess: false,
+      }),
     ])
 
   const about = aboutPage as AboutPage
@@ -246,15 +299,11 @@ async function loadAboutPageData(): Promise<AboutPageViewProps> {
     ABOUT_IMAGES.hero,
   )
 
-  const featuredLeaders = fallbackLeaders.map((leader) => {
-    if (leader.id === 'rakesh' && sectionText.rakeshMessage) {
-      return { ...leader, message: sectionText.rakeshMessage }
-    }
-    if (leader.id === 'vijay' && sectionText.vijayMessage) {
-      return { ...leader, message: sectionText.vijayMessage }
-    }
-    return leader
-  })
+  const cmsLeaders = (foundersResult.docs as Founder[]).map(toFounderProfile)
+  const featuredLeaders = withFallbackMessages(
+    cmsLeaders.length > 0 ? cmsLeaders : fallbackLeaders,
+    sectionText,
+  )
   const committee = fallbackCommittee
 
   const achievementStats: AchievementDisplayItem[] =
@@ -277,7 +326,7 @@ async function loadAboutPageData(): Promise<AboutPageViewProps> {
 
   return {
     sectionText: { ...sectionText, membershipPlans },
-    featuredLeaders: featuredLeaders.length >= 2 ? featuredLeaders : fallbackLeaders,
+    featuredLeaders,
     committee,
     achievementStats,
     certifications: cmsCertifications ?? sectionText.certifications ?? defaultCertifications,
@@ -295,7 +344,11 @@ async function loadAboutPageData(): Promise<AboutPageViewProps> {
   }
 }
 
-const loadAboutPageDataCached = withSiteCache('about-page-data', [SITE_CACHE_TAGS.about], loadAboutPageData)
+const loadAboutPageDataCached = withSiteCache(
+  'about-page-data-founders',
+  [SITE_CACHE_TAGS.about],
+  loadAboutPageData,
+)
 
 export async function getAboutPageData(): Promise<AboutPageViewProps> {
   return safeQuery('getAboutPageData', () => loadAboutPageDataCached(), getDefaultAboutPageData())

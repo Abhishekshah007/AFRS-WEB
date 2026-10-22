@@ -10,6 +10,7 @@ import type {
   Notice,
   PartnersLogo,
   Scientist,
+  SitePopup,
   SiteSetting,
   Testimonial,
 } from '@/payload-types'
@@ -18,6 +19,11 @@ import type { HomeFaqItem, HomeNoticeBoardItem } from '@/lib/queries/home-conten
 import { SITE_CACHE_TAGS } from '@/lib/cache/siteCacheTags'
 import { withSiteCache } from '@/lib/cache/withSiteCache'
 import { mapHomeNotices, resolveHomeFaqs } from '@/lib/queries/home-content'
+import {
+  buildHomePopupSlides,
+  homePopupFingerprint,
+  type HomePopupSlide,
+} from '@/lib/popups/homePopupQueue'
 
 export type HomePageData = {
   events: PaginatedDocs<AfrsEvent>
@@ -29,6 +35,8 @@ export type HomePageData = {
   siteSettings: SiteSetting | null
   notices: HomeNoticeBoardItem[]
   faqs: HomeFaqItem[]
+  popups: HomePopupSlide[]
+  popupFingerprint: string
   cmsAvailable: boolean
 }
 
@@ -42,6 +50,8 @@ const EMPTY_HOME: HomePageData = {
   siteSettings: null,
   notices: mapHomeNotices([], { usePlaceholderDefaults: true }),
   faqs: resolveHomeFaqs(null, { usePlaceholderDefaults: true }),
+  popups: [],
+  popupFingerprint: '',
   cmsAvailable: false,
 }
 
@@ -57,6 +67,8 @@ async function loadHomePageData(): Promise<HomePageData> {
     homePage,
     siteSettings,
     noticeDocs,
+    popupDocs,
+    popupEvents,
   ] = await Promise.all([
         fetchActiveEvents(payload, { limit: 3, depth: 1 }),
         payload.find({
@@ -107,9 +119,31 @@ async function loadHomePageData(): Promise<HomePageData> {
           depth: 0,
           overrideAccess: false,
         }),
+        payload.find({
+          collection: 'sitePopups',
+          where: { published: { equals: true } },
+          sort: 'order',
+          limit: 5,
+          depth: 1,
+          overrideAccess: false,
+        }),
+        payload.find({
+          collection: 'events',
+          where: {
+            and: [{ published: { equals: true } }, { showInHomePopup: { equals: true } }],
+          },
+          sort: 'startDate',
+          limit: 20,
+          depth: 1,
+          overrideAccess: false,
+        }),
   ])
 
   const resolvedHomePage = homePage as HomePage
+  const popups = buildHomePopupSlides(
+    popupDocs.docs as SitePopup[],
+    popupEvents.docs as AfrsEvent[],
+  )
 
   return {
     events,
@@ -121,11 +155,13 @@ async function loadHomePageData(): Promise<HomePageData> {
     siteSettings,
     notices: mapHomeNotices(noticeDocs.docs as Notice[]),
     faqs: resolveHomeFaqs(resolvedHomePage),
+    popups,
+    popupFingerprint: homePopupFingerprint(popups),
     cmsAvailable: true,
   }
 }
 
-const loadHomePageDataCached = withSiteCache('home-page-data', [
+const loadHomePageDataCached = withSiteCache('home-page-data-popups', [
   SITE_CACHE_TAGS.home,
   SITE_CACHE_TAGS.notices,
 ], loadHomePageData)

@@ -7,8 +7,9 @@ import { AfrsChatbot } from '@/components/chatbot/AfrsChatbot'
 import { getLayoutGlobals } from '@/lib/queries/layout'
 import type { Viewport } from 'next'
 import { JsonLd } from '@/components/seo/JsonLd'
-import { getSiteUrl } from '@/lib/seo/site'
+import { ADSENSE_ACCOUNT, getSiteUrl } from '@/lib/seo/site'
 import { organizationGraph, websiteGraph, withContext } from '@/lib/seo/schema'
+import { DEFAULT_LAB_EMAIL } from '@/data/defaults/siteContact'
 import './styles.css'
 
 // Body text - clean, readable, professional
@@ -47,11 +48,17 @@ export async function generateMetadata(): Promise<import('next').Metadata> {
     },
     description,
     applicationName: siteName,
+    authors: [{ name: siteName, url: getSiteUrl() }],
+    creator: siteName,
+    publisher: siteName,
     category: 'education',
     manifest: '/manifest.webmanifest',
     icons: {
       icon: '/assets/logo.png',
       apple: '/assets/logo.png',
+    },
+    other: {
+      'google-adsense-account': ADSENSE_ACCOUNT,
     },
     openGraph: {
       type: 'website',
@@ -71,7 +78,13 @@ export async function generateMetadata(): Promise<import('next').Metadata> {
     robots: {
       index: true,
       follow: true,
-      googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+        'max-video-preview': -1,
+      },
     },
   }
 }
@@ -91,6 +104,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en-IN" className={`${inter.variable} ${dmSans.variable}`}>
       <body className="font-sans antialiased">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-brand focus:shadow-lg"
+        >
+          Skip to main content
+        </a>
         <JsonLd data={withContext([organizationGraph(sameAs), websiteGraph()])} />
         {!cmsAvailable && (
           <div
@@ -100,12 +119,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             Some content is loading from backup data. Full CMS content will return shortly.
           </div>
         )}
-        <Navbar settings={headerSettings} />
+        <Navbar settings={headerSettings} labEmail={siteSettings?.labEmail || DEFAULT_LAB_EMAIL} />
         <AppProviders>
-          <main className="relative min-h-[50vh]">{children}</main>
+          <main id="main-content" className="relative min-h-[50vh]" tabIndex={-1}>
+            {children}
+          </main>
           <AfrsChatbot
             phone={siteSettings?.phone || undefined}
             email={siteSettings?.email || undefined}
+            labEmail={siteSettings?.labEmail || DEFAULT_LAB_EMAIL}
           />
         </AppProviders>
         <Footer

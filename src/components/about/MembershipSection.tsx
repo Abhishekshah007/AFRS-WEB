@@ -89,7 +89,13 @@ AFRS provides the following types of membership:`,
     >
       <div className={aboutTokens.container}>
         <AnimateOnScroll>
-          <SectionHeader id="membership-heading" title={title} subtitle={subtitle} align="left" />
+          <SectionHeader
+            id="membership-heading"
+            title={title}
+            subtitle={subtitle}
+            align="left"
+            textAlign="justify"
+          />
         </AnimateOnScroll>
 
         <AnimateOnScroll>
@@ -183,7 +189,7 @@ AFRS provides the following types of membership:`,
               })}
             </div>
 
-            <article className="relative overflow-hidden rounded-3xl border border-brand-100 bg-white p-8 shadow-[0_12px_32px_rgba(15,23,42,0.08)]">
+            <article className="card-pop relative overflow-hidden rounded-3xl border border-brand-100 bg-white p-8 shadow-[0_12px_32px_rgba(15,23,42,0.08)]">
               <div
                 className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-brand-600 to-brand-200"
                 aria-hidden

@@ -8,7 +8,8 @@ export type ChatMessage = {
 export function buildSystemPrompt(liveKnowledge = ''): string {
   return `You are the AFRS website assistant for Applied Forensic Research Sciences (India).
 Answer questions about forensic education, AFSL laboratory services, events, courses, internships, and registrations.
-Use the knowledge below. When LIVE DATA FROM CMS lists specific events or programmes, cite those exact titles, dates, and links.
+Use the knowledge below. When the LIVE SITE DATA section lists specific events or programmes, cite those exact titles, dates, and links.
+Never mention CMS, content management systems, databases, or internal tooling — speak only as the public AFRS website assistant.
 Keep replies under 120 words unless listing steps.
 
 ${CHATBOT_KNOWLEDGE}
@@ -104,9 +105,9 @@ export function suggestsHumanHelp(reply: string, userMessage: string): boolean {
 export function fallbackReply(latestUserMessage: string, liveKnowledge: string): string {
   const q = latestUserMessage.toLowerCase()
 
-  if (/event|workshop|webinar|conference|award/.test(q) && liveKnowledge.includes('UPCOMING')) {
+  if (/event|workshop|webinar|conference|award|fdp/.test(q) && liveKnowledge.includes('UPCOMING')) {
     const eventBlock = liveKnowledge.split('EDUCATION PROGRAMMES')[0]
-    return `Here are our current events from CMS:\n${eventBlock.slice(0, 600)}\n\nOpen [Events](/events) to register.`
+    return `Here are our upcoming events:\n${eventBlock.slice(0, 600)}\n\nOpen [Events](/events) to register.`
   }
 
   if (/course|training|internship|programme/.test(q) && liveKnowledge.includes('EDUCATION PROGRAMMES')) {

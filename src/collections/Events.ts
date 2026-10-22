@@ -8,6 +8,7 @@ import { registrationSettingsField } from '../fields/registrationSettings'
 import { eventNatureField } from '../fields/options'
 import { publishedField } from '../fields/publishing'
 import { autoSlugFromTitle } from '../hooks/autoSlugFromTitle'
+import { guardEventPopupCapacity } from '../hooks/guardHomePopupCapacity'
 import { normalizeRegistrationSectionsData } from '../hooks/normalizeRegistrationSections'
 
 export const Events: CollectionConfig = {
@@ -22,11 +23,11 @@ export const Events: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'eventType', 'startDate', 'registrationOpen', 'published'],
     description:
-      'Create workshops, webinars, and conferences. The event title auto-generates the URL slug — no technical formatting needed.',
+      'Create workshops, conferences,faculty development programmes and certification programmes. The event title auto-generates the URL slug — no technical formatting needed.',
   },
   hooks: {
     beforeValidate: [autoSlugFromTitle],
-    beforeChange: [normalizeRegistrationSectionsData],
+    beforeChange: [normalizeRegistrationSectionsData, guardEventPopupCapacity],
   },
   fields: [
     {
@@ -54,9 +55,9 @@ export const Events: CollectionConfig = {
       label: 'Event type',
       options: [
         { label: 'Workshop', value: 'workshop' },
-        { label: 'Webinar', value: 'webinar' },
         { label: 'Conference', value: 'conference' },
         { label: 'Training', value: 'training' },
+        { label: 'Faculty Development Program', value: 'fdp' },
       ],
     },
     {
@@ -139,6 +140,17 @@ export const Events: CollectionConfig = {
       description:
         'This is the full registration form participants fill in — name, email, WhatsApp, file uploads, etc. Add one or more sections with questions.',
     }),
+    {
+      name: 'showInHomePopup',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Show in homepage popup',
+      admin: {
+        position: 'sidebar',
+        description:
+          'Off by default. When checked, this event joins the homepage popup sequence only while it is upcoming or ongoing, with an Apply button. It counts toward the 5-popup limit.',
+      },
+    },
     publishedField(),
   ],
 }

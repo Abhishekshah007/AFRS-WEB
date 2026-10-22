@@ -108,7 +108,7 @@ export function EventHubCard({ event, ctaLabel = 'Register Now' }: EventHubCardP
             href={`/events/${event.slug}`}
             className="block w-full rounded-xl border border-slate-200 bg-white py-2.5 text-center text-sm font-bold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
           >
-            Read more
+            Read about {event.title}
           </Link>
           <Link
             href={registerHref}

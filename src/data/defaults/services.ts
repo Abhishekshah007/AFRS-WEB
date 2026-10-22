@@ -3,6 +3,7 @@ import type {
   DirectorateMember,
   ServicesPageContent,
 } from '@/components/services/types'
+import { DEFAULT_SITE_ADDRESS } from '@/data/defaults/siteContact'
 
 export { defaultServicesCatalog } from '@/data/defaults/services-catalog'
 
@@ -223,8 +224,7 @@ export const defaultServicesPageContent: ServicesPageContent = {
 
 export const defaultSiteContact = {
   phone: '+91-9926692487',
-  email: 'afslforensicservices@gmail.com',
-  address: `8/1 2nd floor, Moti Tabela,
-Near Collectorate office, Indore,
-Madhya Pradesh, India`,
+  email: 'afslindore23@gmail.com',
+  labEmail: 'afslindore23@gmail.com',
+  address: DEFAULT_SITE_ADDRESS,
 }

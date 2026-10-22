@@ -76,7 +76,7 @@ async function buildLiveKnowledge(): Promise<string> {
   )
 
   return `
-LIVE DATA FROM CMS (updated automatically — prefer this over static lists)
+LIVE SITE DATA (updated automatically — prefer this over static lists)
 
 UPCOMING & ONGOING EVENTS (${eventLines.length}):
 ${eventLines.length ? eventLines.join('\n') : '- No active events listed right now. Check /events or /contact.'}
@@ -100,7 +100,7 @@ export async function getLiveChatKnowledge(): Promise<string> {
     return text
   } catch (error) {
     console.error('[chatbot] live knowledge fetch failed', error)
-    return cached?.text || 'LIVE CMS DATA: temporarily unavailable — use static URLs.'
+    return cached?.text || 'LIVE SITE DATA: temporarily unavailable — use static URLs on this website.'
   }
 }
 

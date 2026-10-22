@@ -5,6 +5,7 @@ export type SectionHeaderProps = {
   title: string
   subtitle?: string
   align?: 'left' | 'center'
+  textAlign?: 'left' | 'center' | 'justify'
   light?: boolean
   id?: string
 }
@@ -19,6 +20,7 @@ export function SectionHeader({
   align = 'center',
   light = false,
   id,
+  textAlign = 'left',
 }: SectionHeaderProps) {
   return (
     <SharedSectionHeader
@@ -27,6 +29,7 @@ export function SectionHeader({
       subtitle={subtitle}
       align={align}
       light={light}
+      textAlign={textAlign}
       fullWidth
       titleClassName={aboutTokens.heading}
       subtitleClassName={aboutTokens.body}

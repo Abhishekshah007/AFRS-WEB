@@ -51,5 +51,6 @@ export type ArchiveFilterLinks = {
   nationalEvents: string
   internationalEvents: string
   workshops: string
-  webinars: string
+  conferences: string
+  fdp: string
 }

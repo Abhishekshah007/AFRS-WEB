@@ -77,8 +77,8 @@ export function EventsListingView({
                   </h2>
                   <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
                     {tab === 'completed'
-                      ? 'Browse completed AFRS events, workshops, webinars, and conferences from the archive.'
-                      : 'Events move to Ongoing on the start date and to Completed after the end date (set both dates in the CMS for accurate scheduling).'}
+                      ? 'Browse completed AFRS events, workshops, conferences, and faculty development programmes from the archive.'
+                      : 'Events move to Ongoing on the start date and to Completed after the end date.'}
                   </p>
                 </div>
                 {(initialNature !== 'all' || initialType) && (

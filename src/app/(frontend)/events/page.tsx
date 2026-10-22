@@ -45,7 +45,7 @@ export default async function EventsPage() {
       <PageHero
         eyebrow="AFRS EDUCATION"
         title="Forensic Programmes & Events"
-        subtitle="Advance your career with structured workshops, webinars, and certification programmes."
+        subtitle="Advance your career with structured workshops, conferences,faculty development programmes and certification programmes."
         primaryCta={{ label: 'Register for Training', href: '/courses' }}
         secondaryCta={{ label: 'Contact Us', href: '/contact' }}
       />
@@ -54,7 +54,14 @@ export default async function EventsPage() {
       <div className="bg-white border-b border-slate-100 sticky top-[68px] z-40">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16">
           <div className="flex gap-1 py-2 overflow-x-auto no-scrollbar">
-            {['All Events', 'Workshop', 'Webinar', 'Training', 'Conference'].map((tab, i) => (
+            {[
+              'All Events',
+              'Workshop',
+              'Conference',
+              'Training',
+              'Conference',
+              'Faculty Development Program',
+            ].map((tab, i) => (
               <span
                 key={tab}
                 className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold cursor-pointer transition ${
@@ -80,7 +87,10 @@ export default async function EventsPage() {
           {upcoming.docs.length === 0 ? (
             <p className="text-slate-400 text-center py-12">
               No upcoming events right now — check back soon or{' '}
-              <Link href="/contact" className="text-brand-600 font-semibold">contact us</Link>.
+              <Link href="/contact" className="text-brand-600 font-semibold">
+                contact us
+              </Link>
+              .
             </p>
           ) : (
             <AnimateOnScroll stagger>
@@ -106,11 +116,19 @@ export default async function EventsPage() {
                 {past.docs.map((e) => {
                   const evt = e as AfrsEvent
                   return (
-                    <Link key={evt.id} href={`/events/${evt.slug}`} className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm card-pop flex gap-4 items-start">
-                      <div className="h-12 w-12 shrink-0 rounded-xl bg-slate-100 flex items-center justify-center text-xl">📅</div>
+                    <Link
+                      key={evt.id}
+                      href={`/events/${evt.slug}`}
+                      className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm card-pop flex gap-4 items-start"
+                    >
+                      <div className="h-12 w-12 shrink-0 rounded-xl bg-slate-100 flex items-center justify-center text-xl">
+                        📅
+                      </div>
                       <div>
                         <p className="text-xs text-slate-400">{formatEventDate(evt.startDate)}</p>
-                        <p className="mt-1 font-bold text-slate-800 text-sm line-clamp-2">{evt.title}</p>
+                        <p className="mt-1 font-bold text-slate-800 text-sm line-clamp-2">
+                          {evt.title}
+                        </p>
                       </div>
                     </Link>
                   )
@@ -125,5 +143,3 @@ export default async function EventsPage() {
     </div>
   )
 }
-
-

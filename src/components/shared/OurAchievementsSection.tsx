@@ -51,13 +51,18 @@ export function OurAchievementsSection({
   return (
     <section className={className} aria-labelledby="our-achievements-heading">
       <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-16">
-        <SectionHeader id="our-achievements-heading" title={title} subtitle={subtitle} />
+        <SectionHeader
+          id="our-achievements-heading"
+          title={title}
+          subtitleClassName="text-center"
+          subtitle={subtitle}
+        />
 
         <AnimateOnScroll stagger className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {items.map((item, index) => (
             <div
               key={`${item.label}-${index}`}
-              className={`${cardBackground(item.tone, index)} flex h-[110px] flex-col items-center justify-center rounded-2xl px-4 text-center shadow-[0_8px_20px_rgba(15,23,42,0.08)]`}
+              className={`${cardBackground(item.tone, index)} card-pop card-pop-on-dark flex h-[110px] flex-col items-center justify-center rounded-2xl px-4 text-center shadow-[0_8px_20px_rgba(15,23,42,0.08)]`}
             >
               <p className="text-3xl font-extrabold leading-none text-white sm:text-4xl">
                 {item.value}

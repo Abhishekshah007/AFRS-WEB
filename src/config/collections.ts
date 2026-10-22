@@ -1,5 +1,6 @@
 import { Articles } from '../collections/Articles'
 import { AboutCertifications } from '../collections/AboutCertifications'
+import { Founders } from '../collections/Founders'
 import { ContactMessages } from '../collections/ContactMessages'
 import { CourseRegistrations } from '../collections/CourseRegistrations'
 import { EventRegistrations } from '../collections/EventRegistrations'
@@ -13,6 +14,7 @@ import { Services } from '../collections/Services'
 import { Testimonials } from '../collections/Testimonials'
 import { Users } from '../collections/Users'
 import { Notices } from '../collections/Notices'
+import { SitePopups } from '../collections/SitePopups'
 import { PartnersLogo } from '../collections/PartnersLogo'
 
 /** Collections registered in logical admin-nav order. */
@@ -20,6 +22,7 @@ export const collections = [
   // Content
   Articles,
   AboutCertifications,
+  Founders,
   Services,
   GalleryItems,
   Testimonials,
@@ -27,6 +30,7 @@ export const collections = [
   ResourcePersons,
   ImpactStats,
   Notices,
+  SitePopups,
   PartnersLogo,
   // Events & Programmes
   Events,

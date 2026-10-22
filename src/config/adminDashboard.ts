@@ -56,6 +56,11 @@ export const ADMIN_DASHBOARD_SECTIONS: AdminDashboardSection[] = [
         title: 'Certifications',
         blurb: 'Recognition cards shown on the About page.',
       },
+      {
+        href: '/admin/collections/founders',
+        title: 'Founders',
+        blurb: 'About page founder cards: photo, role, quote, bio, and social links.',
+      },
     ],
   },
   {
@@ -111,7 +116,7 @@ export const ADMIN_DASHBOARD_SECTIONS: AdminDashboardSection[] = [
       {
         href: '/admin/collections/events',
         title: 'Events',
-        blurb: 'Workshops, webinars, and conferences shown on the site.',
+        blurb: 'Workshops, conferences, and faculty development programmes shown on the site.',
       },
       {
         href: '/admin/globals/programmesCatalog',

@@ -71,7 +71,7 @@ export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] })
           type="email"
           disabled={disabled}
           className={inputClass}
-          placeholder="official@agency.gov"
+          placeholder="Your email"
           required
         />
       </label>

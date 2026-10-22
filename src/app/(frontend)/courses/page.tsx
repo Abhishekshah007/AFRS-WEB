@@ -84,7 +84,8 @@ export default async function CoursesPage() {
     nationalCount,
     intlCount,
     workshopCount,
-    webinarCount,
+    conferenceCount,
+    fdpCount,
     links,
     educationProgrammes,
     trainingOptions,
@@ -119,7 +120,12 @@ export default async function CoursesPage() {
     }),
     payload.count({
       collection: 'events',
-      where: completedEventWhere({ eventType: { equals: 'webinar' } }),
+      where: completedEventWhere({ eventType: { equals: 'conference' } }),
+      overrideAccess: false,
+    }),
+    payload.count({
+      collection: 'events',
+      where: completedEventWhere({ eventType: { equals: 'fdp' } }),
       overrideAccess: false,
     }),
     getArchiveFilterLinks(),
@@ -163,9 +169,14 @@ export default async function CoursesPage() {
       href: archiveHref(links.workshops),
     },
     {
-      label: 'Webinars',
-      count: formatArchiveCount(webinarCount.totalDocs),
-      href: archiveHref(links.webinars),
+      label: 'Faculty Development Programs',
+      count: formatArchiveCount(fdpCount.totalDocs),
+      href: archiveHref(links.fdp),
+    },
+    {
+      label: 'Conferences',
+      count: formatArchiveCount(conferenceCount.totalDocs),
+      href: archiveHref(links.conferences),
     },
   ]
 
