@@ -4,7 +4,7 @@ import Link from 'next/link'
 export function AfslOffers() {
   return (
     <div>
-      <div className="rounded-3xl bg-brand-100 px-6 py-10 sm:px-10 sm:py-12 lg:px-14 shadow-xl">
+      <div className="interactive-panel card-pop rounded-3xl bg-brand-100 px-6 py-10 sm:px-10 sm:py-12 lg:px-14 shadow-xl overflow-hidden">
         {/* Two-column layout */}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">

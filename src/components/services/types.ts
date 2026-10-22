@@ -21,6 +21,7 @@ export type SiteContact = {
   email: string
   address: string
   mapEmbedUrl?: string | null
+  labEmail?: string | null
 }
 
 export type CertificationStat = {

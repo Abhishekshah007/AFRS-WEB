@@ -42,14 +42,15 @@ export function FutureSection() {
               align="left"
               accent={false}
               className="mb-0 max-w-none mx-0"
+              titleClassName="lg:!text-[28px] xl:!text-[32px]"
               title="Exploring the Future of Forensics"
             />
-            <p className={`mt-5 ${UI.body}`}>
+            <p className={` ${UI.body}`} style={{ marginTop: '-1.5rem', textAlign: 'justify' }}>
               Explore our latest research breakthroughs and educational highlights. At AFRS, we use
               state-of-the-art technology to solve complex problems and train the next generation of
               forensic experts.
             </p>
-            <p className={`mt-3 ${UI.body}`}>
+            <p className={`mt-1 ${UI.body}`} style={{ textAlign: 'justify' }}>
               Watch our introductory video to learn more about our mission and the impact we make
               globally.
             </p>

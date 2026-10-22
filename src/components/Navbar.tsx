@@ -10,6 +10,8 @@ import logo from '../../public/assets/logo.png'
 import afslLogo from '../../public/assets/afsl-logo.png'
 import { springSnappy } from '@/components/motion/variants'
 import SocialMediaIcons from './social/SocialMediaIcons'
+import { isAfslPath } from '@/lib/site/afslPath'
+import { DEFAULT_LAB_EMAIL } from '@/data/defaults/siteContact'
 
 const fallbackNavLinks = [
   { label: 'Home', url: '/' },
@@ -26,7 +28,13 @@ const fallbackTopLinks = [
   { label: 'Notification', url: '#' },
 ]
 
-export default function Navbar({ settings }: { settings?: HeaderSetting | null }) {
+export default function Navbar({
+  settings,
+  labEmail = DEFAULT_LAB_EMAIL,
+}: {
+  settings?: HeaderSetting | null
+  labEmail?: string
+}) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
@@ -48,6 +56,8 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
   const brandTitle = settings?.brandTitle || 'Applied Forensic Research Sciences'
   const topLeftText = settings?.topBarLeftText || '+91-9926692487'
   const topLeftText2 = settings?.topBarLeftText2 || 'afrsciences@gmail.com'
+  const afsl = isAfslPath(pathname)
+  const headerEmail = afsl ? labEmail : topLeftText2
 
   const topBarEnabled = settings?.topBarEnabled ?? true
 
@@ -58,7 +68,7 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
           <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 py-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-wrap gap-x-5 gap-y-1">
               <span className="hover:text-white transition-colors">{topLeftText}</span>
-              <span className="hover:text-white transition-colors">{topLeftText2}</span>
+              <span className="hover:text-white transition-colors">{headerEmail}</span>
               <div className="flex gap-2">
                 <SocialMediaIcons icons={settings?.topBarLeftText3} />
               </div>
@@ -85,13 +95,13 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
             : 'bg-white/95 border-b border-slate-100'
         }`}
       >
-        <Link href="/" className="flex items-center gap-3 shrink-0 group">
+        <Link href={afsl ? '/services' : '/'} className="flex items-center gap-3 shrink-0 group">
           <motion.div
             whileHover={{ scale: 1.06, rotate: 3 }}
             transition={springSnappy}
             className="w-11 h-11 bg-gradient-to-br from-brand via-brand-maroon to-brand-burgundy rounded-full flex items-center justify-center shadow-lg shadow-brand/25"
           >
-            {pathname === '/services' ? (
+            {afsl ? (
               <Image
                 src={afslLogo}
                 alt="AFSL Logo"
@@ -104,7 +114,7 @@ export default function Navbar({ settings }: { settings?: HeaderSetting | null }
             )}
           </motion.div>
           <div className="hidden sm:block">
-            {pathname === '/services' ? (
+            {afsl ? (
               <p className="font-extrabold text-sm text-slate-900 leading-tight group-hover:text-brand-burgundy transition-colors">
                 Applied Forensic Science Laboratory
               </p>

@@ -1,6 +1,7 @@
 'use client'
 
-import { motion, useScroll, useSpring } from 'motion/react'
+import { motion, useScroll, useTransform } from 'motion/react'
+import { useCoarsePointer } from '@/hooks/useCoarsePointer'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 /**
@@ -8,10 +9,11 @@ import { useReducedMotion } from '@/hooks/useReducedMotion'
  */
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll()
-  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 28, restDelta: 0.001 })
+  const scaleX = useTransform(scrollYProgress, (v) => v)
   const reduced = useReducedMotion()
+  const coarsePointer = useCoarsePointer()
 
-  if (reduced) return null
+  if (reduced || coarsePointer) return null
 
   return (
     <motion.div

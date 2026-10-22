@@ -34,7 +34,7 @@ export function MediaResourcesSection() {
             <Link
               key={item.label}
               href={item.href}
-              className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-sm p-8 text-center card-pop hover:bg-white/15 transition min-h-[120px] flex flex-col items-center justify-center gap-3"
+              className="card-pop card-pop-on-dark rounded-2xl border border-white/20 bg-white/10 backdrop-blur-sm p-8 text-center hover:bg-white/15 min-h-[120px] flex flex-col items-center justify-center gap-3"
             >
               <span className="text-2xl" aria-hidden>
                 {typeof item.icon === 'string' ? (

@@ -16,7 +16,7 @@ export function HelpCard({ item, index }: HelpCardProps) {
   const step = String(index + 1).padStart(2, '0')
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_12px_36px_rgba(15,23,42,0.06)]">
+    <article className="card-pop overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_12px_36px_rgba(15,23,42,0.06)]">
       <div className="grid grid-cols-[minmax(0,1.2fr)_minmax(108px,0.8fr)] sm:grid-cols-[minmax(0,1.15fr)_minmax(180px,0.85fr)] md:grid-cols-[minmax(0,1.15fr)_minmax(240px,0.85fr)]">
         <div className="flex flex-col justify-center px-4 py-5 sm:px-8 sm:py-8 lg:px-10">
           <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--svc-primary)] sm:text-[11px]">

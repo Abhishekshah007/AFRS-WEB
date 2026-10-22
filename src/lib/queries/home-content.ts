@@ -42,7 +42,8 @@ export function resolveHomeFaqs(
     return defaultHomeFaqs.map(({ question, answer }) => ({ q: question, a: answer }))
   }
 
-  return []
+  // Baseline FAQs from Home Page global defaults — shown until editors add custom entries in CMS.
+  return defaultHomeFaqs.map(({ question, answer }) => ({ q: question, a: answer }))
 }
 
 export function mapHomeNotices(

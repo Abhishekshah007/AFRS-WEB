@@ -29,7 +29,8 @@ COMMON QUESTIONS
 CONTACT (use when user needs human help)
 - Phone: +91-9926692487
 - Email: afrsciences@gmail.com
-- Address: 8/1 2nd floor, Moti Tabela, Near Collectorate office, Indore, Madhya Pradesh, India.
+- Head office: 2nd Floor, 8/1, Moti Tabela, Near Collectorate Office, Indore, M.P (452007).
+- Regional presence: Madhya Pradesh, Delhi, Chandigarh, Gujarat, Tripura, Rajasthan. Pan India Services.
 
 RULES FOR THE ASSISTANT
 - Be concise, professional, and helpful. Use Indian English.

@@ -9,6 +9,7 @@ const EVENT_ICONS: Record<string, string> = {
   workshop: '👥',
   conference: '🌐',
   training: '🎓',
+  fdp: '🎓',
   webinar: '💻',
 }
 

@@ -28,6 +28,7 @@ import { SITE_CACHE_TAGS } from '@/lib/cache/siteCacheTags'
 import { withSiteCache } from '@/lib/cache/withSiteCache'
 import { safeQuery } from '@/lib/resilience/safeQuery'
 import { testimonialPlacementWhere } from '@/lib/queries/testimonials'
+import { DEFAULT_LAB_EMAIL } from '@/data/defaults/siteContact'
 import type {
   Media,
   Scientist,
@@ -225,9 +226,9 @@ function buildServicesContent(cms?: ServicesPage['sectionText']): ServicesPageCo
     ),
     certificationStats: source.certificationStats?.length
       ? source.certificationStats.map((item) => ({
-          label: item.label ?? '',
-          caption: item.caption ?? '',
-        }))
+        label: item.label ?? '',
+        caption: item.caption ?? '',
+      }))
       : defaults.certificationStats,
     kitCards: toKitCards(source.kitCards as KitCardData[] | null | undefined) ?? defaults.kitCards,
     legalLinks:
@@ -244,9 +245,11 @@ function buildServicesContent(cms?: ServicesPage['sectionText']): ServicesPageCo
 }
 
 function buildSiteContact(site: SiteSetting | null | undefined): SiteContact {
+  const labEmail = site?.labEmail || DEFAULT_LAB_EMAIL
   return {
     phone: site?.phone || defaultSiteContact.phone,
-    email: site?.email || defaultSiteContact.email,
+    email: labEmail,
+    labEmail,
     address: site?.address || defaultSiteContact.address,
     mapEmbedUrl: site?.mapEmbedUrl,
   }

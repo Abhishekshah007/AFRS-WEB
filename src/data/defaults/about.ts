@@ -44,7 +44,7 @@ const defaultUnique = [
       'AFRS maintains rigorous standards in forensic practice, ensuring that all procedures comply with established scientific and legal protocols, thereby enhancing the credibility and admissibility of evidence in judicial proceedings.',
   },
   {
-    text: 'We follow advanced crime scene protocols including scene securing, evidence mapping, trace evidence collection, and contamination control as per ISO/IEC 17025 standards.',
+    text: 'We follow advanced crime scene protocols including scene securing, evidence mapping, trace evidence collection, and contamination control as per ISO 9001:2015 standards.',
     description:
       'AFRS implements internationally recognized standards for crime scene investigation, ensuring meticulous handling of evidence and adherence to best practices in forensic science.',
   },
@@ -79,7 +79,7 @@ const defaultActivities = [
     description: 'Expert support for investigations, examinations, and case strategy.',
   },
   {
-    text: 'Workshops, Webinars, National and  International Conferences',
+    text: 'Workshops, Conferences, and Faculty Development Programmes',
     description: 'Regular platforms for knowledge exchange and professional networking.',
   },
   {
@@ -188,7 +188,7 @@ const defaultSectionText: AboutSectionText = {
   qualityEthicsTitle: 'Quality & Ethics',
   qualityEthicsEyebrow: 'Standards',
   qualityEthicsItems: [
-    'AFRS adheres to ISO/IEC 17025 standards and follows NABL-aligned SOPs to ensure technical competence, traceability, and reproducibility of all forensic analyses.',
+    'AFRS adheres to ISO 9001:2015 standards and follows NABL-aligned SOPs to ensure technical competence, traceability, and reproducibility of all forensic analyses.',
     'Strict chain of custody protocols are maintained from evidence collection to final reporting to preserve integrity and ensure legal admissibility under BSA and BNSS.',
     'All casework follows principles of contamination control, documentation, and peer review to minimize error rates and uphold scientific defensibility in court.',
     'AFRS operates on the highest standards of forensic ethics, including objectivity, impartiality, confidentiality, and avoidance of bias or conflict of interest.',
@@ -202,7 +202,7 @@ const defaultSectionText: AboutSectionText = {
     'Facilitating critical review of case studies, research articles, and medico-legal discussions to strengthen analytical and interpretive skills.',
     'Ensuring exposure to emerging forensic technologies including digital forensics, 3D crime scene reconstruction, AI-driven pattern analysis, and advanced instrumental techniques in trace evidence.',
     'Promoting interdisciplinary collaboration and knowledge exchange across Fingerprint Science, Questioned Document Examination, Medico-Legal Sciences, and Criminalistics for innovative research outcomes.',
-    'Conducting method validation, proficiency testing, and quality assurance studies to ensure reliability, reproducibility, and legal defensibility of forensic procedures as per ISO/IEC 17025 standards.',
+    'Conducting method validation, proficiency testing, and quality assurance studies to ensure reliability, reproducibility, and legal defensibility of forensic procedures as per ISO 9001:2015 standards.',
     'Exploring the impact of BNS, BNSS, and BSA on scientific evidence handling, chain of custody, and admissibility to align research with contemporary legal frameworks.',
   ],
   researchTitle: 'Research Focus',
@@ -294,10 +294,10 @@ const fallbackLeaders: LeaderProfile[] = [
     designation: 'President, AFRS',
     initials: 'RM',
     photoUrl:
-      'https://res.cloudinary.com/drrzakkgo/image/upload/v1784833177/afrs/payload/media/WhatsApp_Image_2026-07-22_at_10.07.28_PM_rop83x.jpg',
+      'https://res.cloudinary.com/drrzakkgo/image/upload/afrs/payload/media/rakeshmia.jpeg',
     message:
       'Student and professional development are at the heart of AFRS. We are committed to providing practical, research-driven training that empowers individuals to excel in forensic science and contribute to a safer society.',
-    bio: 'A visionary leader with over 15 years of experience in forensic education and administration.',
+    bio: 'A visionary leader with over 7 years of experience in forensic education and administration.',
     socials: {
       linkedin: 'https://www.linkedin.com/in/rakesh-mia-🇮🇳-2b9787182?utm_source=share_via&utm_content=profile&utm_medium=member_android',
       instagram: 'https://www.instagram.com/rakesh_mia?cplk=MTdwc3o5MW43eDZsaQ==',

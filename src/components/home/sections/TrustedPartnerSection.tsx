@@ -56,7 +56,7 @@ export function TrustedPartnerSection() {
           title="Applied Forensic Science Laboratory (AFSL)"
           subtitle="Scientific. Reliable. Professional."
         />
-        <p className="mx-auto mt-4 mb-14 max-w-3xl text-center text-base sm:text-lg leading-relaxed text-white/80">
+        <p className="mx-auto  mb-14 max-w-3xl text-center text-base sm:text-lg leading-relaxed text-white/80">
           Applied Forensic Science Laboratory (AFSL) is committed to delivering reliable,
           scientific, and evidence-based forensic solutions that support investigations, legal
           proceedings, research, and professional development. Our multidisciplinary team provides
@@ -67,7 +67,7 @@ export function TrustedPartnerSection() {
           {cards.map((card) => (
             <div
               key={card.title}
-              className="group rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 text-center shadow-lg transition-all duration-300 hover:-translate-y-2 hover:bg-white/10 hover:border-white/30 hover:shadow-2xl hover:shadow-white/5 min-h-[160px] flex flex-col items-center justify-center relative overflow-hidden"
+              className="card-pop card-pop-on-dark group rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 text-center shadow-lg min-h-[160px] flex flex-col items-center justify-center relative overflow-hidden hover:bg-white/10"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               <span

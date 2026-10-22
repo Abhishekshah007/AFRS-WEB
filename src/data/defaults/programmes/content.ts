@@ -20,7 +20,7 @@ export const defaultHubEvents: HubEventCard[] = [
   {
     id: 'e3', slug: 'faculty-toxicology-fdp', title: 'Faculty Development Programme on Toxicology',
     description: 'Enhancing teaching methodologies for forensic toxicology educators.',
-    eventType: 'training', eventTypeLabel: 'FDP', eventNature: 'national', startDate: '2024-04-20T00:00:00.000Z', visualTone: 'purple', visualIcon: '🎓',
+    eventType: 'fdp', eventTypeLabel: 'FDP', eventNature: 'national', startDate: '2024-04-20T00:00:00.000Z', visualTone: 'purple', visualIcon: '🎓',
   },
 ]
 
@@ -28,7 +28,8 @@ export const defaultArchive: ArchiveItem[] = [
   { label: 'National Events', count: '12 Nos', href: '/courses/events?nature=national' },
   { label: 'International Events', count: '08 Nos', href: '/courses/events?nature=international' },
   { label: 'Workshops', count: '24 Nos', href: '/courses/events?type=workshop' },
-  { label: 'Webinars', count: '18 Nos', href: '/courses/events?type=webinar' },
+  { label: 'Conferences', count: '10 Nos', href: '/courses/events?type=conference' },
+  { label: 'Faculty Development Programmes', count: '06 Nos', href: '/courses/events?type=fdp' },
 ]
 
 export const defaultResourcePersons: ResourcePerson[] = [
@@ -47,4 +48,3 @@ export const defaultTrainingChecklist = [
   'Industry-recognized certification pathways',
   'Flexible online and on-site learning options',
 ]
-

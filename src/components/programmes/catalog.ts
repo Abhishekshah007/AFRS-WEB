@@ -185,7 +185,8 @@ function normalizeArchiveLinks(links: Partial<ArchiveFilterLinks> | undefined): 
     nationalEvents: links?.nationalEvents || archiveFilterLinks.nationalEvents,
     internationalEvents: links?.internationalEvents || archiveFilterLinks.internationalEvents,
     workshops: links?.workshops || archiveFilterLinks.workshops,
-    webinars: links?.webinars || archiveFilterLinks.webinars,
+    conferences: links?.conferences || archiveFilterLinks.conferences,
+    fdp: links?.fdp || archiveFilterLinks.fdp,
   }
 }
 

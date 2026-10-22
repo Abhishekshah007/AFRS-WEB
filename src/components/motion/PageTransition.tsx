@@ -3,6 +3,7 @@
 import { motion } from 'motion/react'
 import { usePathname } from 'next/navigation'
 import { pageEnter } from '@/components/motion/variants'
+import { useCoarsePointer } from '@/hooks/useCoarsePointer'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 type PageTransitionProps = {
@@ -15,8 +16,9 @@ type PageTransitionProps = {
 export function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname()
   const reduced = useReducedMotion()
+  const coarsePointer = useCoarsePointer()
 
-  if (reduced) return <>{children}</>
+  if (reduced || coarsePointer) return <>{children}</>
 
   return (
     <motion.div

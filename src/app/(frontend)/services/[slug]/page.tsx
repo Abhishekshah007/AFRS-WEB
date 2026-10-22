@@ -132,7 +132,7 @@ export default async function ServiceDetailPage({ params }: Props) {
         galleryViewAllHref={serviceGalleryHref(srv.slug)}
         contact={{
           phone: site?.phone || '+91-9926692487',
-          email: site?.email || 'afrsciences@gmail.com',
+          email: site?.labEmail || 'afslindore23@gmail.com',
         }}
       />
     </>

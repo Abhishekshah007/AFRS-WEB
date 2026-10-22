@@ -123,7 +123,7 @@ export function CategoryListingView({
             <AnimateOnScroll>
               <div className="mb-10 space-y-6">
                 {body && (
-                  <article className="w-full rounded-2xl border border-slate-100 bg-white p-6 sm:p-8">
+                  <article className="card-pop w-full rounded-2xl border border-slate-100 bg-white p-6 sm:p-8">
                     <h3 className="text-lg font-extrabold text-slate-900">About the programme</h3>
                     <div className="mt-3 space-y-4">
                       {body
@@ -150,7 +150,7 @@ export function CategoryListingView({
                 {(vision || missionItems?.length) && (
                   <div className="grid gap-6 lg:grid-cols-2">
                     {vision && (
-                      <article className="rounded-2xl border border-slate-100 bg-white p-6">
+                      <article className="card-pop rounded-2xl border border-slate-100 bg-white p-6">
                         <h3 className="text-lg font-extrabold text-slate-900">Vision</h3>
                         <p
                           className={`mt-3 text-sm leading-relaxed text-justify ${programmesTokens.body}`}
@@ -160,7 +160,7 @@ export function CategoryListingView({
                       </article>
                     )}
                     {missionItems?.length ? (
-                      <article className="rounded-2xl border border-slate-100 bg-slate-50 p-6">
+                      <article className="card-pop rounded-2xl border border-slate-100 bg-slate-50 p-6">
                         <h3 className="text-lg font-extrabold text-slate-900">Mission</h3>
                         {missionTitle && (
                           <p className="mt-3 text-sm font-semibold text-slate-700">
@@ -198,7 +198,7 @@ export function CategoryListingView({
                       </article>
                     ) : null}
                     {outcomes?.length ? (
-                      <article className="rounded-2xl border border-slate-100 bg-white p-6">
+                      <article className="card-pop rounded-2xl border border-slate-100 bg-white p-6">
                         <h3 className="text-lg font-extrabold text-slate-900">
                           {outcomesTitle || 'Learning Outcomes'}
                         </h3>
@@ -224,7 +224,7 @@ export function CategoryListingView({
                 {extraSections.map((section) => (
                   <article
                     key={section.title}
-                    className="rounded-2xl border border-slate-100 bg-white p-6"
+                    className="card-pop rounded-2xl border border-slate-100 bg-white p-6"
                   >
                     <h3 className="text-lg font-extrabold text-slate-900">{section.title}</h3>
                     <ul className="mt-4 space-y-2">
@@ -265,7 +265,7 @@ export function CategoryListingView({
               {programmes.map((prog) => (
                 <li key={prog.id}>
                   <article
-                    className={`${programmesTokens.radiusCard} group relative h-full overflow-hidden border border-slate-100 bg-white shadow-[0_10px_28px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:border-[var(--prog-primary)]/20 hover:shadow-[0_18px_42px_rgba(15,23,42,0.10)]`}
+                    className={`${programmesTokens.radiusCard} card-pop group relative h-full overflow-hidden border border-slate-100 bg-white shadow-[0_10px_28px_rgba(15,23,42,0.06)]`}
                   >
                     <div className="h-1.5 bg-gradient-to-r from-[var(--prog-primary)] via-brand-200 to-transparent" />
                     <div className="flex h-full flex-col p-6">

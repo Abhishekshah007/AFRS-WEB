@@ -10,6 +10,9 @@ import * as migration_20260918_203000_registration_settings from './20260918_203
 
 import * as migration_20260921_010000_gallery_placement_fields from './20260921_010000_gallery_placement_fields'
 import * as migration_20261019_032600_course_request_only from './20261019_032600_course_request_only'
+import * as migration_20261022_124800_home_popups from './20261022_124800_home_popups'
+import * as migration_20261022_201500_founders from './20261022_201500_founders'
+import * as migration_20261022_211200_programmes_catalog_event_filters from './20261022_211200_programmes_catalog_event_filters'
 
 export const migrations = [
   {
@@ -66,5 +69,20 @@ export const migrations = [
     up: migration_20261019_032600_course_request_only.up,
     down: migration_20261019_032600_course_request_only.down,
     name: '20261019_032600_course_request_only',
+  },
+  {
+    up: migration_20261022_124800_home_popups.up,
+    down: migration_20261022_124800_home_popups.down,
+    name: '20261022_124800_home_popups',
+  },
+  {
+    up: migration_20261022_201500_founders.up,
+    down: migration_20261022_201500_founders.down,
+    name: '20261022_201500_founders',
+  },
+  {
+    up: migration_20261022_211200_programmes_catalog_event_filters.up,
+    down: migration_20261022_211200_programmes_catalog_event_filters.down,
+    name: '20261022_211200_programmes_catalog_event_filters',
   },
 ]

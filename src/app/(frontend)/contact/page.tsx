@@ -5,6 +5,7 @@ import type { SiteSetting } from '@/payload-types'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { DEFAULT_SITE_ADDRESS } from '@/data/defaults/siteContact'
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Contact AFRS & AFSL',
@@ -54,7 +55,9 @@ export default async function ContactPage() {
                 </div>
                 <div>
                   <p className="font-bold text-slate-900">Our Location</p>
-                  <p className="text-slate-500 mt-1">{site?.address || 'AFRS Campus, India'}</p>
+                  <p className="text-slate-500 mt-1 whitespace-pre-line">
+                    {site?.address?.trim() || DEFAULT_SITE_ADDRESS}
+                  </p>
                 </div>
               </div>
               <div className="flex gap-3">
@@ -73,6 +76,9 @@ export default async function ContactPage() {
                 <div>
                   <p className="font-bold text-slate-900">Email ID</p>
                   <p className="text-slate-500 mt-1">{site?.email || 'afrsciences@gmail.com'}</p>
+                  <p className="text-slate-500 mt-1">
+                    {site?.labEmail || 'afslindore23@gmail.com'}
+                  </p>
                 </div>
               </div>
             </div>

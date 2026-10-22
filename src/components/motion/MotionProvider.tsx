@@ -2,6 +2,8 @@
 
 import Lenis from 'lenis'
 import { useEffect } from 'react'
+import { registerLenis } from '@/components/motion/lenisController'
+import { useCoarsePointer } from '@/hooks/useCoarsePointer'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 type MotionProviderProps = {
@@ -13,15 +15,16 @@ type MotionProviderProps = {
  */
 export function MotionProvider({ children }: MotionProviderProps) {
   const reduced = useReducedMotion()
+  const coarsePointer = useCoarsePointer()
 
   useEffect(() => {
-    if (reduced) return
+    if (reduced || coarsePointer) return
 
     const lenis = new Lenis({
-      duration: 1.15,
+      duration: 1.05,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      touchMultiplier: 1.4,
+      syncTouch: false,
     })
 
     let rafId = 0
@@ -32,13 +35,15 @@ export function MotionProvider({ children }: MotionProviderProps) {
     rafId = requestAnimationFrame(raf)
 
     document.documentElement.classList.add('lenis', 'lenis-smooth')
+    registerLenis(lenis)
 
     return () => {
       cancelAnimationFrame(rafId)
+      registerLenis(null)
       lenis.destroy()
       document.documentElement.classList.remove('lenis', 'lenis-smooth')
     }
-  }, [reduced])
+  }, [reduced, coarsePointer])
 
   return children
 }

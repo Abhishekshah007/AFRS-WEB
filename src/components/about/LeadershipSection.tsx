@@ -8,7 +8,7 @@ import type { LeaderProfile } from '@/components/about/types'
 import { aboutTokens } from '@/components/about/tokens'
 import { SectionHeader } from '@/components/about/SectionHeader'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
-import { JSX } from 'react/jsx-dev-runtime'
+import type { JSX } from 'react'
 
 type LeadershipSectionProps = {
   leaders: LeaderProfile[]
@@ -38,7 +38,7 @@ export function LeadershipSection({
               <SectionHeader title={leadershipTitle} subtitle={leadershipSubtitle} align="left" />
             </AnimateOnScroll>
             <AnimateOnScroll stagger className="grid gap-6 lg:grid-cols-2">
-              {leaders.slice(0, 2).map((leader) => (
+              {leaders.map((leader) => (
                 <LeaderCard key={leader.id} leader={leader} />
               ))}
             </AnimateOnScroll>

@@ -29,7 +29,7 @@ export function AboutSection({ sectionText }: { sectionText: SectionText }) {
             href="/about"
             className="mt-8 inline-flex h-11 items-center justify-center rounded-lg bg-[#0f172a] hover:bg-slate-800 text-white px-8 text-sm font-bold transition"
           >
-            Read More
+            Learn about AFRS
           </Link>
         </AnimateOnScroll>
         <AnimateOnScroll direction="right">

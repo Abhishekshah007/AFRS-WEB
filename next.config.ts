@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
       {
         pathname: '/assets/social-media-logo/**',
       },
+      {
+        pathname: '/assets/**',
+      },
     ],
     remotePatterns: [
       {
@@ -85,6 +88,8 @@ const nextConfig: NextConfig = {
       },
       { source: '/programmes/:path*', destination: '/courses/:path*', permanent: true },
       { source: '/internship', destination: '/courses/training', permanent: true },
+      { source: '/articles', destination: '/student-hub/articles', permanent: true },
+      { source: '/articles/:path*', destination: '/student-hub/articles/:path*', permanent: true },
     ]
   },
 }

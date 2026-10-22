@@ -4,28 +4,27 @@ export const springSoft = { type: 'spring' as const, stiffness: 120, damping: 22
 export const easeOutExpo = [0.16, 1, 0.3, 1] as const
 
 export const fadeUp = {
-  hidden: { opacity: 0, y: 36, filter: 'blur(10px)' },
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
     transition: springSoft,
   },
 }
 
 export const fadeLeft = {
-  hidden: { opacity: 0, x: -36, filter: 'blur(8px)' },
-  visible: { opacity: 1, x: 0, filter: 'blur(0px)', transition: springSoft },
+  hidden: { opacity: 0, x: -24 },
+  visible: { opacity: 1, x: 0, transition: springSoft },
 }
 
 export const fadeRight = {
-  hidden: { opacity: 0, x: 36, filter: 'blur(8px)' },
-  visible: { opacity: 1, x: 0, filter: 'blur(0px)', transition: springSoft },
+  hidden: { opacity: 0, x: 24 },
+  visible: { opacity: 1, x: 0, transition: springSoft },
 }
 
 export const scaleIn = {
-  hidden: { opacity: 0, scale: 0.92, filter: 'blur(6px)' },
-  visible: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: springSoft },
+  hidden: { opacity: 0, scale: 0.96 },
+  visible: { opacity: 1, scale: 1, transition: springSoft },
 }
 
 export const staggerContainer = {
@@ -36,17 +35,15 @@ export const staggerContainer = {
 }
 
 export const pageEnter = {
-  initial: { opacity: 0, y: 16, filter: 'blur(4px)' },
+  initial: { opacity: 0, y: 10 },
   animate: {
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
-    transition: { duration: 0.45, ease: easeOutExpo },
+    transition: { duration: 0.35, ease: easeOutExpo },
   },
   exit: {
     opacity: 0,
-    y: -10,
-    transition: { duration: 0.25, ease: easeOutExpo },
+    transition: { duration: 0.2, ease: easeOutExpo },
   },
 }
 
@@ -56,11 +53,10 @@ export const heroStagger = {
 }
 
 export const heroItem = {
-  hidden: { opacity: 0, y: 28, filter: 'blur(8px)' },
+  hidden: { opacity: 0, y: 20 },
   show: {
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
-    transition: { duration: 0.65, ease: easeOutExpo },
+    transition: { duration: 0.55, ease: easeOutExpo },
   },
 }

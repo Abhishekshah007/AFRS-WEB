@@ -134,10 +134,16 @@ export const ProgrammesCatalog: GlobalConfig = {
           defaultValue: defaultArchiveFilterLinks.workshops,
         },
         {
-          name: 'webinars',
+          name: 'conferences',
           type: 'text',
           required: true,
-          defaultValue: defaultArchiveFilterLinks.webinars,
+          defaultValue: defaultArchiveFilterLinks.conferences,
+        },
+        {
+          name: 'fdp',
+          type: 'text',
+          required: true,
+          defaultValue: defaultArchiveFilterLinks.fdp,
         },
       ],
     },

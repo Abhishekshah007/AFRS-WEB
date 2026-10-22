@@ -7,7 +7,7 @@ export function ResourceCard({ resource }: { resource: ResourceCardData }) {
   if (resource.featured) {
     // Wide horizontal card — "Practical Learning" layout
     return (
-      <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_1px_6px_rgba(0,0,0,0.06)] h-full flex flex-row items-center gap-6">
+      <article className="card-pop rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_1px_6px_rgba(0,0,0,0.06)] h-full flex flex-row items-center gap-6">
         <span
           className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${resource.iconBg}`}
           aria-hidden
@@ -36,7 +36,7 @@ export function ResourceCard({ resource }: { resource: ResourceCardData }) {
   }
 
   return (
-    <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_1px_6px_rgba(0,0,0,0.06)] h-full flex flex-col">
+    <article className="card-pop rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_1px_6px_rgba(0,0,0,0.06)] h-full flex flex-col">
       <span
         className={`flex h-12 w-12 items-center justify-center rounded-xl ${resource.iconBg}`}
         aria-hidden

@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'motion/react'
+import { useCoarsePointer } from '@/hooks/useCoarsePointer'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 /**
@@ -8,7 +9,8 @@ import { useReducedMotion } from '@/hooks/useReducedMotion'
  */
 export function AmbientSiteGlow() {
   const reduced = useReducedMotion()
-  if (reduced) return null
+  const coarsePointer = useCoarsePointer()
+  if (reduced || coarsePointer) return null
 
   return (
     <div className="ambient-glow pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden>

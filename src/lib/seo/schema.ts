@@ -5,10 +5,10 @@ export type BreadcrumbCrumb = { name: string; path: string }
 const NAP = {
   telephone: '+91-9926692487',
   email: 'afrsciences@gmail.com',
-  streetAddress: '8/1, 2nd Floor, Moti Tabela, Near Collectorate Office',
+  streetAddress: '2nd Floor, 8/1, Moti Tabela, Near Collectorate Office',
   addressLocality: 'Indore',
   addressRegion: 'Madhya Pradesh',
-  postalCode: '452001',
+  postalCode: '452007',
   addressCountry: 'IN',
 }
 

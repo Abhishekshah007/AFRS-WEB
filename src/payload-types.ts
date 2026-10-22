@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     articles: Article;
     aboutCertifications: AboutCertification;
+    founders: Founder;
     services: Service;
     galleryItems: GalleryItem;
     testimonials: Testimonial;
@@ -76,6 +77,7 @@ export interface Config {
     resourcePersons: ResourcePerson;
     impactStats: ImpactStat;
     notices: Notice;
+    sitePopups: SitePopup;
     partnersLogo: PartnersLogo;
     events: Event;
     eventRegistrations: EventRegistration;
@@ -92,6 +94,7 @@ export interface Config {
   collectionsSelect: {
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     aboutCertifications: AboutCertificationsSelect<false> | AboutCertificationsSelect<true>;
+    founders: FoundersSelect<false> | FoundersSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
     galleryItems: GalleryItemsSelect<false> | GalleryItemsSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
@@ -99,6 +102,7 @@ export interface Config {
     resourcePersons: ResourcePersonsSelect<false> | ResourcePersonsSelect<true>;
     impactStats: ImpactStatsSelect<false> | ImpactStatsSelect<true>;
     notices: NoticesSelect<false> | NoticesSelect<true>;
+    sitePopups: SitePopupsSelect<false> | SitePopupsSelect<true>;
     partnersLogo: PartnersLogoSelect<false> | PartnersLogoSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     eventRegistrations: EventRegistrationsSelect<false> | EventRegistrationsSelect<true>;
@@ -302,6 +306,45 @@ export interface AboutCertification {
   certificateUrl?: string | null;
   /**
    * When unchecked, this entry is saved but hidden on the public website. Logged-in editors can still see it in the admin panel.
+   */
+  published?: boolean | null;
+  /**
+   * Lower numbers appear first.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Founder cards on the About page. Name, role, photo, quote, short bio, and social links. Unpublished founders stay hidden. If none are published, the website keeps the built-in cards.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "founders".
+ */
+export interface Founder {
+  id: number;
+  name: string;
+  /**
+   * Role under the name, for example President, AFRS.
+   */
+  designation: string;
+  /**
+   * Portrait photo. A tall or square image works best on the card.
+   */
+  photo?: (number | null) | Media;
+  /**
+   * The quoted message shown on the founder card.
+   */
+  message?: string | null;
+  /**
+   * One or two lines under the quote.
+   */
+  bio?: string | null;
+  linkedin?: string | null;
+  instagram?: string | null;
+  facebook?: string | null;
+  /**
+   * Unpublished founders are hidden from the About page.
    */
   published?: boolean | null;
   /**
@@ -573,6 +616,34 @@ export interface Notice {
   createdAt: string;
 }
 /**
+ * Poster popups for the homepage sequence. At most 5 popups can be live at once, including events marked “Show in homepage popup”.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sitePopups".
+ */
+export interface SitePopup {
+  id: number;
+  /**
+   * Read aloud as the poster description. It is not shown as a heading on the poster.
+   */
+  title: string;
+  image: number | Media;
+  /**
+   * If set, the poster links here. Leave empty for a view-only poster. Close still dismisses the popup.
+   */
+  linkUrl?: string | null;
+  /**
+   * Lower numbers appear first. Posters play before event popups.
+   */
+  order?: number | null;
+  /**
+   * Published posters count toward the 5-popup limit and appear on the homepage.
+   */
+  published?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Organisation logos in the partners carousel. Upload the logo under Media first if needed.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -594,7 +665,7 @@ export interface PartnersLogo {
   createdAt: string;
 }
 /**
- * Create workshops, webinars, and conferences. The event title auto-generates the URL slug — no technical formatting needed.
+ * Create workshops, conferences,faculty development programmes and certification programmes. The event title auto-generates the URL slug — no technical formatting needed.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "events".
@@ -630,7 +701,7 @@ export interface Event {
     [k: string]: unknown;
   } | null;
   eventNature?: ('national' | 'international') | null;
-  eventType?: ('workshop' | 'webinar' | 'conference' | 'training') | null;
+  eventType?: ('workshop' | 'conference' | 'training' | 'fdp') | null;
   mode?: ('online' | 'offline' | 'hybrid') | null;
   startDate: string;
   /**
@@ -742,6 +813,10 @@ export interface Event {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Off by default. When checked, this event joins the homepage popup sequence only while it is upcoming or ongoing, with an Apply button. It counts toward the 5-popup limit.
+   */
+  showInHomePopup?: boolean | null;
   /**
    * When unchecked, this entry is saved but hidden on the public website. Logged-in editors can still see it in the admin panel.
    */
@@ -990,6 +1065,10 @@ export interface PayloadLockedDocument {
         value: number | AboutCertification;
       } | null)
     | ({
+        relationTo: 'founders';
+        value: number | Founder;
+      } | null)
+    | ({
         relationTo: 'services';
         value: number | Service;
       } | null)
@@ -1016,6 +1095,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'notices';
         value: number | Notice;
+      } | null)
+    | ({
+        relationTo: 'sitePopups';
+        value: number | SitePopup;
       } | null)
     | ({
         relationTo: 'partnersLogo';
@@ -1132,6 +1215,24 @@ export interface AboutCertificationsSelect<T extends boolean = true> {
   logo?: T;
   description?: T;
   certificateUrl?: T;
+  published?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "founders_select".
+ */
+export interface FoundersSelect<T extends boolean = true> {
+  name?: T;
+  designation?: T;
+  photo?: T;
+  message?: T;
+  bio?: T;
+  linkedin?: T;
+  instagram?: T;
+  facebook?: T;
   published?: T;
   order?: T;
   updatedAt?: T;
@@ -1260,6 +1361,19 @@ export interface NoticesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sitePopups_select".
+ */
+export interface SitePopupsSelect<T extends boolean = true> {
+  title?: T;
+  image?: T;
+  linkUrl?: T;
+  order?: T;
+  published?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "partnersLogo_select".
  */
 export interface PartnersLogoSelect<T extends boolean = true> {
@@ -1343,6 +1457,7 @@ export interface EventsSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  showInHomePopup?: T;
   published?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1551,6 +1666,13 @@ export interface SiteSetting {
   logo?: (number | null) | Media;
   phone?: string | null;
   email?: string | null;
+  /**
+   * AFSL laboratory inquiries — footer and contact page.
+   */
+  labEmail?: string | null;
+  /**
+   * Shown in footer and contact page. Include head office and regional offices.
+   */
   address?: string | null;
   /**
    * All-time visitor total shown in the site-wide visitor bar (home, courses, student hub, services). Update from your analytics dashboard (e.g. Google Analytics total users/sessions). Leave at 0 until you publish a figure—the site uses a shared default until then.
@@ -2162,7 +2284,8 @@ export interface ProgrammesCatalog {
     nationalEvents: string;
     internationalEvents: string;
     workshops: string;
-    webinars: string;
+    conferences: string;
+    fdp: string;
   };
   trainingChecklist?:
     | {
@@ -2891,7 +3014,9 @@ export interface AdminAccess {
                 | 'courseRegistrations'
                 | 'eventRegistrations'
                 | 'events'
+                | 'founders'
                 | 'galleryItems'
+                | 'sitePopups'
                 | 'impactStats'
                 | 'scientists'
                 | 'media'
@@ -2935,6 +3060,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   logo?: T;
   phone?: T;
   email?: T;
+  labEmail?: T;
   address?: T;
   totalVisitors?: T;
   mapEmbedUrl?: T;
@@ -3468,7 +3594,8 @@ export interface ProgrammesCatalogSelect<T extends boolean = true> {
         nationalEvents?: T;
         internationalEvents?: T;
         workshops?: T;
-        webinars?: T;
+        conferences?: T;
+        fdp?: T;
       };
   trainingChecklist?:
     | T

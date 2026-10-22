@@ -182,7 +182,7 @@ export function ServicesPageView({
         <div className={CONTAINER}>
           <div className="grid gap-8 md:grid-cols-2">
             <div>
-              <article className="flex h-full min-h-[285px] flex-col rounded-[16px] bg-brand p-8 text-white shadow-[0_18px_45px_rgba(59,1,11,0.18)]">
+              <article className="card-pop card-pop-on-dark flex h-full min-h-[285px] flex-col rounded-[16px] bg-brand p-8 text-white shadow-[0_18px_45px_rgba(59,1,11,0.18)]">
                 <div className="flex h-12 w-12 items-center justify-center rounded-[10px] bg-white/10">
                   <Microscope className="h-5 w-5" />
                 </div>
@@ -194,7 +194,7 @@ export function ServicesPageView({
               </article>
             </div>
             <div>
-              <article className="flex h-full min-h-[285px] flex-col rounded-[16px] border border-[#e5ebf4] bg-[#FBF6EC] p-8">
+              <article className="card-pop flex h-full min-h-[285px] flex-col rounded-[16px] border border-[#e5ebf4] bg-[#FBF6EC] p-8">
                 <div className="flex h-12 w-12 items-center justify-center rounded-[10px] bg-[#75162D] text-white">
                   <BriefcaseBusiness className="h-5 w-5" />
                 </div>
@@ -231,7 +231,7 @@ export function ServicesPageView({
               ) : (
                 directors.map((person) => (
                   <div key={person.id}>
-                    <article className="group overflow-hidden rounded-[20px] border border-[#e5ebf4] bg-gradient-to-br from-white to-[#FBF6EC] shadow-[0_12px_32px_rgba(15,23,42,0.08)] transition hover:shadow-[0_20px_48px_rgba(59,1,11,0.15)] hover:-translate-y-1">
+                    <article className="card-pop group overflow-hidden rounded-[20px] border border-[#e5ebf4] bg-gradient-to-br from-white to-[#FBF6EC] shadow-[0_12px_32px_rgba(15,23,42,0.08)]">
                       {/* Top gradient bar */}
                       <div className="h-1 w-full bg-gradient-to-r from-[#75162D] via-[#F2D9A0] to-[#75162D]" />
 
@@ -319,7 +319,7 @@ export function ServicesPageView({
                 people.map((person) => {
                   return (
                     <div key={person.id}>
-                      <article className="group h-full overflow-hidden rounded-[18px] border border-[#e5ebf4] bg-gradient-to-b from-white to-[#FBF6EC] shadow-[0_10px_24px_rgba(15,23,42,0.08)] transition hover:shadow-[0_14px_32px_rgba(59,1,11,0.12)] hover:-translate-y-0.5">
+                      <article className="card-pop group h-full overflow-hidden rounded-[18px] border border-[#e5ebf4] bg-gradient-to-b from-white to-[#FBF6EC] shadow-[0_10px_24px_rgba(15,23,42,0.08)]">
                         {/* Top accent line */}
                         <div className="h-0.5 w-full bg-gradient-to-r from-[#75162D] via-[#F2D9A0] to-transparent" />
 
@@ -415,7 +415,7 @@ export function ServicesPageView({
               <Link
                 key={item.id}
                 href={`/services/${item.slug}`}
-                className="group flex h-full flex-col overflow-hidden rounded-[16px] border border-[#dce4ef] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+                className="card-pop group flex h-full flex-col overflow-hidden rounded-[16px] border border-[#dce4ef] bg-white shadow-sm"
               >
                 <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden">
                   <Image
@@ -546,7 +546,7 @@ export function ServicesPageView({
               const Icon = KIT_ICONS[kit.icon] ?? Box
               return (
                 <div key={kit.title}>
-                  <article className="group h-full overflow-hidden rounded-[16px] border border-[#dfe7f2] bg-white shadow-[0_8px_20px_rgba(15,23,42,0.06)] transition hover:shadow-[0_16px_40px_rgba(59,1,11,0.12)] hover:-translate-y-1">
+                  <article className="card-pop group h-full overflow-hidden rounded-[16px] border border-[#dfe7f2] bg-white shadow-[0_8px_20px_rgba(15,23,42,0.06)]">
                     {/* Top gradient bar */}
                     <div className="h-1 w-full bg-gradient-to-r from-[#75162D] to-[#F2D9A0]" />
 
@@ -650,7 +650,7 @@ export function ServicesPageView({
                   </span>
                 </a>
                 <a
-                  href={`mailto:${site.email}`}
+                  href={`mailto:${site.labEmail || site.email}`}
                   className="flex max-w-[430px] items-center gap-5 rounded-[8px] bg-[#FBF6EC] px-6 py-5"
                 >
                   <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#75162D] text-white">
@@ -660,7 +660,9 @@ export function ServicesPageView({
                     <span className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#a1acba]">
                       {content.reportVerificationLabel}
                     </span>
-                    <span className="mt-1 block text-[16px] font-black">{site.email}</span>
+                    <span className="mt-1 block text-[16px] font-black">
+                      {site.labEmail || site.email}
+                    </span>
                   </span>
                 </a>
               </div>
