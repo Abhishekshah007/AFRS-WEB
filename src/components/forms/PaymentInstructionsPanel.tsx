@@ -64,6 +64,10 @@ function PaymentInstructions({
 
 function PaymentMethodCard({ method }: { method: PaymentMethodConfig }) {
   const resolvedLink = resolvePaymentLink(method.link)
+  const webPaymentLink =
+    resolvedLink?.kind === 'href' && /^https?:\/\//i.test(resolvedLink.href)
+      ? resolvedLink.href
+      : null
   const [copied, setCopied] = useState(false)
 
   const copyValue = async (value: string) => {
@@ -83,24 +87,24 @@ function PaymentMethodCard({ method }: { method: PaymentMethodConfig }) {
         <p className="mt-2 text-sm text-slate-600">{method.description}</p>
       ) : null}
       {method.qrCode ? (
-        <div className="mt-4 h-40 overflow-hidden rounded-2xl bg-slate-100 p-3">
+        <div className="mx-auto mt-4 aspect-square w-full max-w-xs rounded-2xl bg-white p-3">
           <Image
             src={resolveMediaUrl(method.qrCode as MediaRef, FALLBACK_LOGO_IMAGE)}
             alt={`${method.title} QR code`}
-            width={300}
-            height={300}
+            width={600}
+            height={600}
             className="h-full w-full object-contain"
           />
         </div>
       ) : null}
-      {resolvedLink?.kind === 'href' ? (
+      {webPaymentLink ? (
         <a
-          href={resolvedLink.href}
+          href={webPaymentLink}
           target="_blank"
           rel="noreferrer"
           className="mt-4 inline-flex items-center rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-700"
         >
-          Pay via UPI / link
+          Pay with PayPal
         </a>
       ) : null}
       {resolvedLink?.kind === 'copy' ? (
@@ -158,11 +162,11 @@ export function PaymentInstructionsPanel({
         <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
           {participantRegion === 'international'
             ? deliveryMode === 'offline'
-              ? 'International participants (offline programme — bank / QR only)'
+              ? 'International participants (offline programme — QR payment only)'
               : 'International participants (PayPal available for online programmes)'
             : deliveryMode === 'offline'
-              ? 'Indian participants (offline programme — UPI / bank / QR)'
-              : 'Indian participants (UPI / bank / QR)'}
+              ? 'Indian participants (offline programme — UPI / QR)'
+              : 'Indian participants (UPI / QR)'}
         </p>
       ) : null}
 
@@ -181,9 +185,7 @@ export function PaymentInstructionsPanel({
       <p className="text-xs text-slate-500">
         After payment, enter your transaction reference and upload the payment screenshot below.
         Registrations are confirmed after manual verification by the AFRS team.
-        {deliveryMode === 'offline'
-          ? ' Offline programmes use bank transfer and QR only — PayPal is not accepted.'
-          : null}
+        {deliveryMode === 'offline' ? ' PayPal is not accepted for offline programmes.' : null}
       </p>
     </div>
   )

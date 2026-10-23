@@ -200,6 +200,11 @@ export function filterPaymentMethodsByRegion(
   if (!methods?.length) return []
   return methods.filter((method) => {
     const methodRegion = method.region || 'all'
-    return methodRegion === 'all' || methodRegion === region
+    const isPaypalMethod = /\bpaypal\b/i.test(method.title)
+    return (
+      methodRegion === 'all' ||
+      methodRegion === region ||
+      (region === 'international' && isPaypalMethod)
+    )
   })
 }

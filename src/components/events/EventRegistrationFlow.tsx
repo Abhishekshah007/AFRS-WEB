@@ -34,8 +34,8 @@ export function EventRegistrationFlow({ event, config, customSections = [] }: Pr
   const sidebar = (
     <>
       <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
-        <div className="relative h-40">
-          <Image src={event.banner} alt={event.title} fill className="object-cover" />
+        <div className="relative h-50 bg-slate-50">
+          <Image src={event.banner} alt={event.title} fill className="object-contain" />
         </div>
         <div className="p-4 space-y-3">
           <p className="text-[10px] font-bold uppercase text-brand-600">{event.eventType}</p>
