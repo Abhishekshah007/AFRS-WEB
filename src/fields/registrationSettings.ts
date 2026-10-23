@@ -2,7 +2,7 @@ import type { Field } from 'payload'
 
 export const REGISTRATION_TYPE_OPTIONS = [
   { label: 'Free registration', value: 'free' },
-  { label: 'Paid — manual verification (UPI / bank / PayPal)', value: 'paid_manual' },
+  { label: 'Paid — manual verification (UPI / PayPal)', value: 'paid_manual' },
   { label: 'Paid — payment gateway (future)', value: 'paid_gateway' },
 ] as const
 

@@ -2411,7 +2411,7 @@ export interface RegistrationForm {
     note?: string | null;
   };
   /**
-   * Add separate QR entries for AFRS and AFSL if needed. Set region to International for PayPal/online training; Indian/offline entries should be QR + bank only (no PayPal link).
+   * Add separate QR entries for AFRS and AFSL if needed. Set UPI QR entries to Indian participants and PayPal QR entries to International participants. PayPal links are available for online programmes only.
    */
   paymentMethods?:
     | {

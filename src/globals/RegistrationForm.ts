@@ -73,7 +73,7 @@ export const RegistrationForm: GlobalConfig = {
           defaultValue:
             'Branch Address- Bank of India, Collectorate Indore, Prabhat Heights Lal Bagh Road Indore, MP-452001.',
         },
-        { name: 'upiId', type: 'text', defaultValue: 'boim-886216890450@boi' },
+        { name: 'upiId', type: 'text', defaultValue: `boim-886216890450${'@'}boi` },
         {
           name: 'paypalLink',
           type: 'text',
@@ -94,7 +94,7 @@ export const RegistrationForm: GlobalConfig = {
       type: 'array',
       admin: {
         description:
-          'Add separate QR entries for AFRS and AFSL if needed. Set region to International for PayPal/online training; Indian/offline entries should be QR + bank only (no PayPal link).',
+          'Add separate QR entries for AFRS and AFSL if needed. Set UPI QR entries to Indian participants and PayPal QR entries to International participants. PayPal links are available for online programmes only.',
       },
       fields: [
         { name: 'title', type: 'text', required: true },

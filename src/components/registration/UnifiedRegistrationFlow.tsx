@@ -105,7 +105,12 @@ export function UnifiedRegistrationFlow({
   const [customFiles, setCustomFiles] = useState<Record<string, File | null>>({})
   const [includeKit, setIncludeKit] = useState(false)
   const [selectedTierId, setSelectedTierId] = useState(feeTiers[0]?.id || '')
-  const [paymentMode, setPaymentMode] = useState<PaymentMode>('upi')
+  const [paymentMode, setPaymentMode] = useState<PaymentMode>(
+    config.participantRegion === 'international' &&
+      shouldOfferPayPal('international', deliveryModeProp ?? parseDeliveryMode('hybrid'))
+      ? 'paypal'
+      : 'upi',
+  )
   const [paymentForm, setPaymentForm] = useState({
     transactionId: '',
     transactionDate: '',
@@ -128,10 +133,17 @@ export function UnifiedRegistrationFlow({
     config.participantRegion === 'both' ? participantRegion : config.participantRegion
 
   const deliveryMode = deliveryModeProp ?? parseDeliveryMode('hybrid')
-  const showPaypalOption = shouldOfferPayPal(
-    activeRegion === 'international' ? 'international' : 'indian',
-    deliveryMode,
-  )
+  const canPayWithPayPal =
+    config.participantRegion !== 'indian' &&
+    shouldOfferPayPal('international', deliveryMode)
+  const paymentModes: PaymentMode[] =
+    config.participantRegion === 'both'
+      ? canPayWithPayPal
+        ? ['upi', 'paypal']
+        : ['upi']
+      : config.participantRegion === 'international'
+        ? [canPayWithPayPal ? 'paypal' : 'upi']
+        : ['upi']
 
   const visibleTiers = useMemo(
     () => feeTiersForRegion(feeTiers, activeRegion),
@@ -375,41 +387,6 @@ export function UnifiedRegistrationFlow({
             </section>
           )}
 
-          {!requestOnly && config.participantRegion === 'both' && (
-            <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-3">
-              <h3 className="font-extrabold text-slate-900">
-                {config.requireAgreement ? '2. Participant Type' : '1. Participant Type'}
-              </h3>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {(['indian', 'international'] as const).map((region) => (
-                  <button
-                    key={region}
-                    type="button"
-                    onClick={() => {
-                      setParticipantRegion(region)
-                      const nextTiers = feeTiersForRegion(feeTiers, region)
-                      setSelectedTierId(nextTiers[0]?.id || '')
-                      const paypal = shouldOfferPayPal(region, deliveryMode)
-                      setPaymentMode(
-                        region === 'international' ? (paypal ? 'paypal' : 'bank') : 'upi',
-                      )
-                    }}
-                    className={`rounded-xl border p-4 text-left ${participantRegion === region ? 'border-brand-500 bg-brand-50' : 'border-slate-200'}`}
-                  >
-                    <p className="font-bold text-sm text-slate-900">
-                      {region === 'indian' ? 'Indian Participants' : 'International Participants'}
-                    </p>
-                    <p className="text-xs text-slate-500 mt-1">
-                      {region === 'indian'
-                        ? 'INR fees, UPI / bank transfer'
-                        : 'USD fees, PayPal / international payment'}
-                    </p>
-                  </button>
-                ))}
-              </div>
-            </section>
-          )}
-
           {!cmsFormOnly && (
             <section className="rounded-2xl border border-slate-200 bg-white p-5 space-y-4 shadow-sm">
               <h3 className="font-extrabold text-slate-900">Your details</h3>
@@ -545,13 +522,8 @@ export function UnifiedRegistrationFlow({
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
                   Payment mode *
                 </p>
-                <div className="grid gap-2 sm:grid-cols-3">
-                  {(activeRegion === 'international'
-                    ? showPaypalOption
-                      ? (['paypal', 'bank'] as PaymentMode[])
-                      : (['bank'] as PaymentMode[])
-                    : (['upi', 'bank'] as PaymentMode[])
-                  ).map((mode) => (
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {paymentModes.map((mode) => (
                     <label
                       key={mode}
                       className={`flex items-center gap-2 rounded-xl border p-3 text-sm cursor-pointer ${paymentMode === mode ? 'border-brand-500 bg-brand-50' : 'border-slate-200'}`}
@@ -560,9 +532,17 @@ export function UnifiedRegistrationFlow({
                         type="radio"
                         name="paymentMode"
                         checked={paymentMode === mode}
-                        onChange={() => setPaymentMode(mode)}
+                        onChange={() => {
+                          setPaymentMode(mode)
+                          if (config.participantRegion === 'both') {
+                            const region = mode === 'paypal' ? 'international' : 'indian'
+                            setParticipantRegion(region)
+                            const nextTiers = feeTiersForRegion(feeTiers, region)
+                            setSelectedTierId(nextTiers[0]?.id || '')
+                          }
+                        }}
                       />
-                      {mode === 'upi' ? 'UPI' : mode === 'bank' ? 'Bank Transfer' : 'PayPal'}
+                      {mode === 'upi' ? 'UPI' : 'PayPal'}
                     </label>
                   ))}
                 </div>
