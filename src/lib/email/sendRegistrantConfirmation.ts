@@ -1,3 +1,5 @@
+import { absoluteUrl } from '@/lib/seo/site'
+
 type RegistrantConfirmationKind = 'courseRegistration' | 'eventRegistration'
 
 const kindLabels: Record<RegistrantConfirmationKind, string> = {
@@ -90,6 +92,14 @@ export async function sendRegistrantConfirmation({
       <p style="margin:12px 0 0;font-size:12px;color:#94a3b8;">
         Applied Forensic Research Sciences
       </p>
+      <div style="margin-top:20px;">
+        <img
+          src="${absoluteUrl('/assets/mailAttachment.jpg')}"
+          alt="Applied Forensic Research Sciences — contact details and social media"
+          width="560"
+          style="display:block;width:100%;max-width:560px;height:auto;border:0;"
+        />
+      </div>
     </div>
   `
 
