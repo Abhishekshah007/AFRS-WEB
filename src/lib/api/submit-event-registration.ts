@@ -7,7 +7,11 @@ import {
   validateContactFields,
 } from '@/lib/registration/extractContactFields'
 import { normalizeDynamicSections } from '@/lib/registration/normalizeDynamicSections'
-import { categoriesToFeeTiers, resolveRegistrationConfig } from '@/lib/registration/resolveConfig'
+import {
+  categoriesToFeeTiers,
+  feeTiersForRegion,
+  resolveRegistrationConfig,
+} from '@/lib/registration/resolveConfig'
 import { getPayloadClient } from '@/lib/payload'
 import { resolveEventSlug } from '@/lib/utils/slugify'
 import { buildEventConfirmationUrl } from '@/lib/registration/confirmationToken'
@@ -80,7 +84,10 @@ export async function submitEventRegistration(req: Request) {
     return jsonError('This event registration form is not configured yet.', 400)
   }
 
-  const feeTiers = categoriesToFeeTiers(evt.registrationCategories || [])
+  const feeTiers = categoriesToFeeTiers(
+    evt.registrationCategories || [],
+    evt.internationalRegistrationCategories || [],
+  )
   const config = resolveRegistrationConfig({
     settings: evt.registrationSettings,
     globalForm: registrationForm,
@@ -111,7 +118,28 @@ export async function submitEventRegistration(req: Request) {
   if (contactError) return jsonError(contactError, 400)
 
   const registrationCategoryId = getFormValue(formData, 'registrationCategoryId')
-  const selected = feeTiers.find((tier) => tier.id === registrationCategoryId) || feeTiers[0]
+  const submittedRegion = getFormValue(formData, 'participantRegion')
+  if (submittedRegion && submittedRegion !== 'indian' && submittedRegion !== 'international') {
+    return jsonError('Invalid participant region.', 400)
+  }
+  const participantRegion =
+    submittedRegion === 'international' ||
+    (!submittedRegion && config.participantRegion === 'international')
+      ? 'international'
+      : 'indian'
+  if (config.participantRegion !== 'both' && config.participantRegion !== participantRegion) {
+    return jsonError('Invalid participant region.', 400)
+  }
+  const regionTiers = feeTiersForRegion(feeTiers, participantRegion)
+  const selected =
+    regionTiers.find((tier) => tier.id === registrationCategoryId) ||
+    (registrationCategoryId ? undefined : regionTiers[0])
+  if (registrationCategoryId && !selected) {
+    return jsonError('Invalid registration category.', 400)
+  }
+  if (!selected && config.registrationType !== 'free') {
+    return jsonError('Invalid registration category.', 400)
+  }
   const includeKit = getFormValue(formData, 'includeKit') === 'true'
   const basePrice = Number(selected?.amount || 0)
   const kitPrice = includeKit && evt.includeKitOption ? Number(evt.kitPrice || 0) : 0
@@ -179,10 +207,7 @@ export async function submitEventRegistration(req: Request) {
       registrationCategoryPrice: basePrice,
       feeTierLabel: selected?.label,
       feeTierCurrency: selected?.currency === 'USD' ? 'USD' : 'INR',
-      participantRegion:
-        getFormValue(formData, 'participantRegion') === 'international'
-          ? 'international'
-          : 'indian',
+      participantRegion,
       agreedToTerms,
       includeKit,
       kitPrice,

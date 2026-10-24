@@ -262,8 +262,11 @@ export function ServicesPageView({
                             <h3 className="text-[24px] sm:text-[26px] font-black text-[#1A0C0F]">
                               {person.name}
                             </h3>
-                            <p className="mt-3 text-[14px] font-black uppercase tracking-[0.16em] text-[#75162D]">
+                            <p className="mt-3 text-[14px] font-black tracking-[0.16em] text-[#75162D]">
                               {person.designation}
+                            </p>
+                            <p className="mt-3 text-[8px] font-black tracking-[0.16em] text-[#4b494a]">
+                              {person.bio}
                             </p>
                             <div className="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
                               <span className="inline-flex items-center gap-1.5 rounded-full bg-[#75162D]/10 px-3 py-1 text-[12px] font-bold text-[#75162D]">

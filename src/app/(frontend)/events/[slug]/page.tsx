@@ -15,6 +15,7 @@ import { buildPageMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { breadcrumbList, withContext } from '@/lib/seo/schema'
 import { clipMeta } from '@/lib/seo/site'
+import { categoriesToFeeTiers, formatFeeAmount } from '@/lib/registration/resolveConfig'
 import type { Metadata } from 'next'
 
 import { FALLBACK_BANNER_IMAGE } from '@/lib/constants/assets'
@@ -75,6 +76,20 @@ export default async function EventDetailPage({ params }: Props) {
   )
   const summary = evt.excerpt || richTextToPlain(evt.description, 200)
   const descriptionHtml = renderRichTextHtml(evt.description)
+  const feeTiers = categoriesToFeeTiers(
+    evt.registrationCategories || [],
+    evt.internationalRegistrationCategories || [],
+  )
+  const feeGroups = [
+    {
+      label: 'Indian participants',
+      categories: feeTiers.filter((tier) => tier.participantRegion === 'indian'),
+    },
+    {
+      label: 'International participants',
+      categories: feeTiers.filter((tier) => tier.participantRegion === 'international'),
+    },
+  ].filter((group) => group.categories.length > 0)
 
   return (
     <div className="bg-white min-h-screen">
@@ -183,17 +198,28 @@ export default async function EventDetailPage({ params }: Props) {
           <div className="rounded-3xl border border-slate-100 bg-white shadow-sm p-7">
             <h2 className="font-extrabold text-slate-900 text-xl mb-5">Registration</h2>
 
-            {evt.registrationCategories && evt.registrationCategories.length > 0 && (
+            {feeGroups.length > 0 && (
               <div className="space-y-3 mb-6">
-                {evt.registrationCategories.map((cat) => (
-                  <div
-                    key={cat.id}
-                    className="flex items-center justify-between rounded-xl bg-slate-50 border border-slate-100 px-4 py-3"
-                  >
-                    <span className="text-sm font-semibold text-slate-800">{cat.categoryName}</span>
-                    <span className="text-sm font-extrabold text-brand-700">
-                      {cat.price ? `₹${cat.price.toLocaleString('en-IN')}` : 'Free'}
-                    </span>
+                {feeGroups.map((group) => (
+                  <div key={group.label} className="space-y-2">
+                    <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                      {group.label}
+                    </p>
+                    {group.categories.map((cat) => (
+                      <div
+                        key={cat.id}
+                        className="flex items-center justify-between rounded-xl bg-slate-50 border border-slate-100 px-4 py-3"
+                      >
+                        <span className="text-sm font-semibold text-slate-800">
+                          {cat.label}
+                        </span>
+                        <span className="text-sm font-extrabold text-brand-700">
+                          {cat.amount
+                            ? formatFeeAmount(cat.amount, cat.currency)
+                            : 'Free'}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 ))}
               </div>

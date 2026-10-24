@@ -129,21 +129,31 @@ export function UnifiedRegistrationFlow({
     message: '',
   })
 
+  const indianTiers = useMemo(() => feeTiersForRegion(feeTiers, 'indian'), [feeTiers])
+  const internationalTiers = useMemo(
+    () => feeTiersForRegion(feeTiers, 'international'),
+    [feeTiers],
+  )
+  const availableParticipantRegions = useMemo(() => {
+    if (config.participantRegion !== 'both') return [config.participantRegion]
+    const regions: Array<'indian' | 'international'> = []
+    if (indianTiers.length) regions.push('indian')
+    if (internationalTiers.length) regions.push('international')
+    return regions
+  }, [config.participantRegion, indianTiers, internationalTiers])
   const activeRegion: ParticipantRegion =
-    config.participantRegion === 'both' ? participantRegion : config.participantRegion
+    config.participantRegion === 'both'
+      ? availableParticipantRegions.includes(participantRegion)
+        ? participantRegion
+        : availableParticipantRegions[0] || participantRegion
+      : config.participantRegion
 
   const deliveryMode = deliveryModeProp ?? parseDeliveryMode('hybrid')
   const canPayWithPayPal =
     config.participantRegion !== 'indian' &&
     shouldOfferPayPal('international', deliveryMode)
   const paymentModes: PaymentMode[] =
-    config.participantRegion === 'both'
-      ? canPayWithPayPal
-        ? ['upi', 'paypal']
-        : ['upi']
-      : config.participantRegion === 'international'
-        ? [canPayWithPayPal ? 'paypal' : 'upi']
-        : ['upi']
+    activeRegion === 'international' && canPayWithPayPal ? ['upi', 'paypal'] : ['upi']
 
   const visibleTiers = useMemo(
     () => feeTiersForRegion(feeTiers, activeRegion),
@@ -188,6 +198,10 @@ export function UnifiedRegistrationFlow({
 
     if (isPaid && visibleTiers.length > 0 && !selectedTier) {
       setError('Please select a registration category.')
+      return false
+    }
+    if (isPaid && !visibleTiers.length) {
+      setError('No registration categories are configured for this participant group.')
       return false
     }
 
@@ -349,8 +363,7 @@ export function UnifiedRegistrationFlow({
                     onChange={(e) => setAgreedToTerms(e.target.checked)}
                   />
                   <span>
-                    I have read, understood, and agree to all instructions, terms and conditions,
-                    and the non-refundable policy of Applied Forensic Research Sciences.
+             I have read and agree to the Registration Instructions, Terms & Conditions, Privacy Policy, and Refund/Cancellation Policy of Applied Forensic Research Sciences (AFRS).
                   </span>
                 </label>
               </section>
@@ -380,8 +393,7 @@ export function UnifiedRegistrationFlow({
                   onChange={(e) => setAgreedToTerms(e.target.checked)}
                 />
                 <span>
-                  I have read, understood, and agree to all instructions, terms and conditions, and
-                  the non-refundable policy of Applied Forensic Research Sciences.
+                  I have read and agree to the Registration Instructions, Terms & Conditions, Privacy Policy, and Refund/Cancellation Policy of Applied Forensic Research Sciences (AFRS).
                 </span>
               </label>
             </section>
@@ -469,6 +481,21 @@ export function UnifiedRegistrationFlow({
               <h3 className="font-extrabold text-slate-900">
                 {isPaid ? 'Registration fees' : 'Registration category'}
               </h3>
+              {config.participantRegion === 'both' && availableParticipantRegions.length > 1 && (
+                <div className="flex flex-wrap gap-2" aria-label="Participant group">
+                  {availableParticipantRegions.map((region) => (
+                    <button
+                      type="button"
+                      key={region}
+                      onClick={() => setParticipantRegion(region)}
+                      aria-pressed={activeRegion === region}
+                      className={`rounded-lg border px-4 py-2 text-sm font-semibold ${activeRegion === region ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-slate-200 text-slate-600'}`}
+                    >
+                      {region === 'indian' ? 'Indian participants' : 'International participants'}
+                    </button>
+                  ))}
+                </div>
+              )}
               <div className="grid gap-3 sm:grid-cols-2">
                 {visibleTiers.map((tier) => (
                   <button
@@ -534,12 +561,6 @@ export function UnifiedRegistrationFlow({
                         checked={paymentMode === mode}
                         onChange={() => {
                           setPaymentMode(mode)
-                          if (config.participantRegion === 'both') {
-                            const region = mode === 'paypal' ? 'international' : 'indian'
-                            setParticipantRegion(region)
-                            const nextTiers = feeTiersForRegion(feeTiers, region)
-                            setSelectedTierId(nextTiers[0]?.id || '')
-                          }
                         }}
                       />
                       {mode === 'upi' ? 'UPI' : 'PayPal'}
