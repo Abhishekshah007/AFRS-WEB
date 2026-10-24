@@ -266,13 +266,30 @@ describe('turnstile verification', () => {
   })
 
   it('treats placeholder site keys as not configured', async () => {
-    const originalSiteKey = process.env.FRONTEND_TURNSTILE_SITE_KEY
-    process.env.FRONTEND_TURNSTILE_SITE_KEY = '...'
+    const originalSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY = '...'
 
-    const { isTurnstileConfiguredClient } = await import('@/lib/security/turnstileConfig')
-    expect(isTurnstileConfiguredClient()).toBe(false)
+    try {
+      const { isTurnstileConfiguredClient } = await import('@/lib/security/turnstileConfig')
+      expect(isTurnstileConfiguredClient()).toBe(false)
+    } finally {
+      if (originalSiteKey) process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY = originalSiteKey
+      else delete process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+    }
+  })
 
-    if (originalSiteKey) process.env.FRONTEND_TURNSTILE_SITE_KEY = originalSiteKey
-    else delete process.env.FRONTEND_TURNSTILE_SITE_KEY
+  it('reads the documented public site key for the client widget', async () => {
+    const originalSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY = '0x4AAAAAAABBBBBBBBBBBBBB'
+
+    try {
+      const { getTurnstileSiteKey, isTurnstileConfiguredClient } =
+        await import('@/lib/security/turnstileConfig')
+      expect(getTurnstileSiteKey()).toBe(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)
+      expect(isTurnstileConfiguredClient()).toBe(true)
+    } finally {
+      if (originalSiteKey) process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY = originalSiteKey
+      else delete process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+    }
   })
 })
