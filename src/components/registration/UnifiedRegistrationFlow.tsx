@@ -96,6 +96,7 @@ export function UnifiedRegistrationFlow({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const [turnstileWidgetKey, setTurnstileWidgetKey] = useState(0)
   const turnstileRequired = isTurnstileConfiguredClient()
   const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [participantRegion, setParticipantRegion] = useState<'indian' | 'international'>(
@@ -322,7 +323,16 @@ export function UnifiedRegistrationFlow({
         await submitCourseForm()
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Something went wrong')
+      const message = e instanceof Error ? e.message : 'Something went wrong'
+      if (/security verification failed/i.test(message)) {
+        setTurnstileToken(null)
+        setTurnstileWidgetKey((key) => key + 1)
+        setError(
+          'Security check could not be verified. Your form details are still here—complete the refreshed check and submit again.',
+        )
+      } else {
+        setError(message)
+      }
     } finally {
       setLoading(false)
     }
@@ -633,7 +643,7 @@ export function UnifiedRegistrationFlow({
 
           {error && <p className="text-sm text-rose-600">{error}</p>}
 
-          <TurnstileField onTokenChange={setTurnstileToken} />
+          <TurnstileField key={turnstileWidgetKey} onTokenChange={setTurnstileToken} />
 
           <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <div>

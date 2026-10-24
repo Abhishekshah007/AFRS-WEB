@@ -24,7 +24,10 @@ export async function enforcePublicApiGuards(
   if (needsCaptcha) {
     const valid = await verifyTurnstileToken(options.turnstileToken, ip)
     if (!valid) {
-      return jsonError('Security verification failed. Please refresh and try again.', 400)
+      return jsonError(
+        'Security verification failed. Please complete the check again and resubmit.',
+        400,
+      )
     }
   }
 
