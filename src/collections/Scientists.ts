@@ -32,7 +32,7 @@ export const Scientists: CollectionConfig = {
       required: true,
       defaultValue: 'member',
       options: [
-        { label: 'Directorate', value: 'director' },
+        { label: 'Director', value: 'director' },
         { label: 'Team member', value: 'member' },
       ],
       admin: {

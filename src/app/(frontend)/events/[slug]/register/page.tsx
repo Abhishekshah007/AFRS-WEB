@@ -57,7 +57,10 @@ export default async function EventRegisterPage({ params }: Props) {
 
   const customSections = normalizeDynamicSections(evt.registrationSections as DynamicFormSection[])
 
-  const feeTiers = categoriesToFeeTiers(evt.registrationCategories || [])
+  const feeTiers = categoriesToFeeTiers(
+    evt.registrationCategories || [],
+    evt.internationalRegistrationCategories || [],
+  )
   const config = resolveRegistrationConfig({
     settings: evt.registrationSettings,
     globalForm: registrationForm,

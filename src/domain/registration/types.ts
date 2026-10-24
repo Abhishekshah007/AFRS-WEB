@@ -9,6 +9,7 @@ export type FeeTier = {
   label: string
   amount: number
   currency: 'INR' | 'USD'
+  participantRegion?: 'indian' | 'international'
   description?: string | null
 }
 

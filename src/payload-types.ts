@@ -711,13 +711,25 @@ export interface Event {
   startTime?: string | null;
   venue?: string | null;
   /**
-   * Add who can register and how much they pay (e.g. Students ₹300). Use price 0 for free entry.
+   * Optional. Add Indian participant categories and fees (e.g. Students ₹300). Use price 0 for free entry.
    */
   registrationCategories?:
     | {
         categoryName?: string | null;
         price?: number | null;
         currency?: ('INR' | 'USD') | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional. Add international participant categories and fees (e.g. Students $10). Leave empty if not applicable.
+   */
+  internationalRegistrationCategories?:
+    | {
+        categoryName?: string | null;
+        price?: number | null;
+        currency?: ('USD' | 'INR') | null;
         description?: string | null;
         id?: string | null;
       }[]
@@ -1402,6 +1414,15 @@ export interface EventsSelect<T extends boolean = true> {
   startTime?: T;
   venue?: T;
   registrationCategories?:
+    | T
+    | {
+        categoryName?: T;
+        price?: T;
+        currency?: T;
+        description?: T;
+        id?: T;
+      };
+  internationalRegistrationCategories?:
     | T
     | {
         categoryName?: T;

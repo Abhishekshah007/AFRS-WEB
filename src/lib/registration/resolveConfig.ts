@@ -33,6 +33,9 @@ function normalizeTier(
 
 export function feeTiersForRegion(tiers: FeeTier[], region: ParticipantRegion): FeeTier[] {
   if (region === 'both') return tiers
+  if (tiers.some((tier) => tier.participantRegion)) {
+    return tiers.filter((tier) => tier.participantRegion === region)
+  }
   const currency = region === 'international' ? 'USD' : 'INR'
   const filtered = tiers.filter((tier) => tier.currency === currency)
   return filtered.length ? filtered : tiers
@@ -169,21 +172,37 @@ export function categoriesToFeeTiers(
     description?: string | null
     currency?: 'INR' | 'USD' | null
   }>,
+  internationalCategories: Array<{
+    id?: string | number | null
+    categoryName?: string | null
+    price?: number | null
+    description?: string | null
+    currency?: 'INR' | 'USD' | null
+  }> = [],
 ): FeeTier[] {
   const tiers: FeeTier[] = []
 
-  categories.forEach((cat, index) => {
-    const label = cat.categoryName?.trim()
-    if (!label) return
-    const currency: 'INR' | 'USD' = cat.currency === 'USD' ? 'USD' : 'INR'
-    tiers.push({
-      id: String(cat.id ?? `category-${index}`),
-      label,
-      amount: Number(cat.price ?? 0),
-      currency,
-      description: cat.description,
+  const appendCategories = (
+    source: typeof categories,
+    region: 'indian' | 'international',
+  ) => {
+    source.forEach((cat, index) => {
+      const label = cat.categoryName?.trim()
+      if (!label) return
+      const currency: 'INR' | 'USD' = cat.currency === 'USD' ? 'USD' : 'INR'
+      tiers.push({
+        id: String(cat.id ?? `${region}-category-${index}`),
+        label,
+        amount: Number(cat.price ?? 0),
+        currency,
+        participantRegion: region === 'indian' && currency === 'USD' ? 'international' : region,
+        description: cat.description,
+      })
     })
-  })
+  }
+
+  appendCategories(categories, 'indian')
+  appendCategories(internationalCategories, 'international')
 
   return tiers
 }

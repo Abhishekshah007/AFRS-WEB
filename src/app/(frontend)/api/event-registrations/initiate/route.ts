@@ -2,7 +2,11 @@ import { NextResponse } from 'next/server'
 import { hasRequiredFields, jsonError } from '@/lib/apiResponses'
 import { validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
-import { categoriesToFeeTiers, resolveRegistrationConfig } from '@/lib/registration/resolveConfig'
+import {
+  categoriesToFeeTiers,
+  feeTiersForRegion,
+  resolveRegistrationConfig,
+} from '@/lib/registration/resolveConfig'
 import { getPayloadClient } from '@/lib/payload'
 import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
 import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
@@ -77,7 +81,10 @@ export async function POST(req: Request) {
       return jsonError('Registration is closed for this event.', 400)
     }
 
-    const feeTiers = categoriesToFeeTiers(evt.registrationCategories || [])
+    const feeTiers = categoriesToFeeTiers(
+      evt.registrationCategories || [],
+      evt.internationalRegistrationCategories || [],
+    )
     const config = resolveRegistrationConfig({
       settings: evt.registrationSettings,
       globalForm: registrationForm,
@@ -93,7 +100,26 @@ export async function POST(req: Request) {
     const customError = validateCustomResponses(sections, customResponses)
     if (customError) return jsonError(customError, 400)
 
-    const selected = feeTiers.find((tier) => tier.id === body.registrationCategoryId) || feeTiers[0]
+    if (
+      body.participantRegion !== undefined &&
+      body.participantRegion !== 'indian' &&
+      body.participantRegion !== 'international'
+    ) {
+      return jsonError('Invalid participant region.', 400)
+    }
+    const participantRegion =
+      body.participantRegion ||
+      (config.participantRegion === 'international' ? 'international' : 'indian')
+    if (config.participantRegion !== 'both' && config.participantRegion !== participantRegion) {
+      return jsonError('Invalid participant region.', 400)
+    }
+    const regionTiers = feeTiersForRegion(feeTiers, participantRegion)
+    const selected =
+      regionTiers.find((tier) => tier.id === body.registrationCategoryId) ||
+      (body.registrationCategoryId ? undefined : regionTiers[0])
+    if (body.registrationCategoryId && !selected) {
+      return jsonError('Invalid registration category.', 400)
+    }
     if (!selected && config.registrationType !== 'free') {
       return jsonError('Invalid registration category.', 400)
     }
@@ -121,7 +147,7 @@ export async function POST(req: Request) {
         registrationCategoryPrice: basePrice,
         feeTierLabel: selected?.label || body.feeTierLabel,
         feeTierCurrency: selected?.currency || body.feeTierCurrency || 'INR',
-        participantRegion: body.participantRegion || 'indian',
+        participantRegion,
         agreedToTerms: Boolean(body.agreedToTerms),
         includeKit: Boolean(body.includeKit),
         kitPrice,

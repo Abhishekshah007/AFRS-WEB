@@ -95,10 +95,10 @@ export const Events: CollectionConfig = {
     {
       name: 'registrationCategories',
       type: 'array',
-      label: 'Registration fees',
+      label: 'Indian participant fees',
       admin: {
         description:
-          'Add who can register and how much they pay (e.g. Students ₹300). Use price 0 for free entry.',
+          'Optional. Add Indian participant categories and fees (e.g. Students ₹300). Use price 0 for free entry.',
       },
       fields: [
         {
@@ -115,6 +115,34 @@ export const Events: CollectionConfig = {
           options: [
             { label: 'INR (₹)', value: 'INR' },
             { label: 'USD ($)', value: 'USD' },
+          ],
+        },
+        { name: 'description', type: 'text', label: 'Short note (optional)' },
+      ],
+    },
+    {
+      name: 'internationalRegistrationCategories',
+      type: 'array',
+      label: 'International participant fees',
+      admin: {
+        description:
+          'Optional. Add international participant categories and fees (e.g. Students $10). Leave empty if not applicable.',
+      },
+      fields: [
+        {
+          name: 'categoryName',
+          type: 'text',
+          label: 'Category name',
+          admin: { placeholder: 'Students' },
+        },
+        { name: 'price', type: 'number', label: 'Price' },
+        {
+          name: 'currency',
+          type: 'select',
+          defaultValue: 'USD',
+          options: [
+            { label: 'USD ($)', value: 'USD' },
+            { label: 'INR (₹)', value: 'INR' },
           ],
         },
         { name: 'description', type: 'text', label: 'Short note (optional)' },
