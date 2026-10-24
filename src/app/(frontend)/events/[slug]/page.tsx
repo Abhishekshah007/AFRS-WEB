@@ -7,6 +7,7 @@ import {
   formatEventType,
   renderRichTextHtml,
   resolveMediaUrl,
+  resolveMediaUrlOptional,
   richTextToPlain,
 } from '@/lib/cms'
 import type { Event as AfrsEvent, Media } from '@/payload-types'
@@ -43,7 +44,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     collection: 'events',
     where: { slug: { equals: slug }, published: { equals: true } },
     limit: 1,
-    depth: 0,
+    depth: 1,
     overrideAccess: false,
   })
   const evt = result.docs[0] as AfrsEvent | undefined
@@ -52,6 +53,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: evt.title,
     description: clipMeta(evt.excerpt || richTextToPlain(evt.description, 160) || evt.title, 160),
     path: `/events/${evt.slug}`,
+    image: resolveMediaUrlOptional(evt.banner as number | Media | null | undefined),
   })
 }
 

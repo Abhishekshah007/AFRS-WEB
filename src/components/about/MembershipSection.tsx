@@ -99,10 +99,10 @@ AFRS provides the following types of membership:`,
         </AnimateOnScroll>
 
         <AnimateOnScroll>
-          <div className="grid gap-6 xl:grid-cols-[1.35fr_0.85fr]">
-            <div>
+          <div className="grid min-w-0 gap-6 xl:grid-cols-[1.35fr_0.85fr]">
+            <div className="min-w-0">
               <div
-                className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                className="flex w-full min-w-0 gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                 role="tablist"
                 aria-label="Membership plans"
               >
