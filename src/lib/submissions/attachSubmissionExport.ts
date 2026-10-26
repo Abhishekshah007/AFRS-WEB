@@ -169,19 +169,27 @@ export function contactSubmissionExportHook() {
     const subject = typeof doc.subject === 'string' ? doc.subject : undefined
     const title = contactExportTitle(formType, subject)
 
-    await attachSubmissionExport({
-      req,
-      collection: 'contactMessages',
-      doc,
-      title,
-      extraLines: [{ label: 'Form Type', value: formType }],
-    })
+    try {
+      await attachSubmissionExport({
+        req,
+        collection: 'contactMessages',
+        doc,
+        title,
+        extraLines: [{ label: 'Form Type', value: formType }],
+      })
+    } catch (error) {
+      logCmsError('contactSubmissionExport', error, { collection: 'contactMessages', id: doc.id })
+    }
 
-    await notifyByEmail({
-      kind: contactEmailKind[formType] || 'contact',
-      title: typeof doc.fullName === 'string' ? doc.fullName : title,
-      doc,
-    })
+    try {
+      await notifyByEmail({
+        kind: contactEmailKind[formType] || 'contact',
+        title: typeof doc.fullName === 'string' ? doc.fullName : title,
+        doc,
+      })
+    } catch (error) {
+      logCmsError('contactSubmissionNotify', error, { collection: 'contactMessages', id: doc.id })
+    }
   }
 }
 

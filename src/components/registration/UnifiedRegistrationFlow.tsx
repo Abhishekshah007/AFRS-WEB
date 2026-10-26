@@ -131,10 +131,7 @@ export function UnifiedRegistrationFlow({
   })
 
   const indianTiers = useMemo(() => feeTiersForRegion(feeTiers, 'indian'), [feeTiers])
-  const internationalTiers = useMemo(
-    () => feeTiersForRegion(feeTiers, 'international'),
-    [feeTiers],
-  )
+  const internationalTiers = useMemo(() => feeTiersForRegion(feeTiers, 'international'), [feeTiers])
   const availableParticipantRegions = useMemo(() => {
     if (config.participantRegion !== 'both') return [config.participantRegion]
     const regions: Array<'indian' | 'international'> = []
@@ -151,8 +148,7 @@ export function UnifiedRegistrationFlow({
 
   const deliveryMode = deliveryModeProp ?? parseDeliveryMode('hybrid')
   const canPayWithPayPal =
-    config.participantRegion !== 'indian' &&
-    shouldOfferPayPal('international', deliveryMode)
+    config.participantRegion !== 'indian' && shouldOfferPayPal('international', deliveryMode)
   const paymentModes: PaymentMode[] =
     activeRegion === 'international' && canPayWithPayPal ? ['upi', 'paypal'] : ['upi']
 
@@ -356,7 +352,7 @@ export function UnifiedRegistrationFlow({
               <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-4">
                 <div>
                   <h3 className="font-extrabold text-slate-900 text-lg">
-                    Registration instructions
+                    Registration Instructions
                   </h3>
                   <p className="mt-1 text-sm text-red-600 font-semibold">
                     Please read carefully before filling the form.
@@ -373,7 +369,9 @@ export function UnifiedRegistrationFlow({
                     onChange={(e) => setAgreedToTerms(e.target.checked)}
                   />
                   <span>
-             I have read and agree to the Registration Instructions, Terms & Conditions, Privacy Policy, and Refund/Cancellation Policy of Applied Forensic Research Sciences (AFRS).
+                    I have read and agree to the Registration Instructions, Terms & Conditions,
+                    Privacy Policy, and Refund/Cancellation Policy of Applied Forensic Research
+                    Sciences (AFRS).
                   </span>
                 </label>
               </section>
@@ -403,7 +401,9 @@ export function UnifiedRegistrationFlow({
                   onChange={(e) => setAgreedToTerms(e.target.checked)}
                 />
                 <span>
-                  I have read and agree to the Registration Instructions, Terms & Conditions, Privacy Policy, and Refund/Cancellation Policy of Applied Forensic Research Sciences (AFRS).
+                  I have read and agree to the Registration Instructions, Terms & Conditions,
+                  Privacy Policy, and Refund/Cancellation Policy of Applied Forensic Research
+                  Sciences (AFRS).
                 </span>
               </label>
             </section>

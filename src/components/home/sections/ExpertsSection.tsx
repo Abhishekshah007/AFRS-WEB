@@ -16,11 +16,7 @@ export function ExpertsSection({
   usePlaceholderExperts?: boolean
 }) {
   const experts =
-    scientists.docs.length > 0
-      ? scientists.docs
-      : usePlaceholderExperts
-        ? fallbackScientists
-        : []
+    scientists.docs.length > 0 ? scientists.docs : usePlaceholderExperts ? fallbackScientists : []
 
   if (experts.length === 0) {
     return null
@@ -34,7 +30,7 @@ export function ExpertsSection({
             align="left"
             accent={false}
             className="mb-8 max-w-none mx-0"
-            title="Our Expert Scientists"
+            title="Our Experta/Forensic Scientists"
             subtitle="Leading professionals driving forensic innovation and research excellence."
           />
           <AnimateOnScroll stagger className="grid grid-cols-1 md:grid-cols-2 gap-5">

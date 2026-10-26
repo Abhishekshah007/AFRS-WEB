@@ -16,6 +16,7 @@ import { resolveTotalVisitors } from '@/lib/site/totalVisitors'
 import { GALLERY_PAGE_PRESETS, galleryHref } from '@/lib/gallery/constants'
 import { getGalleryThumbs } from '@/lib/queries/gallery'
 import type { ResourcePerson as CmsResourcePerson, SiteSetting } from '@/payload-types'
+import { getResourcePersonDirectoryEntry } from '@/components/programmes/resourcePersonDirectory'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 import type { Where } from 'payload'
@@ -137,17 +138,23 @@ export default async function CoursesPage() {
 
   const resourcePersons: ResourcePerson[] =
     resourcePersonsResult.docs.length > 0
-      ? (resourcePersonsResult.docs as CmsResourcePerson[]).map((person) => ({
-          id: String(person.id),
-          name: person.name,
-          title: person.title,
-          photoUrl:
-            person.photo && typeof person.photo === 'object' && person.photo.url
-              ? person.photo.url
-              : undefined,
-          initials: initialsFromName(person.name),
-          bio: person.bio,
-        }))
+      ? (resourcePersonsResult.docs as CmsResourcePerson[]).map((person) => {
+          const directoryEntry = getResourcePersonDirectoryEntry(person.name)
+
+          return {
+            id: String(person.id),
+            name: directoryEntry?.name ?? person.name,
+            title:
+              directoryEntry?.designation ??
+              (person.title === 'Resource Person' ? '' : person.title),
+            photoUrl:
+              person.photo && typeof person.photo === 'object' && person.photo.url
+                ? person.photo.url
+                : undefined,
+            initials: initialsFromName(directoryEntry?.name ?? person.name),
+            bio: person.bio,
+          }
+        })
       : fallbackResourcePersons
 
   const galleryViewAllHref = galleryHref('events', 'afrs')
