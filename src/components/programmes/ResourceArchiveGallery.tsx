@@ -79,9 +79,11 @@ export function ResourceArchiveGallery({
                         <span className="block font-bold text-sm text-slate-900 truncate">
                           {person.name}
                         </span>
-                        <span className="block text-xs text-slate-500 truncate">
-                          {person.title}
-                        </span>
+                        {person.title && (
+                          <span className="block text-xs text-slate-500 truncate">
+                            {person.title}
+                          </span>
+                        )}
                       </span>
                       <span
                         className="text-slate-400 group-hover:text-[var(--prog-primary)] transition"
@@ -198,9 +200,11 @@ export function ResourceArchiveGallery({
                         <span className="block truncate text-sm font-extrabold text-slate-900">
                           {person.name}
                         </span>
-                        <span className="mt-1 block truncate text-xs text-slate-500">
-                          {person.title}
-                        </span>
+                        {person.title && (
+                          <span className="mt-1 block truncate text-xs text-slate-500">
+                            {person.title}
+                          </span>
+                        )}
                       </span>
                     </button>
                   ))}
@@ -245,17 +249,18 @@ function PersonModalProfile({ person }: { person: ResourcePerson }) {
     <div className="grid gap-0 overflow-hidden md:grid-cols-[220px_1fr]">
       <div className="bg-slate-50 p-8">
         <PersonAvatar person={person} size="lg" />
-        <p className="mt-5 text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--prog-primary)]">
-          Resource Person
-        </p>
+        {person.title && (
+          <p className="mt-5 text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--prog-primary)]">
+            {person.title}
+          </p>
+        )}
       </div>
       <div className="p-6 sm:p-8">
         <h3 className="pr-10 text-2xl font-extrabold leading-tight text-slate-950">
           {person.name}
         </h3>
-        <p className="mt-2 text-sm font-bold text-[var(--prog-primary)]">{person.title}</p>
         <div className="mt-6 h-px bg-slate-100" />
-        <p className="mt-6 text-sm leading-7 text-slate-600">
+        <p className="mt-6 text-sm leading-7 text-slate-600 text-justify">
           {person.bio ||
             'AFRS resource person supporting forensic science education, applied training, and professional knowledge sharing.'}
         </p>

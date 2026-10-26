@@ -14,10 +14,72 @@ test.describe('Public site', () => {
     await expect(page.locator('h1').first()).toBeVisible()
   })
 
+  test('about page intro stays justified on mobile', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto('/about', gotoOptions)
+
+    const intro = page.locator('.about-hero p').filter({
+      hasText: 'Applied Forensic Research Sciences (AFRS)',
+    })
+    await expect(intro).toBeVisible()
+    await expect(intro).toHaveCSS('text-align', 'justify')
+  })
+
+  test('footer map starts loading on the first page load', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto('/', gotoOptions)
+
+    await expect(page.locator('iframe[title="AFRS location map"]')).toHaveAttribute(
+      'loading',
+      'eager',
+    )
+  })
+
   test('contact page shows message form', async ({ page }) => {
     await page.goto('/contact', gotoOptions)
     await expect(page.getByRole('button', { name: /send message/i })).toBeVisible()
     await expect(page.getByPlaceholder('Your name')).toBeVisible()
+  })
+
+  test('lab inquiry form submits the selected case type', async ({ page }) => {
+    let submissionBody: Record<string, unknown> | undefined
+
+    await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js', (route) =>
+      route.fulfill({
+        contentType: 'application/javascript',
+        body: `window.turnstile = {
+          render: (_container, options) => {
+            options.callback('test-turnstile-token')
+            return 'test-widget'
+          },
+          remove: () => {},
+        }`,
+      }),
+    )
+    await page.route('**/api/contact-messages/submit', async (route) => {
+      submissionBody = route.request().postDataJSON() as Record<string, unknown>
+      await route.fulfill({
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true }),
+      })
+    })
+
+    await page.goto('/services', gotoOptions)
+    await page.getByLabel('Full Name').fill('Test Client')
+    await page.getByLabel('Case Type').selectOption({ index: 1 })
+    const caseType = await page.getByLabel('Case Type').inputValue()
+    await page.getByLabel('Email Address').fill('client@example.com')
+    await page.getByPlaceholder('Details of evidence or inquiry...').fill('Please review this test inquiry.')
+    await page.getByRole('button', { name: /submit inquiry/i }).click()
+
+    await expect(page.getByText('Inquiry received. Our lab team will contact you within 24 hours.'))
+      .toBeVisible()
+    expect(submissionBody).toMatchObject({
+      fullName: 'Test Client',
+      email: 'client@example.com',
+      caseType,
+      formType: 'labInquiry',
+    })
   })
 
   test('search page loads', async ({ page }) => {
@@ -36,6 +98,31 @@ test.describe('Public site', () => {
     await page.goto('/courses', gotoOptions)
     await expect(page).toHaveURL(/\/courses/)
     await expect(page.locator('h1').first()).toBeVisible()
+  })
+
+  test('education category shows programme cards on mobile', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto('/courses/education/training-online', gotoOptions)
+
+    const firstProgramme = page.getByRole('heading', {
+      name: 'FS-101: Forensic Science & Criminal Justice System',
+    })
+    await expect(firstProgramme).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Register Interest' }).first()).toBeVisible()
+  })
+
+  test('article text wraps within the mobile content column', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto('/student-hub/articles', gotoOptions)
+
+    const firstArticle = page.locator('a[href^="/student-hub/articles/"]').first()
+    await expect(firstArticle).toBeVisible()
+    await firstArticle.click()
+
+    const body = page.locator('.article-body')
+    await expect(body).toBeVisible()
+    await expect(body).toHaveCSS('overflow-wrap', 'anywhere')
+    expect(await body.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true)
   })
 
   test('services page loads', async ({ page }) => {

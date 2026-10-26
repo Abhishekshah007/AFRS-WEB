@@ -262,7 +262,7 @@ export function ServicesPageView({
                             <h3 className="text-[24px] sm:text-[26px] font-black text-[#1A0C0F]">
                               {person.name}
                             </h3>
-                            <p className="mt-3 text-[14px] font-black tracking-[0.16em] text-[#75162D]">
+                            <p className="mt-3 text-[12px] font-black tracking-[0.16em] text-[#75162D]">
                               {person.designation}
                             </p>
                             <p className="mt-3 text-[8px] font-black tracking-[0.16em] text-[#4b494a]">

@@ -176,12 +176,15 @@ export default function Footer({
           <div className="rounded-2xl border border-white/10 overflow-hidden min-h-[200px] bg-white/5">
             <iframe
               title={afsl ? 'AFSL location map' : 'AFRS location map'}
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3680.465245677421!2d75.85528599999999!3d22.7109426!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3963029d8d31129b%3A0x8d9fee0077bf145a!2sAPPLIED%20FORENSIC%20RESEARCH%20SCIENCES!5e0!3m2!1sen!2sin!4v1780047411280!5m2!1sen!2sin"
+              src={
+                siteSettings?.mapEmbedUrl?.trim() ||
+                'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3680.465245677421!2d75.85528599999999!3d22.7109426!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3963029d8d31129b%3A0x8d9fee0077bf145a!2sAPPLIED%20FORENSIC%20RESEARCH%20SCIENCES!5e0!3m2!1sen!2sin!4v1780047411280!5m2!1sen!2sin'
+              }
               width="100%"
               height="290"
               style={{ border: 0 }}
               allowFullScreen
-              loading="lazy"
+              loading="eager"
               referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
           </div>

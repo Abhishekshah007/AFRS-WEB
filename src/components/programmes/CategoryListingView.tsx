@@ -260,7 +260,7 @@ export function CategoryListingView({
               )}
             </div>
           )}
-          <AnimateOnScroll stagger>
+          {programmes.length > 0 ? (
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {programmes.map((prog) => (
                 <li key={prog.id}>
@@ -311,7 +311,12 @@ export function CategoryListingView({
                 </li>
               ))}
             </ul>
-          </AnimateOnScroll>
+          ) : (
+            <p className="rounded-2xl border border-slate-100 bg-white p-6 text-sm text-slate-600">
+              There are no programmes listed in this category yet. Please contact us for current
+              availability.
+            </p>
+          )}
         </div>
       </section>
     </div>
