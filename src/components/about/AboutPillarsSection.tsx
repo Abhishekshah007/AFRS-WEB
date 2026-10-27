@@ -91,7 +91,7 @@ export function AboutPillarsSection({
             id="quality-research-heading"
             title={title}
             subtitle={subtitle}
-            align="left"
+            textAlign="justify"
           />
         </AnimateOnScroll>
 

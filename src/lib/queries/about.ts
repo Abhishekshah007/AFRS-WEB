@@ -24,7 +24,14 @@ import { SITE_CACHE_TAGS } from '@/lib/cache/siteCacheTags'
 import { withSiteCache } from '@/lib/cache/withSiteCache'
 import { safeQuery } from '@/lib/resilience/safeQuery'
 import { membershipWhatsAppHref } from '@/lib/queries/site'
-import type { AboutCertification, AboutPage, Founder, ImpactStat, Media, SiteSetting } from '@/payload-types'
+import type {
+  AboutCertification,
+  AboutPage,
+  Founder,
+  ImpactStat,
+  Media,
+  SiteSetting,
+} from '@/payload-types'
 
 type CmsTextRow = { text?: string | null }
 type CmsListRow = CmsTextRow & { description?: string | null }
@@ -176,12 +183,18 @@ function initialsFromName(name: string): string {
 }
 
 function toFounderProfile(doc: Founder): LeaderProfile {
+  const fallbackProfile = [...fallbackLeaders, ...fallbackCommittee].find(
+    (profile) => profile.name.toLowerCase() === doc.name.toLowerCase(),
+  )
+
   return {
     id: String(doc.id),
     name: doc.name,
     designation: doc.designation,
-    initials: initialsFromName(doc.name),
-    photoUrl: resolveMediaUrlOptional(doc.photo as number | Media | null | undefined),
+    initials: fallbackProfile?.initials ?? initialsFromName(doc.name),
+    photoUrl:
+      resolveMediaUrlOptional(doc.photo as number | Media | null | undefined) ??
+      fallbackProfile?.photoUrl,
     message: doc.message?.trim() || null,
     bio: doc.bio?.trim() || null,
     socials: {
@@ -299,12 +312,14 @@ async function loadAboutPageData(): Promise<AboutPageViewProps> {
     ABOUT_IMAGES.hero,
   )
 
-  const cmsLeaders = (foundersResult.docs as Founder[]).map(toFounderProfile)
+  const cmsMembers = foundersResult.docs as Founder[]
+  const cmsLeaders = cmsMembers.filter((member) => !member.isCommitteeMember).map(toFounderProfile)
+  const cmsCommittee = cmsMembers.filter((member) => member.isCommitteeMember).map(toFounderProfile)
   const featuredLeaders = withFallbackMessages(
     cmsLeaders.length > 0 ? cmsLeaders : fallbackLeaders,
     sectionText,
   )
-  const committee = fallbackCommittee
+  const committee = cmsCommittee.length > 0 ? cmsCommittee : fallbackCommittee
 
   const achievementStats: AchievementDisplayItem[] =
     impactStats.docs.length > 0

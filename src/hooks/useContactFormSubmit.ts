@@ -90,7 +90,8 @@ export function useContactFormSubmit({
 
   return {
     state,
-    disabled: disabled || captchaPending,
+    disabled,
+    submitDisabled: disabled || captchaPending,
     buttonLabel,
     onSubmit,
     turnstileRequired,

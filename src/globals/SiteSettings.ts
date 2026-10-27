@@ -10,10 +10,15 @@ export const SiteSettings: GlobalConfig = {
   access: editorManagedGlobalAccess,
   admin: {
     group: ADMIN_GROUPS.SITE_SETTINGS,
-    description: 'Institute name, logo, phone, email, address, visitor count, and social links used across the site.',
+    description:
+      'Institute name, logo, phone, email, address, visitor count, and social links used across the site.',
   },
   fields: [
-    { name: 'siteName', type: 'text', defaultValue: 'Applied Forensic Research Sciences Institute' },
+    {
+      name: 'siteName',
+      type: 'text',
+      defaultValue: 'Applied Forensic Research Sciences Institute',
+    },
     { name: 'logo', type: 'upload', relationTo: 'media' },
     { name: 'phone', type: 'text', defaultValue: '+91-9926692487' },
     { name: 'email', type: 'text', defaultValue: 'afrsciences@gmail.com' },
@@ -37,7 +42,7 @@ export const SiteSettings: GlobalConfig = {
       defaultValue: 0,
       admin: {
         description:
-          'All-time visitor total shown in the site-wide visitor bar (home, courses, student hub, services). Update from your analytics dashboard (e.g. Google Analytics total users/sessions). Leave at 0 until you publish a figure—the site uses a shared default until then.',
+          'Optional historical starting total. New unique browser visitors are counted automatically in addition to this number.',
       },
     },
     {

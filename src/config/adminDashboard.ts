@@ -58,8 +58,9 @@ export const ADMIN_DASHBOARD_SECTIONS: AdminDashboardSection[] = [
       },
       {
         href: '/admin/collections/founders',
-        title: 'Founders',
-        blurb: 'About page founder cards: photo, role, quote, bio, and social links.',
+        title: 'Leadership & Committee',
+        blurb:
+          'About page leadership and committee cards: photo, role, quote, bio, and social links.',
       },
     ],
   },

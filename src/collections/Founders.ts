@@ -19,16 +19,16 @@ const socialUrl = (name: string, label: string) => ({
 export const Founders: CollectionConfig = {
   slug: 'founders',
   labels: {
-    singular: 'Founder',
-    plural: 'Founders',
+    singular: 'Member',
+    plural: 'Leadership & Committee',
   },
   access: editorManagedPublishedAccess,
   admin: {
     group: ADMIN_GROUPS.PAGES,
     useAsTitle: 'name',
-    defaultColumns: ['name', 'designation', 'published', 'order'],
+    defaultColumns: ['name', 'designation', 'isCommitteeMember', 'published', 'order'],
     description:
-      'Founder cards on the About page. Name, role, photo, quote, short bio, and social links. Unpublished founders stay hidden. If none are published, the website keeps the built-in cards.',
+      'Manage Leadership Team and Executive Committee & Members cards on the About page. Select Executive Committee Member for committee profiles.',
   },
   fields: [
     { name: 'name', type: 'text', required: true },
@@ -55,6 +55,17 @@ export const Founders: CollectionConfig = {
       type: 'textarea',
       label: 'Short bio',
       admin: { description: 'One or two lines under the quote.' },
+    },
+    {
+      name: 'isCommitteeMember',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Executive Committee Member',
+      admin: {
+        position: 'sidebar',
+        description:
+          'Enable for a profile shown under Executive Committee & Members instead of Leadership Team.',
+      },
     },
     socialUrl('linkedin', 'LinkedIn'),
     socialUrl('instagram', 'Instagram'),

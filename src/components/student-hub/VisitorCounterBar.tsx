@@ -1,4 +1,8 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import { CountUp } from '@/components/ui/CountUp'
+import { VISITOR_COUNT_EVENT } from '@/lib/site/visitorCountEvent'
 
 export type VisitorCounterBarProps = {
   totalVisitors: number
@@ -8,6 +12,18 @@ export type VisitorCounterBarProps = {
  * Full-width visitor count strip above the global footer.
  */
 export function VisitorCounterBar({ totalVisitors }: VisitorCounterBarProps) {
+  const [trackedTotal, setTrackedTotal] = useState(totalVisitors)
+
+  useEffect(() => {
+    const updateCount = (event: Event) => {
+      const count = (event as CustomEvent<number>).detail
+      if (Number.isFinite(count) && count >= 0) setTrackedTotal(count)
+    }
+
+    window.addEventListener(VISITOR_COUNT_EVENT, updateCount)
+    return () => window.removeEventListener(VISITOR_COUNT_EVENT, updateCount)
+  }, [])
+
   return (
     <section
       className="hub-visitor-bar py-8 text-white text-center"
@@ -21,7 +37,7 @@ export function VisitorCounterBar({ totalVisitors }: VisitorCounterBarProps) {
           Total Visitors
         </span>
         <p className="text-4xl sm:text-5xl font-extrabold tabular-nums">
-          <CountUp end={totalVisitors} />
+          <CountUp end={Math.max(totalVisitors, trackedTotal)} />
         </p>
       </div>
     </section>

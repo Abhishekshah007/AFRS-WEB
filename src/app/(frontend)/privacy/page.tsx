@@ -4,7 +4,8 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Privacy Policy',
-  description: 'How AFRS collects, uses and protects personal information submitted through this website.',
+  description:
+    'How AFRS collects, uses and protects personal information submitted through this website.',
   path: '/privacy',
 })
 
@@ -23,7 +24,7 @@ const sections = [
   },
   {
     title: '4. Cookies',
-    body: `We use cookies to enhance your experience on our website. Cookies are small text files placed on your device. You can set your browser to refuse cookies, but some parts of the site may not function properly without them. We use session cookies (deleted when you close the browser) and persistent cookies (remain on your device until deleted or expired).`,
+    body: `We use cookies to enhance your experience on our website. Cookies are small text files placed on your device. You can set your browser to refuse cookies, but some parts of the site may not function properly without them. We use session cookies (deleted when you close the browser) and persistent cookies (remain on your device until deleted or expired). An anonymous first-party cookie helps us count unique browsers for the site-wide visitor counter. We store a hash of its random identifier, not the identifier itself, and do not use it to identify you. Clearing or blocking the cookie, or using another browser or device, may cause another count.`,
   },
   {
     title: '5. Data Security',

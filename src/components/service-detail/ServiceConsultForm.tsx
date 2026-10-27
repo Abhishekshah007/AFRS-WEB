@@ -25,7 +25,7 @@ export function ServiceConsultForm({
   submitLabel = 'Send Message',
 }: ServiceConsultFormProps) {
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
-  const { state, disabled, onSubmit } = useContactFormSubmit({
+  const { state, disabled, submitDisabled, onSubmit } = useContactFormSubmit({
     successMessage:
       formType === 'legalConsultancy'
         ? 'Consultancy request received. Our legal team will contact you shortly.'
@@ -121,7 +121,7 @@ export function ServiceConsultForm({
       )}
       <button
         type="submit"
-        disabled={disabled}
+        disabled={submitDisabled}
         className="w-full h-12 rounded-xl bg-[var(--svc-primary)] hover:bg-[var(--svc-primary-hover)] disabled:opacity-60 text-white text-sm font-bold transition shadow-md"
       >
         {buttonLabel}

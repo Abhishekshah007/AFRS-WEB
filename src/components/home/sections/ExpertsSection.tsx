@@ -30,7 +30,7 @@ export function ExpertsSection({
             align="left"
             accent={false}
             className="mb-8 max-w-none mx-0"
-            title="Our Experta/Forensic Scientists"
+            title="Our Forensic Scientists"
             subtitle="Leading professionals driving forensic innovation and research excellence."
           />
           <AnimateOnScroll stagger className="grid grid-cols-1 md:grid-cols-2 gap-5">

@@ -47,7 +47,9 @@ export function ExpertConsultationSection({
               >
                 {config.heading}
               </h2>
-              <p className="mt-4 max-w-md text-sm leading-relaxed text-white/80">{config.intro}</p>
+              <p className="mt-4 max-w-md text-sm leading-relaxed text-justify text-white/80">
+                {config.intro}
+              </p>
 
               <div className="mt-8 space-y-4">
                 <a

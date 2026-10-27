@@ -7,6 +7,7 @@ export type ProgrammeListItem = {
   duration: string
   mode: string
   level?: string
+  eventSlug?: string | null
 }
 
 export type EducationCategory = {

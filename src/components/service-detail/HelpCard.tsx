@@ -27,7 +27,7 @@ export function HelpCard({ item, index }: HelpCardProps) {
           </h3>
           {item.description ? (
             <div
-              className={`mt-3 text-sm text-left sm:mt-4 sm:text-base md:text-justify [&_a]:font-semibold [&_a]:text-[var(--svc-primary)] [&_a]:underline ${serviceDetailTokens.body}`}
+              className={`mt-3 text-sm  sm:mt-4 sm:text-base text-justify [&_a]:font-semibold [&_a]:text-[var(--svc-primary)] [&_a]:underline ${serviceDetailTokens.body}`}
             >
               <CmsInlineHtml html={item.description} />
             </div>

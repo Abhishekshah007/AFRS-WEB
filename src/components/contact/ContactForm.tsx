@@ -6,7 +6,7 @@ import { TurnstileField } from '@/components/security/TurnstileField'
 
 export function ContactForm() {
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
-  const { state, disabled, buttonLabel, onSubmit } = useContactFormSubmit({
+  const { state, disabled, submitDisabled, buttonLabel, onSubmit } = useContactFormSubmit({
     mapFormData: (formData) => ({
       fullName: String(formData.get('fullName') || '').trim(),
       mobile: String(formData.get('mobile') || '').trim(),
@@ -101,7 +101,7 @@ export function ContactForm() {
 
       <button
         type="submit"
-        disabled={disabled}
+        disabled={submitDisabled}
         className="mt-6 h-11 px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold disabled:opacity-60"
       >
         {buttonLabel}
