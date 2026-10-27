@@ -1,14 +1,8 @@
 import type { SiteSetting } from '@/payload-types'
 
-/** Shown when Site Settings → totalVisitors is unset or zero (not yet configured). */
-export const DEFAULT_TOTAL_VISITORS = 25_847
-
 type SiteSettingsVisitorSource = Pick<SiteSetting, 'totalVisitors'> | null | undefined
 
-/**
- * Single resolver for the public visitor bar across home, courses, student hub, and services.
- * CMS value wins when it is a positive number; otherwise the shared default is used.
- */
+/** The CMS value is a historical starting total; new unique visitors are counted separately. */
 export function resolveTotalVisitors(siteSettings?: SiteSettingsVisitorSource): number {
   const value = siteSettings?.totalVisitors
 
@@ -16,5 +10,5 @@ export function resolveTotalVisitors(siteSettings?: SiteSettingsVisitorSource): 
     return Math.round(value)
   }
 
-  return DEFAULT_TOTAL_VISITORS
+  return 0
 }

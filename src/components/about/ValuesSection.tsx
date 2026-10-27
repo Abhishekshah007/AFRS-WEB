@@ -66,7 +66,9 @@ function ValuePanel({
               >
                 <Icon className="h-5 w-5" strokeWidth={2.2} />
               </span>
-              <span className="text-sm leading-relaxed text-left text-slate-700 md:text-justify">{item.text}</span>
+              <span className="text-sm leading-relaxed text-left text-slate-700 md:text-justify">
+                {item.text}
+              </span>
             </li>
           )
         })}
@@ -92,10 +94,18 @@ export function ValuesSection({
     >
       <div className={aboutTokens.container}>
         <AnimateOnScroll>
-          <SectionHeader id="values-heading" title={title} subtitle={subtitle} align="left" />
+          <SectionHeader
+            id="values-heading"
+            title={title}
+            subtitle={subtitle}
+            textAlign="justify"
+          />
         </AnimateOnScroll>
 
-        <AnimateOnScroll stagger className="grid gap-8 lg:grid-cols-2 lg:items-stretch [&>*]:h-full">
+        <AnimateOnScroll
+          stagger
+          className="grid gap-8 lg:grid-cols-2 lg:items-stretch [&>*]:h-full"
+        >
           <ValuePanel
             title={uniqueTitle}
             subtitle={uniqueSubtitle}

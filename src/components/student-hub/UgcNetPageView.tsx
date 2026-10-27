@@ -41,13 +41,17 @@ function SectionHeading({
   return (
     <header className="max-w-3xl">
       {eyebrow && (
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400">{eyebrow}</p>
+        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400">
+          {eyebrow}
+        </p>
       )}
       <h2 className="mt-2 text-[26px] font-extrabold tracking-tight text-slate-900 sm:text-[34px]">
         {title}
       </h2>
       {description && (
-        <p className={`mt-4 text-[15px] leading-relaxed ${studentHubTokens.body}`}>{description}</p>
+        <p className={`mt-4 text-[15px] leading-relaxed text-justify ${studentHubTokens.body}`}>
+          {description}
+        </p>
       )}
     </header>
   )
@@ -153,15 +157,12 @@ export function UgcNetPageView({ content, achievers, gallerySlides = [] }: Props
       {/* Overview */}
       <section id="overview" className={`${studentHubTokens.sectionY} bg-white`}>
         <div className={studentHubTokens.container}>
-          <SectionHeading
-            title={content.overviewTitle}
-            description={content.overviewSubtitle}
-          />
+          <SectionHeading title={content.overviewTitle} description={content.overviewSubtitle} />
           <div className="mt-8 grid gap-6 lg:grid-cols-2">
-            <p className={`text-[15px] leading-relaxed ${studentHubTokens.body}`}>
+            <p className={`text-[15px] leading-relaxed text-justify ${studentHubTokens.body}`}>
               {content.overviewDescription}
             </p>
-            <p className={`text-[15px] leading-relaxed ${studentHubTokens.body}`}>
+            <p className={`text-[15px] leading-relaxed text-justify ${studentHubTokens.body}`}>
               {content.overviewBody}
             </p>
           </div>
@@ -225,7 +226,10 @@ export function UgcNetPageView({ content, achievers, gallerySlides = [] }: Props
       </section>
 
       {/* Learning Approach */}
-      <section id="approach" className={`${studentHubTokens.sectionY} bg-[var(--hub-navy)] text-white`}>
+      <section
+        id="approach"
+        className={`${studentHubTokens.sectionY} bg-[var(--hub-navy)] text-white`}
+      >
         <div className={studentHubTokens.container}>
           <header className="max-w-3xl">
             <h2 className="text-[26px] font-extrabold tracking-tight sm:text-[34px]">
@@ -342,7 +346,9 @@ export function UgcNetPageView({ content, achievers, gallerySlides = [] }: Props
 
           <div className="rounded-2xl bg-[#0f1c38] p-8 text-white">
             <h3 className="text-xl font-extrabold">{content.bottomCtaTitle}</h3>
-            <p className="mt-4 text-sm leading-relaxed text-white/70">{content.bottomCtaDescription}</p>
+            <p className="mt-4 text-sm leading-relaxed text-white/70">
+              {content.bottomCtaDescription}
+            </p>
             <p className="mt-4 text-sm font-semibold text-brand-200">{content.bottomCtaTagline}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -371,10 +377,7 @@ export function UgcNetPageView({ content, achievers, gallerySlides = [] }: Props
       {/* Faculty */}
       <section id="faculty" className={`${studentHubTokens.sectionY} bg-slate-50`}>
         <div className={studentHubTokens.container}>
-          <SectionHeading
-            title={content.facultyTitle}
-            description={content.facultyDescription}
-          />
+          <SectionHeading title={content.facultyTitle} description={content.facultyDescription} />
         </div>
       </section>
 
@@ -397,7 +400,9 @@ export function UgcNetPageView({ content, achievers, gallerySlides = [] }: Props
           </div>
           <div className="rounded-2xl border border-brand-100 bg-brand-50 p-8">
             <h3 className="text-xl font-extrabold text-slate-900">{content.supportTitle}</h3>
-            <p className="mt-4 text-sm leading-relaxed text-slate-600">{content.supportDescription}</p>
+            <p className="mt-4 text-sm leading-relaxed text-slate-600">
+              {content.supportDescription}
+            </p>
           </div>
         </div>
       </section>

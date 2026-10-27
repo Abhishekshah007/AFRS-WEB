@@ -2,6 +2,15 @@ import { test, expect } from '@playwright/test'
 
 const gotoOptions = { waitUntil: 'domcontentloaded' as const }
 
+test.beforeEach(async ({ page }) => {
+  await page.route('**/api/visitors/track', (route) =>
+    route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ uniqueVisitors: 1 }),
+    }),
+  )
+})
+
 test.describe('Public site', () => {
   test('homepage loads with hero headline', async ({ page }) => {
     await page.goto('/', gotoOptions)
@@ -68,18 +77,38 @@ test.describe('Public site', () => {
     await page.getByLabel('Full Name').fill('Test Client')
     await page.getByLabel('Case Type').selectOption({ index: 1 })
     const caseType = await page.getByLabel('Case Type').inputValue()
+    await page.getByLabel('Mobile Number').fill('+91 98765 43210')
     await page.getByLabel('Email Address').fill('client@example.com')
-    await page.getByPlaceholder('Details of evidence or inquiry...').fill('Please review this test inquiry.')
+    await page
+      .getByPlaceholder('Details of evidence or inquiry...')
+      .fill('Please review this test inquiry.')
     await page.getByRole('button', { name: /submit inquiry/i }).click()
 
-    await expect(page.getByText('Inquiry received. Our lab team will contact you within 24 hours.'))
-      .toBeVisible()
+    await expect(
+      page.getByText('Inquiry received. Our lab team will contact you within 24 hours.'),
+    ).toBeVisible()
     expect(submissionBody).toMatchObject({
       fullName: 'Test Client',
       email: 'client@example.com',
+      mobile: '+91 98765 43210',
       caseType,
       formType: 'labInquiry',
     })
+  })
+
+  test('lab inquiry fields remain editable until Turnstile allows submission', async ({ page }) => {
+    await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js', (route) =>
+      route.fulfill({
+        contentType: 'application/javascript',
+        body: `window.turnstile = { render: () => 'pending-test-widget', remove: () => {} }`,
+      }),
+    )
+
+    await page.goto('/services', gotoOptions)
+    const nameField = page.getByLabel('Full Name')
+    await expect(nameField).toBeEnabled()
+    await nameField.fill('Test Visitor')
+    await expect(nameField).toHaveValue('Test Visitor')
   })
 
   test('search page loads', async ({ page }) => {

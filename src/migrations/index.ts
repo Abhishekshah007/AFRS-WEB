@@ -7,12 +7,12 @@ import * as migration_20260904_120000_submission_exports from './20260904_120000
 import * as migration_20260905_010000_event_custom_fields_and_responses from './20260905_010000_event_custom_fields_and_responses'
 import * as migration_20260917_220000_service_overview_image from './20260917_220000_service_overview_image'
 import * as migration_20260918_203000_registration_settings from './20260918_203000_registration_settings'
-
 import * as migration_20260921_010000_gallery_placement_fields from './20260921_010000_gallery_placement_fields'
 import * as migration_20261019_032600_course_request_only from './20261019_032600_course_request_only'
 import * as migration_20261022_124800_home_popups from './20261022_124800_home_popups'
 import * as migration_20261022_201500_founders from './20261022_201500_founders'
 import * as migration_20261022_211200_programmes_catalog_event_filters from './20261022_211200_programmes_catalog_event_filters'
+import * as migration_20261027_194046_client_feedback_tracking from './20261027_194046_client_feedback_tracking'
 
 export const migrations = [
   {
@@ -84,5 +84,10 @@ export const migrations = [
     up: migration_20261022_211200_programmes_catalog_event_filters.up,
     down: migration_20261022_211200_programmes_catalog_event_filters.down,
     name: '20261022_211200_programmes_catalog_event_filters',
+  },
+  {
+    up: migration_20261027_194046_client_feedback_tracking.up,
+    down: migration_20261027_194046_client_feedback_tracking.down,
+    name: '20261027_194046_client_feedback_tracking',
   },
 ]

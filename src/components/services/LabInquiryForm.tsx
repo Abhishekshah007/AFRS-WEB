@@ -9,7 +9,7 @@ const inputClass =
 
 export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] }) {
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
-  const { state, disabled, onSubmit } = useContactFormSubmit({
+  const { state, disabled, submitDisabled, onSubmit } = useContactFormSubmit({
     successMessage: 'Inquiry received. Our lab team will contact you within 24 hours.',
     mapFormData: (formData) => ({
       fullName: String(formData.get('fullName') || '').trim(),
@@ -65,6 +65,18 @@ export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] })
       </div>
 
       <label className="block text-[9px] font-black uppercase tracking-[0.15em] text-[#687487]">
+        Mobile Number
+        <input
+          name="mobile"
+          type="tel"
+          disabled={disabled}
+          className={inputClass}
+          placeholder="Your phone number"
+          autoComplete="tel"
+        />
+      </label>
+
+      <label className="block text-[9px] font-black uppercase tracking-[0.15em] text-[#687487]">
         Email Address
         <input
           name="email"
@@ -87,8 +99,6 @@ export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] })
         />
       </label>
 
-      <input name="mobile" type="hidden" value="" />
-
       <TurnstileField onTokenChange={setTurnstileToken} />
 
       {state.status !== 'idle' && (
@@ -107,7 +117,7 @@ export function LabInquiryForm({ serviceOptions }: { serviceOptions: string[] })
 
       <button
         type="submit"
-        disabled={disabled}
+        disabled={submitDisabled}
         className="w-full h-12 rounded-[7px] bg-[#081326] hover:bg-slate-950 disabled:opacity-60 text-white text-[11px] font-black uppercase tracking-[0.12em] transition shadow-lg"
       >
         {buttonLabel} +

@@ -96,7 +96,7 @@ export function ServicesPageView({
               {content.heroTitle}{' '}
               <span className="block text-brand-gold">{content.heroHighlight}</span>
             </h1>
-            <p className="mt-7 max-w-[500px] text-[15px] font-medium leading-7 text-white/72">
+            <p className="mt-7 max-w-[500px] text-[15px] font-medium leading-7 text-justify text-white/72">
               {content.heroDescription}
             </p>
             <Link

@@ -39,7 +39,7 @@ export function AfslTrainingSection({ options, checklist }: AfslTrainingSectionP
               </h2>
 
               {/* Body */}
-              <p className="mt-4 text-[13px] text-slate-500 leading-relaxed">
+              <p className="mt-4 text-[13px] text-slate-500 leading-relaxed text-justify">
                 Our laboratory division offers hands-on experience and rigorous training in
                 state-of-the-art forensic facilities. Designed for students and professionals
                 looking to gain practical expertise.

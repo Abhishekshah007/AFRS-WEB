@@ -84,6 +84,7 @@ export interface Config {
     courseRegistrations: CourseRegistration;
     contactMessages: ContactMessage;
     users: User;
+    siteVisitors: SiteVisitor;
     media: Media;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -109,6 +110,7 @@ export interface Config {
     courseRegistrations: CourseRegistrationsSelect<false> | CourseRegistrationsSelect<true>;
     contactMessages: ContactMessagesSelect<false> | ContactMessagesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    siteVisitors: SiteVisitorsSelect<false> | SiteVisitorsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -316,7 +318,7 @@ export interface AboutCertification {
   createdAt: string;
 }
 /**
- * Founder cards on the About page. Name, role, photo, quote, short bio, and social links. Unpublished founders stay hidden. If none are published, the website keeps the built-in cards.
+ * Manage Leadership Team and Executive Committee & Members cards on the About page. Select Executive Committee Member for committee profiles.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "founders".
@@ -340,6 +342,10 @@ export interface Founder {
    * One or two lines under the quote.
    */
   bio?: string | null;
+  /**
+   * Enable for a profile shown under Executive Committee & Members instead of Leadership Team.
+   */
+  isCommitteeMember?: boolean | null;
   linkedin?: string | null;
   instagram?: string | null;
   facebook?: string | null;
@@ -1046,6 +1052,16 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "siteVisitors".
+ */
+export interface SiteVisitor {
+  id: number;
+  visitorHash: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -1135,6 +1151,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'siteVisitors';
+        value: number | SiteVisitor;
       } | null)
     | ({
         relationTo: 'media';
@@ -1242,6 +1262,7 @@ export interface FoundersSelect<T extends boolean = true> {
   photo?: T;
   message?: T;
   bio?: T;
+  isCommitteeMember?: T;
   linkedin?: T;
   instagram?: T;
   facebook?: T;
@@ -1618,6 +1639,15 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "siteVisitors_select".
+ */
+export interface SiteVisitorsSelect<T extends boolean = true> {
+  visitorHash?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -1696,7 +1726,7 @@ export interface SiteSetting {
    */
   address?: string | null;
   /**
-   * All-time visitor total shown in the site-wide visitor bar (home, courses, student hub, services). Update from your analytics dashboard (e.g. Google Analytics total users/sessions). Leave at 0 until you publish a figure—the site uses a shared default until then.
+   * Optional historical starting total. New unique browser visitors are counted automatically in addition to this number.
    */
   totalVisitors?: number | null;
   /**
@@ -2118,6 +2148,10 @@ export interface ProgrammesCatalog {
               mode: string;
               level?: string | null;
               /**
+               * Optional. Enter the slug of a published Events record to send applicants to its event page.
+               */
+              eventSlug?: string | null;
+              /**
                * Control whether registration is free or paid, fee tiers, payment QR/bank details, and instructions participants must accept.
                */
               registration?: {
@@ -2237,6 +2271,10 @@ export interface ProgrammesCatalog {
               duration: string;
               mode: string;
               level?: string | null;
+              /**
+               * Optional. Enter the slug of a published Events record to send applicants to its event page.
+               */
+              eventSlug?: string | null;
               /**
                * Control whether registration is free or paid, fee tiers, payment QR/bank details, and instructions participants must accept.
                */
@@ -3035,11 +3073,11 @@ export interface AdminAccess {
                 | 'courseRegistrations'
                 | 'eventRegistrations'
                 | 'events'
-                | 'founders'
                 | 'galleryItems'
                 | 'sitePopups'
                 | 'impactStats'
                 | 'scientists'
+                | 'founders'
                 | 'media'
                 | 'notices'
                 | 'partnersLogo'
@@ -3047,6 +3085,7 @@ export interface AdminAccess {
                 | 'services'
                 | 'users'
                 | 'testimonials'
+                | 'siteVisitors'
                 | 'contactMessages';
               id?: string | null;
             }[]
@@ -3479,6 +3518,7 @@ export interface ProgrammesCatalogSelect<T extends boolean = true> {
               duration?: T;
               mode?: T;
               level?: T;
+              eventSlug?: T;
               registration?:
                 | T
                 | {
@@ -3573,6 +3613,7 @@ export interface ProgrammesCatalogSelect<T extends boolean = true> {
               duration?: T;
               mode?: T;
               level?: T;
+              eventSlug?: T;
               registration?:
                 | T
                 | {

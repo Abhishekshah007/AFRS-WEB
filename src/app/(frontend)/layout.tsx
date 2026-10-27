@@ -10,6 +10,8 @@ import { JsonLd } from '@/components/seo/JsonLd'
 import { ADSENSE_ACCOUNT, getSiteUrl } from '@/lib/seo/site'
 import { organizationGraph, websiteGraph, withContext } from '@/lib/seo/schema'
 import { DEFAULT_LAB_EMAIL } from '@/data/defaults/siteContact'
+import { VisitorTracker } from '@/components/site/VisitorTracker'
+import { resolveTotalVisitors } from '@/lib/site/totalVisitors'
 import './styles.css'
 
 // Body text - clean, readable, professional
@@ -111,6 +113,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           Skip to main content
         </a>
         <JsonLd data={withContext([organizationGraph(sameAs), websiteGraph()])} />
+        <VisitorTracker startingTotal={resolveTotalVisitors(siteSettings)} />
         {!cmsAvailable && (
           <div
             className="bg-amber-50 border-b border-amber-200 px-4 py-2 text-center text-xs font-semibold text-amber-900"

@@ -21,6 +21,7 @@ For every public form (contact, course interest, events, what is missing for UGC
 | **Header / Footer Settings** | Navigation and footer content |
 | **Home Page** | Hero, section text, FAQs |
 | **About Page** | About copy and sections |
+| **Leadership & Committee** | Leadership Team and Executive Committee member profiles and bios |
 | **Services Page** | AFSL page text, kits, legal links |
 | **Programmes Catalog** | Course/training catalogue structure |
 | **Registration Form** | Shared registration field settings |
@@ -120,6 +121,22 @@ Public gallery URL patterns:
 | **Resource Persons** | Courses page widget |
 
 Both support photo, title, bio, order, and published flag.
+
+## Executive Committee bios
+
+Open **Page copy → Leadership & Committee**, edit the member, and save the **Short bio** field. Keep **Executive Committee Member** enabled so the profile stays in the “Executive Committee & Members” section. Upload a portrait through Media if you need to replace the existing image. Unpublished members are hidden.
+
+## Scheduled programmes and Events
+
+Programme cards keep **Register Interest** until a scheduled Event is linked. In **Courses & training → Courses catalog**, open the relevant category and programme item, then set **Scheduled event slug** to the slug of the published record in **Events & registrations → Events**. The card changes to **Register Now** and opens that Event page, where the Event’s dates and registration-open setting control the actual registration action. Clear the slug to return the card to the general interest form.
+
+## Visitor counter
+
+The site-wide counter now increments automatically for a new browser after it visits a public page. It counts unique browser cookies, not people: clearing cookies or changing browser/device can count again. In **Site identity**, `totalVisitors` is an optional historical starting total; do not keep updating it with the live counter.
+
+## Laboratory intake enquiry form
+
+On the Services page, visitors can enter their name, case type, mobile number, email, and enquiry details. They can fill the fields before completing the security check; the submit button remains unavailable until Turnstile is ready.
 
 ## Contact & registrations inbox
 

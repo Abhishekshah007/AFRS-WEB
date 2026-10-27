@@ -33,7 +33,7 @@ export function CertificationsSection({
     >
       <div className={aboutTokens.container}>
         <AnimateOnScroll>
-          <SectionHeader id="certs-heading" title={title} subtitle={subtitle} align="left" />
+          <SectionHeader id="certs-heading" title={title} subtitle={subtitle} textAlign="justify" />
         </AnimateOnScroll>
 
         <AnimateOnScroll stagger>

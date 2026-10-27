@@ -16,6 +16,7 @@ import { Users } from '../collections/Users'
 import { Notices } from '../collections/Notices'
 import { SitePopups } from '../collections/SitePopups'
 import { PartnersLogo } from '../collections/PartnersLogo'
+import { SiteVisitors } from '../collections/SiteVisitors'
 
 /** Collections registered in logical admin-nav order. */
 export const collections = [
@@ -40,5 +41,6 @@ export const collections = [
   ContactMessages,
   // System
   Users,
+  SiteVisitors,
   Media,
 ]

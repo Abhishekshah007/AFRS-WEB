@@ -4,6 +4,7 @@ import type { ProgrammeListItem } from '@/components/programmes/catalog'
 import { SubPageHero, type BreadcrumbItem } from '@/components/programmes/SubPageHero'
 import { programmesTokens } from '@/components/programmes/tokens'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
+import { getProgrammeCta } from '@/components/programmes/registrationLink'
 
 const levelColors: Record<string, string> = {
   Beginner: 'bg-emerald-100 text-emerald-700',
@@ -262,54 +263,54 @@ export function CategoryListingView({
           )}
           {programmes.length > 0 ? (
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {programmes.map((prog) => (
-                <li key={prog.id}>
-                  <article
-                    className={`${programmesTokens.radiusCard} card-pop group relative h-full overflow-hidden border border-slate-100 bg-white shadow-[0_10px_28px_rgba(15,23,42,0.06)]`}
-                  >
-                    <div className="h-1.5 bg-gradient-to-r from-[var(--prog-primary)] via-brand-200 to-transparent" />
-                    <div className="flex h-full flex-col p-6">
-                      <div className="mb-5 flex flex-wrap gap-2">
-                        {prog.level && (
-                          <span
-                            className={`rounded-full px-3 py-1 text-[10px] font-bold ${levelColors[prog.level] ?? 'bg-slate-100 text-slate-600'}`}
-                          >
-                            {prog.level}
+              {programmes.map((prog) => {
+                const cta = getProgrammeCta(prog, {
+                  type: programmeType,
+                  categorySlug,
+                  categoryTitle: title,
+                })
+
+                return (
+                  <li key={prog.id}>
+                    <article
+                      className={`${programmesTokens.radiusCard} card-pop group relative h-full overflow-hidden border border-slate-100 bg-white shadow-[0_10px_28px_rgba(15,23,42,0.06)]`}
+                    >
+                      <div className="h-1.5 bg-gradient-to-r from-[var(--prog-primary)] via-brand-200 to-transparent" />
+                      <div className="flex h-full flex-col p-6">
+                        <div className="mb-5 flex flex-wrap gap-2">
+                          {prog.level && (
+                            <span
+                              className={`rounded-full px-3 py-1 text-[10px] font-bold ${levelColors[prog.level] ?? 'bg-slate-100 text-slate-600'}`}
+                            >
+                              {prog.level}
+                            </span>
+                          )}
+                          <span className="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-bold text-slate-600">
+                            {prog.mode}
                           </span>
-                        )}
-                        <span className="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-bold text-slate-600">
-                          {prog.mode}
-                        </span>
+                        </div>
+                        <h2 className="text-xl font-extrabold leading-snug text-slate-950 group-hover:text-[var(--prog-primary)]">
+                          {prog.title}
+                        </h2>
+                        <p className={`mt-3 text-sm flex-1 ${programmesTokens.body}`}>
+                          {prog.description}
+                        </p>
+                        <div className="mt-6 flex items-center gap-2 rounded-2xl bg-slate-50 px-4 py-3 text-xs font-bold text-slate-600">
+                          <Clock3 className="h-4 w-4 text-[var(--prog-primary)]" />
+                          Duration: {prog.duration}
+                        </div>
+                        <Link
+                          href={cta.href}
+                          className="mt-5 inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[var(--prog-primary)] px-6 text-sm font-bold text-white transition hover:bg-[var(--prog-primary-hover)]"
+                        >
+                          {cta.label}
+                          <ArrowRight className="h-4 w-4" />
+                        </Link>
                       </div>
-                      <h2 className="text-xl font-extrabold leading-snug text-slate-950 group-hover:text-[var(--prog-primary)]">
-                        {prog.title}
-                      </h2>
-                      <p className={`mt-3 text-sm flex-1 ${programmesTokens.body}`}>
-                        {prog.description}
-                      </p>
-                      <div className="mt-6 flex items-center gap-2 rounded-2xl bg-slate-50 px-4 py-3 text-xs font-bold text-slate-600">
-                        <Clock3 className="h-4 w-4 text-[var(--prog-primary)]" />
-                        Duration: {prog.duration}
-                      </div>
-                      <Link
-                        href={`/courses/register?${new URLSearchParams({
-                          type: programmeType,
-                          ...(categorySlug ? { categorySlug } : {}),
-                          categoryTitle: title,
-                          programmeId: prog.id,
-                          programmeTitle: prog.title,
-                          duration: prog.duration,
-                          mode: prog.mode,
-                        }).toString()}`}
-                        className="mt-5 inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[var(--prog-primary)] px-6 text-sm font-bold text-white transition hover:bg-[var(--prog-primary-hover)]"
-                      >
-                        Register Interest
-                        <ArrowRight className="h-4 w-4" />
-                      </Link>
-                    </div>
-                  </article>
-                </li>
-              ))}
+                    </article>
+                  </li>
+                )
+              })}
             </ul>
           ) : (
             <p className="rounded-2xl border border-slate-100 bg-white p-6 text-sm text-slate-600">

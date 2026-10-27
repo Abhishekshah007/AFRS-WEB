@@ -35,7 +35,9 @@ export function HowWeHelpSection({
               {title}
             </h2>
             {subtitle ? (
-              <div className={`mt-3 max-w-none text-sm sm:text-base [&_a]:font-semibold [&_a]:text-[var(--svc-primary)] [&_a]:underline ${serviceDetailTokens.body}`}>
+              <div
+                className={`mt-3 max-w-none text-sm sm:text-base [&_a]:font-semibold text-justify [&_a]:text-[var(--svc-primary)] [&_a]:underline ${serviceDetailTokens.body}`}
+              >
                 <CmsInlineHtml html={subtitle} />
               </div>
             ) : null}
