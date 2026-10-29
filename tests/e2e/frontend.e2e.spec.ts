@@ -17,6 +17,23 @@ test.describe('Public site', () => {
     await expect(page.locator('h1').first()).toContainText(/Evidence|Forensic|Science/i)
   })
 
+  test('homepage fits mobile width and shows the full AFSL training image', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto('/', gotoOptions)
+
+    await expect(page.getByAltText('AFRS forensic training session')).toHaveCSS(
+      'object-fit',
+      'contain',
+    )
+    await expect(page.locator('html')).toHaveCSS('scrollbar-gutter', 'stable')
+
+    const { clientWidth, scrollWidth } = await page.evaluate(() => ({
+      clientWidth: document.documentElement.clientWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+    }))
+    expect(scrollWidth).toBeLessThanOrEqual(clientWidth)
+  })
+
   test('about page loads', async ({ page }) => {
     await page.goto('/about', gotoOptions)
     await expect(page).toHaveURL(/\/about/)

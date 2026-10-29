@@ -69,7 +69,7 @@ export default async function ArticleDetailPage({ params }: Props) {
 
   const article = buildArticleDetail(doc)
 
-  const [sameDomainResult, recentResult, nextResult] = await Promise.all([
+  const [sameDomainResult, recentResult] = await Promise.all([
     payload.find({
       collection: 'articles',
       where: {
@@ -94,16 +94,6 @@ export default async function ArticleDetailPage({ params }: Props) {
       depth: 1,
       overrideAccess: false,
     }),
-    payload.find({
-      collection: 'articles',
-      where: {
-        and: [{ published: { equals: true } }, { slug: { not_equals: slug } }],
-      },
-      sort: '-publishedDate',
-      limit: 1,
-      depth: 0,
-      overrideAccess: false,
-    }),
   ])
 
   const related = mergeRelatedArticles(
@@ -113,8 +103,8 @@ export default async function ArticleDetailPage({ params }: Props) {
   )
 
   const nextArticle =
-    nextResult.docs.length > 0
-      ? mapArticle(nextResult.docs[0] as Article)
+    recentResult.docs.length > 0
+      ? mapArticle(recentResult.docs[0] as Article)
       : defaultArticles.find((a) => a.slug !== slug) ?? null
 
   return (
