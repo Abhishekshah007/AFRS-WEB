@@ -91,6 +91,9 @@ export function dynamicFormSectionsField({
       description:
         description ||
         'Build the registration form participants will see. Add sections (e.g. Personal Information) and questions inside each section.',
+      components: {
+        afterInput: ['/components/admin/RegistrationSectionPresets'],
+      },
     },
     fields: [
       {
