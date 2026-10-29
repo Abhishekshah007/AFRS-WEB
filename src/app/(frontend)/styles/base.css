@@ -11,6 +11,7 @@ body, p, span, a, li {
 html {
   scroll-behavior: auto;
   scroll-padding-top: 5.5rem;
+  scrollbar-gutter: stable;
 }
 html.lenis { height: auto; }
 html.lenis.lenis-smooth { scroll-behavior: auto; }

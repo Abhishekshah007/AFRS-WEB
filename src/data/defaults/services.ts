@@ -42,7 +42,7 @@ export const fallbackDirectors: DirectorateMember[] = [
     id: 'fallback-director-1',
     name: 'Mr. Rakesh Mia',
     designation:
-      'Author || Forensic Expert || Trainer Designated Partner -AFSL Services India LLP Indore (MP) India.',
+      'Author || Forensic Expert || Trainer Founder and Designated Partner -AFSL Services India LLP Indore (MP) India.',
     initials: 'RM',
     status: 'active',
     photo:

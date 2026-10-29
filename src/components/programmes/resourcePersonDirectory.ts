@@ -75,6 +75,16 @@ function hasHonorific(name: string): boolean {
   return /^(?:mr|mrs|ms|miss|dr|prof|professor|advocate)\b/i.test(name.trim())
 }
 
+export function sortResourcePersonsByName<T extends { name: string }>(
+  people: readonly T[],
+): T[] {
+  const collator = new Intl.Collator('en', { sensitivity: 'base' })
+  return [...people].sort((a, b) => {
+    const nameOrder = collator.compare(normalizePersonName(a.name), normalizePersonName(b.name))
+    return nameOrder || collator.compare(a.name, b.name)
+  })
+}
+
 const directoryByName = new Map(
   resourcePersonDirectory.map(([name, designation]) => [
     normalizePersonName(name),

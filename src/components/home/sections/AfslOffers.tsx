@@ -58,7 +58,7 @@ export function AfslOffers() {
               src="https://res.cloudinary.com/drrzakkgo/image/upload/v1789656204/afrs/payload/media/AFRS%20SITE%20IMAGEs/HomeScreenAFSLInternshipSection_o6gxcy.png"
               alt="AFRS forensic training session"
               fill
-              className="w-full h-full object-cover"
+              className="h-full w-full object-contain sm:object-cover"
             />
           </div>
         </div>
