@@ -13,8 +13,8 @@ export function ProgramCtaSection() {
           <p className={`${TYPOGRAPHY.label} text-brand-600`}>Get In Touch</p>
 
           <p className="mt-4 text-sm sm:text-base text-slate-800 max-w-xl leading-relaxed">
-            Need professional forensic assistance, expert opinion, training opportunities, or research
-            collaboration? Contact AFSL today and connect with our forensic experts.
+            Need professional forensic assistance, expert opinion, training opportunities, or
+            research collaboration? Contact AFSL today and connect with our forensic experts.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
@@ -35,7 +35,7 @@ export function ProgramCtaSection() {
           </div>
         </div>
 
-        <div className="relative w-full min-h-[220px] sm:min-h-[260px] rounded-xl overflow-hidden bg-[#f5ead0] ring-1 ring-brand-900/5">
+        <div className="relative w-full h-65 sm:h-75 rounded-xl overflow-hidden bg-[#f5ead0] ring-1 ring-brand-900/5">
           <Image
             src={CONTACT_IMAGE}
             alt="Connect with AFRS forensic experts"
@@ -48,3 +48,4 @@ export function ProgramCtaSection() {
     </div>
   )
 }
+// relative w-full h-65 sm:h-75 rounded-xl overflow-hidden bg-[#f5ead0]

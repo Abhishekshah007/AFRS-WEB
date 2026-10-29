@@ -16,14 +16,19 @@ type RegistrationSection = {
 export function normalizeSections(sections?: RegistrationSection[] | null) {
   if (!sections?.length) return sections
 
+  const usedNames = new Set<string>()
   return sections.map((section) => {
-    const usedNames = new Set<string>()
     return {
       ...section,
       fields: section.fields?.map((field, index) => {
         const label = field.label?.trim() || `Question ${index + 1}`
-        let name = field.name?.trim() || fieldKeyFromLabel(label, index)
-        while (usedNames.has(name)) name = `${name}${index + 1}`
+        const baseName = field.name?.trim() || fieldKeyFromLabel(label, index)
+        let name = baseName
+        let suffix = 2
+        while (usedNames.has(name)) {
+          name = `${baseName}${suffix}`
+          suffix += 1
+        }
         usedNames.add(name)
         return { ...field, label, name }
       }),
