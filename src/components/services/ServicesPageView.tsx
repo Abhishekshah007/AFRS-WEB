@@ -628,7 +628,7 @@ export function ServicesPageView({
 
       <section id="service-consult-form" className="bg-white py-20 scroll-mt-28">
         <div className={`${CONTAINER} grid gap-12 lg:grid-cols-[1fr_520px] lg:items-center`}>
-          <div>
+          <div className="min-w-0">
             <div>
               <Eyebrow>{content.inquiryEyebrow}</Eyebrow>
               <h2 className="mt-2 max-w-[460px] text-[34px] font-black leading-tight">
@@ -640,12 +640,12 @@ export function ServicesPageView({
               <div className="mt-10 space-y-5">
                 <a
                   href={`tel:${site.phone?.replace(/\s/g, '')}`}
-                  className="flex max-w-[430px] items-center gap-5 rounded-[8px] bg-[#FBF6EC] px-6 py-5"
+                  className="flex w-full min-w-0 max-w-[430px] items-center gap-5 rounded-[8px] bg-[#FBF6EC] px-6 py-5"
                 >
                   <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#75162D] text-white">
                     <Phone className="h-5 w-5" />
                   </span>
-                  <span>
+                  <span className="min-w-0">
                     <span className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#a1acba]">
                       {content.priorityHelplineLabel}
                     </span>
@@ -654,16 +654,16 @@ export function ServicesPageView({
                 </a>
                 <a
                   href={`mailto:${site.labEmail || site.email}`}
-                  className="flex max-w-[430px] items-center gap-5 rounded-[8px] bg-[#FBF6EC] px-6 py-5"
+                  className="flex w-full min-w-0 max-w-[430px] items-center gap-5 rounded-[8px] bg-[#FBF6EC] px-6 py-5"
                 >
                   <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#75162D] text-white">
                     <BadgeCheck className="h-5 w-5" />
                   </span>
-                  <span>
+                  <span className="min-w-0">
                     <span className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#a1acba]">
                       {content.reportVerificationLabel}
                     </span>
-                    <span className="mt-1 block text-[16px] font-black">
+                    <span className="mt-1 block text-[16px] font-black [overflow-wrap:anywhere]">
                       {site.labEmail || site.email}
                     </span>
                   </span>
@@ -671,7 +671,7 @@ export function ServicesPageView({
               </div>
             </div>
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="rounded-[18px] bg-[#FBF6EC] p-7 shadow-[0_18px_40px_rgba(18,31,47,0.14)]">
               <LabInquiryForm
                 serviceOptions={

@@ -10,6 +10,7 @@ import {
   scaleIn,
   staggerContainer,
 } from '@/components/motion/variants'
+import { useCoarsePointer } from '@/hooks/useCoarsePointer'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 type Direction = 'up' | 'left' | 'right' | 'scale'
@@ -42,13 +43,17 @@ export function AnimateOnScroll({
 }: Props) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px 0px -40px 0px', amount: 0.15 })
+  const coarsePointer = useCoarsePointer()
   const reduced = useReducedMotion()
 
   if (reduced) {
     return <div className={className}>{children}</div>
   }
 
-  const itemVariant = directionVariants[direction]
+  const itemVariant =
+    coarsePointer && (direction === 'left' || direction === 'right')
+      ? fadeUp
+      : directionVariants[direction]
 
   if (stagger) {
     return (
