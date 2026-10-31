@@ -92,6 +92,7 @@ export async function submitEventRegistration(req: Request) {
     settings: evt.registrationSettings,
     globalForm: registrationForm,
     feeTiersOverride: feeTiers,
+    organization: evt.organization,
   })
 
   const agreedToTerms = getFormValue(formData, 'agreedToTerms') === 'true'

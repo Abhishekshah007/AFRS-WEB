@@ -44,6 +44,11 @@ const nextConfig: NextConfig = {
         hostname: 'images.unsplash.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'player.cloudinary.com',
+        pathname: '/embed/**',
+      }
     ],
   },
   webpack: (webpackConfig) => {

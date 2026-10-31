@@ -10,30 +10,18 @@ export function FutureSection() {
       <div className={`${CONTAINER} grid gap-10 lg:grid-cols-2 items-center`}>
         <AnimateOnScroll direction="left">
           <div className="relative rounded-3xl overflow-hidden bg-slate-200 aspect-[16/10] lg:min-h-[320px] card-pop">
-            {/* https://res.cloudinary.com/drrzakkgo/video/upload/v1785948666/afrs-prev_ub9leo.mp4 */}
             <video
-              autoPlay
-              muted
+              controls
               loop
               playsInline
-              className="absolute inset-0 h-full w-full object-cover"
+              preload="metadata"
+              className="absolute inset-0 h-full w-full object-contain bg-slate-900"
             >
               <source
-                src="https://res.cloudinary.com/drrzakkgo/video/upload/v1785948666/afrs-prev_ub9leo.mp4"
+                src="https://res.cloudinary.com/drrzakkgo/video/upload/Afrs_Final_Website_Reel_kokbnp.mp4"
                 type="video/mp4"
               />
             </video>
-
-            <div className="absolute inset-0 bg-slate-900/25" />
-            {/* <div className="absolute inset-0 flex items-center justify-center">
-              <button
-                type="button"
-                aria-label="Play introduction video"
-                className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-white/95 text-brand-700 text-xl font-bold shadow-xl hover:scale-105 transition"
-              >
-                ►
-              </button>
-            </div> */}
           </div>
         </AnimateOnScroll>
         <AnimateOnScroll direction="right">

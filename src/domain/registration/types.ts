@@ -3,6 +3,7 @@ import type { Media } from '@/payload-types'
 export type RegistrationType = 'free' | 'paid_manual' | 'paid_gateway'
 export type ParticipantRegion = 'indian' | 'international' | 'both'
 export type PaymentMode = 'upi' | 'bank' | 'paypal'
+export type RegistrationOrganization = 'afrs' | 'afsl'
 
 export type FeeTier = {
   id: string
@@ -16,7 +17,8 @@ export type FeeTier = {
 export type PaymentMethodConfig = {
   title: string
   description?: string | null
-  qrCode?: number | Media | null
+  qrCode?: number | Media | string | null
+  organization?: RegistrationOrganization | null
   link?: string | null
   region?: 'indian' | 'international' | 'all' | null
 }
@@ -53,6 +55,7 @@ export type RegistrationSettingsSource = {
   requirePaymentProof?: boolean | null
   useGlobalPaymentDetails?: boolean | null
   paymentInstructions?: PaymentInstructionsConfig | null
+  paymentQrCode?: number | Media | null
   useGlobalInstructions?: boolean | null
   instructions?: string | null
   requireAgreement?: boolean | null

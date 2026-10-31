@@ -4,6 +4,7 @@ import type {
   PaymentInstructionsConfig,
   PaymentMethodConfig,
   RegistrationPaymentConfig,
+  RegistrationOrganization,
   RegistrationSettingsSource,
   RegistrationType,
   ResolvedRegistrationConfig,
@@ -53,49 +54,88 @@ export function inferRegistrationType(
 function mergePaymentConfig(
   globalForm: RegistrationForm | null | undefined,
   settings: RegistrationSettingsSource | null | undefined,
+  organization: RegistrationOrganization,
 ): RegistrationPaymentConfig {
   const useGlobal = settings?.useGlobalPaymentDetails !== false
 
   const globalInstructions = globalForm?.paymentInstructions
   const globalMethods = globalForm?.paymentMethods
+  const defaultAfslInstructions: PaymentInstructionsConfig = {
+    title: 'AFSL Payment Details',
+    accountName: 'AFSL SERVICES INDIA LLP',
+    upiId: 'afsl.llp09@kotak',
+  }
 
   const instructions: PaymentInstructionsConfig | undefined = useGlobal
-    ? globalInstructions
-      ? {
-          title: globalInstructions.title,
-          accountName: globalInstructions.accountName,
-          accountNumber: globalInstructions.accountNumber,
-          ifsc: globalInstructions.ifsc,
-          swift: globalInstructions.swift,
-          branchAddress: globalInstructions.branchAddress,
-          upiId: globalInstructions.upiId,
-          paypalLink: globalInstructions.paypalLink,
-          note: globalInstructions.note,
-        }
-      : undefined
+    ? organization === 'afsl'
+      ? defaultAfslInstructions
+      : globalInstructions
+        ? {
+            title: globalInstructions.title,
+            accountName: globalInstructions.accountName,
+            accountNumber: globalInstructions.accountNumber,
+            ifsc: globalInstructions.ifsc,
+            swift: globalInstructions.swift,
+            branchAddress: globalInstructions.branchAddress,
+            upiId: globalInstructions.upiId,
+            paypalLink: globalInstructions.paypalLink,
+            note: globalInstructions.note,
+          }
+        : undefined
     : settings?.paymentInstructions
       ? {
-          title: settings.paymentInstructions.title,
-          accountName: settings.paymentInstructions.accountName,
-          accountNumber: settings.paymentInstructions.accountNumber,
-          ifsc: settings.paymentInstructions.ifsc,
-          swift: settings.paymentInstructions.swift,
-          branchAddress: settings.paymentInstructions.branchAddress,
-          upiId: settings.paymentInstructions.upiId,
-          paypalLink: settings.paymentInstructions.paypalLink,
-          note: settings.paymentInstructions.note,
+          ...(organization === 'afsl' ? defaultAfslInstructions : {}),
+          ...settings.paymentInstructions,
         }
-      : undefined
+      : organization === 'afsl'
+        ? defaultAfslInstructions
+        : undefined
 
-  const methods: PaymentMethodConfig[] | undefined = useGlobal
-    ? globalMethods?.map((method) => ({
-        title: method.title,
-        description: method.description,
-        qrCode: method.qrCode,
-        link: method.link,
-        region: method.region as PaymentMethodConfig['region'],
-      }))
-    : undefined
+  let methods: PaymentMethodConfig[] = []
+  if (useGlobal && globalMethods?.length) {
+    const organizationMethods = globalMethods.filter(
+      (method) => method.organization === organization,
+    )
+    const legacyMethods = globalMethods.filter((method) => !method.organization)
+    const selectedMethods =
+      organizationMethods.length > 0
+        ? organizationMethods
+        : organization === 'afrs'
+          ? legacyMethods
+          : []
+
+    methods = selectedMethods.map((method) => ({
+      title: method.title,
+      description: method.description,
+      qrCode: method.qrCode,
+      link: method.link,
+      region: method.region as PaymentMethodConfig['region'],
+      organization,
+    }))
+  } else if (!useGlobal && settings?.paymentQrCode) {
+    methods = [
+      {
+        title: organization === 'afsl' ? 'AFSL Services India LLP' : 'Payment QR',
+        qrCode: settings.paymentQrCode,
+        region: 'indian',
+        organization,
+      },
+    ]
+  }
+
+  if (
+    organization === 'afsl' &&
+    !methods.some((method) => method.qrCode) &&
+    !(!useGlobal && settings?.paymentQrCode)
+  ) {
+    methods.push({
+      title: 'AFSL Services India LLP',
+      description: 'Scan this QR code to pay using any UPI app.',
+      qrCode: '/assets/afsl-payment-qr.jpg',
+      region: 'indian',
+      organization: 'afsl',
+    })
+  }
 
   return {
     formTitle: globalForm?.formTitle,
@@ -109,10 +149,12 @@ export function resolveRegistrationConfig({
   settings,
   globalForm,
   feeTiersOverride,
+  organization = 'afrs',
 }: {
   settings?: RegistrationSettingsSource | null
   globalForm?: RegistrationForm | null
   feeTiersOverride?: FeeTier[]
+  organization?: RegistrationOrganization | null
 }): ResolvedRegistrationConfig {
   const merged: RegistrationSettingsSource = {
     ...DEFAULT_REGISTRATION_SETTINGS,
@@ -160,7 +202,7 @@ export function resolveRegistrationConfig({
     requirePaymentProof,
     requireAgreement: Boolean(requireAgreement),
     instructions,
-    payment: mergePaymentConfig(globalForm, merged),
+    payment: mergePaymentConfig(globalForm, merged, organization || 'afrs'),
   }
 }
 

@@ -10,6 +10,7 @@ const EVENT_ICONS: Record<string, string> = {
   conference: '🌐',
   training: '🎓',
   fdp: '🎓',
+  internship: '🧑‍🎓',
   webinar: '💻',
 }
 

@@ -108,13 +108,27 @@ export function ServicesPageView({
           </div>
 
           <div className="rounded-[22px] bg-brand-beige p-10 shadow-[0_22px_60px_rgba(59,1,11,0.24)]">
-            <div className="rounded-[6px] bg-[#3B010B] px-7 py-5 shadow-xl">
-              <p className="text-[9px] font-extrabold uppercase tracking-[0.22em] text-[#62c47a]">
-                {content.labStatusLabel}
-              </p>
-              <div className="mt-1 flex items-center justify-between gap-4">
-                <p className="text-[12px] font-bold text-[#62c47a]">{content.labStatusValue}</p>
-                <ShieldCheck className="h-4 w-4 text-white/35" />
+            <div className="rounded-[6px] bg-[#3B010B] px-7 py-5 shadow-xl relative overflow-hidden min-h-[180px]">
+              <video
+                controls
+                loop
+                playsInline
+                preload="metadata"
+                className="absolute inset-0 h-full w-full object-contain bg-[#3B010B]"
+              >
+                <source
+                  src="https://res.cloudinary.com/drrzakkgo/video/upload/Afsl_Final_Website_Reel_1_fvbzdz.mp4"
+                  type="video/mp4"
+                />
+              </video>
+              <div className="relative z-10 pointer-events-none">
+                <p className="text-[9px] font-extrabold uppercase tracking-[0.22em] text-[#f50505]">
+                  {content.labStatusLabel}
+                </p>
+                <div className="mt-1 flex items-center justify-between gap-4">
+                  <p className="text-[12px] font-bold text-[#62c47a]">{content.labStatusValue}</p>
+                  <ShieldCheck className="h-4 w-4 text-white/35" />
+                </div>
               </div>
             </div>
             <div className="mt-6 flex justify-center">

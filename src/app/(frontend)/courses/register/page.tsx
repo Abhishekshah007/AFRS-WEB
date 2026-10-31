@@ -38,6 +38,7 @@ export default async function CourseRegisterPage({ searchParams }: Props) {
   const config = resolveRegistrationConfig({
     settings: context?.match?.registrationSettings,
     globalForm: registrationForm,
+    organization: context?.match?.organization,
   })
 
   const customSections = normalizeDynamicSections(

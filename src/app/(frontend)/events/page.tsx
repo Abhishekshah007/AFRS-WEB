@@ -15,7 +15,7 @@ import { getGalleryForPage } from '@/lib/queries/gallery'
 export const metadata: Metadata = buildPageMetadata({
   title: 'Forensic Science Events',
   description:
-    'Upcoming AFRS forensic science workshops, training programmes, conferences and faculty development events.',
+    'Upcoming AFRS forensic science workshops, training programmes, conferences, internships, and faculty development events.',
   path: '/events',
 })
 
@@ -45,7 +45,7 @@ export default async function EventsPage() {
       <PageHero
         eyebrow="AFRS EDUCATION"
         title="Forensic Programmes & Events"
-        subtitle="Advance your career with structured workshops, conferences,faculty development programmes and certification programmes."
+        subtitle="Advance your career with structured workshops, conferences, faculty development programmes, internships, and certification programmes."
         primaryCta={{ label: 'Register for Training', href: '/courses' }}
         secondaryCta={{ label: 'Contact Us', href: '/contact' }}
       />
@@ -59,8 +59,8 @@ export default async function EventsPage() {
               'Workshop',
               'Conference',
               'Training',
-              'Conference',
               'Faculty Development Program',
+              'Internship',
             ].map((tab, i) => (
               <span
                 key={tab}
