@@ -13,7 +13,11 @@ import type {
   ResolvedRegistrationConfig,
 } from '@/domain/registration/types'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
-import { validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
+import {
+  getEmailResponseError,
+  isValidEmailAddress,
+  validateCustomResponses,
+} from '@/lib/forms/dynamicFormTypes'
 import {
   feeTiersForRegion,
   filterPaymentMethodsByRegion,
@@ -91,7 +95,6 @@ export function UnifiedRegistrationFlow({
 }: Props) {
   const router = useRouter()
   const isPaid = !requestOnly && config.registrationType !== 'free'
-  const showPayment = isPaid && config.requirePaymentProof
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -104,6 +107,12 @@ export function UnifiedRegistrationFlow({
   )
   const [customResponses, setCustomResponses] = useState<Record<string, string>>({})
   const [customFiles, setCustomFiles] = useState<Record<string, File | null>>({})
+  const customFormError = validateCustomResponses(customSections, customResponses, customFiles)
+  const emailResponseError = cmsFormOnly
+    ? getEmailResponseError(customSections, customResponses)
+    : null
+  const registrationReadinessError = customFormError || emailResponseError
+  const showPayment = isPaid && config.requirePaymentProof && !registrationReadinessError
   const [includeKit, setIncludeKit] = useState(false)
   const [selectedTierId, setSelectedTierId] = useState(feeTiers[0]?.id || '')
   const [paymentMode, setPaymentMode] = useState<PaymentMode>(
@@ -186,6 +195,10 @@ export function UnifiedRegistrationFlow({
         setError('Please fill all required contact fields.')
         return false
       }
+      if (!isValidEmailAddress(form.email)) {
+        setError('Please enter a valid email address.')
+        return false
+      }
     }
 
     if (!requestOnly && config.requireAgreement && !agreedToTerms) {
@@ -205,6 +218,10 @@ export function UnifiedRegistrationFlow({
     const customError = validateCustomResponses(customSections, customResponses, customFiles)
     if (customError) {
       setError(customError)
+      return false
+    }
+    if (emailResponseError) {
+      setError(emailResponseError)
       return false
     }
 
@@ -536,6 +553,17 @@ export function UnifiedRegistrationFlow({
               )}
             </section>
           )}
+
+          {isPaid && config.requirePaymentProof && registrationReadinessError ? (
+            <section className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-950">
+              <h3 className="font-extrabold">Before you pay</h3>
+              <p className="mt-1 leading-6">
+                Complete and verify your registration details to see the payment instructions. This
+                helps us make sure we can associate your payment with your registration.
+              </p>
+              <p className="mt-2 font-semibold">{registrationReadinessError}</p>
+            </section>
+          ) : null}
 
           {showPayment && (
             <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-6">

@@ -4,9 +4,13 @@
   border: none;
   background: transparent;
   color: inherit;
-  max-width: min(920px, calc(100vw - 2rem));
+  width: min(100%, 920px);
+  max-width: calc(100vw - 1rem);
   max-height: calc(100dvh - 2rem);
-  overflow: visible;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: visible;
+  overscroll-behavior: contain;
 }
 
 .home-popup-dialog::backdrop {

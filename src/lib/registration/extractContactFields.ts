@@ -1,5 +1,9 @@
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
-import { flattenSections } from '@/lib/forms/dynamicFormTypes'
+import {
+  flattenSections,
+  isEmailField,
+  isValidEmailAddress,
+} from '@/lib/forms/dynamicFormTypes'
 
 export type ExtractedContactFields = {
   fullName: string
@@ -62,16 +66,19 @@ export function extractContactFields(
 ): ExtractedContactFields {
   const fields = flattenSections(sections)
 
-  const emailField = fields.find((f) => f.fieldType === 'email')
   const telField = fields.find((f) => f.fieldType === 'tel')
+  const email = fields
+    .filter(isEmailField)
+    .map((field) => responses[field.name]?.trim())
+    .find(Boolean)
 
   const fullNameField = fields.find((f) => normalizeKey(f.label).includes('fullname'))
   const fullName =
     pickValue(responses, NAME_KEYS, ['name']) ||
     (fullNameField ? responses[fullNameField.name]?.trim() || '' : '')
 
-  const email =
-    (emailField ? responses[emailField.name]?.trim() : '') ||
+  const contactEmail =
+    email ||
     pickValue(responses, EMAIL_KEYS, ['email'], 'email')
 
   const mobileNumber =
@@ -85,7 +92,7 @@ export function extractContactFields(
 
   return {
     fullName,
-    email,
+    email: contactEmail,
     countryCode: responses.countryCode?.trim() || '+91',
     mobileNumber,
     organization: organization || 'Not provided',
@@ -97,7 +104,7 @@ export function extractContactFields(
 export function validateContactFields(contact: ExtractedContactFields): string | null {
   if (!contact.fullName)
     return 'Please enter your full name (as it should appear on the certificate).'
-  if (!contact.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email)) {
+  if (!isValidEmailAddress(contact.email)) {
     return 'Please enter a valid email address.'
   }
   if (!contact.mobileNumber) return 'Please enter your mobile / WhatsApp number.'

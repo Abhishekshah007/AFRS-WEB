@@ -101,7 +101,7 @@ export function HomePopupSequence({ slides, fingerprint }: HomePopupSequenceProp
         closeCurrent()
       }}
     >
-      <div className="flex max-h-[calc(100dvh-2rem)] w-fit max-w-full flex-col items-end gap-3">
+      <div className="flex max-h-[calc(100dvh-2rem)] w-full max-w-[calc(100vw-2rem)] flex-col items-end gap-3 overflow-hidden">
         <div className="flex w-full items-center justify-between gap-3">
           <p className="text-sm font-medium text-white" aria-live="polite">
             {index + 1} of {slides.length}

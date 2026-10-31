@@ -2,7 +2,11 @@
 
 import type { ChangeEvent } from 'react'
 import type { DynamicFormField, DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
-import { otherFieldKey, parseOptions } from '@/lib/forms/dynamicFormTypes'
+import {
+  isEmailField,
+  otherFieldKey,
+  parseOptions,
+} from '@/lib/forms/dynamicFormTypes'
 import { isOtherSelectValue } from '@/lib/forms/studyJobStatusOptions'
 
 const inputClass =
@@ -91,7 +95,7 @@ function renderControlledField(
     case 'number':
       return <input {...shared} type={field.fieldType} />
     default:
-      return <input {...shared} type="text" />
+      return <input {...shared} type={isEmailField(field) ? 'email' : 'text'} />
   }
 }
 

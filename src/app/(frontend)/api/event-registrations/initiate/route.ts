@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { hasRequiredFields, jsonError } from '@/lib/apiResponses'
-import { validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
+import { isValidEmailAddress, validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 import {
   categoriesToFeeTiers,
@@ -56,6 +56,9 @@ export async function POST(req: Request) {
       ])
     ) {
       return jsonError('Missing required fields.', 400)
+    }
+    if (!isValidEmailAddress(body.email)) {
+      return jsonError('Please enter a valid email address.', 400)
     }
 
     const [eventResult, registrationForm] = await Promise.all([
@@ -136,7 +139,7 @@ export async function POST(req: Request) {
         eventSlug,
         eventTitle: evt.title,
         fullName: body.fullName,
-        email: body.email,
+        email: body.email.trim(),
         countryCode: body.countryCode || '+91',
         mobileNumber: body.mobileNumber,
         organization: body.organization,

@@ -17,6 +17,43 @@ export type DynamicFormSection = {
   fields?: DynamicFormField[] | null
 }
 
+export function isEmailField(
+  field: Pick<DynamicFormField, 'fieldType' | 'label' | 'name'>,
+): boolean {
+  return (
+    field.fieldType === 'email' ||
+    field.label.toLowerCase().replace(/[^a-z0-9]/g, '').includes('email') ||
+    field.name.toLowerCase().replace(/[^a-z0-9]/g, '').includes('email')
+  )
+}
+
+export function isValidEmailAddress(value: string): boolean {
+  const email = value.trim()
+  return email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
+
+export function hasEmailField(sections: DynamicFormSection[] | null | undefined): boolean {
+  return flattenSections(sections).some(isEmailField)
+}
+
+export function getEmailResponseError(
+  sections: DynamicFormSection[] | null | undefined,
+  responses: Record<string, string>,
+): string | null {
+  const emailFields = flattenSections(sections).filter(isEmailField)
+  if (!emailFields.length) {
+    return 'Registration form is missing an email field. Please contact AFRS support before making a payment.'
+  }
+
+  const populatedField = emailFields.find((field) => responses[field.name]?.trim())
+  if (!populatedField) return `${emailFields[0].label} is required.`
+  if (!isValidEmailAddress(responses[populatedField.name])) {
+    return `${populatedField.label} must be a valid email address.`
+  }
+
+  return null
+}
+
 export function parseOptions(value?: string | null): string[] {
   if (!value) return []
   return value
@@ -40,13 +77,18 @@ export function validateCustomResponses(
   files: Record<string, File | null | undefined> = {},
 ): string | null {
   for (const field of flattenSections(sections)) {
-    if (!field.required) continue
     if (field.fieldType === 'file') {
-      if (!files[field.name]) return `${field.label} is required.`
+      if (field.required && !files[field.name]) return `${field.label} is required.`
       continue
     }
     const value = responses[field.name]?.trim()
-    if (!value) return `${field.label} is required.`
+    if (!value) {
+      if (field.required) return `${field.label} is required.`
+      continue
+    }
+    if (isEmailField(field) && !isValidEmailAddress(value)) {
+      return `${field.label} must be a valid email address.`
+    }
     if (field.fieldType === 'select' && isOtherSelectValue(value)) {
       const other = responses[otherFieldKey(field.name)]?.trim()
       if (!other) return `Please specify your answer for ${field.label}.`

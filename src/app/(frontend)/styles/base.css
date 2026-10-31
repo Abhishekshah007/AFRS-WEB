@@ -27,6 +27,19 @@ body {
   color: var(--brand-ink);
 }
 
+html body img {
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+@media (max-width: 767px) {
+  html body img,
+  html body img[class] {
+    object-fit: contain !important;
+  }
+}
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
