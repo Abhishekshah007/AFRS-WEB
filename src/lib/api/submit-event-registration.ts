@@ -1,6 +1,10 @@
 import { getThrownErrorMessage, getThrownErrorStatus, jsonError } from '@/lib/apiResponses'
 import { getFormValue, readUploadFile } from '@/lib/api/form-data'
-import { validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
+import {
+  getEmailResponseError,
+  hasEmailField,
+  validateCustomResponses,
+} from '@/lib/forms/dynamicFormTypes'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 import {
   extractContactFields,
@@ -112,6 +116,10 @@ export async function submitEventRegistration(req: Request) {
 
   const customError = validateCustomResponses(sections, customResponses, customFiles)
   if (customError) return jsonError(customError, 400)
+  const emailResponseError = getEmailResponseError(sections, customResponses)
+  if (emailResponseError) {
+    return jsonError(emailResponseError, hasEmailField(sections) ? 400 : 503)
+  }
 
   const contact = extractContactFields(sections, customResponses)
   const contactError = validateContactFields(contact)

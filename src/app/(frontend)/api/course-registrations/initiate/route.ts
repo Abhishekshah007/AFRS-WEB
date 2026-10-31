@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { hasRequiredFields, jsonError } from '@/lib/apiResponses'
-import { validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
+import { isValidEmailAddress, validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 import { findProgrammeRegistrationContext } from '@/lib/queries/programme-registration'
 import { buildCourseConfirmationUrl } from '@/lib/registration/confirmationToken'
@@ -42,6 +42,9 @@ export async function POST(req: Request) {
     if (!hasRequiredFields(body, ['programmeTitle', 'fullName', 'email', 'mobileNumber'])) {
       return jsonError('Missing required fields.', 400)
     }
+    if (!isValidEmailAddress(body.email)) {
+      return jsonError('Please enter a valid email address.', 400)
+    }
 
     const payload = await getPayloadClient()
     const context = await findProgrammeRegistrationContext(body.programmeId)
@@ -66,7 +69,7 @@ export async function POST(req: Request) {
         programmeDuration: body.programmeDuration || undefined,
         programmeMode: body.programmeMode || undefined,
         fullName: body.fullName,
-        email: body.email,
+        email: body.email.trim(),
         countryCode: body.countryCode || '+91',
         mobileNumber: body.mobileNumber,
         address: undefined,
