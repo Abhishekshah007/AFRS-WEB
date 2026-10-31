@@ -1,5 +1,4 @@
 import React from 'react'
-import { Inter, DM_Sans } from 'next/font/google'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { AppProviders } from '@/components/providers/AppProviders'
@@ -14,22 +13,6 @@ import { VisitorTracker } from '@/components/site/VisitorTracker'
 import { ImageInteractionProtection } from '@/components/site/ImageInteractionProtection'
 import { resolveTotalVisitors } from '@/lib/site/totalVisitors'
 import './styles.css'
-
-// Body text - clean, readable, professional
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-  weight: ['400', '500', '600', '700'],
-})
-
-// Headings - strong, scientific, modern
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  variable: '--font-dm-sans',
-  display: 'swap',
-  weight: ['400', '500', '600', '700', '800'],
-})
 
 export const viewport: Viewport = {
   width: 'device-width',
