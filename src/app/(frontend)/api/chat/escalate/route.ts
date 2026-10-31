@@ -1,9 +1,8 @@
 import { sendChatEscalationEmails } from '@/lib/email/chatEscalation'
 import type { ChatMessage } from '@/lib/chatbot/provider'
+import { isValidEmail, normalizeEmail } from '@/lib/email'
 import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
 import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export async function POST(req: Request) {
   try {
@@ -22,8 +21,8 @@ export async function POST(req: Request) {
     })
     if (blocked) return blocked
 
-    const userEmail = body.userEmail?.trim().toLowerCase() || ''
-    if (!userEmail || !EMAIL_RE.test(userEmail)) {
+    const userEmail = normalizeEmail(body.userEmail)
+    if (!isValidEmail(userEmail)) {
       return Response.json({ error: 'A valid email address is required.' }, { status: 400 })
     }
 

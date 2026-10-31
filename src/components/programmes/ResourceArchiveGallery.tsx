@@ -2,8 +2,8 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { X } from 'lucide-react'
+import { useLayoutEffect, useRef, useState, useId } from 'react'
+import { ArrowLeft, X } from 'lucide-react'
 import type { ArchiveItem, GalleryThumb, ResourcePerson } from '@/components/programmes/types'
 import { programmesTokens } from '@/components/programmes/tokens'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
@@ -26,18 +26,34 @@ export function ResourceArchiveGallery({
 }: ResourceArchiveGalleryProps) {
   const [selectedPerson, setSelectedPerson] = useState<ResourcePerson | null>(null)
   const [showAllPeople, setShowAllPeople] = useState(false)
+  const [canReturnToPeopleList, setCanReturnToPeopleList] = useState(false)
   const isModalOpen = Boolean(selectedPerson) || showAllPeople
+  const dialogRef = useRef<HTMLDialogElement>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const modalTitleId = useId()
 
-  useEffect(() => {
-    document.body.style.overflow = isModalOpen ? 'hidden' : ''
+  useLayoutEffect(() => {
+    const dialog = dialogRef.current
+    if (!isModalOpen || !dialog) return
+
+    const htmlOverflow = document.documentElement.style.overflow
+    const bodyOverflow = document.body.style.overflow
+    if (!dialog.open) dialog.showModal()
+    document.documentElement.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden'
+    closeButtonRef.current?.focus()
+
     return () => {
-      document.body.style.overflow = ''
+      document.documentElement.style.overflow = htmlOverflow
+      document.body.style.overflow = bodyOverflow
+      if (dialog.open) dialog.close()
     }
   }, [isModalOpen])
 
   function closeModal() {
     setSelectedPerson(null)
     setShowAllPeople(false)
+    setCanReturnToPeopleList(false)
   }
 
   return (
@@ -59,7 +75,10 @@ export function ResourceArchiveGallery({
                   <li key={person.id}>
                     <button
                       type="button"
-                      onClick={() => setSelectedPerson(person)}
+                      onClick={() => {
+                        setCanReturnToPeopleList(false)
+                        setSelectedPerson(person)
+                      }}
                       className="flex w-full items-center gap-3 rounded-2xl border border-slate-100 bg-white p-4 text-left shadow-sm card-pop group"
                     >
                       {person.photoUrl ? (
@@ -157,15 +176,25 @@ export function ResourceArchiveGallery({
         </AnimateOnScroll>
       </div>
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 py-6">
+        <dialog
+          ref={dialogRef}
+          aria-labelledby={modalTitleId}
+          aria-modal="true"
+          className="fixed inset-0 z-50 m-0 h-full w-full max-h-none max-w-none border-0 bg-transparent p-0"
+          onCancel={(event) => {
+            event.preventDefault()
+            closeModal()
+          }}
+        >
           <button
             type="button"
             className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"
             onClick={closeModal}
             aria-label="Close resource person modal"
           />
-          <div className="relative z-10 max-h-[88vh] w-full max-w-3xl overflow-y-auto rounded-3xl bg-white shadow-2xl ring-1 ring-slate-900/10">
+          <div className="relative mx-auto my-6 max-h-[calc(100dvh-3rem)] w-[calc(100%-2rem)] max-w-3xl overflow-y-auto rounded-3xl bg-white shadow-2xl ring-1 ring-slate-900/10">
             <button
+              ref={closeButtonRef}
               type="button"
               onClick={closeModal}
               className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:text-slate-900"
@@ -175,13 +204,24 @@ export function ResourceArchiveGallery({
             </button>
 
             {selectedPerson ? (
-              <PersonModalProfile person={selectedPerson} />
+              <PersonModalProfile
+                person={selectedPerson}
+                titleId={modalTitleId}
+                onBack={
+                  canReturnToPeopleList
+                    ? () => {
+                        setSelectedPerson(null)
+                        setShowAllPeople(true)
+                      }
+                    : undefined
+                }
+              />
             ) : (
               <div className="p-6 sm:p-8">
                 <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[var(--prog-primary)]">
                   Resource Persons
                 </p>
-                <h3 className="mt-2 text-2xl font-extrabold text-slate-950">
+                <h3 id={modalTitleId} className="mt-2 text-2xl font-extrabold text-slate-950">
                   AFRS faculty and experts
                 </h3>
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -190,6 +230,7 @@ export function ResourceArchiveGallery({
                       key={person.id}
                       type="button"
                       onClick={() => {
+                        setCanReturnToPeopleList(true)
                         setShowAllPeople(false)
                         setSelectedPerson(person)
                       }}
@@ -212,7 +253,7 @@ export function ResourceArchiveGallery({
               </div>
             )}
           </div>
-        </div>
+        </dialog>
       )}
     </section>
   )
@@ -244,7 +285,15 @@ function PersonAvatar({ person, size }: { person: ResourcePerson; size: 'md' | '
   )
 }
 
-function PersonModalProfile({ person }: { person: ResourcePerson }) {
+function PersonModalProfile({
+  person,
+  titleId,
+  onBack,
+}: {
+  person: ResourcePerson
+  titleId: string
+  onBack?: () => void
+}) {
   return (
     <div className="grid gap-0 overflow-hidden md:grid-cols-[220px_1fr]">
       <div className="bg-slate-50 p-8">
@@ -256,10 +305,20 @@ function PersonModalProfile({ person }: { person: ResourcePerson }) {
         )}
       </div>
       <div className="p-6 sm:p-8">
-        <h3 className="pr-10 text-2xl font-extrabold leading-tight text-slate-950">
+        {onBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            className="mb-5 inline-flex items-center gap-2 text-sm font-bold text-[var(--prog-primary)] hover:underline"
+          >
+            <ArrowLeft className="h-4 w-4" aria-hidden />
+            Back to resource persons
+          </button>
+        )}
+        <h3 id={titleId} className="pr-10 text-2xl font-extrabold leading-tight text-slate-950">
           {person.name}
         </h3>
-        <div className="mt-6 h-px bg-slate-100" />
+        <div className="mt-1 h-px bg-slate-100" />
         <p className="mt-6 text-sm leading-7 text-slate-600 text-justify">
           {person.bio ||
             'AFRS resource person supporting forensic science education, applied training, and professional knowledge sharing.'}
