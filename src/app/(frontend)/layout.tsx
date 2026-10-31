@@ -11,6 +11,7 @@ import { ADSENSE_ACCOUNT, getSiteUrl } from '@/lib/seo/site'
 import { organizationGraph, websiteGraph, withContext } from '@/lib/seo/schema'
 import { DEFAULT_LAB_EMAIL } from '@/data/defaults/siteContact'
 import { VisitorTracker } from '@/components/site/VisitorTracker'
+import { ImageInteractionProtection } from '@/components/site/ImageInteractionProtection'
 import { resolveTotalVisitors } from '@/lib/site/totalVisitors'
 import './styles.css'
 
@@ -106,6 +107,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en-IN" className={`${inter.variable} ${dmSans.variable}`}>
       <body className="font-sans antialiased">
+        <ImageInteractionProtection />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-brand focus:shadow-lg"
