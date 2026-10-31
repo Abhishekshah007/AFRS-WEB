@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { Button } from '@payloadcms/ui'
+import { registrationExportColumnOptions } from '@/lib/submissions/exportRegistrationsCsv'
 
 type CollectionSlug = 'courseRegistrations' | 'eventRegistrations'
 
@@ -42,9 +43,18 @@ export function RegistrationCsvExportPanel({
   const [secondaryFilter, setSecondaryFilter] = useState('')
   const [paymentStatus, setPaymentStatus] = useState('')
   const [registrationStatus, setRegistrationStatus] = useState('')
+  const columnOptions = useMemo(
+    () => registrationExportColumnOptions(collectionSlug),
+    [collectionSlug],
+  )
+  const [selectedColumns, setSelectedColumns] = useState(() =>
+    columnOptions.map(({ key }) => key),
+  )
 
   const exportUrl = useMemo(() => {
     const params = new URLSearchParams()
+    params.set('format', 'zip')
+    params.set('columns', selectedColumns.join(','))
     if (primaryFilter.trim()) params.set(primaryFilterKey, primaryFilter.trim())
     if (secondaryFilterKey && secondaryFilter.trim()) {
       params.set(secondaryFilterKey, secondaryFilter.trim())
@@ -57,6 +67,7 @@ export function RegistrationCsvExportPanel({
     collectionSlug,
     primaryFilter,
     primaryFilterKey,
+    selectedColumns,
     secondaryFilter,
     secondaryFilterKey,
     paymentStatus,
@@ -75,8 +86,8 @@ export function RegistrationCsvExportPanel({
     >
       <p style={{ margin: 0, fontWeight: 700 }}>{title}</p>
       <p style={{ margin: '8px 0 16px', color: 'var(--theme-text)', fontSize: '13px' }}>
-        Download all matching registrations as one CSV file for certificates or record keeping.
-        Leave filters empty to export everything in this list.
+        Download a ZIP containing the filtered CSV and payment-proof images. Registration ID and
+        proof filename are always included so each image can be matched to its record.
       </p>
 
       <div
@@ -160,8 +171,59 @@ export function RegistrationCsvExportPanel({
         </label>
       </div>
 
+      <fieldset
+        style={{
+          border: '1px solid var(--theme-elevation-150)',
+          borderRadius: 'var(--border-radius-m)',
+          padding: '12px',
+          marginBottom: '16px',
+        }}
+      >
+        <legend style={{ padding: '0 6px', fontSize: '12px', fontWeight: 700 }}>
+          CSV columns
+        </legend>
+        <div style={{ display: 'flex', gap: '12px', marginBottom: '10px' }}>
+          <button
+            type="button"
+            onClick={() => setSelectedColumns(columnOptions.map(({ key }) => key))}
+          >
+            Select all
+          </button>
+          <button type="button" onClick={() => setSelectedColumns([])}>
+            Clear optional columns
+          </button>
+        </div>
+        <div
+          style={{
+            display: 'grid',
+            gap: '8px 16px',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          }}
+        >
+          {columnOptions.map(({ key, label }) => (
+            <label
+              key={key}
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px' }}
+            >
+              <input
+                type="checkbox"
+                checked={selectedColumns.includes(key)}
+                onChange={(event) =>
+                  setSelectedColumns((current) =>
+                    event.target.checked
+                      ? [...current, key]
+                      : current.filter((selected) => selected !== key),
+                  )
+                }
+              />
+              {label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
       <Button buttonStyle="secondary" onClick={() => window.open(exportUrl, '_blank')}>
-        Download CSV
+        Download CSV + payment proofs (ZIP)
       </Button>
     </div>
   )
