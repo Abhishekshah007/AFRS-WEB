@@ -105,7 +105,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   ].filter((url): url is string => typeof url === 'string' && url.startsWith('http'))
 
   return (
-    <html lang="en-IN" className={`${inter.variable} ${dmSans.variable}`}>
+    <html lang="en-IN">
       <body className="font-sans antialiased">
         <ImageInteractionProtection />
         <a
