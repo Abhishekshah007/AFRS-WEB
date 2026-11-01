@@ -7,6 +7,7 @@ import { normalizeDynamicSections } from '@/lib/registration/normalizeDynamicSec
 import { categoriesToFeeTiers, resolveRegistrationConfig } from '@/lib/registration/resolveConfig'
 import { EventRegistrationFlow } from '@/components/events/EventRegistrationFlow'
 import { resolveEventSlug } from '@/lib/utils/slugify'
+import { DEFAULT_REGISTRATION_SECTIONS } from '@/fields/dynamicFormSections'
 import type { Event as AfrsEvent, Media, RegistrationForm } from '@/payload-types'
 import type { Metadata } from 'next'
 
@@ -55,7 +56,10 @@ export default async function EventRegisterPage({ params }: Props) {
     ? `${formatEventDate(evt.startDate)} - ${formatEventDate(evt.endDate)}`
     : formatEventDate(evt.startDate)
 
-  const customSections = normalizeDynamicSections(evt.registrationSections as DynamicFormSection[])
+  const configuredSections = evt.registrationSections as DynamicFormSection[] | undefined
+  const customSections = normalizeDynamicSections(
+    configuredSections?.length ? configuredSections : DEFAULT_REGISTRATION_SECTIONS,
+  )
 
   const feeTiers = categoriesToFeeTiers(
     evt.registrationCategories || [],
