@@ -109,9 +109,13 @@ export const Events: CollectionConfig = {
       name: 'registrationCategories',
       type: 'array',
       label: 'Indian participant fees',
+      defaultValue: [
+        { categoryName: 'Students', price: 0, currency: 'INR' },
+        { categoryName: 'Research & Professional', price: 0, currency: 'INR' },
+      ],
       admin: {
         description:
-          'Optional. Add Indian participant categories and fees (e.g. Students ₹300). Use price 0 for free entry.',
+          'Starter categories are provided. Update the default ₹0 fees before publishing paid registration, or keep 0 for free entry.',
       },
       fields: [
         {
@@ -137,9 +141,13 @@ export const Events: CollectionConfig = {
       name: 'internationalRegistrationCategories',
       type: 'array',
       label: 'International participant fees',
+      defaultValue: [
+        { categoryName: 'Students', price: 0, currency: 'USD' },
+        { categoryName: 'Research & Professional', price: 0, currency: 'USD' },
+      ],
       admin: {
         description:
-          'Optional. Add international participant categories and fees (e.g. Students $10). Leave empty if not applicable.',
+          'Starter categories are provided. Update the default $0 fees before publishing paid registration, or keep 0 for free entry.',
       },
       fields: [
         {

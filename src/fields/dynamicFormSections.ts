@@ -1,4 +1,59 @@
 import type { Field } from 'payload'
+import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
+
+export const DEFAULT_REGISTRATION_SECTIONS: DynamicFormSection[] = [
+  {
+    title: 'Personal Information',
+    fields: [
+      {
+        name: 'title',
+        label: 'MR/MS/DR',
+        fieldType: 'select',
+        required: true,
+        options: 'Mr, Ms, Dr, Other',
+      },
+      {
+        name: 'full-name-mention-in-certificate',
+        label: 'Full Name (mention in certificate)',
+        fieldType: 'text',
+        required: true,
+      },
+      { name: 'email-id', label: 'Email ID', fieldType: 'email', required: true },
+      { name: 'address', label: 'Address', fieldType: 'textarea', required: true },
+      {
+        name: 'contact-no-whatsapp',
+        label: 'Contact No (WhatsApp)',
+        fieldType: 'tel',
+        required: true,
+      },
+    ],
+  },
+  {
+    title: 'Academic Info / Professional Info',
+    fields: [
+      {
+        name: 'current-study-job-status',
+        label: 'Current Study/Job Status',
+        fieldType: 'select',
+        required: true,
+        options:
+          'School Student (10th / 12th), Undergraduate Student, Postgraduate Student, Research Scholar / PhD, Intern / Trainee, Employed — Government, Employed — Private sector, Self-employed / Practitioner, Faculty / Academic, Unemployed / Between roles, Other',
+      },
+      {
+        name: 'department-institute-name',
+        label: 'Department/Institute Name',
+        fieldType: 'text',
+        required: true,
+      },
+      {
+        name: 'college-university-company-name',
+        label: 'College/University/Company Name',
+        fieldType: 'text',
+        required: true,
+      },
+    ],
+  },
+]
 
 /** Reusable CMS field rows for dynamic registration forms (courses + events). */
 export const dynamicFormFieldRows: Field[] = [
@@ -87,6 +142,7 @@ export function dynamicFormSectionsField({
     name,
     type: 'array',
     label,
+    defaultValue: DEFAULT_REGISTRATION_SECTIONS,
     admin: {
       description:
         description ||

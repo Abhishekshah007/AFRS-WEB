@@ -59,16 +59,30 @@ function mergePaymentConfig(
   const useGlobal = settings?.useGlobalPaymentDetails !== false
 
   const globalInstructions = globalForm?.paymentInstructions
+  const globalAfslInstructions = globalForm?.paymentInstructionsAFSL
   const globalMethods = globalForm?.paymentMethods
   const defaultAfslInstructions: PaymentInstructionsConfig = {
     title: 'AFSL Payment Details',
     accountName: 'AFSL SERVICES INDIA LLP',
     upiId: 'afsl.llp09@kotak',
   }
+  const afslInstructions: PaymentInstructionsConfig = globalAfslInstructions
+    ? {
+        title: globalAfslInstructions.title,
+        accountName: globalAfslInstructions.accountName,
+        accountNumber: globalAfslInstructions.accountNumber,
+        ifsc: globalAfslInstructions.ifsc,
+        swift: globalAfslInstructions.swift,
+        branchAddress: globalAfslInstructions.branchAddress,
+        upiId: globalAfslInstructions.upiId,
+        paypalLink: globalAfslInstructions.paypalLink,
+        note: globalAfslInstructions.note,
+      }
+    : defaultAfslInstructions
 
   const instructions: PaymentInstructionsConfig | undefined = useGlobal
     ? organization === 'afsl'
-      ? defaultAfslInstructions
+      ? afslInstructions
       : globalInstructions
         ? {
             title: globalInstructions.title,
@@ -84,11 +98,11 @@ function mergePaymentConfig(
         : undefined
     : settings?.paymentInstructions
       ? {
-          ...(organization === 'afsl' ? defaultAfslInstructions : {}),
+          ...(organization === 'afsl' ? afslInstructions : {}),
           ...settings.paymentInstructions,
         }
       : organization === 'afsl'
-        ? defaultAfslInstructions
+        ? afslInstructions
         : undefined
 
   let methods: PaymentMethodConfig[] = []
@@ -224,10 +238,7 @@ export function categoriesToFeeTiers(
 ): FeeTier[] {
   const tiers: FeeTier[] = []
 
-  const appendCategories = (
-    source: typeof categories,
-    region: 'indian' | 'international',
-  ) => {
+  const appendCategories = (source: typeof categories, region: 'indian' | 'international') => {
     source.forEach((cat, index) => {
       const label = cat.categoryName?.trim()
       if (!label) return

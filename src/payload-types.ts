@@ -721,7 +721,7 @@ export interface Event {
   startTime?: string | null;
   venue?: string | null;
   /**
-   * Optional. Add Indian participant categories and fees (e.g. Students ₹300). Use price 0 for free entry.
+   * Starter categories are provided. Update the default ₹0 fees before publishing paid registration, or keep 0 for free entry.
    */
   registrationCategories?:
     | {
@@ -733,7 +733,7 @@ export interface Event {
       }[]
     | null;
   /**
-   * Optional. Add international participant categories and fees (e.g. Students $10). Leave empty if not applicable.
+   * Starter categories are provided. Update the default $0 fees before publishing paid registration, or keep 0 for free entry.
    */
   internationalRegistrationCategories?:
     | {
@@ -2175,7 +2175,7 @@ export interface ProgrammesCatalog {
                  */
                 participantRegion?: ('indian' | 'international' | 'both') | null;
                 /**
-                 * Fee options for this programme. Leave empty to use global defaults from Registration Form.
+                 * Starter categories are provided for Indian (INR) and international (USD) participants. Update the default 0 fees before publishing paid registration, or keep 0 for free entry.
                  */
                 feeTiers?:
                   | {
@@ -2307,7 +2307,7 @@ export interface ProgrammesCatalog {
                  */
                 participantRegion?: ('indian' | 'international' | 'both') | null;
                 /**
-                 * Fee options for this programme. Leave empty to use global defaults from Registration Form.
+                 * Starter categories are provided for Indian (INR) and international (USD) participants. Update the default 0 fees before publishing paid registration, or keep 0 for free entry.
                  */
                 feeTiers?:
                   | {
@@ -2482,6 +2482,20 @@ export interface RegistrationForm {
       }[]
     | null;
   paymentInstructions?: {
+    title?: string | null;
+    accountName?: string | null;
+    accountNumber?: string | null;
+    ifsc?: string | null;
+    swift?: string | null;
+    branchAddress?: string | null;
+    upiId?: string | null;
+    /**
+     * PayPal.me or international payment link for international participants.
+     */
+    paypalLink?: string | null;
+    note?: string | null;
+  };
+  paymentInstructionsAFSL?: {
     title?: string | null;
     accountName?: string | null;
     accountNumber?: string | null;
@@ -3771,6 +3785,19 @@ export interface RegistrationFormSelect<T extends boolean = true> {
         id?: T;
       };
   paymentInstructions?:
+    | T
+    | {
+        title?: T;
+        accountName?: T;
+        accountNumber?: T;
+        ifsc?: T;
+        swift?: T;
+        branchAddress?: T;
+        upiId?: T;
+        paypalLink?: T;
+        note?: T;
+      };
+  paymentInstructionsAFSL?:
     | T
     | {
         title?: T;

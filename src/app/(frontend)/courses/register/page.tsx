@@ -3,6 +3,7 @@ import { normalizeDynamicSections } from '@/lib/registration/normalizeDynamicSec
 import { resolveRegistrationConfig } from '@/lib/registration/resolveConfig'
 import { findProgrammeRegistrationContext } from '@/lib/queries/programme-registration'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
+import { DEFAULT_REGISTRATION_SECTIONS } from '@/fields/dynamicFormSections'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
@@ -41,8 +42,9 @@ export default async function CourseRegisterPage({ searchParams }: Props) {
     organization: context?.match?.organization,
   })
 
+  const configuredSections = registrationForm?.sections as DynamicFormSection[] | undefined
   const customSections = normalizeDynamicSections(
-    registrationForm?.sections as DynamicFormSection[],
+    configuredSections?.length ? configuredSections : DEFAULT_REGISTRATION_SECTIONS,
   )
 
   return (

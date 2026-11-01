@@ -113,9 +113,15 @@ export function registrationSettingsField({
               {
                 name: 'feeTiers',
                 type: 'array',
+                defaultValue: [
+                  { label: 'Students', amount: 0, currency: 'INR' },
+                  { label: 'Research & Professional', amount: 0, currency: 'INR' },
+                  { label: 'Students', amount: 0, currency: 'USD' },
+                  { label: 'Research & Professional', amount: 0, currency: 'USD' },
+                ],
                 admin: {
                   description:
-                    'Fee options for this programme. Leave empty to use global defaults from Registration Form.',
+                    'Starter categories are provided for Indian (INR) and international (USD) participants. Update the default 0 fees before publishing paid registration, or keep 0 for free entry.',
                 },
                 fields: feeTierFieldsForDb(short),
               },

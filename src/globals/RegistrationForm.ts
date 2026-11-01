@@ -58,6 +58,7 @@ export const RegistrationForm: GlobalConfig = {
     {
       name: 'paymentInstructions',
       type: 'group',
+      label: 'AFRS payment instructions',
       fields: [
         { name: 'title', type: 'text', defaultValue: 'Registration Fees (Indian Participants)' },
         {
@@ -88,6 +89,28 @@ export const RegistrationForm: GlobalConfig = {
           defaultValue:
             'Use the transaction details below to confirm your registration. Upload the screenshot or transaction proof after payment, then submit the form.',
         },
+      ],
+    },
+    {
+      name: 'paymentInstructionsAFSL',
+      type: 'group',
+      label: 'AFSL payment instructions',
+      fields: [
+        { name: 'title', type: 'text', defaultValue: 'AFSL Payment Details' },
+        { name: 'accountName', type: 'text', defaultValue: 'AFSL SERVICES INDIA LLP' },
+        { name: 'accountNumber', type: 'text' },
+        { name: 'ifsc', type: 'text' },
+        { name: 'swift', type: 'text' },
+        { name: 'branchAddress', type: 'textarea' },
+        { name: 'upiId', type: 'text', defaultValue: 'afsl.llp09@kotak' },
+        {
+          name: 'paypalLink',
+          type: 'text',
+          admin: {
+            description: 'PayPal.me or international payment link for international participants.',
+          },
+        },
+        { name: 'note', type: 'textarea' },
       ],
     },
     {
