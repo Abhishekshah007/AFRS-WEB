@@ -5,7 +5,10 @@ import {
   defaultTrainingCategories,
   staleProgrammeIds,
 } from '@/data/defaults/programmes/catalog'
+import { isEventOngoing, isEventUpcoming } from '@/components/programmes/mapEvent'
 import { getPayloadClient } from '@/lib/payload'
+import type { Event as AfrsEvent } from '@/payload-types'
+import { safeQuery } from '@/lib/resilience/safeQuery'
 
 export type {
   ArchiveFilterLinks,
@@ -227,6 +230,60 @@ export async function getEducationCategory(slug: string): Promise<EducationCateg
 
 export async function getTrainingCategory(slug: string): Promise<TrainingCategory | undefined> {
   return (await getTrainingCategories()).find((c) => c.slug === slug)
+}
+
+export function orderProgrammesByActiveEventSlugs(
+  programmes: ProgrammeListItem[],
+  activeEventSlugs: Set<string>,
+): ProgrammeListItem[] {
+  return programmes
+    .map((programme, index) => ({ programme, index }))
+    .sort((a, b) => {
+      const aIsActive = activeEventSlugs.has(a.programme.eventSlug?.trim() ?? '')
+      const bIsActive = activeEventSlugs.has(b.programme.eventSlug?.trim() ?? '')
+      return Number(bIsActive) - Number(aIsActive) || a.index - b.index
+    })
+    .map(({ programme }) => programme)
+}
+
+export async function prioritizeActiveScheduledProgrammes(
+  programmes: ProgrammeListItem[],
+): Promise<ProgrammeListItem[]> {
+  const eventSlugs = [
+    ...new Set(
+      programmes
+        .map((programme) => programme.eventSlug?.trim())
+        .filter((slug): slug is string => Boolean(slug)),
+    ),
+  ]
+  if (eventSlugs.length === 0) return programmes
+
+  return safeQuery('prioritizeActiveScheduledProgrammes', async () => {
+    const payload = await getPayloadClient()
+    const { docs } = await payload.find({
+      collection: 'events',
+      where: {
+        and: [{ published: { equals: true } }, { slug: { in: eventSlugs } }],
+      },
+      limit: eventSlugs.length,
+      depth: 0,
+      overrideAccess: false,
+    })
+
+    const now = new Date()
+    const activeEventSlugs = new Set(
+      (docs as AfrsEvent[])
+        .filter(
+          (event) =>
+            event.registrationOpen !== false &&
+            (isEventUpcoming(event, now) || isEventOngoing(event, now)),
+        )
+        .map((event) => event.slug)
+        .filter((slug): slug is string => Boolean(slug)),
+    )
+
+    return orderProgrammesByActiveEventSlugs(programmes, activeEventSlugs)
+  }, programmes)
 }
 
 export async function educationProgrammesForHub(): Promise<EducationProgramme[]> {

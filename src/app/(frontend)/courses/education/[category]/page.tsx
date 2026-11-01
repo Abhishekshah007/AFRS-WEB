@@ -1,9 +1,15 @@
 import { CategoryListingView } from '@/components/programmes/CategoryListingView'
-import { getEducationCategories, getEducationCategory } from '@/components/programmes/catalog'
+import {
+  getEducationCategories,
+  getEducationCategory,
+  prioritizeActiveScheduledProgrammes,
+} from '@/components/programmes/catalog'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import { clipMeta } from '@/lib/seo/site'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+
+export const revalidate = 300
 
 type Props = {
   params: Promise<{ category: string }>
@@ -29,6 +35,7 @@ export default async function EducationCategoryPage({ params }: Props) {
   const { category } = await params
   const cat = await getEducationCategory(category)
   if (!cat) notFound()
+  const programmes = await prioritizeActiveScheduledProgrammes(cat.programmes)
 
   return (
     <CategoryListingView
@@ -41,7 +48,7 @@ export default async function EducationCategoryPage({ params }: Props) {
       title={cat.title}
       summary={cat.summary}
       icon={cat.icon}
-      programmes={cat.programmes}
+      programmes={programmes}
       categorySlug={cat.slug}
       programmeType="education"
       backHref="/courses#afrs-education"

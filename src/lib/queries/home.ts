@@ -70,7 +70,7 @@ async function loadHomePageData(): Promise<HomePageData> {
     popupDocs,
     popupEvents,
   ] = await Promise.all([
-        fetchActiveEvents(payload, { limit: 3, depth: 1 }),
+        fetchActiveEvents(payload, { limit: 12, depth: 1 }),
         payload.find({
           collection: 'testimonials',
           where: testimonialPlacementWhere('afrs'),

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { orderProgrammesByActiveEventSlugs } from '@/components/programmes/catalog'
 import { getProgrammeCta } from '@/components/programmes/registrationLink'
 
 const programme = {
@@ -37,6 +38,22 @@ describe('programme registration links', () => {
       href: '/events/forensic-internship-november',
       label: 'Register Now',
     })
+  })
+
+  it('moves active scheduled programmes first without changing order within either group', () => {
+    const programmes = [
+      { ...programme, id: 'first', eventSlug: 'first-event' },
+      { ...programme, id: 'second' },
+      { ...programme, id: 'third', eventSlug: 'third-event' },
+      { ...programme, id: 'fourth' },
+    ]
+
+    const ordered = orderProgrammesByActiveEventSlugs(
+      programmes,
+      new Set(['third-event', 'first-event']),
+    )
+
+    expect(ordered.map(({ id }) => id)).toEqual(['first', 'third', 'second', 'fourth'])
   })
 
   it('does not use an invalid CMS slug as a route', () => {

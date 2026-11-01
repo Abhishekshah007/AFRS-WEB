@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import type { HubEventCard } from '@/components/programmes/types'
-import { EventHubCard } from '@/components/programmes/EventHubCard'
+import { EventCardsCarousel } from '@/components/programmes/EventCardsCarousel'
 import { programmesTokens } from '@/components/programmes/tokens'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 
@@ -76,25 +76,26 @@ export function OnlineEventsHub({ upcoming, ongoing }: OnlineEventsHubProps) {
             .
           </p>
         ) : (
-          <AnimateOnScroll stagger>
-            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              {events.map((evt) => (
-                <li key={evt.id}>
-                  <EventHubCard event={evt} />
-                </li>
-              ))}
-            </ul>
+          <AnimateOnScroll>
+            <EventCardsCarousel
+              key={tab}
+              events={events}
+              viewAllHref="/courses/events"
+              ariaLabel={`${tab === 'upcoming' ? 'Upcoming' : 'Ongoing'} events`}
+            />
           </AnimateOnScroll>
         )}
 
-        <div className="text-center mt-10">
-          <Link
-            href="/courses/events"
-            className="inline-flex h-11 items-center justify-center rounded-xl text-sm font-bold text-[var(--prog-primary)] hover:underline"
-          >
-            View all events →
-          </Link>
-        </div>
+        {events.length === 0 ? (
+          <div className="mt-8 text-center">
+            <Link
+              href="/courses/events"
+              className="inline-flex h-11 items-center justify-center rounded-xl px-5 text-sm font-bold text-[var(--prog-primary)] hover:bg-slate-50 hover:underline"
+            >
+              View all events →
+            </Link>
+          </div>
+        ) : null}
       </div>
     </section>
   )

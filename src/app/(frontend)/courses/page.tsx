@@ -198,8 +198,8 @@ export default async function CoursesPage() {
     <ProgrammesPageView
       educationProgrammes={educationProgrammes}
       trainingOptions={trainingOptions}
-      upcomingEvents={upcomingEvents.slice(0, 3)}
-      ongoingEvents={ongoingEvents.slice(0, 3)}
+      upcomingEvents={upcomingEvents}
+      ongoingEvents={ongoingEvents}
       resourcePersons={resourcePersons}
       archive={archiveItems}
       gallery={gallery}
