@@ -1,4 +1,5 @@
 import { jsonError } from '@/lib/apiResponses'
+import { isValidEmail, normalizeEmail } from '@/lib/email'
 import { getPayloadClient } from '@/lib/payload'
 import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
 import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
@@ -16,8 +17,6 @@ type ContactSubmitBody = {
   turnstileToken?: string
 }
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as ContactSubmitBody
@@ -29,14 +28,14 @@ export async function POST(req: Request) {
     if (blocked) return blocked
 
     const fullName = body.fullName?.trim() || ''
-    const email = body.email?.trim().toLowerCase() || ''
+    const email = normalizeEmail(body.email)
     const message = body.message?.trim() || ''
 
     if (!fullName || !email || !message) {
       return jsonError('Please fill Full Name, Email, and Message.', 400)
     }
 
-    if (!EMAIL_RE.test(email)) {
+    if (!isValidEmail(email)) {
       return jsonError('Please enter a valid email address.', 400)
     }
 

@@ -13,6 +13,7 @@ import * as migration_20261022_124800_home_popups from './20261022_124800_home_p
 import * as migration_20261022_201500_founders from './20261022_201500_founders'
 import * as migration_20261022_211200_programmes_catalog_event_filters from './20261022_211200_programmes_catalog_event_filters'
 import * as migration_20261027_194046_client_feedback_tracking from './20261027_194046_client_feedback_tracking'
+import * as migration_20261031_170407_20261031_afrs_afsl_payment from './20261031_170407_20261031_afrs_afsl_payment'
 
 export const migrations = [
   {
@@ -89,5 +90,10 @@ export const migrations = [
     up: migration_20261027_194046_client_feedback_tracking.up,
     down: migration_20261027_194046_client_feedback_tracking.down,
     name: '20261027_194046_client_feedback_tracking',
+  },
+  {
+    up: migration_20261031_170407_20261031_afrs_afsl_payment.up,
+    down: migration_20261031_170407_20261031_afrs_afsl_payment.down,
+    name: '20261031_170407_20261031_afrs_afsl_payment',
   },
 ]

@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { categoriesToFeeTiers, feeTiersForRegion } from '@/lib/registration/resolveConfig'
+import type { RegistrationForm } from '@/payload-types'
+import {
+  categoriesToFeeTiers,
+  feeTiersForRegion,
+  resolveRegistrationConfig,
+} from '@/lib/registration/resolveConfig'
 
 describe('event registration fee categories', () => {
   it('keeps Indian and international categories in their own participant groups', () => {
@@ -21,5 +26,57 @@ describe('event registration fee categories', () => {
 
     expect(feeTiersForRegion(tiers, 'indian')).toHaveLength(1)
     expect(feeTiersForRegion(tiers, 'international')).toEqual([])
+  })
+
+  it('uses the payment method for the selected organization', () => {
+    const globalForm = {
+      paymentMethods: [
+        { title: 'AFRS UPI', organization: 'afrs', qrCode: 10, region: 'indian' },
+        { title: 'AFSL UPI', organization: 'afsl', qrCode: 20, region: 'indian' },
+      ],
+    } as RegistrationForm
+
+    const afrsConfig = resolveRegistrationConfig({ globalForm, organization: 'afrs' })
+    const afslConfig = resolveRegistrationConfig({ globalForm, organization: 'afsl' })
+
+    expect(afrsConfig.payment.paymentMethods?.map((method) => method.title)).toEqual(['AFRS UPI'])
+    expect(afslConfig.payment.paymentMethods?.map((method) => method.title)).toEqual(['AFSL UPI'])
+    expect(afslConfig.payment.paymentInstructions?.upiId).toBe('afsl.llp09@kotak')
+  })
+
+  it('uses the supplied AFSL QR and payment text for an item-level override', () => {
+    const config = resolveRegistrationConfig({
+      organization: 'afsl',
+      settings: {
+        useGlobalPaymentDetails: false,
+        paymentQrCode: 42,
+        paymentInstructions: { accountName: 'Custom AFSL account' },
+      },
+    })
+
+    expect(config.payment.paymentInstructions?.accountName).toBe('Custom AFSL account')
+    expect(config.payment.paymentInstructions?.upiId).toBe('afsl.llp09@kotak')
+    expect(config.payment.paymentMethods).toEqual([
+      {
+        title: 'AFSL Services India LLP',
+        qrCode: 42,
+        region: 'indian',
+        organization: 'afsl',
+      },
+    ])
+  })
+
+  it('keeps untagged legacy payment methods available to AFRS only', () => {
+    const globalForm = {
+      paymentMethods: [{ title: 'Existing UPI', qrCode: 10, region: 'indian' }],
+    } as RegistrationForm
+
+    expect(
+      resolveRegistrationConfig({ globalForm, organization: 'afrs' }).payment.paymentMethods,
+    ).toHaveLength(1)
+    expect(
+      resolveRegistrationConfig({ globalForm, organization: 'afsl' }).payment.paymentMethods?.[0]
+        ?.qrCode,
+    ).toBe('/assets/afsl-payment-qr.jpg')
   })
 })

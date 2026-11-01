@@ -3,6 +3,7 @@ import type { GlobalConfig } from 'payload'
 import { editorManagedGlobalAccess } from '../access'
 import { ADMIN_GROUPS } from '../config/adminGroups'
 import { dynamicFormSectionsField } from '../fields/dynamicFormSections'
+import { ORGANIZATION_OPTIONS } from '../fields/options'
 import { globalRegistrationDefaultsFields } from '../fields/registrationSettings'
 import { normalizeRegistrationFormSectionsData } from '../hooks/normalizeRegistrationSections'
 import { DEFAULT_FEE_TIERS, DEFAULT_REGISTRATION_INSTRUCTIONS } from '@/lib/registration/defaults'
@@ -98,6 +99,16 @@ export const RegistrationForm: GlobalConfig = {
       },
       fields: [
         { name: 'title', type: 'text', required: true },
+        {
+          name: 'organization',
+          type: 'select',
+          required: true,
+          defaultValue: 'afrs',
+          options: [...ORGANIZATION_OPTIONS],
+          admin: {
+            description: 'Select which organization should use this payment method.',
+          },
+        },
         { name: 'description', type: 'textarea' },
         { name: 'qrCode', type: 'upload', relationTo: 'media' },
         { name: 'link', type: 'text' },

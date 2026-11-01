@@ -65,6 +65,7 @@ export default async function EventRegisterPage({ params }: Props) {
     settings: evt.registrationSettings,
     globalForm: registrationForm,
     feeTiersOverride: feeTiers,
+    organization: evt.organization,
   })
 
   return (

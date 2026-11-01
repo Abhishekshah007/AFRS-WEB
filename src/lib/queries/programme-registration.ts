@@ -7,6 +7,7 @@ type ProgrammeMatch = {
   categorySlug: string
   categoryTitle: string
   programmeTitle: string
+  organization?: 'afrs' | 'afsl' | null
   registrationSettings?: RegistrationSettingsSource | null
 }
 
@@ -35,6 +36,7 @@ function findInCategories(catalog: ProgrammesCatalog, programmeId: string): Prog
         categorySlug: category.slug,
         categoryTitle: category.title,
         programmeTitle: programme.title,
+        organization: programme.organization,
         registrationSettings: mapRegistrationSettings(
           programme.registration as Record<string, unknown> | undefined,
         ),

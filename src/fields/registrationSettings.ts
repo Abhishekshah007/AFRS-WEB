@@ -138,7 +138,7 @@ export function registrationSettingsField({
         defaultValue: true,
         admin: {
           description:
-            'Use bank/UPI/QR from Globals → Registration Form. Turn off to override for this item only.',
+            'Use payment details for the selected organization. Turn off to change payment text and QR for this item only.',
         },
       },
       withDbName(
@@ -148,13 +148,23 @@ export function registrationSettingsField({
           admin: {
             condition: (_, siblingData) => siblingData?.useGlobalPaymentDetails === false,
             description:
-              'Text-only bank/UPI/PayPal overrides. QR codes stay on Globals → Registration Form.',
+              'Payment text shown to participants when global payment details are disabled.',
           },
           fields: paymentInstructionsOverrideFieldsForDb(short),
         },
         'pay_inst',
         short,
       ),
+      {
+        name: 'paymentQrCode',
+        type: 'upload',
+        relationTo: 'media',
+        admin: {
+          condition: (_, siblingData) => siblingData?.useGlobalPaymentDetails === false,
+          description:
+            'Optional QR override for this event or course. AFSL registrations use the supplied AFSL QR when no override is selected.',
+        },
+      },
       {
         name: 'useGlobalInstructions',
         type: 'checkbox',

@@ -53,7 +53,7 @@ export default async function HomePage() {
   const orgJsonLd = withContext([faqPage(faqs)])
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen  overflow-hidden">
       <JsonLd data={orgJsonLd} />
       <HomePopupSequence key={popupFingerprint} slides={popups} fingerprint={popupFingerprint} />
       <HeroSection heroData={heroData} />

@@ -5,7 +5,7 @@ import { ADMIN_GROUPS } from '../config/adminGroups'
 import { contentRichTextField, excerptField, slugField } from '../fields'
 import { dynamicFormSectionsField } from '../fields/dynamicFormSections'
 import { registrationSettingsField } from '../fields/registrationSettings'
-import { eventNatureField } from '../fields/options'
+import { eventNatureField, ORGANIZATION_OPTIONS } from '../fields/options'
 import { publishedField } from '../fields/publishing'
 import { autoSlugFromTitle } from '../hooks/autoSlugFromTitle'
 import { guardEventPopupCapacity } from '../hooks/guardHomePopupCapacity'
@@ -23,13 +23,25 @@ export const Events: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'eventType', 'startDate', 'registrationOpen', 'published'],
     description:
-      'Create workshops, conferences,faculty development programmes and certification programmes. The event title auto-generates the URL slug — no technical formatting needed.',
+      'Create workshops, conferences, faculty development programmes, internships, and certification programmes. The event title auto-generates the URL slug — no technical formatting needed.',
   },
   hooks: {
     beforeValidate: [autoSlugFromTitle],
     beforeChange: [normalizeRegistrationSectionsData, guardEventPopupCapacity],
   },
   fields: [
+    {
+      name: 'organization',
+      type: 'select',
+      label: 'Organization',
+      required: true,
+      defaultValue: 'afrs',
+      options: [...ORGANIZATION_OPTIONS],
+      admin: {
+        description:
+          'Choose AFRS or AFSL. This controls the payment details and QR code shown to participants.',
+      },
+    },
     {
       name: 'title',
       type: 'text',
@@ -58,6 +70,7 @@ export const Events: CollectionConfig = {
         { label: 'Conference', value: 'conference' },
         { label: 'Training', value: 'training' },
         { label: 'Faculty Development Program', value: 'fdp' },
+        { label: 'Internship', value: 'internship' },
       ],
     },
     {

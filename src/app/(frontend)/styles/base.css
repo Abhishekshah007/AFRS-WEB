@@ -26,6 +26,11 @@ body {
   color: var(--brand-ink);
 }
 
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;

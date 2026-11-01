@@ -671,13 +671,17 @@ export interface PartnersLogo {
   createdAt: string;
 }
 /**
- * Create workshops, conferences,faculty development programmes and certification programmes. The event title auto-generates the URL slug — no technical formatting needed.
+ * Create workshops, conferences, faculty development programmes, internships, and certification programmes. The event title auto-generates the URL slug — no technical formatting needed.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "events".
  */
 export interface Event {
   id: number;
+  /**
+   * Choose AFRS or AFSL. This controls the payment details and QR code shown to participants.
+   */
+  organization: 'afrs' | 'afsl';
   /**
    * Public event name shown on the website.
    */
@@ -707,7 +711,7 @@ export interface Event {
     [k: string]: unknown;
   } | null;
   eventNature?: ('national' | 'international') | null;
-  eventType?: ('workshop' | 'conference' | 'training' | 'fdp') | null;
+  eventType?: ('workshop' | 'conference' | 'training' | 'fdp' | 'internship') | null;
   mode?: ('online' | 'offline' | 'hybrid') | null;
   startDate: string;
   /**
@@ -754,11 +758,11 @@ export interface Event {
      */
     requirePaymentProof?: boolean | null;
     /**
-     * Use bank/UPI/QR from Globals → Registration Form. Turn off to override for this item only.
+     * Use payment details for the selected organization. Turn off to change payment text and QR for this item only.
      */
     useGlobalPaymentDetails?: boolean | null;
     /**
-     * Text-only bank/UPI/PayPal overrides. QR codes stay on Globals → Registration Form.
+     * Payment text shown to participants when global payment details are disabled.
      */
     paymentInstructions?: {
       title?: string | null;
@@ -774,6 +778,10 @@ export interface Event {
       paypalLink?: string | null;
       note?: string | null;
     };
+    /**
+     * Optional QR override for this event or course. AFSL registrations use the supplied AFSL QR when no override is selected.
+     */
+    paymentQrCode?: (number | null) | Media;
     /**
      * Use default instructions from Globals → Registration Form.
      */
@@ -1422,6 +1430,7 @@ export interface PartnersLogoSelect<T extends boolean = true> {
  * via the `definition` "events_select".
  */
 export interface EventsSelect<T extends boolean = true> {
+  organization?: T;
   title?: T;
   slug?: T;
   banner?: T;
@@ -1472,6 +1481,7 @@ export interface EventsSelect<T extends boolean = true> {
               paypalLink?: T;
               note?: T;
             };
+        paymentQrCode?: T;
         useGlobalInstructions?: T;
         instructions?: T;
         requireAgreement?: T;
@@ -2142,6 +2152,10 @@ export interface ProgrammesCatalog {
         programmes?:
           | {
               id: string;
+              /**
+               * Choose AFRS or AFSL. This controls the payment details and QR code shown to participants.
+               */
+              organization: 'afrs' | 'afsl';
               title: string;
               description: string;
               duration: string;
@@ -2177,11 +2191,11 @@ export interface ProgrammesCatalog {
                  */
                 requirePaymentProof?: boolean | null;
                 /**
-                 * Use bank/UPI/QR from Globals → Registration Form. Turn off to override for this item only.
+                 * Use payment details for the selected organization. Turn off to change payment text and QR for this item only.
                  */
                 useGlobalPaymentDetails?: boolean | null;
                 /**
-                 * Text-only bank/UPI/PayPal overrides. QR codes stay on Globals → Registration Form.
+                 * Payment text shown to participants when global payment details are disabled.
                  */
                 paymentInstructions?: {
                   title?: string | null;
@@ -2197,6 +2211,10 @@ export interface ProgrammesCatalog {
                   paypalLink?: string | null;
                   note?: string | null;
                 };
+                /**
+                 * Optional QR override for this event or course. AFSL registrations use the supplied AFSL QR when no override is selected.
+                 */
+                paymentQrCode?: (number | null) | Media;
                 /**
                  * Use default instructions from Globals → Registration Form.
                  */
@@ -2266,6 +2284,10 @@ export interface ProgrammesCatalog {
         programmes?:
           | {
               id: string;
+              /**
+               * Choose AFRS or AFSL. This controls the payment details and QR code shown to participants.
+               */
+              organization: 'afrs' | 'afsl';
               title: string;
               description: string;
               duration: string;
@@ -2301,11 +2323,11 @@ export interface ProgrammesCatalog {
                  */
                 requirePaymentProof?: boolean | null;
                 /**
-                 * Use bank/UPI/QR from Globals → Registration Form. Turn off to override for this item only.
+                 * Use payment details for the selected organization. Turn off to change payment text and QR for this item only.
                  */
                 useGlobalPaymentDetails?: boolean | null;
                 /**
-                 * Text-only bank/UPI/PayPal overrides. QR codes stay on Globals → Registration Form.
+                 * Payment text shown to participants when global payment details are disabled.
                  */
                 paymentInstructions?: {
                   title?: string | null;
@@ -2321,6 +2343,10 @@ export interface ProgrammesCatalog {
                   paypalLink?: string | null;
                   note?: string | null;
                 };
+                /**
+                 * Optional QR override for this event or course. AFSL registrations use the supplied AFSL QR when no override is selected.
+                 */
+                paymentQrCode?: (number | null) | Media;
                 /**
                  * Use default instructions from Globals → Registration Form.
                  */
@@ -2475,6 +2501,10 @@ export interface RegistrationForm {
   paymentMethods?:
     | {
         title: string;
+        /**
+         * Select which organization should use this payment method.
+         */
+        organization: 'afrs' | 'afsl';
         description?: string | null;
         qrCode?: (number | null) | Media;
         link?: string | null;
@@ -3513,6 +3543,7 @@ export interface ProgrammesCatalogSelect<T extends boolean = true> {
           | T
           | {
               id?: T;
+              organization?: T;
               title?: T;
               description?: T;
               duration?: T;
@@ -3548,6 +3579,7 @@ export interface ProgrammesCatalogSelect<T extends boolean = true> {
                           paypalLink?: T;
                           note?: T;
                         };
+                    paymentQrCode?: T;
                     useGlobalInstructions?: T;
                     instructions?: T;
                     requireAgreement?: T;
@@ -3608,6 +3640,7 @@ export interface ProgrammesCatalogSelect<T extends boolean = true> {
           | T
           | {
               id?: T;
+              organization?: T;
               title?: T;
               description?: T;
               duration?: T;
@@ -3643,6 +3676,7 @@ export interface ProgrammesCatalogSelect<T extends boolean = true> {
                           paypalLink?: T;
                           note?: T;
                         };
+                    paymentQrCode?: T;
                     useGlobalInstructions?: T;
                     instructions?: T;
                     requireAgreement?: T;
@@ -3753,6 +3787,7 @@ export interface RegistrationFormSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
+        organization?: T;
         description?: T;
         qrCode?: T;
         link?: T;

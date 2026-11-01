@@ -9,7 +9,6 @@ import type {
 } from '@/domain/registration/types'
 import { FALLBACK_LOGO_IMAGE } from '@/lib/constants/assets'
 import { resolveMediaUrl } from '@/lib/cms'
-import type { MediaRef } from '@/lib/media'
 import type { DeliveryMode } from '@/lib/registration/deliveryMode'
 import { shouldOfferPayPal } from '@/lib/registration/deliveryMode'
 import { resolvePaymentLink } from '@/lib/registration/paymentLinks'
@@ -89,7 +88,11 @@ function PaymentMethodCard({ method }: { method: PaymentMethodConfig }) {
       {method.qrCode ? (
         <div className="mx-auto mt-4 aspect-square w-full max-w-xs rounded-2xl bg-white p-3">
           <Image
-            src={resolveMediaUrl(method.qrCode as MediaRef, FALLBACK_LOGO_IMAGE)}
+            src={
+              typeof method.qrCode === 'string'
+                ? method.qrCode
+                : resolveMediaUrl(method.qrCode, FALLBACK_LOGO_IMAGE)
+            }
             alt={`${method.title} QR code`}
             width={600}
             height={600}

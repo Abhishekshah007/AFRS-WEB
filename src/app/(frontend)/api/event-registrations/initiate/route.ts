@@ -89,6 +89,7 @@ export async function POST(req: Request) {
       settings: evt.registrationSettings,
       globalForm: registrationForm,
       feeTiersOverride: feeTiers,
+      organization: evt.organization,
     })
 
     if (config.requireAgreement && !body.agreedToTerms) {

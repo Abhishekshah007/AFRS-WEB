@@ -1,10 +1,23 @@
 import type { Field } from 'payload'
 
+import { ORGANIZATION_OPTIONS } from './options'
 import { registrationSettingsField } from './registrationSettings'
 
 /** Shared programme item schema used in education and training category arrays. */
 export const programmeItemFields: Field[] = [
   { name: 'id', type: 'text', required: true },
+  {
+    name: 'organization',
+    type: 'select',
+    label: 'Organization',
+    required: true,
+    defaultValue: 'afrs',
+    options: [...ORGANIZATION_OPTIONS],
+    admin: {
+      description:
+        'Choose AFRS or AFSL. This controls the payment details and QR code shown to participants.',
+    },
+  },
   { name: 'title', type: 'text', required: true },
   { name: 'description', type: 'textarea', required: true },
   { name: 'duration', type: 'text', required: true },

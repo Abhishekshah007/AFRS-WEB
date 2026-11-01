@@ -5,6 +5,11 @@ export const EVENT_NATURE_OPTIONS = [
   { label: 'International', value: 'international' },
 ] as const
 
+export const ORGANIZATION_OPTIONS = [
+  { label: 'AFRS', value: 'afrs' },
+  { label: 'AFSL', value: 'afsl' },
+] as const
+
 type SelectFieldOverrides = Omit<
   Partial<SelectField>,
   'hasMany' | 'name' | 'options' | 'type' | 'validate'
