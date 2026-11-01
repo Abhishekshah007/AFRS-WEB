@@ -36,7 +36,7 @@ export const ProgrammesCatalog: GlobalConfig = {
         { name: 'title', type: 'text', required: true },
         { name: 'summary', type: 'textarea', required: true },
         { name: 'intro', type: 'textarea' },
-        { name: 'programmes', type: 'array', dbName: 'progs', fields: programmeItemFields },
+        { name: 'programmes', type: 'array', dbName: 'edu_progs', fields: programmeItemFields },
       ],
     },
     {
