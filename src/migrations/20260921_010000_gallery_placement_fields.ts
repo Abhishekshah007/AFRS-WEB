@@ -33,7 +33,21 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       WHEN duplicate_object THEN null;
     END $$;
 
-    UPDATE "gallery_items" SET "category" = 'training' WHERE "category" = 'tech';
+    DO $$ BEGIN
+      IF EXISTS (
+        SELECT 1
+        FROM pg_enum
+        JOIN pg_type ON pg_type.oid = pg_enum.enumtypid
+        JOIN pg_namespace ON pg_namespace.oid = pg_type.typnamespace
+        WHERE pg_namespace.nspname = 'public'
+          AND pg_type.typname = 'enum_gallery_items_category'
+          AND pg_enum.enumlabel = 'tech'
+      ) THEN
+        UPDATE "gallery_items"
+          SET "category" = 'training'
+          WHERE "category"::text = 'tech';
+      END IF;
+    END $$;
     UPDATE "gallery_items" SET "brand" = 'afrs' WHERE "brand" IS NULL;
   `)
 }
