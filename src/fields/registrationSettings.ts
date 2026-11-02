@@ -176,7 +176,8 @@ export function registrationSettingsField({
         type: 'checkbox',
         defaultValue: true,
         admin: {
-          description: 'Use default instructions from Globals → Registration Form.',
+          description:
+            'Use the default instructions for this event’s selected organization (AFRS or AFSL) from Globals → Registration Form.',
         },
       },
       {
@@ -203,9 +204,19 @@ export const globalRegistrationDefaultsFields: Field[] = [
   {
     name: 'defaultInstructions',
     type: 'textarea',
+    label: 'AFRS default registration instructions',
     admin: {
       description:
-        'Default registration instructions shown before payment. Can be overridden per programme or event.',
+        'Default AFRS registration instructions shown before payment. Event and programme-specific instructions can override this.',
+    },
+  },
+  {
+    name: 'defaultInstructionsAFSL',
+    type: 'textarea',
+    label: 'AFSL default registration instructions',
+    admin: {
+      description:
+        'Default AFSL registration instructions shown before payment. Event and programme-specific instructions can override this.',
     },
   },
   {

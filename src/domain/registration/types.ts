@@ -62,6 +62,7 @@ export type RegistrationSettingsSource = {
 }
 
 export type ResolvedRegistrationConfig = {
+  organization: RegistrationOrganization
   registrationType: RegistrationType
   participantRegion: ParticipantRegion
   feeTiers: FeeTier[]

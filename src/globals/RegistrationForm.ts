@@ -6,7 +6,11 @@ import { dynamicFormSectionsField } from '../fields/dynamicFormSections'
 import { ORGANIZATION_OPTIONS } from '../fields/options'
 import { globalRegistrationDefaultsFields } from '../fields/registrationSettings'
 import { normalizeRegistrationFormSectionsData } from '../hooks/normalizeRegistrationSections'
-import { DEFAULT_FEE_TIERS, DEFAULT_REGISTRATION_INSTRUCTIONS } from '@/lib/registration/defaults'
+import {
+  DEFAULT_AFSL_REGISTRATION_INSTRUCTIONS,
+  DEFAULT_FEE_TIERS,
+  DEFAULT_REGISTRATION_INSTRUCTIONS,
+} from '@/lib/registration/defaults'
 
 export const RegistrationForm: GlobalConfig = {
   slug: 'registrationForm',
@@ -41,6 +45,13 @@ export const RegistrationForm: GlobalConfig = {
     ...globalRegistrationDefaultsFields.map((field) => {
       if (field.type === 'textarea' && 'name' in field && field.name === 'defaultInstructions') {
         return { ...field, defaultValue: DEFAULT_REGISTRATION_INSTRUCTIONS }
+      }
+      if (
+        field.type === 'textarea' &&
+        'name' in field &&
+        field.name === 'defaultInstructionsAFSL'
+      ) {
+        return { ...field, defaultValue: DEFAULT_AFSL_REGISTRATION_INSTRUCTIONS }
       }
       if (field.type === 'array' && 'name' in field && field.name === 'defaultFeeTiers') {
         return {

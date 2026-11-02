@@ -2466,6 +2466,10 @@ export interface RegistrationForm {
    */
   defaultInstructions?: string | null;
   /**
+   * Default AFSL registration instructions shown before payment. Event and programme-specific instructions can override this.
+   */
+  defaultInstructionsAFSL?: string | null;
+  /**
    * Default: require agreement checkbox before payment.
    */
   requireAgreement?: boolean | null;
@@ -3774,6 +3778,7 @@ export interface RegistrationFormSelect<T extends boolean = true> {
         id?: T;
       };
   defaultInstructions?: T;
+  defaultInstructionsAFSL?: T;
   requireAgreement?: T;
   defaultFeeTiers?:
     | T
