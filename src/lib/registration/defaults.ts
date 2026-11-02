@@ -28,7 +28,7 @@ export const DEFAULT_AFSL_REGISTRATION_INSTRUCTIONS = `𝗔𝗽𝗽𝗹𝗶𝗰�
 13. 𝑷𝒓𝒐𝒈𝒓𝒂𝒎 𝑪𝒉𝒂𝒏𝒈𝒆𝒔 𝒐𝒓 𝑪𝒂𝒏𝒄𝒆𝒍𝒍𝒂𝒕𝒊𝒐𝒏: AFSL reserves the right to reschedule, modify, or cancel a program due to administrative, technical, or unforeseen circumstances. Applicants will be informed through available official communication channels, and any applicable refund or alternative arrangement will be governed by the published Refund/Cancellation Policy.
 14. 𝑪𝒐𝒏𝒔𝒆𝒏𝒕 𝒂𝒏𝒅 𝑨𝒄𝒌𝒏𝒐𝒘𝒍𝒆𝒅𝒈𝒆𝒎𝒆𝒏𝒕: By submitting the registration form, applicants acknowledge that they have reviewed and agreed to these Registration Instructions, Terms & Conditions, Privacy Policy, and Refund Policy.
 
-I have read and agree to the Registration Instructions, Terms & Conditions, Privacy Policy, and Refund/Cancellation Policy of Applied Forensic Science Lab India LLP (AFSL).`
+I have read and agree to the Registration Instructions, Terms & Conditions, Privacy Policy, and Refund/Cancellation Policy of AFSL SERVICES INDIA LLP (AFSL).`
 
 export const DEFAULT_FEE_TIERS_INDIAN: FeeTier[] = [
   { id: 'student-inr', label: 'Students', amount: 300, currency: 'INR' },

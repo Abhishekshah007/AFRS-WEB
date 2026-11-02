@@ -11,7 +11,6 @@ import {
   richTextToPlain,
 } from '@/lib/cms'
 import type { Event as AfrsEvent, Media } from '@/payload-types'
-import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { breadcrumbList, withContext } from '@/lib/seo/schema'
@@ -141,7 +140,7 @@ export default async function EventDetailPage({ params }: Props) {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 py-12 grid gap-10 lg:grid-cols-[1fr_340px] items-start">
         {/* Main */}
         <div>
-          <AnimateOnScroll>
+          <div>
             <div className="relative min-h-[280px] sm:min-h-[360px] rounded-3xl overflow-hidden shadow-lg bg-slate-50">
               <Image
                 src={banner}
@@ -191,11 +190,11 @@ export default async function EventDetailPage({ params }: Props) {
                 />
               ) : null}
             </div>
-          </AnimateOnScroll>
+          </div>
         </div>
 
         {/* Sidebar */}
-        <AnimateOnScroll direction="right" className="space-y-5">
+        <div className="space-y-5">
           {/* Registration card */}
           <div className="rounded-3xl border border-slate-100 bg-white shadow-sm p-7">
             <h2 className="font-extrabold text-slate-900 text-xl mb-5">Registration</h2>
@@ -259,7 +258,7 @@ export default async function EventDetailPage({ params }: Props) {
               Contact Support →
             </Link>
           </div>
-        </AnimateOnScroll>
+        </div>
       </div>
     </div>
   )
