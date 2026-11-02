@@ -11,6 +11,7 @@ import type {
 } from '@/domain/registration/types'
 import {
   DEFAULT_FEE_TIERS,
+  DEFAULT_AFSL_REGISTRATION_INSTRUCTIONS,
   DEFAULT_REGISTRATION_INSTRUCTIONS,
   DEFAULT_REGISTRATION_SETTINGS,
 } from '@/lib/registration/defaults'
@@ -192,11 +193,14 @@ export function resolveRegistrationConfig({
   const registrationType = inferRegistrationType(merged, feeTiers)
 
   const useGlobalInstructions = merged.useGlobalInstructions !== false
+  const resolvedOrganization = organization || 'afrs'
+  const defaultInstructions =
+    resolvedOrganization === 'afsl'
+      ? globalForm?.defaultInstructionsAFSL?.trim() || DEFAULT_AFSL_REGISTRATION_INSTRUCTIONS
+      : globalForm?.defaultInstructions?.trim() || DEFAULT_REGISTRATION_INSTRUCTIONS
   const instructions = useGlobalInstructions
-    ? globalForm?.defaultInstructions?.trim() || DEFAULT_REGISTRATION_INSTRUCTIONS
-    : merged.instructions?.trim() ||
-      globalForm?.defaultInstructions?.trim() ||
-      DEFAULT_REGISTRATION_INSTRUCTIONS
+    ? defaultInstructions
+    : merged.instructions?.trim() || defaultInstructions
 
   const requireAgreement =
     merged.requireAgreement ??
@@ -210,13 +214,14 @@ export function resolveRegistrationConfig({
       : (merged.requirePaymentProof ?? DEFAULT_REGISTRATION_SETTINGS.requirePaymentProof ?? true)
 
   return {
+    organization: resolvedOrganization,
     registrationType,
     participantRegion: merged.participantRegion || 'both',
     feeTiers,
     requirePaymentProof,
     requireAgreement: Boolean(requireAgreement),
     instructions,
-    payment: mergePaymentConfig(globalForm, merged, organization || 'afrs'),
+    payment: mergePaymentConfig(globalForm, merged, resolvedOrganization),
   }
 }
 

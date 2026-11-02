@@ -16,6 +16,7 @@ import * as migration_20261027_194046_client_feedback_tracking from './20261027_
 import * as migration_20261031_170407_20261031_afrs_afsl_payment from './20261031_170407_20261031_afrs_afsl_payment'
 import * as migration_20261101_115458_add_afsl_payment_instructions from './20261101_115458_add_afsl_payment_instructions'
 import * as migration_20261101_212051_split_education_programme_table from './20261101_212051_split_education_programme_table'
+import * as migration_20261102_112900_add_afsl_registration_instructions from './20261102_112900_add_afsl_registration_instructions'
 
 export const migrations = [
   {
@@ -107,5 +108,10 @@ export const migrations = [
     up: migration_20261101_212051_split_education_programme_table.up,
     down: migration_20261101_212051_split_education_programme_table.down,
     name: '20261101_212051_split_education_programme_table',
+  },
+  {
+    up: migration_20261102_112900_add_afsl_registration_instructions.up,
+    down: migration_20261102_112900_add_afsl_registration_instructions.down,
+    name: '20261102_112900_add_afsl_registration_instructions',
   },
 ]

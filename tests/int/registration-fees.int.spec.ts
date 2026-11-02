@@ -5,6 +5,7 @@ import {
   feeTiersForRegion,
   resolveRegistrationConfig,
 } from '@/lib/registration/resolveConfig'
+import { DEFAULT_AFSL_REGISTRATION_INSTRUCTIONS } from '@/lib/registration/defaults'
 
 describe('event registration fee categories', () => {
   it('keeps Indian and international categories in their own participant groups', () => {
@@ -42,6 +43,30 @@ describe('event registration fee categories', () => {
     expect(afrsConfig.payment.paymentMethods?.map((method) => method.title)).toEqual(['AFRS UPI'])
     expect(afslConfig.payment.paymentMethods?.map((method) => method.title)).toEqual(['AFSL UPI'])
     expect(afslConfig.payment.paymentInstructions?.upiId).toBe('afsl.llp09@kotak')
+  })
+
+  it('resolves registration instructions and consent organization separately for AFRS and AFSL', () => {
+    const globalForm = {
+      defaultInstructions: 'AFRS instructions',
+      defaultInstructionsAFSL: 'AFSL instructions',
+    } as RegistrationForm
+
+    const afrsConfig = resolveRegistrationConfig({ globalForm, organization: 'afrs' })
+    const afslConfig = resolveRegistrationConfig({ globalForm, organization: 'afsl' })
+
+    expect(afrsConfig.instructions).toBe('AFRS instructions')
+    expect(afrsConfig.organization).toBe('afrs')
+    expect(afslConfig.instructions).toBe('AFSL instructions')
+    expect(afslConfig.organization).toBe('afsl')
+  })
+
+  it('uses the AFSL default when no AFSL instructions have been saved yet', () => {
+    const config = resolveRegistrationConfig({
+      globalForm: { defaultInstructions: 'AFRS instructions' } as RegistrationForm,
+      organization: 'afsl',
+    })
+
+    expect(config.instructions).toBe(DEFAULT_AFSL_REGISTRATION_INSTRUCTIONS)
   })
 
   it('uses the supplied AFSL QR and payment text for an item-level override', () => {

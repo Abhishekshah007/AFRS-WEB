@@ -92,6 +92,10 @@ export function UnifiedRegistrationFlow({
   const router = useRouter()
   const isPaid = !requestOnly && config.registrationType !== 'free'
   const showPayment = isPaid && config.requirePaymentProof
+  const organizationName =
+    config.organization === 'afsl'
+      ? 'Applied Forensic Science Lab India LLP (AFSL)'
+      : 'Applied Forensic Research Sciences (AFRS)'
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -335,7 +339,7 @@ export function UnifiedRegistrationFlow({
   }
 
   return (
-    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16 py-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16 py-10">
       <div className="text-xs text-slate-500 flex gap-2 items-center mb-6">
         <Link href={backLink.href} className="hover:text-brand-600">
           ← {backLink.label}
@@ -346,10 +350,10 @@ export function UnifiedRegistrationFlow({
 
       <div className="grid gap-6 lg:grid-cols-[320px_1fr] items-start">
         {sidebar || (instructionsInSidebar && config.requireAgreement) ? (
-          <aside className="space-y-4">
+          <aside className="order-2 space-y-4 lg:order-1">
             {sidebar}
             {instructionsInSidebar && config.requireAgreement ? (
-              <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-4">
+              <section className="hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-4 lg:block">
                 <div>
                   <h3 className="font-extrabold text-slate-900 text-lg">
                     Registration Instructions
@@ -370,8 +374,7 @@ export function UnifiedRegistrationFlow({
                   />
                   <span>
                     I have read and agree to the Registration Instructions, Terms & Conditions,
-                    Privacy Policy, and Refund/Cancellation Policy of Applied Forensic Research
-                    Sciences (AFRS).
+                    Privacy Policy, and Refund/Cancellation Policy of {organizationName}.
                   </span>
                 </label>
               </section>
@@ -379,12 +382,16 @@ export function UnifiedRegistrationFlow({
           </aside>
         ) : null}
 
-        <main className="space-y-5">
-          {!requestOnly && config.requireAgreement && !instructionsInSidebar && (
-            <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-4">
+        <main className="order-1 space-y-5 lg:order-2">
+          {!requestOnly && config.requireAgreement && (
+            <section
+              className={`rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-4 ${instructionsInSidebar ? 'lg:hidden' : ''}`}
+            >
               <div>
                 <h3 className="font-extrabold text-slate-900 text-xl">
-                  1. Registration Instructions
+                  {instructionsInSidebar
+                    ? 'Registration Instructions'
+                    : '1. Registration Instructions'}
                 </h3>
                 <p className="mt-2 text-sm text-red-600 font-semibold">
                   Please read carefully before filling the form.
@@ -402,8 +409,7 @@ export function UnifiedRegistrationFlow({
                 />
                 <span>
                   I have read and agree to the Registration Instructions, Terms & Conditions,
-                  Privacy Policy, and Refund/Cancellation Policy of Applied Forensic Research
-                  Sciences (AFRS).
+                  Privacy Policy, and Refund/Cancellation Policy of {organizationName}.
                 </span>
               </label>
             </section>

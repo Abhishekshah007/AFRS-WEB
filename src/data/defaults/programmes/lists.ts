@@ -1,3 +1,4 @@
+import { DEFAULT_REGISTRATION_SETTINGS } from '@/lib/registration/defaults'
 import type { ProgrammeListItem } from '@/domain/programmes/catalog-types'
 
 export function programmeList(
@@ -12,11 +13,13 @@ export function programmeList(
     const durationMatch = title.match(/\((\d+\s*Days?)\)/i)
     return {
       id: `${prefix}-${index + 1}`,
+      organization: 'afrs',
       title,
       description,
       duration: durationMatch ? durationMatch[1] : duration,
       mode,
       level,
+      registration: { ...DEFAULT_REGISTRATION_SETTINGS },
     }
   })
 }
