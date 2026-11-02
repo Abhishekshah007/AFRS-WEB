@@ -1,13 +1,16 @@
 import type { TrainingOption } from '@/components/programmes/types'
+import type { RegistrationOrganization, RegistrationSettingsSource } from '@/domain/registration/types'
 
 export type ProgrammeListItem = {
   id: string
+  organization?: RegistrationOrganization | null
   title: string
   description: string
   duration: string
   mode: string
   level?: string
   eventSlug?: string | null
+  registration?: RegistrationSettingsSource | null
 }
 
 export type EducationCategory = {
