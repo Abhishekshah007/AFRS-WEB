@@ -17,6 +17,7 @@ import * as migration_20261031_170407_20261031_afrs_afsl_payment from './2026103
 import * as migration_20261101_115458_add_afsl_payment_instructions from './20261101_115458_add_afsl_payment_instructions'
 import * as migration_20261101_212051_split_education_programme_table from './20261101_212051_split_education_programme_table'
 import * as migration_20261102_112900_add_afsl_registration_instructions from './20261102_112900_add_afsl_registration_instructions'
+import * as migration_20261102_183000_add_education_fee_tiers from './20261102_183000_add_education_fee_tiers'
 
 export const migrations = [
   {
@@ -113,5 +114,10 @@ export const migrations = [
     up: migration_20261102_112900_add_afsl_registration_instructions.up,
     down: migration_20261102_112900_add_afsl_registration_instructions.down,
     name: '20261102_112900_add_afsl_registration_instructions',
+  },
+  {
+    up: migration_20261102_183000_add_education_fee_tiers.up,
+    down: migration_20261102_183000_add_education_fee_tiers.down,
+    name: '20261102_183000_add_education_fee_tiers',
   },
 ]

@@ -59,6 +59,8 @@ function paymentInstructionsOverrideFieldsForDb(_compactDbNames: boolean): Field
 type RegistrationSettingsFieldOptions = {
   /** Programme items can define fee tiers; events use registration categories instead. */
   includeFeeTiers?: boolean
+  /** Give a nested fee-tier array its own table when it has a different parent table. */
+  feeTiersDbName?: string
   name?: string
   /** Shorten Postgres table/column names — required for nested programme catalog fields. */
   dbName?: string
@@ -68,6 +70,7 @@ type RegistrationSettingsFieldOptions = {
 /** Per-programme or per-event registration behaviour (payment, instructions, tiers). */
 export function registrationSettingsField({
   includeFeeTiers = false,
+  feeTiersDbName,
   name = 'registrationSettings',
   dbName,
   compactDbNames = false,
@@ -125,8 +128,8 @@ export function registrationSettingsField({
                 },
                 fields: feeTierFieldsForDb(short),
               },
-              'fee_tiers',
-              short,
+              feeTiersDbName || 'fee_tiers',
+              Boolean(feeTiersDbName) || short,
             ) as Field,
           ]
         : []),

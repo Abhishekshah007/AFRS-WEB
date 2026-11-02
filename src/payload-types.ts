@@ -783,7 +783,7 @@ export interface Event {
      */
     paymentQrCode?: (number | null) | Media;
     /**
-     * Use default instructions from Globals → Registration Form.
+     * Use the default instructions for this event’s selected organization (AFRS or AFSL) from Globals → Registration Form.
      */
     useGlobalInstructions?: boolean | null;
     /**
@@ -2216,7 +2216,7 @@ export interface ProgrammesCatalog {
                  */
                 paymentQrCode?: (number | null) | Media;
                 /**
-                 * Use default instructions from Globals → Registration Form.
+                 * Use the default instructions for this event’s selected organization (AFRS or AFSL) from Globals → Registration Form.
                  */
                 useGlobalInstructions?: boolean | null;
                 /**
@@ -2348,7 +2348,7 @@ export interface ProgrammesCatalog {
                  */
                 paymentQrCode?: (number | null) | Media;
                 /**
-                 * Use default instructions from Globals → Registration Form.
+                 * Use the default instructions for this event’s selected organization (AFRS or AFSL) from Globals → Registration Form.
                  */
                 useGlobalInstructions?: boolean | null;
                 /**
@@ -2462,7 +2462,7 @@ export interface RegistrationForm {
       }[]
     | null;
   /**
-   * Default registration instructions shown before payment. Can be overridden per programme or event.
+   * Default AFRS registration instructions shown before payment. Event and programme-specific instructions can override this.
    */
   defaultInstructions?: string | null;
   /**
