@@ -7,7 +7,13 @@ export const DEFAULT_HIDDEN_BY_ROLE: Record<
 > = {
   superAdmin: { collections: [], globals: [] },
   contentEditor: {
-    collections: ['users', 'events', 'eventRegistrations'],
+    collections: [
+      'users',
+      'events',
+      'eventRegistrations',
+      'programmeCategories',
+      'programmes',
+    ],
     globals: ['adminAccess', 'programmesCatalog', 'registrationForm'],
   },
   eventManager: {
@@ -53,6 +59,8 @@ export const DEFAULT_HIDDEN_BY_ROLE: Record<
       'services',
       'testimonials',
       'users',
+      'programmeCategories',
+      'programmes',
     ],
     globals: [
       'aboutPage',

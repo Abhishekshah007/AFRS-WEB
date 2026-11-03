@@ -123,6 +123,7 @@ export function registrationSettingsField({
                   { label: 'Research & Professional', amount: 0, currency: 'USD' },
                 ],
                 admin: {
+                  initCollapsed: true,
                   description:
                     'Starter categories are provided for Indian (INR) and international (USD) participants. Update the default 0 fees before publishing paid registration, or keep 0 for free entry.',
                 },

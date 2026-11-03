@@ -22,7 +22,9 @@ The **active** screen shows a wine highlight and a left bar on the current link.
 |------|----------------|--------|
 | **Super Admin** | IT / lead | Everything + **Staff menu access** |
 | **Content Editor** | Website / notices team | Daily content, page copy, inbox (incl. course **requests**), media |
-| **Event Manager** | Programmes team | Events, registrations, programmes catalog, media, inbox |
+| **Event Manager** | Programmes team | Events, registrations, programme categories and programmes, media, inbox |
+
+Programme categories and programmes are managed as separate records. The programme list is searchable and paginated; category copy and programme registration settings are edited on their own records. **Course site settings** remains for archive links and fallback content.
 | **Student** | Learners | No studio menus (do not use for staff) |
 
 Change a person’s role: **Staff & access → Staff accounts** → edit **Role** (Super Admin only).

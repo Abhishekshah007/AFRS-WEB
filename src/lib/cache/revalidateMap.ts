@@ -71,6 +71,17 @@ export function revalidatePlanForCollection(
         ['/courses', '/courses/education', '/courses/training'],
         [SITE_CACHE_TAGS.courses],
       )
+    case 'programmeCategories':
+    case 'programmes':
+      return plan(
+        [
+          '/courses',
+          '/courses/education',
+          '/courses/training',
+          '/courses/register',
+        ],
+        [SITE_CACHE_TAGS.courses],
+      )
     case 'media':
       return plan(
         ['/', '/services', '/about', '/gallery'],

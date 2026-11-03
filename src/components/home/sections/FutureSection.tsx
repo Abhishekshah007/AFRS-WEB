@@ -12,6 +12,7 @@ export function FutureSection() {
           <div className="relative rounded-3xl overflow-hidden bg-slate-200 aspect-[16/10] lg:min-h-[320px] card-pop">
             <video
               controls
+              autoPlay
               loop
               playsInline
               preload="metadata"

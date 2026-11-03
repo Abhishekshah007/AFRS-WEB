@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
-import { defaultEducationCategories } from '@/data/defaults/programmes/catalog'
+import {
+  defaultEducationCategories,
+  defaultTrainingCategories,
+} from '@/data/defaults/programmes/catalog'
 import { programmeList } from '@/data/defaults/programmes/lists'
 
 describe('programme catalog defaults', () => {
@@ -30,5 +33,19 @@ describe('programme catalog defaults', () => {
         registrationType: 'paid_manual',
       },
     })
+  })
+
+  it('uses unique category routes and programme IDs across all catalogue defaults', () => {
+    const categoryRoutes = [
+      ...defaultEducationCategories.map((category) => `education:${category.slug}`),
+      ...defaultTrainingCategories.map((category) => `training:${category.slug}`),
+    ]
+    const categories = [...defaultEducationCategories, ...defaultTrainingCategories]
+    const programmeIds = categories.flatMap((category) =>
+      category.programmes.map((programme) => programme.id),
+    )
+
+    expect(new Set(categoryRoutes).size).toBe(categoryRoutes.length)
+    expect(new Set(programmeIds).size).toBe(programmeIds.length)
   })
 })

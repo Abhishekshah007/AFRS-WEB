@@ -197,6 +197,7 @@ function toFounderProfile(doc: Founder): LeaderProfile {
       fallbackProfile?.photoUrl,
     message: doc.message?.trim() || null,
     bio: doc.bio?.trim() || null,
+    fullBio: doc.fullBio?.trim() || null,
     socials: {
       linkedin: socialUrl(doc.linkedin),
       instagram: socialUrl(doc.instagram),

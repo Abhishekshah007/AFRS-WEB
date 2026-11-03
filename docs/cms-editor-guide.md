@@ -23,7 +23,9 @@ For every public form (contact, course interest, events, what is missing for UGC
 | **About Page** | About copy and sections |
 | **Leadership & Committee** | Leadership Team and Executive Committee member profiles and bios |
 | **Services Page** | AFSL page text, kits, legal links |
-| **Programmes Catalog** | Course/training catalogue structure |
+| **Programme categories** | Course and training category copy and display order |
+| **Programmes** | Individual courses, searchable and paginated, with registration and fee settings |
+| **Course site settings** | Archive links and fallback content |
 | **Registration Form** | Shared registration field settings |
 | **Student Hub Content** | UGC NET, FACT, CUET page content & achievers |
 
@@ -124,11 +126,15 @@ Both support photo, title, bio, order, and published flag.
 
 ## Executive Committee bios
 
-Open **Page copy → Leadership & Committee**, edit the member, and save the **Short bio** field. Keep **Executive Committee Member** enabled so the profile stays in the “Executive Committee & Members” section. Upload a portrait through Media if you need to replace the existing image. Unpublished members are hidden.
+Open **Page copy → Leadership & Committee** and edit the member. The **Short bio** appears on the profile card; **Full biography** is shown when a visitor selects the card. Keep **Executive Committee Member** enabled so the profile stays in the “Executive Committee & Members” section. Upload a portrait through Media if you need to replace the existing image. Unpublished members are hidden.
+
+## Articles and SEO tags
+
+In **Content → Articles**, add one or more **SEO tags** to each article. These are article-specific keywords, displayed at the end of the article and included in its search metadata. Leave the field empty if the article has no relevant tags; the site does not add default tags.
 
 ## Scheduled programmes and Events
 
-Programme cards keep **Register Interest** until a scheduled Event is linked. In **Courses & training → Courses catalog**, open the relevant category and programme item, then set **Scheduled event slug** to the slug of the published record in **Events & registrations → Events**. The card changes to **Register Now** and opens that Event page, where the Event’s dates and registration-open setting control the actual registration action. Clear the slug to return the card to the general interest form.
+Programme cards keep **Register Interest** until a scheduled Event is linked. In **Courses & training → Programmes**, search for and open the relevant programme, then set **Scheduled event slug** to the slug of the published record in **Events & registrations → Events**. The card changes to **Register Now** and opens that Event page, where the Event’s dates and registration-open setting control the actual registration action. Clear the slug to return to the general interest form.
 
 ## Visitor counter
 

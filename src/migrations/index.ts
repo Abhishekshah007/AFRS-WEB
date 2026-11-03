@@ -18,6 +18,9 @@ import * as migration_20261101_115458_add_afsl_payment_instructions from './2026
 import * as migration_20261101_212051_split_education_programme_table from './20261101_212051_split_education_programme_table'
 import * as migration_20261102_112900_add_afsl_registration_instructions from './20261102_112900_add_afsl_registration_instructions'
 import * as migration_20261102_183000_add_education_fee_tiers from './20261102_183000_add_education_fee_tiers'
+import * as migration_20261103_083653 from './20261103_083653'
+import * as migration_20261103_083910 from './20261103_083910'
+import * as migration_20261103_103548_founder_full_bio from './20261103_103548_founder_full_bio'
 
 export const migrations = [
   {
@@ -119,5 +122,20 @@ export const migrations = [
     up: migration_20261102_183000_add_education_fee_tiers.up,
     down: migration_20261102_183000_add_education_fee_tiers.down,
     name: '20261102_183000_add_education_fee_tiers',
+  },
+  {
+    up: migration_20261103_083653.up,
+    down: migration_20261103_083653.down,
+    name: '20261103_083653',
+  },
+  {
+    up: migration_20261103_083910.up,
+    down: migration_20261103_083910.down,
+    name: '20261103_083910',
+  },
+  {
+    up: migration_20261103_103548_founder_full_bio.up,
+    down: migration_20261103_103548_founder_full_bio.down,
+    name: '20261103_103548_founder_full_bio',
   },
 ]

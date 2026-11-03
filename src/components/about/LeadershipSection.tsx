@@ -1,8 +1,9 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Quote, UserRound } from 'lucide-react'
+import { ArrowUpRight, Quote, UserRound, X } from 'lucide-react'
 
 import type { LeaderProfile } from '@/components/about/types'
 import { aboutTokens } from '@/components/about/tokens'
@@ -27,6 +28,8 @@ export function LeadershipSection({
   committeeTitle = 'Executive Committee & Members',
   committeeSubtitle = 'The dedicated team driving operations, governance, and community initiatives.',
 }: LeadershipSectionProps) {
+  const [selectedLeader, setSelectedLeader] = useState<LeaderProfile | null>(null)
+
   if (!leaders?.length && !committee?.length) return null
 
   return (
@@ -39,7 +42,7 @@ export function LeadershipSection({
             </AnimateOnScroll>
             <AnimateOnScroll stagger className="grid gap-6 lg:grid-cols-2">
               {leaders.map((leader) => (
-                <LeaderCard key={leader.id} leader={leader} />
+                <LeaderCard key={leader.id} leader={leader} onOpen={setSelectedLeader} />
               ))}
             </AnimateOnScroll>
           </div>
@@ -61,6 +64,12 @@ export function LeadershipSection({
                   key={leader.id}
                   className="about-committee-card card-pop relative flex min-h-[390px] h-full overflow-hidden rounded-[18px] border border-slate-200/80 px-8 py-10 shadow-[0_14px_32px_rgba(15,23,42,0.06)]"
                 >
+                  <button
+                    type="button"
+                    aria-label={`Read ${leader.name}'s biography`}
+                    onClick={() => setSelectedLeader(leader)}
+                    className="absolute inset-0 z-10 rounded-[18px] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[var(--about-primary)]"
+                  />
                   <div className="flex h-full w-full flex-col items-center text-center">
                     <div className="relative">
                       <div className="flex h-[120px] w-[120px] items-center justify-center rounded-full bg-gradient-to-br from-brand-50 to-brand-100 p-1.5 shadow-[0_10px_24px_rgba(59,1,11,0.12)] ring-1 ring-brand-100">
@@ -88,8 +97,13 @@ export function LeadershipSection({
                       {leader.designation}
                     </p>
                     {leader.bio && (
-                      <p className="mt-6 flex-1 text-sm leading-relaxed text-slate-600">{leader.bio}</p>
+                      <p className="mt-6 flex-1 text-sm leading-relaxed text-slate-600">
+                        {leader.bio}
+                      </p>
                     )}
+                    <span className="mt-6 inline-flex items-center gap-1 text-xs font-bold text-[var(--about-primary)]">
+                      Read biography <ArrowUpRight aria-hidden className="h-3.5 w-3.5" />
+                    </span>
                   </div>
                 </article>
               ))}
@@ -97,11 +111,20 @@ export function LeadershipSection({
           </div>
         </section>
       )}
+      {selectedLeader && (
+        <ProfileBioDialog leader={selectedLeader} onClose={() => setSelectedLeader(null)} />
+      )}
     </>
   )
 }
 
-function LeaderCard({ leader }: { leader: LeaderProfile }) {
+function LeaderCard({
+  leader,
+  onOpen,
+}: {
+  leader: LeaderProfile
+  onOpen: (_leader: LeaderProfile) => void
+}) {
   type SocialLink = {
     href: string
     label: string
@@ -147,7 +170,13 @@ function LeaderCard({ leader }: { leader: LeaderProfile }) {
   )
 
   return (
-    <article className="group h-full overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-[0_2px_16px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(15,23,42,0.10)]">
+    <article className="group relative h-full overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-[0_2px_16px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(15,23,42,0.10)]">
+      <button
+        type="button"
+        aria-label={`Read ${leader.name}'s biography`}
+        onClick={() => onOpen(leader)}
+        className="absolute inset-0 z-10 rounded-2xl focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[var(--about-primary)]"
+      />
       <div className="grid h-full grid-cols-[96px_1fr] sm:grid-cols-[140px_1fr] md:grid-cols-[160px_1fr]">
         {/* ── Photo panel ── */}
         <div className="relative min-h-[200px] overflow-hidden bg-slate-900 sm:min-h-[240px] md:min-h-[260px]">
@@ -196,7 +225,7 @@ function LeaderCard({ leader }: { leader: LeaderProfile }) {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`${leader.name} on ${label}`}
-                    className="flex h-[30px] w-[30px] items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-400 transition-all duration-150 hover:border-[var(--about-primary)]/30 hover:bg-[var(--about-primary)]/8 hover:text-[var(--about-primary)]"
+                    className="relative z-20 flex h-[30px] w-[30px] items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-400 transition-all duration-150 hover:border-[var(--about-primary)]/30 hover:bg-[var(--about-primary)]/8 hover:text-[var(--about-primary)]"
                   >
                     {icon}
                   </Link>
@@ -224,8 +253,94 @@ function LeaderCard({ leader }: { leader: LeaderProfile }) {
               {leader.bio}
             </p>
           )}
+          <span className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-[var(--about-primary)]">
+            Read biography <ArrowUpRight aria-hidden className="h-3.5 w-3.5" />
+          </span>
         </div>
       </div>
     </article>
+  )
+}
+
+function ProfileBioDialog({ leader, onClose }: { leader: LeaderProfile; onClose: () => void }) {
+  const dialogRef = useRef<HTMLDialogElement>(null)
+
+  useEffect(() => {
+    const dialog = dialogRef.current
+    if (dialog && !dialog.open) dialog.showModal()
+    return () => {
+      if (dialog?.open) dialog.close()
+    }
+  }, [])
+
+  const biography = leader.fullBio?.trim() || leader.bio?.trim()
+
+  return (
+    <dialog
+      ref={dialogRef}
+      aria-labelledby="profile-bio-title"
+      onClose={onClose}
+      className="fixed inset-0 m-0 h-dvh max-h-none w-screen max-w-none border-0 bg-transparent p-0 text-left backdrop:bg-slate-950/65 backdrop:backdrop-blur-sm"
+    >
+      <div
+        onClick={(event) => {
+          if (event.target === event.currentTarget) dialogRef.current?.close()
+        }}
+        className="grid h-full place-items-center overflow-y-auto p-4 sm:p-8"
+      >
+        <section className="relative my-auto max-h-[90dvh] w-full max-w-2xl overflow-y-auto rounded-3xl border border-white/70 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.28)]">
+          <button
+            type="button"
+            onClick={() => dialogRef.current?.close()}
+            aria-label="Close biography"
+            className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:border-[var(--about-primary)] hover:text-[var(--about-primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--about-primary)]"
+          >
+            <X aria-hidden className="h-5 w-5" />
+          </button>
+
+          <div className="h-2 bg-gradient-to-r from-[var(--about-primary)] via-brand-500 to-amber-400" />
+          <div className="p-6 sm:p-10">
+            <div className="flex items-center gap-5 pr-10">
+              <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full bg-brand-50 ring-4 ring-brand-50 sm:h-24 sm:w-24">
+                {leader.photoUrl ? (
+                  <Image src={leader.photoUrl} alt={leader.name} fill className="object-cover" />
+                ) : (
+                  <div className="flex h-full items-center justify-center text-xl font-bold text-[var(--about-primary)]">
+                    {leader.initials}
+                  </div>
+                )}
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--about-primary)]">
+                  AFRS Leadership
+                </p>
+                <h2
+                  id="profile-bio-title"
+                  className="mt-1 text-2xl font-extrabold leading-tight text-slate-950 sm:text-3xl"
+                >
+                  {leader.name}
+                </h2>
+                <p className="mt-1 text-sm font-semibold text-slate-500">{leader.designation}</p>
+              </div>
+            </div>
+
+            {leader.message && (
+              <blockquote className="mt-8 border-l-2 border-[var(--about-primary)] pl-4 text-sm italic leading-relaxed text-slate-600">
+                {leader.message}
+              </blockquote>
+            )}
+            {biography ? (
+              <div className="mt-8 whitespace-pre-line text-sm leading-7 text-slate-700 sm:text-base">
+                {biography}
+              </div>
+            ) : (
+              <p className="mt-8 text-sm leading-7 text-slate-600">
+                Biography details will be added soon.
+              </p>
+            )}
+          </div>
+        </section>
+      </div>
+    </dialog>
   )
 }

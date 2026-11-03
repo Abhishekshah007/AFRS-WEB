@@ -8,16 +8,13 @@ export function buildArticleDetail(doc: Article): ArticleDetailData {
   const base = mapFeaturedArticle(doc)
   const { html, sections } = renderArticleHtml(doc.content)
   const plain = richTextToPlain(doc.content, 12000)
-  const cmsTags = doc.tags?.map((t) => t.tag).filter(Boolean) as string[] | undefined
+  const cmsTags = doc.tags?.map((item) => item.tag.trim()).filter((tag) => tag.length > 0) ?? []
 
   return {
     ...base,
     coverUrl: base.coverUrl,
     secondaryTag: doc.secondaryTag ?? (doc.category === 'digitalForensics' ? 'AI in Forensics' : undefined),
-    tags:
-      cmsTags && cmsTags.length > 0
-        ? cmsTags
-        : ['#AIinForensics', '#ArtificialIntelligence', '#DigitalForensics', '#CyberCrime', '#Forensics'],
+    tags: [...new Set(cmsTags)],
     sections,
     htmlBody: html,
     bodyIntro:

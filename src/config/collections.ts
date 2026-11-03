@@ -17,6 +17,8 @@ import { Notices } from '../collections/Notices'
 import { SitePopups } from '../collections/SitePopups'
 import { PartnersLogo } from '../collections/PartnersLogo'
 import { SiteVisitors } from '../collections/SiteVisitors'
+import { ProgrammeCategories } from '../collections/ProgrammeCategories'
+import { Programmes } from '../collections/Programmes'
 
 /** Collections registered in logical admin-nav order. */
 export const collections = [
@@ -35,6 +37,8 @@ export const collections = [
   PartnersLogo,
   // Events & Programmes
   Events,
+  ProgrammeCategories,
+  Programmes,
   EventRegistrations,
   CourseRegistrations,
   // Inbox

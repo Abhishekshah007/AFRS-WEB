@@ -57,6 +57,14 @@ export const Founders: CollectionConfig = {
       admin: { description: 'One or two lines under the quote.' },
     },
     {
+      name: 'fullBio',
+      type: 'textarea',
+      label: 'Full biography',
+      admin: {
+        description: 'Shown in the profile dialog when visitors select this member.',
+      },
+    },
+    {
       name: 'isCommitteeMember',
       type: 'checkbox',
       defaultValue: false,

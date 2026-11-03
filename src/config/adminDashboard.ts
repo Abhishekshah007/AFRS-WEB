@@ -120,9 +120,19 @@ export const ADMIN_DASHBOARD_SECTIONS: AdminDashboardSection[] = [
         blurb: 'Workshops, conferences, and faculty development programmes shown on the site.',
       },
       {
+        href: '/admin/collections/programmeCategories',
+        title: 'Programme categories',
+        blurb: 'Edit category names, ordering, and the copy shown on programme pages.',
+      },
+      {
+        href: '/admin/collections/programmes',
+        title: 'Programmes',
+        blurb: 'Search, paginate, and edit courses individually, including registration and fees.',
+      },
+      {
         href: '/admin/globals/programmesCatalog',
-        title: 'Courses catalog',
-        blurb: 'Education and training programme cards and categories.',
+        title: 'Course site settings',
+        blurb: 'Archive links and fallback content for the course pages.',
       },
       {
         href: '/admin/globals/registrationForm',

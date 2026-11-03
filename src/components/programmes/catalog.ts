@@ -34,9 +34,139 @@ export const archiveFilterLinks: ArchiveFilterLinks = defaultArchiveFilterLinks
 type CmsTextRow = { text?: string | null }
 
 type ProgrammesCatalogGlobal = {
-  educationCategories?: EducationCategory[]
-  trainingCategories?: TrainingCategory[]
   archiveFilterLinks?: Partial<ArchiveFilterLinks>
+}
+
+type CategoryRecord = {
+  id: number
+  kind: 'education' | 'training'
+  sortOrder?: number | null
+  slug: string
+  icon: string
+  title: string
+  summary: string
+  intro?: string | null
+  tag?: string | null
+  tagTone?: string | null
+  body?: string | null
+  highlightsTitle?: string | null
+  highlightsNote?: string | null
+  whoCanApply?: unknown
+  outcomesTitle?: string | null
+  outcomes?: unknown
+  ctaLabel?: string | null
+  vision?: string | null
+  missionTitle?: string | null
+  missionItems?: unknown
+  extraSections?: unknown
+  disclaimer?: string | null
+}
+
+type ProgrammeRecord = Record<string, unknown> & {
+  programmeId: string
+  category: number | { id: number }
+}
+
+async function findAllCatalogueRecords(collection: 'programmeCategories' | 'programmes') {
+  const payload = await getPayloadClient()
+  const records: Record<string, unknown>[] = []
+  let page = 1
+
+  while (true) {
+    const result = await payload.find({
+      collection,
+      limit: 500,
+      page,
+      depth: 0,
+      sort: 'sortOrder',
+      overrideAccess: false,
+    })
+    records.push(...(result.docs as unknown as Record<string, unknown>[]))
+    if (!result.hasNextPage) return records
+    page += 1
+  }
+}
+
+function relatedCategoryId(value: ProgrammeRecord['category']): string {
+  return String(typeof value === 'object' ? value.id : value)
+}
+
+function programmesByCategoryId(records: Record<string, unknown>[]) {
+  const grouped = new Map<string, ProgrammeListItem[]>()
+  for (const rawRecord of records) {
+    const record = rawRecord as ProgrammeRecord
+    const categoryId = relatedCategoryId(record.category)
+    const categoryProgrammes = grouped.get(categoryId) ?? []
+    categoryProgrammes.push({
+      ...(record as unknown as Omit<ProgrammeListItem, 'id'>),
+      id: record.programmeId,
+    })
+    grouped.set(categoryId, categoryProgrammes)
+  }
+  return grouped
+}
+
+function mapEducationCategory(
+  category: CategoryRecord,
+  programmes: ProgrammeListItem[],
+): EducationCategory {
+  return {
+    slug: category.slug,
+    icon: category.icon,
+    title: category.title,
+    summary: category.summary,
+    intro: category.intro,
+    programmes,
+  }
+}
+
+function mapTrainingCategory(
+  category: CategoryRecord,
+  programmes: ProgrammeListItem[],
+): TrainingCategory {
+  return {
+    slug: category.slug,
+    icon: category.icon,
+    title: category.title,
+    tag: category.tag ?? '',
+    tagTone: isTagTone(category.tagTone) ? category.tagTone : 'blue',
+    summary: category.summary,
+    intro: category.intro,
+    body: category.body,
+    highlightsTitle: category.highlightsTitle,
+    highlightsNote: category.highlightsNote,
+    whoCanApply: toTextArray(category.whoCanApply),
+    outcomesTitle: category.outcomesTitle,
+    outcomes: toTextArray(category.outcomes),
+    ctaLabel: category.ctaLabel,
+    vision: category.vision,
+    missionTitle: category.missionTitle,
+    missionItems: toTextArray(category.missionItems),
+    extraSections: toExtraSections(category.extraSections),
+    disclaimer: category.disclaimer,
+    programmes,
+  }
+}
+
+async function findProgrammesForCategory(categoryId: number) {
+  const payload = await getPayloadClient()
+  const records: Record<string, unknown>[] = []
+  let page = 1
+
+  while (true) {
+    const result = await payload.find({
+      collection: 'programmes',
+      where: { category: { equals: categoryId } },
+      limit: 500,
+      page,
+      depth: 0,
+      sort: 'sortOrder',
+      overrideAccess: false,
+    })
+    records.push(...(result.docs as unknown as Record<string, unknown>[]))
+    if (!result.hasNextPage) return records
+    page += 1
+  }
 }
 
 function isTagTone(value: string | null | undefined): value is TagTone {
@@ -117,7 +247,31 @@ function mergeBySlug<T extends { slug: string; programmes: ProgrammeListItem[] }
     merged.push(mergeItem(cmsItem, cmsItem))
   }
 
+  const defaultOrder = new Map(defaults.map((item, index) => [item.slug, index]))
+  const cmsOrder = new Map(
+    (cms ?? []).map((item, index) => [
+      item.slug,
+      {
+        order: (item as T & { sortOrder?: number | null }).sortOrder,
+        index,
+      },
+    ]),
+  )
+
   return merged
+    .map((item, index) => {
+      const cmsPosition = cmsOrder.get(item.slug)
+      return {
+        item,
+        order:
+          typeof cmsPosition?.order === 'number'
+            ? cmsPosition.order
+            : (defaultOrder.get(item.slug) ?? index),
+        tieBreaker: cmsPosition?.index ?? index,
+      }
+    })
+    .sort((left, right) => left.order - right.order || left.tieBreaker - right.tieBreaker)
+    .map(({ item }) => item)
 }
 
 function mergeEducationItem(
@@ -196,40 +350,136 @@ function normalizeArchiveLinks(links: Partial<ArchiveFilterLinks> | undefined): 
 export async function getProgrammesCatalogData() {
   try {
     const payload = await getPayloadClient()
-    const global = (await payload.findGlobal({
-      slug: 'programmesCatalog',
-      depth: 0,
-      overrideAccess: false,
-    })) as ProgrammesCatalogGlobal
+    const [categoryRecords, programmeRecords, global] = await Promise.all([
+      findAllCatalogueRecords('programmeCategories'),
+      findAllCatalogueRecords('programmes'),
+      payload.findGlobal({
+        slug: 'programmesCatalog',
+        depth: 0,
+        select: { archiveFilterLinks: true },
+        overrideAccess: false,
+      }) as Promise<ProgrammesCatalogGlobal>,
+    ])
 
+    const programmesByCategory = programmesByCategoryId(programmeRecords)
+    const categories = categoryRecords as unknown as CategoryRecord[]
+    const education = categories
+      .filter((category) => category.kind === 'education')
+      .map((category) =>
+        mapEducationCategory(
+          category,
+          programmesByCategory.get(String(category.id)) ?? [],
+        ),
+      )
+    const training = categories
+      .filter((category) => category.kind === 'training')
+      .map((category) =>
+        mapTrainingCategory(
+          category,
+          programmesByCategory.get(String(category.id)) ?? [],
+        ),
+      )
     return {
-      educationCategories: normalizeEducation(global.educationCategories),
-      trainingCategories: normalizeTraining(global.trainingCategories),
+      educationCategories: normalizeEducation(education),
+      trainingCategories: normalizeTraining(training),
       archiveFilterLinks: normalizeArchiveLinks(global.archiveFilterLinks),
     }
-  } catch {
+  } catch (error) {
+    console.error('[programmes/catalog] Unable to load catalogue records', error)
     return { educationCategories, trainingCategories, archiveFilterLinks }
   }
 }
 
 export async function getEducationCategories() {
-  return (await getProgrammesCatalogData()).educationCategories
+  try {
+    const records = (await findAllCatalogueRecords('programmeCategories')) as unknown as CategoryRecord[]
+    const categories = records
+      .filter((category) => category.kind === 'education')
+      .map((category) => mapEducationCategory(category, []))
+    return normalizeEducation(categories)
+  } catch (error) {
+    console.error('[programmes/catalog] Unable to load education categories', error)
+    return educationCategories
+  }
 }
 
 export async function getTrainingCategories() {
-  return (await getProgrammesCatalogData()).trainingCategories
+  try {
+    const records = (await findAllCatalogueRecords('programmeCategories')) as unknown as CategoryRecord[]
+    const categories = records
+      .filter((category) => category.kind === 'training')
+      .map((category) => mapTrainingCategory(category, []))
+    return normalizeTraining(categories)
+  } catch (error) {
+    console.error('[programmes/catalog] Unable to load training categories', error)
+    return trainingCategories
+  }
 }
 
 export async function getArchiveFilterLinks() {
-  return (await getProgrammesCatalogData()).archiveFilterLinks
+  try {
+    const payload = await getPayloadClient()
+    const global = (await payload.findGlobal({
+      slug: 'programmesCatalog',
+      depth: 0,
+      select: { archiveFilterLinks: true },
+      overrideAccess: false,
+    })) as ProgrammesCatalogGlobal
+    return normalizeArchiveLinks(global.archiveFilterLinks)
+  } catch (error) {
+    console.error('[programmes/catalog] Unable to load archive filter links', error)
+    return archiveFilterLinks
+  }
 }
 
 export async function getEducationCategory(slug: string): Promise<EducationCategory | undefined> {
-  return (await getEducationCategories()).find((c) => c.slug === slug)
+  try {
+    const payload = await getPayloadClient()
+    const result = await payload.find({
+      collection: 'programmeCategories',
+      where: {
+        and: [{ kind: { equals: 'education' } }, { slug: { equals: slug } }],
+      },
+      limit: 1,
+      depth: 0,
+      overrideAccess: false,
+    })
+    const doc = result.docs[0]
+    if (!doc) return (await getEducationCategories()).find((category) => category.slug === slug)
+    const category = mapEducationCategory(
+      doc as unknown as CategoryRecord,
+      (programmesByCategoryId(await findProgrammesForCategory(doc.id)).get(String(doc.id)) ?? []),
+    )
+    return normalizeEducation([category]).find((item) => item.slug === slug)
+  } catch (error) {
+    console.error(`[programmes/catalog] Unable to load education category "${slug}"`, error)
+    return (await getEducationCategories()).find((category) => category.slug === slug)
+  }
 }
 
 export async function getTrainingCategory(slug: string): Promise<TrainingCategory | undefined> {
-  return (await getTrainingCategories()).find((c) => c.slug === slug)
+  try {
+    const payload = await getPayloadClient()
+    const result = await payload.find({
+      collection: 'programmeCategories',
+      where: {
+        and: [{ kind: { equals: 'training' } }, { slug: { equals: slug } }],
+      },
+      limit: 1,
+      depth: 0,
+      overrideAccess: false,
+    })
+    const doc = result.docs[0]
+    if (!doc) return (await getTrainingCategories()).find((category) => category.slug === slug)
+    const category = mapTrainingCategory(
+      doc as unknown as CategoryRecord,
+      (programmesByCategoryId(await findProgrammesForCategory(doc.id)).get(String(doc.id)) ?? []),
+    )
+    return normalizeTraining([category]).find((item) => item.slug === slug)
+  } catch (error) {
+    console.error(`[programmes/catalog] Unable to load training category "${slug}"`, error)
+    return (await getTrainingCategories()).find((category) => category.slug === slug)
+  }
 }
 
 export function orderProgrammesByActiveEventSlugs(

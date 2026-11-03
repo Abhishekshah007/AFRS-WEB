@@ -11,6 +11,7 @@ type PageMetaInput = {
   publishedTime?: string | null
   modifiedTime?: string | null
   authors?: string[]
+  keywords?: string[]
 }
 
 export function buildPageMetadata({
@@ -23,6 +24,7 @@ export function buildPageMetadata({
   publishedTime,
   modifiedTime,
   authors,
+  keywords,
 }: PageMetaInput): Metadata {
   const desc = clipMeta(description, 160)
   const url = absoluteUrl(path)
@@ -32,6 +34,7 @@ export function buildPageMetadata({
   return {
     title,
     description: desc,
+    keywords: keywords?.length ? keywords : undefined,
     alternates: { canonical: path },
     robots: index
       ? {
