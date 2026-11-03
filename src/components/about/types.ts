@@ -84,6 +84,7 @@ export type LeaderProfile = {
   name: string
   designation: string
   bio?: string | null
+  fullBio?: string | null
   message?: string | null
   photoUrl?: string
   initials: string

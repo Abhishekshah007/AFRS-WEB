@@ -1,11 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
-import { editorManagedGlobalAccess } from '../access'
-import {
-  defaultArchiveFilterLinks,
-  defaultEducationCategories,
-  defaultTrainingCategories,
-} from '@/data/defaults/programmes/catalog'
+import { isAdminEditorOrEventManager, isPublic } from '../access'
+import { defaultArchiveFilterLinks } from '@/data/defaults/programmes/catalog'
 import {
   defaultGallery,
   defaultHubEvents,
@@ -18,18 +14,22 @@ import { educationProgrammeItemFields, programmeItemFields } from '../fields/pro
 
 export const ProgrammesCatalog: GlobalConfig = {
   slug: 'programmesCatalog',
-  label: 'Courses catalog',
-  access: editorManagedGlobalAccess,
+  label: 'Course site settings',
+  access: {
+    read: isPublic,
+    update: isAdminEditorOrEventManager,
+  },
   admin: {
     group: ADMIN_GROUPS.PROGRAMMES,
-    description: 'Education and training programme cards, categories, and fallback gallery images.',
+    description:
+      'Course archive links and fallback content. Edit category copy in Programme categories and individual courses in Programmes.',
   },
   fields: [
     {
       name: 'educationCategories',
       type: 'array',
       dbName: 'edu_cats',
-      defaultValue: defaultEducationCategories,
+      admin: { hidden: true },
       fields: [
         { name: 'slug', type: 'text', required: true },
         { name: 'icon', type: 'text', required: true },
@@ -40,6 +40,7 @@ export const ProgrammesCatalog: GlobalConfig = {
           name: 'programmes',
           type: 'array',
           dbName: 'edu_progs',
+          admin: { hidden: true },
           fields: educationProgrammeItemFields,
         },
       ],
@@ -48,17 +49,7 @@ export const ProgrammesCatalog: GlobalConfig = {
       name: 'trainingCategories',
       type: 'array',
       dbName: 'train_cats',
-      defaultValue: defaultTrainingCategories.map((category) => ({
-        ...category,
-        whoCanApply: category.whoCanApply?.map((text) => ({ text })),
-        outcomes: category.outcomes?.map((text) => ({ text })),
-        missionItems: category.missionItems?.map((text) => ({ text })),
-        extraSections: category.extraSections?.map((section) => ({
-          title: section.title,
-          note: section.note,
-          items: section.items.map((text) => ({ text })),
-        })),
-      })),
+      admin: { hidden: true },
       fields: [
         { name: 'slug', type: 'text', required: true },
         { name: 'icon', type: 'text', required: true },
@@ -83,12 +74,14 @@ export const ProgrammesCatalog: GlobalConfig = {
         {
           name: 'whoCanApply',
           type: 'array',
+          admin: { hidden: true },
           fields: [{ name: 'text', type: 'text', required: true }],
         },
         { name: 'outcomesTitle', type: 'text' },
         {
           name: 'outcomes',
           type: 'array',
+          admin: { hidden: true },
           fields: [{ name: 'text', type: 'text', required: true }],
         },
         { name: 'ctaLabel', type: 'text' },
@@ -97,23 +90,32 @@ export const ProgrammesCatalog: GlobalConfig = {
         {
           name: 'missionItems',
           type: 'array',
+          admin: { hidden: true },
           fields: [{ name: 'text', type: 'text', required: true }],
         },
         {
           name: 'extraSections',
           type: 'array',
+          admin: { hidden: true },
           fields: [
             { name: 'title', type: 'text', required: true },
             {
               name: 'items',
               type: 'array',
+              admin: { hidden: true },
               fields: [{ name: 'text', type: 'text', required: true }],
             },
             { name: 'note', type: 'textarea' },
           ],
         },
         { name: 'disclaimer', type: 'textarea' },
-        { name: 'programmes', type: 'array', dbName: 'progs', fields: programmeItemFields },
+        {
+          name: 'programmes',
+          type: 'array',
+          dbName: 'progs',
+          admin: { hidden: true },
+          fields: programmeItemFields,
+        },
       ],
     },
     {

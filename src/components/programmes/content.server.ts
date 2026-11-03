@@ -17,6 +17,12 @@ async function readCatalogGlobal(): Promise<ProgrammesCatalogContent | null> {
     return (await payload.findGlobal({
       slug: 'programmesCatalog',
       depth: 1,
+      select: {
+        trainingChecklist: true,
+        fallbackHubEvents: true,
+        fallbackResourcePersons: true,
+        fallbackGallery: true,
+      },
       overrideAccess: false,
     })) as ProgrammesCatalogContent
   } catch (error) {

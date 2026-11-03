@@ -80,6 +80,8 @@ export const AFRS_NAV_SECTIONS: AdminNavSection[] = [
     roles: ['superAdmin', 'eventManager'],
     entities: [
       { type: 'collection', slug: 'events' },
+      { type: 'collection', slug: 'programmeCategories' },
+      { type: 'collection', slug: 'programmes' },
       { type: 'collection', slug: 'resourcePersons' },
       { type: 'global', slug: 'programmesCatalog' },
       { type: 'global', slug: 'registrationForm' },

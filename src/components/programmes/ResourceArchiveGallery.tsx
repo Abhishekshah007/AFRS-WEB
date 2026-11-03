@@ -299,7 +299,7 @@ function PersonModalProfile({
       <div className="bg-slate-50 p-8">
         <PersonAvatar person={person} size="lg" />
         {person.title && (
-          <p className="mt-5 text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--prog-primary)]">
+          <p className="mt-5 text-xs font-extrabold tracking-[0.18em] text-[var(--prog-primary)]">
             {person.title}
           </p>
         )}

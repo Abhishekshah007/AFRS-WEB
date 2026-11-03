@@ -43,7 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const payload = await getPayloadClient()
-    const [services, events, articles] = await Promise.all([
+    const [services, events, articles, categories] = await Promise.all([
       payload.find({
         collection: 'services',
         where: { published: { equals: true } },
@@ -61,6 +61,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       payload.find({
         collection: 'articles',
         where: { published: { equals: true } },
+        limit: 1000,
+        depth: 0,
+        overrideAccess: false,
+      }),
+      payload.find({
+        collection: 'programmeCategories',
         limit: 1000,
         depth: 0,
         overrideAccess: false,
@@ -98,7 +104,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.65,
       }))
 
-    return [...staticEntries, ...serviceEntries, ...eventEntries, ...articleEntries]
+    const staticUrls = new Set(staticEntries.map(({ url }) => url))
+    const programmeCategoryEntries: MetadataRoute.Sitemap = categories.docs
+      .filter(
+        (category) =>
+          typeof category.slug === 'string' &&
+          category.slug &&
+          !staticUrls.has(`${origin}/courses/${category.kind}/${category.slug}`),
+      )
+      .map((category) => ({
+        url: `${origin}/courses/${category.kind}/${category.slug}`,
+        lastModified: category.updatedAt ? new Date(category.updatedAt) : now,
+        changeFrequency: 'monthly',
+        priority: 0.6,
+      }))
+
+    return [
+      ...staticEntries,
+      ...serviceEntries,
+      ...eventEntries,
+      ...articleEntries,
+      ...programmeCategoryEntries,
+    ]
   } catch {
     const fallbackServices: MetadataRoute.Sitemap = defaultServicesCatalog.map((service) => ({
       url: `${origin}/services/${service.slug}`,

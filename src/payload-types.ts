@@ -80,6 +80,8 @@ export interface Config {
     sitePopups: SitePopup;
     partnersLogo: PartnersLogo;
     events: Event;
+    programmeCategories: ProgrammeCategory;
+    programmes: Programme;
     eventRegistrations: EventRegistration;
     courseRegistrations: CourseRegistration;
     contactMessages: ContactMessage;
@@ -106,6 +108,8 @@ export interface Config {
     sitePopups: SitePopupsSelect<false> | SitePopupsSelect<true>;
     partnersLogo: PartnersLogoSelect<false> | PartnersLogoSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
+    programmeCategories: ProgrammeCategoriesSelect<false> | ProgrammeCategoriesSelect<true>;
+    programmes: ProgrammesSelect<false> | ProgrammesSelect<true>;
     eventRegistrations: EventRegistrationsSelect<false> | EventRegistrationsSelect<true>;
     courseRegistrations: CourseRegistrationsSelect<false> | CourseRegistrationsSelect<true>;
     contactMessages: ContactMessagesSelect<false> | ContactMessagesSelect<true>;
@@ -237,6 +241,9 @@ export interface Article {
    * Optional second category pill (e.g. AI in Forensics).
    */
   secondaryTag?: string | null;
+  /**
+   * Add article-specific keywords for search engines. These are also shown on the article page.
+   */
   tags?:
     | {
         tag: string;
@@ -342,6 +349,10 @@ export interface Founder {
    * One or two lines under the quote.
    */
   bio?: string | null;
+  /**
+   * Shown in the profile dialog when visitors select this member.
+   */
+  fullBio?: string | null;
   /**
    * Enable for a profile shown under Executive Committee & Members instead of Leadership Team.
    */
@@ -851,6 +862,170 @@ export interface Event {
   createdAt: string;
 }
 /**
+ * Manage category titles and page copy here. Edit individual courses from Programmes; each course is a separate record.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programmeCategories".
+ */
+export interface ProgrammeCategory {
+  id: number;
+  kind: 'education' | 'training';
+  title: string;
+  /**
+   * Permanent URL identifier. Avoid changing it after sharing the category link.
+   */
+  slug: string;
+  icon: string;
+  summary: string;
+  intro?: string | null;
+  tag?: string | null;
+  tagTone?: ('blue' | 'green' | 'purple' | 'orange') | null;
+  /**
+   * Lower numbers appear first on the website.
+   */
+  sortOrder?: number | null;
+  body?: string | null;
+  highlightsTitle?: string | null;
+  highlightsNote?: string | null;
+  whoCanApply?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  outcomesTitle?: string | null;
+  outcomes?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  ctaLabel?: string | null;
+  vision?: string | null;
+  missionTitle?: string | null;
+  missionItems?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  extraSections?:
+    | {
+        title: string;
+        items?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        note?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  disclaimer?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Each course is a separate record. Search or filter the list, then edit only the selected programme.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programmes".
+ */
+export interface Programme {
+  id: number;
+  /**
+   * Choose the category where this programme appears.
+   */
+  category: number | ProgrammeCategory;
+  title: string;
+  description: string;
+  duration: string;
+  mode: string;
+  level?: string | null;
+  /**
+   * Choose AFRS or AFSL. This controls the payment details and QR code shown to participants.
+   */
+  organization: 'afrs' | 'afsl';
+  /**
+   * Generated from the programme title. This stable identifier connects registration links and existing submissions.
+   */
+  programmeId: string;
+  /**
+   * Optional. Enter the slug of a published Events record to send applicants to its event page.
+   */
+  eventSlug?: string | null;
+  /**
+   * Control whether registration is free or paid, fee tiers, payment QR/bank details, and instructions participants must accept.
+   */
+  registration?: {
+    registrationType?: ('free' | 'paid_manual' | 'paid_gateway') | null;
+    /**
+     * Which payment block to show. Use “Both” to let participants choose Indian or International fees.
+     */
+    participantRegion?: ('indian' | 'international' | 'both') | null;
+    /**
+     * Starter categories are provided for Indian (INR) and international (USD) participants. Update the default 0 fees before publishing paid registration, or keep 0 for free entry.
+     */
+    feeTiers?:
+      | {
+          label: string;
+          amount: number;
+          currency: 'INR' | 'USD';
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * When paid, require transaction ID and proof upload before submission.
+     */
+    requirePaymentProof?: boolean | null;
+    /**
+     * Use payment details for the selected organization. Turn off to change payment text and QR for this item only.
+     */
+    useGlobalPaymentDetails?: boolean | null;
+    /**
+     * Payment text shown to participants when global payment details are disabled.
+     */
+    paymentInstructions?: {
+      title?: string | null;
+      accountName?: string | null;
+      accountNumber?: string | null;
+      ifsc?: string | null;
+      swift?: string | null;
+      branchAddress?: string | null;
+      upiId?: string | null;
+      /**
+       * PayPal.me or international payment link.
+       */
+      paypalLink?: string | null;
+      note?: string | null;
+    };
+    /**
+     * Optional QR override for this event or course. AFSL registrations use the supplied AFSL QR when no override is selected.
+     */
+    paymentQrCode?: (number | null) | Media;
+    /**
+     * Use the default instructions for this event’s selected organization (AFRS or AFSL) from Globals → Registration Form.
+     */
+    useGlobalInstructions?: boolean | null;
+    /**
+     * Shown before payment. Participants must agree to continue.
+     */
+    instructions?: string | null;
+    /**
+     * Require participants to accept instructions before proceeding to payment.
+     */
+    requireAgreement?: boolean | null;
+  };
+  /**
+   * Lower numbers appear first within the category.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * People who registered for events. This is the list used for attendance and certificates.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1145,6 +1320,14 @@ export interface PayloadLockedDocument {
         value: number | Event;
       } | null)
     | ({
+        relationTo: 'programmeCategories';
+        value: number | ProgrammeCategory;
+      } | null)
+    | ({
+        relationTo: 'programmes';
+        value: number | Programme;
+      } | null)
+    | ({
         relationTo: 'eventRegistrations';
         value: number | EventRegistration;
       } | null)
@@ -1270,6 +1453,7 @@ export interface FoundersSelect<T extends boolean = true> {
   photo?: T;
   message?: T;
   bio?: T;
+  fullBio?: T;
   isCommitteeMember?: T;
   linkedin?: T;
   instagram?: T;
@@ -1511,6 +1695,114 @@ export interface EventsSelect<T extends boolean = true> {
       };
   showInHomePopup?: T;
   published?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programmeCategories_select".
+ */
+export interface ProgrammeCategoriesSelect<T extends boolean = true> {
+  kind?: T;
+  title?: T;
+  slug?: T;
+  icon?: T;
+  summary?: T;
+  intro?: T;
+  tag?: T;
+  tagTone?: T;
+  sortOrder?: T;
+  body?: T;
+  highlightsTitle?: T;
+  highlightsNote?: T;
+  whoCanApply?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  outcomesTitle?: T;
+  outcomes?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  ctaLabel?: T;
+  vision?: T;
+  missionTitle?: T;
+  missionItems?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  extraSections?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        note?: T;
+        id?: T;
+      };
+  disclaimer?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programmes_select".
+ */
+export interface ProgrammesSelect<T extends boolean = true> {
+  category?: T;
+  title?: T;
+  description?: T;
+  duration?: T;
+  mode?: T;
+  level?: T;
+  organization?: T;
+  programmeId?: T;
+  eventSlug?: T;
+  registration?:
+    | T
+    | {
+        registrationType?: T;
+        participantRegion?: T;
+        feeTiers?:
+          | T
+          | {
+              label?: T;
+              amount?: T;
+              currency?: T;
+              description?: T;
+              id?: T;
+            };
+        requirePaymentProof?: T;
+        useGlobalPaymentDetails?: T;
+        paymentInstructions?:
+          | T
+          | {
+              title?: T;
+              accountName?: T;
+              accountNumber?: T;
+              ifsc?: T;
+              swift?: T;
+              branchAddress?: T;
+              upiId?: T;
+              paypalLink?: T;
+              note?: T;
+            };
+        paymentQrCode?: T;
+        useGlobalInstructions?: T;
+        instructions?: T;
+        requireAgreement?: T;
+      };
+  sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2135,7 +2427,7 @@ export interface ServicesPage {
   createdAt?: string | null;
 }
 /**
- * Education and training programme cards, categories, and fallback gallery images.
+ * Course archive links and fallback content. Edit category copy in Programme categories and individual courses in Programmes.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "programmesCatalog".
@@ -3129,6 +3421,8 @@ export interface AdminAccess {
                 | 'media'
                 | 'notices'
                 | 'partnersLogo'
+                | 'programmeCategories'
+                | 'programmes'
                 | 'resourcePersons'
                 | 'services'
                 | 'users'

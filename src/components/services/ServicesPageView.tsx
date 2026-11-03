@@ -111,6 +111,7 @@ export function ServicesPageView({
             <div className="rounded-[6px] bg-[#3B010B] px-7 py-5 shadow-xl relative overflow-hidden min-h-[180px]">
               <video
                 controls
+                autoPlay
                 loop
                 playsInline
                 preload="metadata"

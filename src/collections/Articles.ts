@@ -46,6 +46,11 @@ export const Articles: CollectionConfig = {
     {
       name: 'tags',
       type: 'array',
+      label: 'SEO tags',
+      admin: {
+        description:
+          'Add article-specific keywords for search engines. These are also shown on the article page.',
+      },
       fields: [{ name: 'tag', type: 'text', required: true }],
     },
     {

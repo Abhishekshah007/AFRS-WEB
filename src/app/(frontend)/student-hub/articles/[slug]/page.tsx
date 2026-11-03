@@ -41,6 +41,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   })
   const doc = result.docs[0] as Article | undefined
   if (!doc) return { title: 'Article not found', robots: { index: false, follow: false } }
+  const keywords = [
+    ...new Set(
+      doc.tags?.map((item) => item.tag?.trim()).filter((tag): tag is string => Boolean(tag)) ?? [],
+    ),
+  ]
   return buildPageMetadata({
     title: doc.title,
     description: clipMeta(doc.excerpt || doc.title, 160),
@@ -48,6 +53,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     type: 'article',
     publishedTime: doc.publishedDate,
     authors: doc.authorName ? [doc.authorName] : undefined,
+    keywords,
   })
 }
 
@@ -121,6 +127,7 @@ export default async function ArticleDetailPage({ params }: Props) {
             '@type': 'Article',
             headline: article.title,
             description: article.excerpt,
+            keywords: article.tags.length ? article.tags.join(', ') : undefined,
             datePublished: doc.publishedDate || undefined,
             author: doc.authorName
               ? { '@type': 'Person', name: doc.authorName }
