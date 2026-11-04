@@ -26,6 +26,20 @@ body {
   color: var(--brand-ink);
 }
 
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input,
+textarea,
+[contenteditable="true"],
+[contenteditable=""] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
 img {
   -webkit-user-drag: none;
   user-select: none;

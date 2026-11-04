@@ -95,7 +95,11 @@ export function formatNoticeDate(date: string | null | undefined): string {
 
 export function formatEventType(value: string | null | undefined): string {
   if (!value) return ''
-  return value.charAt(0).toUpperCase() + value.slice(1)
+  return value
+    .split(/[-_\s]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ')
 }
 
 export function isValidExternalUrl(href: string | null | undefined): boolean {

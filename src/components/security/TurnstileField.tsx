@@ -61,9 +61,12 @@ export function TurnstileField({ onTokenChange, className }: TurnstileFieldProps
   }, [onTokenChange, renderFailed, siteKey])
 
   useEffect(() => {
-    if (scriptReady) renderWidget()
+    const frameId = window.requestAnimationFrame(() => {
+      if (scriptReady) renderWidget()
+    })
 
     return () => {
+      window.cancelAnimationFrame(frameId)
       if (widgetIdRef.current && window.turnstile) {
         window.turnstile.remove(widgetIdRef.current)
         widgetIdRef.current = null

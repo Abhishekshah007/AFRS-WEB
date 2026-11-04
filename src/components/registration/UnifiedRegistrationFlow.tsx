@@ -94,7 +94,7 @@ export function UnifiedRegistrationFlow({
   const showPayment = isPaid && config.requirePaymentProof
   const organizationName =
     config.organization === 'afsl'
-      ? 'Applied Forensic Science Lab India LLP (AFSL)'
+      ? 'AFSL SERVICES INDIA LLP (AFSL)'
       : 'Applied Forensic Research Sciences (AFRS)'
 
   const [loading, setLoading] = useState(false)

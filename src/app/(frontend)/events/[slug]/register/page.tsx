@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { getPayloadClient } from '@/lib/payload'
-import { formatEventDate, resolveMediaUrl, richTextToPlain } from '@/lib/cms'
+import { formatEventDate, formatEventType, resolveMediaUrl, richTextToPlain } from '@/lib/cms'
 import { FALLBACK_BANNER_IMAGE } from '@/lib/constants/assets'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 import { normalizeDynamicSections } from '@/lib/registration/normalizeDynamicSections'
@@ -80,7 +80,7 @@ export default async function EventRegisterPage({ params }: Props) {
         slug: eventSlug,
         title: evt.title,
         banner,
-        eventType: evt.eventType || 'Workshop',
+        eventType: formatEventType(evt.eventType) || 'Workshop',
         mode: evt.mode || 'hybrid',
         dateLabel,
         timeLabel: evt.startTime || '10:00 AM - 04:00 PM IST',
