@@ -722,7 +722,22 @@ export interface Event {
     [k: string]: unknown;
   } | null;
   eventNature?: ('national' | 'international') | null;
-  eventType?: ('workshop' | 'conference' | 'training' | 'fdp' | 'internship') | null;
+  eventType?:
+    | (
+        | 'workshop'
+        | 'conference'
+        | 'training'
+        | 'fdp'
+        | 'internship'
+        | 'professional-training-program'
+        | 'professional-internship-program'
+        | 'professional-workshop-program'
+        | 'capsule-training-program'
+        | 'police-training-program'
+        | 'certificate-course'
+        | 'foundation-certificate-course'
+      )
+    | null;
   mode?: ('online' | 'offline' | 'hybrid') | null;
   startDate: string;
   /**

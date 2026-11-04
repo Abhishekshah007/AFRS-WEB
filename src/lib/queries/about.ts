@@ -196,8 +196,8 @@ function toFounderProfile(doc: Founder): LeaderProfile {
       resolveMediaUrlOptional(doc.photo as number | Media | null | undefined) ??
       fallbackProfile?.photoUrl,
     message: doc.message?.trim() || null,
-    bio: doc.bio?.trim() || null,
-    fullBio: doc.fullBio?.trim() || null,
+    bio: doc.bio?.trim() || fallbackProfile?.bio || null,
+    fullBio: doc.fullBio?.trim() || fallbackProfile?.fullBio || null,
     socials: {
       linkedin: socialUrl(doc.linkedin),
       instagram: socialUrl(doc.instagram),

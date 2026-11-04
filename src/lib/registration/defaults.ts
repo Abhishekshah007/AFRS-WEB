@@ -12,8 +12,8 @@ export const DEFAULT_REGISTRATION_INSTRUCTIONS = `Please enter your Full Name, C
 • Participants are expected to maintain professional conduct and discipline throughout the program.
 • Certificates will be issued only after successful participation/attendance as per the program guidelines.`
 
-export const DEFAULT_AFSL_REGISTRATION_INSTRUCTIONS = `𝗔𝗽𝗽𝗹𝗶𝗰𝗮𝗻𝘁𝘀 𝗮𝗿𝗲 𝗮𝗱𝘃𝗶𝘀𝗲𝗱 𝘁𝗼 𝗿𝗲𝗮𝗱 𝘁𝗵𝗲 𝗳𝗼𝗹𝗹𝗼𝘄𝗶𝗻𝗴 𝗶𝗻𝘀𝘁𝗿𝘂𝗰𝘁𝗶𝗼𝗻𝘀 𝗰𝗮𝗿𝗲𝗳𝘂𝗹𝗹𝘆 𝗯𝗲𝗳𝗼𝗿𝗲 𝗽𝗿𝗼𝗰𝗲𝗲𝗱𝗶𝗻𝗴 𝘄𝗶𝘁𝗵 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻:
-1. 𝑨𝒄𝒄𝒆𝒑𝒕𝒂𝒏𝒄𝒆 𝒐𝒇 𝑻𝒆𝒓𝒎𝒔: By submitting the registration form, applicants confirm that they have read, understood, and agreed to the applicable Terms & Conditions, Privacy Policy, and Refund/Cancellation Policy of Applied Forensic Science Lab India LLP (AFSL).
+export const DEFAULT_AFSL_REGISTRATION_INSTRUCTIONS = `𝗔𝗽𝗽𝗹𝗶𝗰𝗮𝗻𝘁𝘀 𝗮𝗿𝗲 𝗮𝗱𝘃𝗶𝘀𝗲𝗱 𝘁𝗼 𝗿𝗲𝗮𝗱 𝘁𝗵𝗲 𝗳𝗼𝗹𝗹𝗼𝘄𝗶𝗻𝗴 𝗶𝗻𝘀𝘁𝗿𝘂𝗰𝘁𝗶𝗼𝗻𝘀 𝗰𝗮𝗿𝗲𝗳𝘂𝗹𝗹𝘆 𝗯𝗲𝗳𝗼𝗿𝗲 𝗽𝗿𝗼𝗰𝗲𝗲𝗱𝗶𝗻𝗴 �_with 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻:
+1. 𝑨𝒄𝒄𝒆𝒑𝒕𝒂𝒏𝒄𝒆 𝒐𝒇 𝑻𝒆𝒓𝒎𝒔: By submitting the registration form, applicants confirm that they have read, understood, and agreed to the applicable Terms & Conditions, Privacy Policy, and Refund/Cancellation Policy of AFSL SERVICES INDIA LLP (AFSL).
 2. 𝑨𝒄𝒄𝒖𝒓𝒂𝒕𝒆 𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒐𝒏: All information provided in the registration form must be accurate, complete, and truthful to the best of the applicant’s knowledge.
 3. 𝑵𝒂𝒎𝒆 𝒇𝒐𝒓 𝑪𝒆𝒓𝒕𝒊𝒇𝒊𝒄𝒂𝒕𝒆: Applicants must enter their full name exactly as it should appear on the certificate. Requests for name changes or corrections after submission may not be accepted; applicants should verify their details carefully before submitting.
 4. 𝑶𝒇𝒇𝒊𝒄𝒊𝒂𝒍 𝑪𝒐𝒎𝒎𝒖𝒏𝒊𝒄𝒂𝒕𝒊𝒐𝒏: A valid and active email address and functional mobile number, preferably WhatsApp-enabled, must be provided for official communication, updates, and certificate delivery, where applicable.

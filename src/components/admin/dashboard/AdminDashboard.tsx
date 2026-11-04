@@ -1,5 +1,6 @@
 import type { Payload, Where } from 'payload'
 import { Gutter } from '@payloadcms/ui'
+import Link from 'next/link'
 
 import { ADMIN_DASHBOARD_SECTIONS } from '../../../config/adminDashboard'
 
@@ -103,22 +104,22 @@ export default async function AdminDashboard({ payload, user }: AdminDashboardPr
       ) : null}
 
       <section className="afrs-dashboard__stats" aria-label="Quick counts">
-        <a className="afrs-stat" href="/admin/collections/contactMessages">
+        <Link className="afrs-stat" href="/admin/collections/contactMessages">
           <span className="afrs-stat__value">{formatCount(newInquiries)}</span>
           <span className="afrs-stat__label">New inquiries</span>
-        </a>
-        <a className="afrs-stat" href="/admin/collections/eventRegistrations">
+        </Link>
+        <Link className="afrs-stat" href="/admin/collections/eventRegistrations">
           <span className="afrs-stat__value">{formatCount(eventRegs)}</span>
           <span className="afrs-stat__label">Event registrations</span>
-        </a>
-        <a className="afrs-stat" href="/admin/collections/courseRegistrations">
+        </Link>
+        <Link className="afrs-stat" href="/admin/collections/courseRegistrations">
           <span className="afrs-stat__value">{formatCount(courseRegs)}</span>
           <span className="afrs-stat__label">Course registrations</span>
-        </a>
-        <a className="afrs-stat" href="/admin/collections/events">
+        </Link>
+        <Link className="afrs-stat" href="/admin/collections/events">
           <span className="afrs-stat__value">{formatCount(publishedEvents)}</span>
           <span className="afrs-stat__label">Published events</span>
-        </a>
+        </Link>
       </section>
 
       <section className="afrs-guide" aria-label="How publishing works">
@@ -154,18 +155,18 @@ export default async function AdminDashboard({ payload, user }: AdminDashboardPr
             </p>
           </div>
           <div className="afrs-dashboard__stats">
-            <a className="afrs-stat afrs-stat--draft" href="/admin/collections/notices?where[published][equals]=false">
+            <Link className="afrs-stat afrs-stat--draft" href="/admin/collections/notices?where[published][equals]=false">
               <span className="afrs-stat__value">{formatCount(draftNotices)}</span>
               <span className="afrs-stat__label">Draft notices</span>
-            </a>
-            <a className="afrs-stat afrs-stat--draft" href="/admin/collections/services?where[published][equals]=false">
+            </Link>
+            <Link className="afrs-stat afrs-stat--draft" href="/admin/collections/services?where[published][equals]=false">
               <span className="afrs-stat__value">{formatCount(draftServices)}</span>
               <span className="afrs-stat__label">Draft services</span>
-            </a>
-            <a className="afrs-stat afrs-stat--draft" href="/admin/collections/events?where[published][equals]=false">
+            </Link>
+            <Link className="afrs-stat afrs-stat--draft" href="/admin/collections/events?where[published][equals]=false">
               <span className="afrs-stat__value">{formatCount(draftEvents)}</span>
               <span className="afrs-stat__label">Draft events</span>
-            </a>
+            </Link>
           </div>
         </section>
       ) : null}
@@ -178,10 +179,10 @@ export default async function AdminDashboard({ payload, user }: AdminDashboardPr
           </div>
           <div className="afrs-dashboard__grid">
             {section.items.map((item) => (
-              <a key={item.href} className="afrs-card" href={item.href}>
+              <Link key={item.href} className="afrs-card" href={item.href}>
                 <strong>{item.title}</strong>
                 <span>{item.blurb}</span>
-              </a>
+              </Link>
             ))}
           </div>
         </section>

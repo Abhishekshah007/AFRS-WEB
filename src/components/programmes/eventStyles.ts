@@ -9,6 +9,13 @@ export function eventTypeDisplayLabel(eventType: string): string {
     fdp: 'FDP',
     internship: 'Internship',
     webinar: 'Webinar',
+    'professional-training-program': 'Professional Training Program',
+    'professional-internship-program': 'Professional Internship Program',
+    'professional-workshop-program': 'Professional Workshop Program',
+    'capsule-training-program': 'Capsule Training Program',
+    'police-training-program': 'Police Training Program',
+    'certificate-course': 'Certificate Course',
+    'foundation-certificate-course': 'Foundation Certificate Course',
   }
   return map[eventType] ?? eventType.charAt(0).toUpperCase() + eventType.slice(1)
 }

@@ -297,7 +297,14 @@ const fallbackLeaders: LeaderProfile[] = [
       'https://res.cloudinary.com/drrzakkgo/image/upload/afrs/payload/media/rakeshmia.jpeg',
     message:
       'Student and professional development are at the heart of AFRS. We are committed to providing practical, research-driven training that empowers individuals to excel in forensic science and contribute to a safer society.',
-    bio: 'A visionary leader with over 7 years of experience in forensic education and administration.',
+    bio: 'Forensic expert, cyber and digital forensics specialist, author, researcher, and academic trainer.',
+    fullBio: `Rakesh Mia is a forensic science professional, researcher, author, and academic trainer with expertise in forensic science, cyber security, digital forensics, fingerprint examination, forensic document examination, and scientific investigation methodologies. He completed his B.Sc. in Forensic Science from the Institute of Sciences, SAGE University, Indore, and his M.Sc. with a specialization in Cyber Security and Digital Forensics from the Department of Forensic Science, Jharkhand Raksha Shakti University, Ranchi. His professional experience includes specialized internships and practical training with the Madhya Pradesh Police, the State Forensic Science Laboratory, Tripura, particularly in its Forensic Biology/Serology and Toxicology divisions, and CID Cyber Thana, Ranchi. He has also served as a Field Executive with the Crime Intelligence Force Trust.
+
+As a researcher and academic contributor, Rakesh has published papers, abstracts, and technical contributions in national, international, and Scopus-indexed journals and conferences, and has reviewed for international journals. He has organized and contributed to more than 300 conferences, webinars, technical workshops, student skill-development programmes, ambassador programmes, and specialized forensic training initiatives. Through these engagements, he has trained more than 4,000 students, forensic science enthusiasts, professionals, advocates, and academicians in India and abroad.
+
+Rakesh is the author of three books: Handbook of Basic Forensic Science (English and Hindi), Handbook of Forensic Biology & Forensic Serology, and Textbook of Forensic Fingerprinting: A Practical Approach in Criminal Justice System. He has also contributed chapters on nanotechnology and biotechnology in forensic analysis to Advanced Forensic Biotechnology (Volume 2). His original works have received four Copyright Certificates from the Government of India. He received a Certificate of Excellence on Republic Day, 26 January 2023, for academic chapter writing, was recognized among India's Top 100 Authors at the FoxClues India Prime Awards 2022, and was invited as a Junior Scientist to the 4th International Conference on Recent Developments in Forensic Science at Vivekananda Global University, Jaipur, in November 2024.
+
+Rakesh is the Founder and President of Applied Forensic Research Sciences (A.F.R.S.), Director of Applied Forensic Science Laboratory, Indore, and Founder of the National Museum of Forensic Science, described in his profile as India's first virtual museum. His work brings together forensic practice, cyber and digital investigations, research, authorship, and professional forensic education and training.`,
     socials: {
       linkedin: 'https://www.linkedin.com/in/rakesh-mia-🇮🇳-2b9787182?utm_source=share_via&utm_content=profile&utm_medium=member_android',
       instagram: 'https://www.instagram.com/rakesh_mia?cplk=MTdwc3o5MW43eDZsaQ==',
@@ -313,7 +320,12 @@ const fallbackLeaders: LeaderProfile[] = [
       'https://res.cloudinary.com/drrzakkgo/image/upload/v1762258620/WhatsApp_Image_2025-11-04_at_12.33.03_AM_fywjbh.jpg',
     message:
       'Strengthening the bridge between academic theory and practical application is our mission. AFRS equips students and professionals with the skills and knowledge necessary to excel in forensic investigation, evidence handling, and court-ready reporting.',
-    bio: 'An expert in criminal investigation techniques with a passion for student mentorship.',
+    bio: 'Forensic physics and ballistics specialist, multimedia forensic expert, author, and academic trainer.',
+    fullBio: `Vijay Panchal is the Vice President of Applied Forensic Research Sciences, Indore. He holds a Postgraduate Diploma in Crime Scene Photography from the National Forensic Sciences University, Delhi Campus, Ministry of Home Affairs, Government of India, and a master's degree specializing in Forensic Physics and Ballistics from the Department of Forensic Science, Jharkhand Raksha Shakti University, Ranchi.
+
+His academic contributions include two edited books, two book chapters, and two research paper proceedings books. He has received three copyright certificates from the Central Government of India and a Certificate of Excellence on Republic Day, 26 January 2023, for chapter writing.
+
+Vijay completed a two-month internship at the Forensic Science Laboratory, Home Department, Government of NCT of Delhi. During the internship, he learned suspect and accused photography and gained exposure to crime-scene work involving murder, suicide, sexual assault, robbery, arson, and acid attacks. He is the Managing Director of Applied Forensic Science Laboratory and a founder of the National Museum of Forensic Science, described in his profile as India's first virtual museum. He is also a two-time FACT-qualified professional and a multimedia forensic expert.`,
     socials: {
       linkedin: 'https://www.linkedin.com/in/vijay-panchal-8631261b0?utm_source=share_via&utm_content=profile&utm_medium=member_android',
       instagram: 'https://www.facebook.com/share/1C4jtpiSLT/',
