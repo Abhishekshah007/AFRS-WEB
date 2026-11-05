@@ -73,11 +73,6 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Apply database migrations
-        run: pnpm payload migrate
-        env:
-          NODE_ENV: production
-
       - name: Integration tests
         run: pnpm test:int
 
