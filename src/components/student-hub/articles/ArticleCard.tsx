@@ -19,7 +19,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
     <article className={`${studentHubTokens.radiusCard} border border-slate-100 bg-white overflow-hidden shadow-sm card-pop h-full flex flex-col`}>
       <div className="relative h-40 bg-gradient-to-br from-slate-100 to-slate-200">
         {article.coverUrl ? (
-          <Image src={article.coverUrl} alt="" fill sizes="(max-width: 768px) 100vw, 25vw" className="object-cover" loading="lazy" />
+          <Image src={article.coverUrl} alt="" fill sizes="(max-width: 768px) 100vw, 25vw" className="object-cover md:object-contain" loading="lazy" />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-4xl opacity-30" aria-hidden>
             📄
