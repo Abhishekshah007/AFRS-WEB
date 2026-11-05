@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og'
 import { getCategoryLabel } from '@/components/student-hub/articles/categoryStyles'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
