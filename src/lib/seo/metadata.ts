@@ -79,6 +79,18 @@ export function articleShareImageUrl(title: string, category?: string | null): s
   return absoluteUrl(`/api/og/article?${params.toString()}`)
 }
 
+export function optimizeArticleSocialImage(imageUrl: string): string {
+  const match = imageUrl.match(
+    /^(https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\/)(.+)$/,
+  )
+  if (!match) return imageUrl
+
+  const [baseUrl, assetPath] = match.slice(1)
+  if (assetPath.split('/')[0].includes(',')) return imageUrl
+
+  return `${baseUrl}f_jpg,q_auto:good,w_1200,h_630,c_fill/${assetPath}`
+}
+
 export function rootMetadataBase() {
   return new URL(getSiteUrl())
 }
