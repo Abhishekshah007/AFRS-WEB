@@ -6,7 +6,11 @@ import { defaultArticles, getDefaultArticleDetail } from '@/components/student-h
 import { mapArticle } from '@/components/student-hub/articles/mapArticle'
 import { getPayloadClient } from '@/lib/payload'
 import type { Article } from '@/payload-types'
-import { articleShareImageUrl, buildPageMetadata } from '@/lib/seo/metadata'
+import {
+  articleShareImageUrl,
+  buildPageMetadata,
+  optimizeArticleSocialImage,
+} from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { breadcrumbList, withContext } from '@/lib/seo/schema'
 import { absoluteUrl, clipMeta } from '@/lib/seo/site'
@@ -63,7 +67,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: doc.title,
     description: clipMeta(doc.excerpt || doc.title, 160),
     path: `/student-hub/articles/${doc.slug}`,
-    image: coverUrl ?? articleShareImageUrl(doc.title, doc.category),
+    image: coverUrl
+      ? optimizeArticleSocialImage(coverUrl)
+      : articleShareImageUrl(doc.title, doc.category),
     type: 'article',
     publishedTime: doc.publishedDate,
     authors: doc.authorName ? [doc.authorName] : undefined,
