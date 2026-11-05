@@ -2,11 +2,11 @@ import { notFound } from 'next/navigation'
 import { ArticleDetailView } from '@/components/student-hub/articles/detail/ArticleDetailView'
 import { buildArticleDetail } from '@/components/student-hub/articles/detail/buildArticleDetail'
 import { mergeRelatedArticles } from '@/components/student-hub/articles/detail/relatedArticles'
-import { defaultArticles } from '@/components/student-hub/articles/content'
+import { defaultArticles, getDefaultArticleDetail } from '@/components/student-hub/articles/content'
 import { mapArticle } from '@/components/student-hub/articles/mapArticle'
 import { getPayloadClient } from '@/lib/payload'
 import type { Article } from '@/payload-types'
-import { buildPageMetadata } from '@/lib/seo/metadata'
+import { articleShareImageUrl, buildPageMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { breadcrumbList, withContext } from '@/lib/seo/schema'
 import { absoluteUrl, clipMeta } from '@/lib/seo/site'
@@ -40,17 +40,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     overrideAccess: false,
   })
   const doc = result.docs[0] as Article | undefined
-  if (!doc) return { title: 'Article not found', robots: { index: false, follow: false } }
+  if (!doc) {
+    const article = getDefaultArticleDetail(slug)
+    if (!article) return { title: 'Article not found', robots: { index: false, follow: false } }
+    return buildPageMetadata({
+      title: article.title,
+      description: clipMeta(article.excerpt || article.title, 160),
+      path: `/student-hub/articles/${article.slug}`,
+      image: articleShareImageUrl(article.title, article.category),
+      type: 'article',
+      publishedTime: article.publishedDate,
+      authors: [article.authorName],
+    })
+  }
   const keywords = [
     ...new Set(
       doc.tags?.map((item) => item.tag?.trim()).filter((tag): tag is string => Boolean(tag)) ?? [],
     ),
   ]
+  const coverUrl = mapArticle(doc).coverUrl
   return buildPageMetadata({
     title: doc.title,
     description: clipMeta(doc.excerpt || doc.title, 160),
     path: `/student-hub/articles/${doc.slug}`,
-    image: mapArticle(doc).coverUrl,
+    image: coverUrl ?? articleShareImageUrl(doc.title, doc.category),
     type: 'article',
     publishedTime: doc.publishedDate,
     authors: doc.authorName ? [doc.authorName] : undefined,
@@ -72,9 +85,8 @@ export default async function ArticleDetailPage({ params }: Props) {
   })
 
   const doc = result.docs[0] as Article | undefined
-  if (!doc) notFound()
-
-  const article = buildArticleDetail(doc)
+  const article = doc ? buildArticleDetail(doc) : getDefaultArticleDetail(slug)
+  if (!article) notFound()
 
   const [sameDomainResult, recentResult] = await Promise.all([
     payload.find({
@@ -83,7 +95,7 @@ export default async function ArticleDetailPage({ params }: Props) {
         and: [
           { published: { equals: true } },
           { slug: { not_equals: slug } },
-          { category: { equals: doc.category } },
+          { category: { equals: article.category } },
         ],
       },
       sort: '-publishedDate',
@@ -129,9 +141,9 @@ export default async function ArticleDetailPage({ params }: Props) {
             headline: article.title,
             description: article.excerpt,
             keywords: article.tags.length ? article.tags.join(', ') : undefined,
-            datePublished: doc.publishedDate || undefined,
-            author: doc.authorName
-              ? { '@type': 'Person', name: doc.authorName }
+            datePublished: doc?.publishedDate || undefined,
+            author: article.authorName
+              ? { '@type': 'Person', name: article.authorName }
               : { '@type': 'Organization', name: 'AFRS' },
             mainEntityOfPage: absoluteUrl(`/student-hub/articles/${article.slug}`),
           },

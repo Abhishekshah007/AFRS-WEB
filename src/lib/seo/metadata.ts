@@ -74,6 +74,11 @@ export function buildPageMetadata({
   }
 }
 
+export function articleShareImageUrl(title: string, category?: string | null): string {
+  const params = new URLSearchParams({ title, category: category || 'general' })
+  return absoluteUrl(`/api/og/article?${params.toString()}`)
+}
+
 export function rootMetadataBase() {
   return new URL(getSiteUrl())
 }
