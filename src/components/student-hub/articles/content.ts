@@ -1,4 +1,5 @@
 import type { ArticleListItem, FeaturedArticle, TopicFilter } from '@/components/student-hub/articles/types'
+import type { ArticleDetailData } from '@/components/student-hub/articles/detail/types'
 import { ARTICLE_CATEGORY_OPTIONS } from '@/data/article-categories'
 
 export const topicFilters: TopicFilter[] = [
@@ -108,3 +109,20 @@ export const defaultArticles: ArticleListItem[] = [
     readTimeMinutes: 8,
   },
 ]
+
+export function getDefaultArticleDetail(slug: string): ArticleDetailData | undefined {
+  const article = [defaultFeatured, ...defaultArticles].find((item) => item.slug === slug)
+  if (!article) return undefined
+
+  return {
+    ...article,
+    imageSrc: undefined,
+    coverUrl: undefined,
+    authorTitle: undefined,
+    tags: [],
+    sections: [],
+    bodyIntro: article.excerpt,
+    bodyParagraphs: [],
+    authorBio: `${article.authorName} contributes forensic science insights for students and practitioners.`,
+  }
+}

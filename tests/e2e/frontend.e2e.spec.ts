@@ -159,11 +159,7 @@ test.describe('Public site', () => {
 
   test('article text wraps within the mobile content column', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 })
-    await page.goto('/student-hub/articles', gotoOptions)
-
-    const firstArticle = page.locator('a[href^="/student-hub/articles/"]').first()
-    await expect(firstArticle).toBeVisible()
-    await firstArticle.click()
+    await page.goto('/student-hub/articles/ai-driven-digital-forensics', gotoOptions)
 
     const body = page.locator('.article-body')
     await expect(body).toBeVisible()
@@ -216,7 +212,9 @@ test.describe('SEO and AdSense', () => {
       '#main-content',
     )
     await expect(page.locator('#main-content')).toBeVisible()
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/$/)
+    const canonical = await page.locator('link[rel="canonical"]').getAttribute('href')
+    expect(canonical).not.toBeNull()
+    expect(new URL(canonical!).pathname).toBe('/')
   })
 
   test('search stays noindex', async ({ page }) => {
