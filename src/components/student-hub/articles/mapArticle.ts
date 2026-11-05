@@ -4,6 +4,19 @@ import { getCategoryLabel } from '@/components/student-hub/articles/categoryStyl
 import { resolveMediaUrlOptional } from '@/lib/cms'
 import type { Media } from '@/payload-types'
 
+function resolveArticleCoverUrl(
+  media: number | Media | null | undefined,
+): string | undefined {
+  const url = resolveMediaUrlOptional(media)
+  if (url) return url
+  if (typeof media !== 'object' || media === null) return undefined
+
+  if (media.thumbnailURL) return media.thumbnailURL
+  if (media.filename) return `/api/media/file/${encodeURIComponent(media.filename)}`
+
+  return undefined
+}
+
 export function mapArticle(doc: Article): ArticleListItem {
   const category = (doc.category ?? 'general') as ArticleListItem['category']
   return {
@@ -15,7 +28,7 @@ export function mapArticle(doc: Article): ArticleListItem {
     categoryLabel: getCategoryLabel(category),
     authorName: doc.authorName,
     readTimeMinutes: doc.readTimeMinutes ?? 10,
-    coverUrl: resolveMediaUrlOptional(doc.coverImage as number | Media | null | undefined),
+    coverUrl: resolveArticleCoverUrl(doc.coverImage),
     publishedDate: doc.publishedDate ?? undefined,
   }
 }
