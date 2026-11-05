@@ -84,7 +84,7 @@ export function ArticleDetailView({ article, related, nextArticle }: ArticleDeta
             <div className="border-t border-slate-100" />
 
             {/* Author bio */}
-            <div className="px-6 sm:px-8 lg:px-10 py-8">
+            <div className="px-6 sm:px-8 lg:px-10 py-8 text-justify">
               <AuthorBioCard article={article} />
             </div>
           </article>

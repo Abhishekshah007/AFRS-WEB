@@ -32,7 +32,7 @@ export function AuthorBioCard({ article }: AuthorBioCardProps) {
         </div>
         <div>
           <h2 id="author-bio-heading" className="text-lg font-extrabold text-slate-900">
-            About {article.authorName}
+            {article.authorName}
           </h2>
           {article.authorTitle && (
             <p className="mt-1 text-[11px] font-bold tracking-wider text-justify text-(--articles-primary)">

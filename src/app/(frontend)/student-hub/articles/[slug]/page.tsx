@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     collection: 'articles',
     where: { and: [{ slug: { equals: slug } }, { published: { equals: true } }] },
     limit: 1,
-    depth: 0,
+    depth: 1,
     overrideAccess: false,
   })
   const doc = result.docs[0] as Article | undefined
@@ -50,6 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: doc.title,
     description: clipMeta(doc.excerpt || doc.title, 160),
     path: `/student-hub/articles/${doc.slug}`,
+    image: mapArticle(doc).coverUrl,
     type: 'article',
     publishedTime: doc.publishedDate,
     authors: doc.authorName ? [doc.authorName] : undefined,

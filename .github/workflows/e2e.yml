@@ -61,11 +61,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Apply database migrations
-        run: pnpm payload migrate
-        env:
-          NODE_ENV: production
-
       - name: Install Playwright browser
         run: pnpm exec playwright install --with-deps chromium
 

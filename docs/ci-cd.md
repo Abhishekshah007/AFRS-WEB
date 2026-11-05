@@ -6,7 +6,7 @@
 
 | Workflow | When | What it does |
 |----------|------|----------------|
-| [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) | Every PR + push to `main` / `dev` | `tsc`, lint, `payload migrate`, integration tests, `pnpm build` |
+| [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) | Every PR + push to `main` / `dev` | `tsc`, lint, integration tests, `pnpm build` |
 | [`.github/workflows/e2e.yml`](../.github/workflows/e2e.yml) | Push to `main`, or manual | Playwright admin smoke tests |
 | [`.github/workflows/migrate-production.yml`](../.github/workflows/migrate-production.yml) | Manual only | `payload migrate` on production DB |
 
@@ -32,7 +32,7 @@ No deploy step is duplicated in GitHub Actions — Vercel builds after merge.
 
 ## Tool versions
 
-CI uses **Node 22** (see workflow) and **pnpm** from `packageManager` in `package.json` (`pnpm/action-setup` reads it automatically — do not also set `version:` in the workflow).
+CI uses **Node 22** (see workflow) and **pnpm** from `packageManager` in `package.json` (`pnpm/action-setup` reads it automatically — do not also set `version:` in the workflow). CI/E2E use Payload's development schema push to initialize their disposable databases; the migration workflow is reserved for the existing production database.
 
 ## Local parity
 
@@ -40,8 +40,8 @@ CI uses **Node 22** (see workflow) and **pnpm** from `packageManager` in `packag
 # Same static checks as CI (no database):
 pnpm run ci:check
 
-# Full CI locally (needs Postgres + .env):
-pnpm payload migrate && pnpm test:int && pnpm build
+# Full CI locally (needs Postgres + .env; Payload pushes the schema in test/dev):
+pnpm test:int && pnpm build
 ```
 
 ## Release flow
