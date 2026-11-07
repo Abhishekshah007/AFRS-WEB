@@ -1,5 +1,5 @@
 import React from 'react'
-import { Inter, DM_Sans } from 'next/font/google'
+import localFont from 'next/font/local'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { AppProviders } from '@/components/providers/AppProviders'
@@ -16,19 +16,19 @@ import { resolveTotalVisitors } from '@/lib/site/totalVisitors'
 import './styles.css'
 
 // Body text - clean, readable, professional
-const inter = Inter({
-  subsets: ['latin'],
+const inter = localFont({
+  src: './fonts/Inter-Variable.ttf',
   variable: '--font-inter',
   display: 'swap',
-  weight: ['400', '500', '600', '700'],
+  weight: '100 900',
 })
 
 // Headings - strong, scientific, modern
-const dmSans = DM_Sans({
-  subsets: ['latin'],
+const dmSans = localFont({
+  src: './fonts/DM-Sans-Variable.ttf',
   variable: '--font-dm-sans',
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800'],
+  weight: '100 900',
 })
 
 export const viewport: Viewport = {
