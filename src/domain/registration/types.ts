@@ -2,7 +2,7 @@ import type { Media } from '@/payload-types'
 
 export type RegistrationType = 'free' | 'paid_manual' | 'paid_gateway'
 export type ParticipantRegion = 'indian' | 'international' | 'both'
-export type PaymentMode = 'upi' | 'bank' | 'paypal'
+export type PaymentMode = 'upi' | 'bank' | 'paypal' | 'other'
 export type RegistrationOrganization = 'afrs' | 'afsl'
 
 export type FeeTier = {

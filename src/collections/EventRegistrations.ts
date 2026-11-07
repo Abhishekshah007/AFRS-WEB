@@ -28,11 +28,17 @@ export const EventRegistrations: CollectionConfig = {
       'email',
       'eventSlug',
       'totalAmount',
+      'paymentMode',
+      'paymentMethod',
       'paymentStatus',
       'registrationStatus',
+      'transactionProof',
     ],
     components: {
-      beforeList: ['/components/admin/EventRegistrationCsvExport'],
+      beforeList: [
+        '/components/admin/EventRegistrationTools',
+        '/components/admin/EventRegistrationCsvExport',
+      ],
     },
   },
   hooks: {

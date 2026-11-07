@@ -112,9 +112,11 @@ export function ServicesPageView({
               <video
                 controls
                 autoPlay
+                muted
                 loop
                 playsInline
                 preload="metadata"
+                controlsList="nodownload"
                 className="absolute inset-0 h-full w-full object-contain bg-[#3B010B]"
               >
                 <source

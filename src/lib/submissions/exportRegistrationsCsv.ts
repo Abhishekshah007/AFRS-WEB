@@ -61,7 +61,8 @@ const EVENT_COLUMNS: Array<{ key: string; label: string }> = [
 
 function csvCell(value: unknown): string {
   if (value === null || value === undefined) return ''
-  const str = typeof value === 'boolean' ? (value ? 'Yes' : 'No') : String(value)
+  const raw = typeof value === 'boolean' ? (value ? 'Yes' : 'No') : String(value)
+  const str = /^[=+\-@]/.test(raw) ? `'${raw}` : raw
   if (/[",\n\r]/.test(str)) return `"${str.replace(/"/g, '""')}"`
   return str
 }

@@ -12,6 +12,10 @@ import {
   feeTiersForRegion,
   resolveRegistrationConfig,
 } from '@/lib/registration/resolveConfig'
+import {
+  isRegistrationPaymentMethod,
+  paymentModeForMethod,
+} from '@/lib/registration/paymentMethods'
 import { getPayloadClient } from '@/lib/payload'
 import { resolveEventSlug } from '@/lib/utils/slugify'
 import { buildEventConfirmationUrl } from '@/lib/registration/confirmationToken'
@@ -150,11 +154,18 @@ export async function submitEventRegistration(req: Request) {
   const transactionId = getFormValue(formData, 'transactionId')
   const transactionDate = getFormValue(formData, 'transactionDate')
   const transactionTime = getFormValue(formData, 'transactionTime')
-  const paymentModeRaw = getFormValue(formData, 'paymentMode')
-  const paymentMode =
-    paymentModeRaw === 'upi' || paymentModeRaw === 'bank' || paymentModeRaw === 'paypal'
-      ? paymentModeRaw
-      : undefined
+  const paymentMethodRaw = getFormValue(formData, 'paymentMethod')
+  if (paymentMethodRaw && !isRegistrationPaymentMethod(paymentMethodRaw)) {
+    return jsonError('Please select a valid payment method.', 400)
+  }
+  const paymentMethod = isRegistrationPaymentMethod(paymentMethodRaw) ? paymentMethodRaw : undefined
+  if (!isFree && !paymentMethod) {
+    return jsonError('Please select how you paid.', 400)
+  }
+  if (paymentMethod === 'paypal' && participantRegion !== 'international') {
+    return jsonError('PayPal is only available for international registrations.', 400)
+  }
+  const paymentMode = paymentMethod ? paymentModeForMethod(paymentMethod) : undefined
 
   if (!isFree && config.requirePaymentProof) {
     if (!transactionId) return jsonError('Transaction reference is required.', 400)
@@ -218,6 +229,7 @@ export async function submitEventRegistration(req: Request) {
       transactionDate: transactionDate || undefined,
       transactionTime: transactionTime || undefined,
       paymentMode,
+      paymentMethod,
       transactionProof: transactionProofId,
       paymentProvider: 'manual',
       paymentStatus: isFree ? 'notRequired' : 'pending',

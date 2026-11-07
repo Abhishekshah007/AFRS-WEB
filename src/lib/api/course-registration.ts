@@ -4,6 +4,11 @@ import { buildCourseConfirmationUrl } from '@/lib/registration/confirmationToken
 import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
 import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
 import { getPayloadClient } from '@/lib/payload'
+import {
+  isRegistrationPaymentMethod,
+  paymentModeForMethod,
+  type RegistrationPaymentMethod,
+} from '@/lib/registration/paymentMethods'
 import { createLocalReq } from 'payload'
 
 type CompleteCourseRegistrationBody = {
@@ -11,7 +16,8 @@ type CompleteCourseRegistrationBody = {
   transactionId?: string
   transactionDate?: string
   transactionTime?: string
-  paymentMode?: 'upi' | 'bank' | 'paypal'
+  paymentMode?: 'upi' | 'bank' | 'paypal' | 'other'
+  paymentMethod?: RegistrationPaymentMethod
 }
 
 export async function completeCourseRegistration(req: Request) {
@@ -34,8 +40,16 @@ export async function completeCourseRegistration(req: Request) {
           formData,
           'paymentMode',
         ) as CompleteCourseRegistrationBody['paymentMode'],
+        paymentMethod: getFormValue(
+          formData,
+          'paymentMethod',
+        ) as CompleteCourseRegistrationBody['paymentMethod'],
       }
     : ((await req.json().catch(() => ({}))) as CompleteCourseRegistrationBody)
+
+  if (body.paymentMethod && !isRegistrationPaymentMethod(body.paymentMethod)) {
+    return jsonError('Please select a valid payment method.', 400)
+  }
 
   const uploadFile = formData ? await readUploadFile(formData, 'transactionProof') : undefined
 
@@ -77,7 +91,10 @@ export async function completeCourseRegistration(req: Request) {
       transactionId: body.transactionId,
       transactionDate: body.transactionDate || undefined,
       transactionTime: body.transactionTime || undefined,
-      paymentMode: body.paymentMode || undefined,
+      paymentMode: body.paymentMethod
+        ? paymentModeForMethod(body.paymentMethod)
+        : body.paymentMode || undefined,
+      paymentMethod: body.paymentMethod,
       paymentProvider: 'manual',
       paymentStatus: 'pending',
       registrationStatus: 'initiated',

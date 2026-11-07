@@ -51,6 +51,7 @@ export const registrationPaymentProofFields: Field[] = [
       { label: 'UPI', value: 'upi' },
       { label: 'Bank Transfer', value: 'bank' },
       { label: 'PayPal', value: 'paypal' },
+      { label: 'Other', value: 'other' },
     ],
   },
   { name: 'agreedToTerms', type: 'checkbox', defaultValue: false },
@@ -66,6 +67,15 @@ export const registrationPaymentProofFields: Field[] = [
 
 /** Shared payment tracking fields for registrations. */
 export const registrationPaymentFields: Field[] = [
+  {
+    name: 'paymentMethod',
+    type: 'text',
+    label: 'Payment method used',
+    admin: {
+      description: 'Payment app or channel selected by the participant.',
+      readOnly: true,
+    },
+  },
   { name: 'totalAmount', type: 'number', defaultValue: 0 },
   {
     name: 'paymentProvider',
