@@ -17,6 +17,28 @@ test.describe('Public site', () => {
     await expect(page.locator('h1').first()).toContainText(/Evidence|Forensic|Science/i)
   })
 
+  test('legacy site link is shown and autoplay videos start muted without a download control', async ({
+    page,
+  }) => {
+    await page.goto('/', gotoOptions)
+
+    const oldWebsiteLink = page.getByRole('link', { name: 'Old Website' })
+    await expect(oldWebsiteLink).toHaveAttribute(
+      'href',
+      'https://www.appliedforensicresearchsciences.in/',
+    )
+    await expect(oldWebsiteLink).toHaveAttribute('target', '_blank')
+
+    const homeVideo = page.locator('video').first()
+    await expect(homeVideo).toHaveAttribute('controlslist', 'nodownload')
+    expect(await homeVideo.evaluate((video: HTMLVideoElement) => video.muted)).toBe(true)
+
+    await page.goto('/services', gotoOptions)
+    const servicesVideo = page.locator('video').first()
+    await expect(servicesVideo).toHaveAttribute('controlslist', 'nodownload')
+    expect(await servicesVideo.evaluate((video: HTMLVideoElement) => video.muted)).toBe(true)
+  })
+
   test('homepage fits mobile width and shows the full AFSL training image', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 })
     await page.goto('/', gotoOptions)

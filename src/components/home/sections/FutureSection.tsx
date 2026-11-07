@@ -13,9 +13,11 @@ export function FutureSection() {
             <video
               controls
               autoPlay
+              muted
               loop
               playsInline
               preload="metadata"
+              controlsList="nodownload"
               className="absolute inset-0 h-full w-full object-contain bg-slate-900"
             >
               <source

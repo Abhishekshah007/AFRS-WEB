@@ -5,6 +5,7 @@ import {
   buildRegistrationsCsv,
   registrationCsvFilename,
 } from '@/lib/submissions/exportRegistrationsCsv'
+import { buildRegistrationsXlsx } from '@/lib/submissions/exportRegistrationsXlsx'
 
 type RegistrationCollection = 'courseRegistrations' | 'eventRegistrations'
 
@@ -69,7 +70,7 @@ async function fetchAllRegistrations({
       where,
       limit: 250,
       page,
-      depth: 0,
+      depth: 1,
       sort: 'createdAt',
       user,
       overrideAccess: false,
@@ -98,6 +99,29 @@ export function registrationCsvExportEndpoint(collection: RegistrationCollection
         where,
         user: req.user as User,
       })
+
+      const format = readParam(url, 'format')
+      if (format === 'xlsx') {
+        if (collection !== 'eventRegistrations') {
+          return Response.json(
+            { error: 'Excel export is available for event registrations only.' },
+            { status: 400 },
+          )
+        }
+
+        const workbook = await buildRegistrationsXlsx(docs)
+        const filterLabel = readParam(url, 'eventTitle') || readParam(url, 'eventSlug')
+        const filename = registrationCsvFilename(collection, filterLabel).replace(/\.csv$/i, '.xlsx')
+
+        return new Response(workbook, {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition': `attachment; filename="${filename}"`,
+            'Cache-Control': 'no-store',
+          },
+        })
+      }
 
       const csv = buildRegistrationsCsv(docs, collection)
       const filterLabel =

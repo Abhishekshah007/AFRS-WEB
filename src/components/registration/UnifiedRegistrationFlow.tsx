@@ -12,6 +12,12 @@ import type {
   PaymentMode,
   ResolvedRegistrationConfig,
 } from '@/domain/registration/types'
+import {
+  REGISTRATION_PAYMENT_METHODS,
+  isRegistrationPaymentMethod,
+  paymentModeForMethod,
+  type RegistrationPaymentMethod,
+} from '@/lib/registration/paymentMethods'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 import { validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
 import {
@@ -116,6 +122,7 @@ export function UnifiedRegistrationFlow({
       ? 'paypal'
       : 'upi',
   )
+  const [paymentMethod, setPaymentMethod] = useState<RegistrationPaymentMethod | ''>('')
   const [paymentForm, setPaymentForm] = useState({
     transactionId: '',
     transactionDate: '',
@@ -153,8 +160,9 @@ export function UnifiedRegistrationFlow({
   const deliveryMode = deliveryModeProp ?? parseDeliveryMode('hybrid')
   const canPayWithPayPal =
     config.participantRegion !== 'indian' && shouldOfferPayPal('international', deliveryMode)
-  const paymentModes: PaymentMode[] =
-    activeRegion === 'international' && canPayWithPayPal ? ['upi', 'paypal'] : ['upi']
+  const paymentMethods = REGISTRATION_PAYMENT_METHODS.filter(
+    (method) => method.value !== 'paypal' || (activeRegion === 'international' && canPayWithPayPal),
+  )
 
   const visibleTiers = useMemo(
     () => feeTiersForRegion(feeTiers, activeRegion),
@@ -245,6 +253,7 @@ export function UnifiedRegistrationFlow({
     body.set('includeKit', String(includeKit))
     body.set('agreedToTerms', String(agreedToTerms))
     body.set('paymentMode', paymentMode)
+    body.set('paymentMethod', paymentMethod)
 
     Object.entries(customResponses).forEach(([key, value]) => {
       body.set(`custom_${key}`, value)
@@ -301,6 +310,7 @@ export function UnifiedRegistrationFlow({
     body.set('registrationId', registrationId)
     body.set('transactionId', paymentForm.transactionId.trim())
     body.set('paymentMode', paymentMode)
+    body.set('paymentMethod', paymentMethod)
     body.set('transactionDate', paymentForm.transactionDate)
     body.set('transactionTime', paymentForm.transactionTime)
     if (paymentForm.transactionProof) body.set('transactionProof', paymentForm.transactionProof)
@@ -561,29 +571,36 @@ export function UnifiedRegistrationFlow({
                 deliveryMode={deliveryMode}
               />
 
-              <div className="space-y-3">
-                <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-                  Payment mode *
-                </p>
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {paymentModes.map((mode) => (
-                    <label
-                      key={mode}
-                      className={`flex items-center gap-2 rounded-xl border p-3 text-sm cursor-pointer ${paymentMode === mode ? 'border-brand-500 bg-brand-50' : 'border-slate-200'}`}
-                    >
-                      <input
-                        type="radio"
-                        name="paymentMode"
-                        checked={paymentMode === mode}
-                        onChange={() => {
-                          setPaymentMode(mode)
-                        }}
-                      />
-                      {mode === 'upi' ? 'UPI' : 'PayPal'}
-                    </label>
+              <label className="block space-y-2">
+                <span className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                  Payment method used *
+                </span>
+                <select
+                  name="paymentMethod"
+                  value={paymentMethod === 'paypal' && activeRegion !== 'international' ? '' : paymentMethod}
+                  required
+                  onChange={(event) => {
+                    const value = event.target.value
+                    if (!isRegistrationPaymentMethod(value)) {
+                      setPaymentMethod('')
+                      return
+                    }
+
+                    setPaymentMethod(value)
+                    setPaymentMode(paymentModeForMethod(value))
+                  }}
+                  className="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm"
+                >
+                  <option value="" disabled>
+                    Select how you paid
+                  </option>
+                  {paymentMethods.map((method) => (
+                    <option key={method.value} value={method.value}>
+                      {method.label}
+                    </option>
                   ))}
-                </div>
-              </div>
+                </select>
+              </label>
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="text-xs font-bold uppercase tracking-wide text-slate-500 sm:col-span-2">

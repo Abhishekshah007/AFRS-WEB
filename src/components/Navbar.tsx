@@ -69,6 +69,14 @@ export default function Navbar({
             <div className="flex flex-wrap gap-x-5 gap-y-1">
               <span className="hover:text-white transition-colors">{topLeftText}</span>
               <span className="hover:text-white transition-colors">{headerEmail}</span>
+              <a
+                href="https://www.appliedforensicresearchsciences.in/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                Old Website
+              </a>
               <div className="flex gap-2">
                 <SocialMediaIcons icons={settings?.topBarLeftText3} />
               </div>

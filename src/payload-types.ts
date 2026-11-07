@@ -741,7 +741,7 @@ export interface Event {
   mode?: ('online' | 'offline' | 'hybrid') | null;
   startDate: string;
   /**
-   * Recommended. The website moves events from Upcoming → Ongoing → Completed automatically using start and end dates.
+   * Optional. In Automatic schedule status, events without an end date remain ongoing through 7 days after their start date.
    */
   endDate?: string | null;
   /**
@@ -1088,7 +1088,7 @@ export interface EventRegistration {
   feeTierLabel?: string | null;
   feeTierCurrency?: ('INR' | 'USD') | null;
   participantRegion?: ('indian' | 'international') | null;
-  paymentMode?: ('upi' | 'bank' | 'paypal') | null;
+  paymentMode?: ('upi' | 'bank' | 'paypal' | 'other') | null;
   agreedToTerms?: boolean | null;
   /**
    * UPI / bank transaction reference.
@@ -1100,6 +1100,10 @@ export interface EventRegistration {
    */
   transactionTime?: string | null;
   transactionProof?: (number | null) | Media;
+  /**
+   * Payment app or channel selected by the participant.
+   */
+  paymentMethod?: string | null;
   totalAmount: number;
   paymentProvider?: ('manual' | 'stripe') | null;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'notRequired';
@@ -1163,7 +1167,7 @@ export interface CourseRegistration {
   feeTierLabel?: string | null;
   feeTierCurrency?: ('INR' | 'USD') | null;
   participantRegion?: ('indian' | 'international') | null;
-  paymentMode?: ('upi' | 'bank' | 'paypal') | null;
+  paymentMode?: ('upi' | 'bank' | 'paypal' | 'other') | null;
   agreedToTerms?: boolean | null;
   /**
    * UPI / bank transaction reference.
@@ -1175,6 +1179,10 @@ export interface CourseRegistration {
    */
   transactionTime?: string | null;
   transactionProof?: (number | null) | Media;
+  /**
+   * Payment app or channel selected by the participant.
+   */
+  paymentMethod?: string | null;
   totalAmount?: number | null;
   paymentProvider?: ('manual' | 'stripe') | null;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'notRequired';
@@ -1859,6 +1867,7 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
   transactionDate?: T;
   transactionTime?: T;
   transactionProof?: T;
+  paymentMethod?: T;
   totalAmount?: T;
   paymentProvider?: T;
   paymentStatus?: T;
@@ -1905,6 +1914,7 @@ export interface CourseRegistrationsSelect<T extends boolean = true> {
   transactionDate?: T;
   transactionTime?: T;
   transactionProof?: T;
+  paymentMethod?: T;
   totalAmount?: T;
   paymentProvider?: T;
   paymentStatus?: T;
