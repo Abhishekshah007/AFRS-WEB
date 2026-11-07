@@ -123,6 +123,31 @@ describe('homepage popup queue', () => {
     expect(total).toBe(2)
   })
 
+  it('treats a date-only event starting today as ongoing even when its timestamp is later today', () => {
+    const sameDayEvent = eventDoc({
+      id: 12,
+      startDate: '2026-10-22T18:30:00.000Z',
+      endDate: '2026-10-23T18:30:00.000Z',
+    })
+
+    expect(countHomePopupSlots([], [sameDayEvent], now)).toBe(1)
+  })
+
+  it('honors a manually selected event schedule status', () => {
+    const ongoing = eventDoc({
+      id: 13,
+      startDate: '2020-01-01T00:00:00.000Z',
+      scheduleStatus: 'ongoing',
+    })
+    const completed = eventDoc({
+      id: 14,
+      startDate: '2026-12-01T00:00:00.000Z',
+      scheduleStatus: 'completed',
+    })
+
+    expect(countHomePopupSlots([], [ongoing, completed], now)).toBe(1)
+  })
+
   it('changes the fingerprint when the set or a poster timestamp changes', () => {
     const first = buildHomePopupSlides([poster({ id: 1, order: 2 }), poster({ id: 2, order: 1 })], [], now)
     const reordered = buildHomePopupSlides(

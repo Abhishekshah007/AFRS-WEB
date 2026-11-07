@@ -35,6 +35,7 @@ type DatedEvent = {
   showInHomePopup?: boolean | null
   startDate?: string | null
   endDate?: string | null
+  scheduleStatus?: AfrsEvent['scheduleStatus']
 }
 
 export function isEligibleHomePopupEvent(evt: DatedEvent, now = new Date()): boolean {

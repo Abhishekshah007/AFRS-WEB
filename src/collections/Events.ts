@@ -97,7 +97,23 @@ export const Events: CollectionConfig = {
       label: 'End date',
       admin: {
         description:
-          'Recommended. The website moves events from Upcoming → Ongoing → Completed automatically using start and end dates.',
+          'Optional. In Automatic schedule status, events without an end date remain ongoing through 7 days after their start date.',
+      },
+    },
+    {
+      name: 'scheduleStatus',
+      type: 'select',
+      label: 'Schedule status',
+      defaultValue: 'automatic',
+      options: [
+        { label: 'Automatic (use dates)', value: 'automatic' },
+        { label: 'Upcoming', value: 'upcoming' },
+        { label: 'Ongoing', value: 'ongoing' },
+        { label: 'Completed', value: 'completed' },
+      ],
+      admin: {
+        description:
+          'Normally determined by the dates above. Choose a status here to manually override the automatic schedule.',
       },
     },
     {
