@@ -22,6 +22,7 @@ export function activeEventsWhere(): Where {
         or: [
           { startDate: { greater_than_equal: weekAgo.toISOString() } },
           { endDate: { greater_than_equal: today } },
+          { scheduleStatus: { not_equals: 'automatic' } },
         ],
       },
     ],

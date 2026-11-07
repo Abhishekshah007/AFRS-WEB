@@ -21,6 +21,7 @@ import * as migration_20261102_183000_add_education_fee_tiers from './20261102_1
 import * as migration_20261103_083653 from './20261103_083653'
 import * as migration_20261103_083910 from './20261103_083910'
 import * as migration_20261103_103548_founder_full_bio from './20261103_103548_founder_full_bio'
+import * as migration_20261107_150000_event_schedule_status from './20261107_150000_event_schedule_status'
 
 export const migrations = [
   {
@@ -137,5 +138,10 @@ export const migrations = [
     up: migration_20261103_103548_founder_full_bio.up,
     down: migration_20261103_103548_founder_full_bio.down,
     name: '20261103_103548_founder_full_bio',
+  },
+  {
+    up: migration_20261107_150000_event_schedule_status.up,
+    down: migration_20261107_150000_event_schedule_status.down,
+    name: '20261107_150000_event_schedule_status',
   },
 ]

@@ -744,6 +744,10 @@ export interface Event {
    * Recommended. The website moves events from Upcoming → Ongoing → Completed automatically using start and end dates.
    */
   endDate?: string | null;
+  /**
+   * Normally determined by the dates above. Choose a status here to manually override the automatic schedule.
+   */
+  scheduleStatus?: ('automatic' | 'upcoming' | 'ongoing' | 'completed') | null;
   startTime?: string | null;
   venue?: string | null;
   /**
@@ -1640,6 +1644,7 @@ export interface EventsSelect<T extends boolean = true> {
   mode?: T;
   startDate?: T;
   endDate?: T;
+  scheduleStatus?: T;
   startTime?: T;
   venue?: T;
   registrationCategories?:

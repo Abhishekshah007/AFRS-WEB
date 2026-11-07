@@ -49,23 +49,37 @@ function startOfDay(date: Date): Date {
 }
 
 export function isEventUpcoming(evt: AfrsEvent, now = new Date()): boolean {
+  if (evt.scheduleStatus && evt.scheduleStatus !== 'automatic') {
+    return evt.scheduleStatus === 'upcoming'
+  }
   return startOfDay(new Date(evt.startDate)) > startOfDay(now)
 }
 
 export function isEventOngoing(evt: AfrsEvent, now = new Date()): boolean {
-  const start = new Date(evt.startDate)
-  if (start > now) return false
-  if (evt.endDate) return new Date(evt.endDate) >= now
-  const weekAgo = new Date(now)
-  weekAgo.setDate(weekAgo.getDate() - 7)
-  return start >= weekAgo
+  if (evt.scheduleStatus && evt.scheduleStatus !== 'automatic') {
+    return evt.scheduleStatus === 'ongoing'
+  }
+
+  const today = startOfDay(now)
+  const start = startOfDay(new Date(evt.startDate))
+  if (start > today) return false
+
+  if (evt.endDate) return startOfDay(new Date(evt.endDate)) >= today
+
+  const fallbackEnd = new Date(start)
+  fallbackEnd.setUTCDate(fallbackEnd.getUTCDate() + 7)
+  return today <= fallbackEnd
 }
 
 export function isEventCompleted(evt: AfrsEvent, now = new Date()): boolean {
-  const start = new Date(evt.startDate)
-  if (evt.endDate) return new Date(evt.endDate) < now
+  if (evt.scheduleStatus && evt.scheduleStatus !== 'automatic') {
+    return evt.scheduleStatus === 'completed'
+  }
 
-  const weekAgo = new Date(now)
-  weekAgo.setDate(weekAgo.getDate() - 7)
-  return start < weekAgo
+  const today = startOfDay(now)
+  if (evt.endDate) return startOfDay(new Date(evt.endDate)) < today
+
+  const fallbackEnd = startOfDay(new Date(evt.startDate))
+  fallbackEnd.setUTCDate(fallbackEnd.getUTCDate() + 7)
+  return fallbackEnd < today
 }
