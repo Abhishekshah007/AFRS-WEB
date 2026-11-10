@@ -16,10 +16,7 @@ import { resolveTotalVisitors } from '@/lib/site/totalVisitors'
 import { GALLERY_PAGE_PRESETS, galleryHref } from '@/lib/gallery/constants'
 import { getGalleryThumbs } from '@/lib/queries/gallery'
 import type { ResourcePerson as CmsResourcePerson, SiteSetting } from '@/payload-types'
-import {
-  getResourcePersonDirectoryEntry,
-  sortResourcePersonsByName,
-} from '@/components/programmes/resourcePersonDirectory'
+import { getResourcePersonDirectoryEntry } from '@/components/programmes/resourcePersonDirectory'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 import type { Where } from 'payload'
@@ -101,7 +98,6 @@ export default async function CoursesPage() {
     payload.find({
       collection: 'resourcePersons',
       where: { published: { equals: true } },
-      sort: 'order',
       limit: 200,
       depth: 1,
       overrideAccess: false,
@@ -139,7 +135,7 @@ export default async function CoursesPage() {
     getTrainingChecklist(),
   ])
 
-  const resourcePersons: ResourcePerson[] = sortResourcePersonsByName(
+  const resourcePersons: ResourcePerson[] =
     resourcePersonsResult.docs.length > 0
       ? (resourcePersonsResult.docs as CmsResourcePerson[]).map((person) => {
           const directoryEntry = getResourcePersonDirectoryEntry(person.name)
@@ -159,7 +155,6 @@ export default async function CoursesPage() {
           }
         })
       : fallbackResourcePersons
-  )
 
   const galleryViewAllHref = galleryHref('events', 'afrs')
 
