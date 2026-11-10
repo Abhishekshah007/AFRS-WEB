@@ -98,6 +98,7 @@ export default async function CoursesPage() {
     payload.find({
       collection: 'resourcePersons',
       where: { published: { equals: true } },
+      sort: 'order',
       limit: 200,
       depth: 1,
       overrideAccess: false,
