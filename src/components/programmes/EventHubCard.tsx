@@ -42,18 +42,28 @@ function CalendarIcon() {
 export type EventHubCardProps = {
   event: HubEventCard
   ctaLabel?: string
+  ctaDestination?: 'registration' | 'details'
 }
 
 /**
  * Shared event card — used on /courses, home, and /events for a consistent layout.
  * Posters use object-contain so square CMS artwork is not cropped.
  */
-export function EventHubCard({ event, ctaLabel = 'Register Now' }: EventHubCardProps) {
+export function EventHubCard({
+  event,
+  ctaLabel = 'Register Now',
+  ctaDestination = 'registration',
+}: EventHubCardProps) {
   const typeClass = eventTypeBadgeClass[event.eventType] ?? 'bg-slate-600 text-white'
   const natureClass = eventNatureBadgeClass[event.eventNature]
   const registrationOpen = event.registrationOpen !== false
-  const registerHref = registrationOpen ? `/events/${event.slug}/register` : `/events/${event.slug}`
-  const registerLabel = registrationOpen ? ctaLabel : 'Registration closed'
+  const isDetailsCta = ctaDestination === 'details'
+  const ctaHref = isDetailsCta
+    ? `/events/${event.slug}`
+    : registrationOpen
+      ? `/events/${event.slug}/register`
+      : `/events/${event.slug}`
+  const actionLabel = isDetailsCta || registrationOpen ? ctaLabel : 'Registration closed'
 
   return (
     <motion.article
@@ -104,22 +114,24 @@ export function EventHubCard({ event, ctaLabel = 'Register Now' }: EventHubCardP
         </p>
 
         <div className="mt-5 flex flex-col gap-2">
+          {!isDetailsCta && (
+            <Link
+              href={`/events/${event.slug}`}
+              className="block w-full rounded-xl border border-slate-200 bg-white py-2.5 text-center text-sm font-bold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
+            >
+              Read about {event.title}
+            </Link>
+          )}
           <Link
-            href={`/events/${event.slug}`}
-            className="block w-full rounded-xl border border-slate-200 bg-white py-2.5 text-center text-sm font-bold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
-          >
-            Read about {event.title}
-          </Link>
-          <Link
-            href={registerHref}
-            aria-disabled={!registrationOpen}
+            href={ctaHref}
+            aria-disabled={!isDetailsCta && !registrationOpen}
             className={`block w-full rounded-xl border py-2.5 text-center text-sm font-bold shadow-sm transition ${
-              registrationOpen
+              isDetailsCta || registrationOpen
                 ? 'border-slate-200 bg-white text-slate-800 hover:border-slate-300 hover:bg-slate-50'
                 : 'cursor-not-allowed border-slate-100 bg-slate-50 text-slate-400'
             }`}
           >
-            {registerLabel}
+            {actionLabel}
           </Link>
         </div>
       </div>

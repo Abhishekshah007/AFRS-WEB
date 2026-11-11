@@ -155,6 +155,7 @@ export function EventsListingView({
                     <EventHubCard
                       event={evt}
                       ctaLabel={tab === 'completed' ? 'View Details' : 'Register Now'}
+                      ctaDestination={tab === 'completed' ? 'details' : 'registration'}
                     />
                   </li>
                 ))}
