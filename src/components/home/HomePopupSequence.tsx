@@ -1,10 +1,10 @@
 'use client'
 
 import { X } from 'lucide-react'
+import Image from 'next/image'
 import { useEffect, useId, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { createPortal } from 'react-dom'
 
-import { setLenisStopped } from '@/components/motion/lenisController'
 import {
   HOME_POPUP_STORAGE_KEY,
   type HomePopupSlide,
@@ -65,13 +65,11 @@ export function HomePopupSequence({ slides, fingerprint }: HomePopupSequenceProp
     const bodyOverflow = document.body.style.overflow
     document.documentElement.style.overflow = 'hidden'
     document.body.style.overflow = 'hidden'
-    setLenisStopped(true)
     closeRef.current?.focus()
 
     return () => {
       document.documentElement.style.overflow = htmlOverflow
       document.body.style.overflow = bodyOverflow
-      setLenisStopped(false)
       if (dialog.open) dialog.close()
     }
   }, [open])
@@ -138,11 +136,13 @@ function PosterSlide({
   titleId: string
 }) {
   const image = (
-    // Poster art is authored at many aspect ratios; contain it instead of cropping.
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <Image
       src={slide.imageUrl}
       alt=""
+      width={slide.imageWidth}
+      height={slide.imageHeight}
+      quality={70}
+      sizes="(max-width: 640px) 90vw, 600px"
       className="mx-auto block max-h-[calc(100dvh-7.5rem)] w-auto max-w-full rounded-xl object-contain"
     />
   )
@@ -177,10 +177,13 @@ function EventSlide({
   return (
     <article className="w-full max-w-lg overflow-hidden rounded-2xl bg-white text-slate-900 shadow-2xl">
       {slide.imageUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <Image
           src={slide.imageUrl}
           alt=""
+          width={slide.imageWidth || 1200}
+          height={slide.imageHeight || 800}
+          quality={70}
+          sizes="(max-width: 640px) 100vw, 512px"
           className="max-h-[50dvh] w-full object-contain bg-slate-100"
         />
       ) : null}

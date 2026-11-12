@@ -28,6 +28,13 @@ import {
 import type { DeliveryMode } from '@/lib/registration/deliveryMode'
 import { parseDeliveryMode, shouldOfferPayPal } from '@/lib/registration/deliveryMode'
 import { isTurnstileConfiguredClient } from '@/lib/security/turnstileClient'
+import { isValidEmail } from '@/lib/email'
+import { normalizeEmail } from '@/lib/email'
+import {
+  isValidCalendarDate,
+  isValidPhoneNumber,
+  localDateInputValue,
+} from '@/lib/forms/fieldValidation'
 
 type ContactFormState = {
   fullName: string
@@ -194,8 +201,16 @@ export function UnifiedRegistrationFlow({
     }
 
     if (!cmsFormOnly) {
-      if (!form.fullName || !form.email || !form.mobileNumber) {
-        setError('Please fill all required contact fields.')
+      if (!form.fullName.trim()) {
+        setError('Please enter your full name.')
+        return false
+      }
+      if (!isValidEmail(form.email)) {
+        setError('Please enter a valid email address.')
+        return false
+      }
+      if (!isValidPhoneNumber(`${form.countryCode} ${form.mobileNumber}`)) {
+        setError('Please enter a valid mobile number with its country code.')
         return false
       }
     }
@@ -221,12 +236,20 @@ export function UnifiedRegistrationFlow({
     }
 
     if (showPayment) {
+      if (!paymentMethod) {
+        setError('Please select the payment method you used.')
+        return false
+      }
       if (!paymentForm.transactionId.trim()) {
         setError('Please enter your transaction reference.')
         return false
       }
-      if (!paymentForm.transactionDate || !paymentForm.transactionTime) {
-        setError('Please enter transaction date and time.')
+      if (!isValidCalendarDate(paymentForm.transactionDate)) {
+        setError('Please choose a valid transaction date.')
+        return false
+      }
+      if (!paymentForm.transactionTime) {
+        setError('Please enter the transaction time.')
         return false
       }
       if (!paymentForm.transactionProof) {
@@ -282,7 +305,13 @@ export function UnifiedRegistrationFlow({
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         ...buildInitiatePayload({
-          form,
+          form: {
+            ...form,
+            fullName: form.fullName.trim(),
+            email: normalizeEmail(form.email),
+            countryCode: form.countryCode.trim(),
+            mobileNumber: form.mobileNumber.trim(),
+          },
           selectedTier,
           participantRegion: activeRegion === 'international' ? 'international' : 'indian',
           customResponses,
@@ -431,6 +460,9 @@ export function UnifiedRegistrationFlow({
               <input
                 className={inputClass}
                 placeholder="Full Name *"
+                name="fullName"
+                autoComplete="name"
+                required
                 value={form.fullName}
                 onChange={(e) => setForm((p) => ({ ...p, fullName: e.target.value }))}
               />
@@ -439,18 +471,35 @@ export function UnifiedRegistrationFlow({
                   className={inputClass}
                   placeholder="Email *"
                   type="email"
+                  name="email"
+                  autoComplete="email"
+                  inputMode="email"
+                  autoCapitalize="none"
+                  maxLength={254}
+                  required
                   value={form.email}
                   onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
                 />
                 <div className="flex gap-2">
                   <input
                     className="h-11 w-20 rounded-xl border border-slate-200 px-2 text-sm"
+                    type="tel"
+                    inputMode="tel"
+                    aria-label="Country calling code"
+                    autoComplete="tel-country-code"
+                    maxLength={6}
+                    required
                     value={form.countryCode}
                     onChange={(e) => setForm((p) => ({ ...p, countryCode: e.target.value }))}
                   />
                   <input
                     className="h-11 flex-1 rounded-xl border border-slate-200 px-3 text-sm"
                     placeholder="Mobile Number *"
+                    type="tel"
+                    inputMode="tel"
+                    autoComplete="tel-national"
+                    maxLength={24}
+                    required
                     value={form.mobileNumber}
                     onChange={(e) => setForm((p) => ({ ...p, mobileNumber: e.target.value }))}
                   />
@@ -617,7 +666,9 @@ export function UnifiedRegistrationFlow({
                   Transaction date *
                   <input
                     type="date"
+                    max={localDateInputValue()}
                     className={`${inputClass} mt-2`}
+                    required
                     value={paymentForm.transactionDate}
                     onChange={(e) =>
                       setPaymentForm((p) => ({ ...p, transactionDate: e.target.value }))
@@ -629,6 +680,7 @@ export function UnifiedRegistrationFlow({
                   <input
                     type="time"
                     className={`${inputClass} mt-2`}
+                    required
                     value={paymentForm.transactionTime}
                     onChange={(e) =>
                       setPaymentForm((p) => ({ ...p, transactionTime: e.target.value }))
@@ -641,6 +693,7 @@ export function UnifiedRegistrationFlow({
                     type="file"
                     accept="image/*,.pdf"
                     className={`${inputClass} mt-2`}
+                    required
                     onChange={(e) =>
                       setPaymentForm((p) => ({
                         ...p,
@@ -664,7 +717,11 @@ export function UnifiedRegistrationFlow({
             </section>
           )}
 
-          {error && <p className="text-sm text-rose-600">{error}</p>}
+          {error && (
+            <p className="text-sm text-rose-600" role="alert" aria-live="assertive">
+              {error}
+            </p>
+          )}
 
           <TurnstileField key={turnstileWidgetKey} onTokenChange={setTurnstileToken} />
 

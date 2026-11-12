@@ -7,10 +7,7 @@ export default function EventRegistrationCsvExport() {
     <RegistrationCsvExportPanel
       collectionSlug="eventRegistrations"
       title="Bulk CSV export — event registrations"
-      primaryFilterKey="eventTitle"
-      primaryFilterLabel="Event title contains"
-      secondaryFilterKey="eventSlug"
-      secondaryFilterLabel="Event slug (exact)"
+      eventSelector
     />
   )
 }

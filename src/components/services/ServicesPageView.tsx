@@ -111,11 +111,10 @@ export function ServicesPageView({
             <div className="rounded-[6px] bg-[#3B010B] px-7 py-5 shadow-xl relative overflow-hidden min-h-[180px]">
               <video
                 controls
-                autoPlay
                 muted
-                loop
                 playsInline
-                preload="metadata"
+                preload="none"
+                poster="https://res.cloudinary.com/drrzakkgo/video/upload/so_0,w_960,q_auto,f_jpg/Afsl_Final_Website_Reel_1_fvbzdz.jpg"
                 controlsList="nodownload"
                 className="absolute inset-0 h-full w-full object-contain bg-[#3B010B]"
               >

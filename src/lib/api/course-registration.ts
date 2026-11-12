@@ -4,6 +4,7 @@ import { buildCourseConfirmationUrl } from '@/lib/registration/confirmationToken
 import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
 import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
 import { getPayloadClient } from '@/lib/payload'
+import { isValidCalendarDate } from '@/lib/forms/fieldValidation'
 import {
   isRegistrationPaymentMethod,
   paymentModeForMethod,
@@ -56,6 +57,9 @@ export async function completeCourseRegistration(req: Request) {
   if (!body.registrationId) return jsonError('Registration id is required.', 400)
   if (!body.transactionId) return jsonError('Transaction reference is required.', 400)
   if (!body.transactionDate) return jsonError('Transaction date is required.', 400)
+  if (!isValidCalendarDate(body.transactionDate)) {
+    return jsonError('Please provide a valid transaction date.', 400)
+  }
   if (!body.transactionTime) return jsonError('Transaction time is required.', 400)
   if (!uploadFile && formData) return jsonError('Transaction proof upload is required.', 400)
 

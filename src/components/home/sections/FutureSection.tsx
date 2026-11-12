@@ -12,11 +12,10 @@ export function FutureSection() {
           <div className="relative rounded-3xl overflow-hidden bg-slate-200 aspect-[16/10] lg:min-h-[320px] card-pop">
             <video
               controls
-              autoPlay
               muted
-              loop
               playsInline
-              preload="metadata"
+              preload="none"
+              poster="https://res.cloudinary.com/drrzakkgo/video/upload/so_0,w_960,q_auto,f_jpg/Afrs_Final_Website_Reel_kokbnp.jpg"
               controlsList="nodownload"
               className="absolute inset-0 h-full w-full object-contain bg-slate-900"
             >

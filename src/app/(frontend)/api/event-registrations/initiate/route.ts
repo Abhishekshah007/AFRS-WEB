@@ -11,6 +11,7 @@ import { getPayloadClient } from '@/lib/payload'
 import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
 import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
 import { resolveEventSlug } from '@/lib/utils/slugify'
+import { isEventRegistrationOpen } from '@/lib/registration/isEventRegistrationOpen'
 import type { Event as AfrsEvent, RegistrationForm } from '@/payload-types'
 
 type InitiatePayload = {
@@ -77,7 +78,7 @@ export async function POST(req: Request) {
     if (!evt) return jsonError('Event not found.', 404)
     const eventSlug = resolveEventSlug(evt.slug, body.eventSlug)
     if (!eventSlug) return jsonError('Event is missing a valid slug.', 400)
-    if (evt.registrationOpen === false) {
+    if (!isEventRegistrationOpen(evt)) {
       return jsonError('Registration is closed for this event.', 400)
     }
 

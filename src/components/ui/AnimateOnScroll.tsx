@@ -1,16 +1,4 @@
-'use client'
-
 import { Children, isValidElement, type ReactNode } from 'react'
-import { motion, useInView } from 'motion/react'
-import { useRef } from 'react'
-import {
-  fadeLeft,
-  fadeRight,
-  fadeUp,
-  scaleIn,
-  staggerContainer,
-} from '@/components/motion/variants'
-import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 type Direction = 'up' | 'left' | 'right' | 'scale'
 
@@ -22,67 +10,27 @@ interface Props {
   stagger?: boolean
 }
 
-const directionVariants = {
-  up: fadeUp,
-  left: fadeLeft,
-  right: fadeRight,
-  scale: scaleIn,
-}
-
 /**
- * Scroll-triggered reveal — upgraded with Motion spring + blur for site-wide juice.
- * Drop-in replacement; all existing usages get the upgrade automatically.
+ * Keeps reveal-section layout without scroll observers or animation work.
  */
 export function AnimateOnScroll({
   children,
   className = '',
-  direction = 'up',
-  delay = 0,
   stagger = false,
 }: Props) {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-60px 0px -40px 0px', amount: 0.15 })
-  const reduced = useReducedMotion()
-
-  if (reduced) {
-    return <div className={className}>{children}</div>
-  }
-
-  const itemVariant = directionVariants[direction]
-
   if (stagger) {
     return (
-      <motion.div
-        ref={ref}
-        className={className}
-        variants={staggerContainer}
-        initial="hidden"
-        animate={inView ? 'visible' : 'hidden'}
-        style={{ transitionDelay: delay ? `${delay}ms` : undefined }}
-      >
+      <div className={className}>
         {Children.map(children, (child, i) =>
           isValidElement(child) ? (
-            <motion.div key={i} variants={itemVariant}>
-              {child}
-            </motion.div>
+            <div key={i}>{child}</div>
           ) : (
             child
           ),
         )}
-      </motion.div>
+      </div>
     )
   }
 
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      variants={itemVariant}
-      initial="hidden"
-      animate={inView ? 'visible' : 'hidden'}
-      transition={{ delay: delay / 1000 }}
-    >
-      {children}
-    </motion.div>
-  )
+  return <div className={className}>{children}</div>
 }

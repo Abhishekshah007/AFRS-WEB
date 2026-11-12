@@ -2,6 +2,7 @@ import { getProgrammesCatalogData } from '@/components/programmes/catalog'
 import { formatEventDate, richTextToPlain } from '@/lib/cms'
 import { fetchActiveEvents } from '@/lib/queries/events'
 import { getPayloadClient } from '@/lib/payload'
+import { isEventRegistrationOpen } from '@/lib/registration/isEventRegistrationOpen'
 import type { Event as AfrsEvent } from '@/payload-types'
 
 const CACHE_TTL_MS = 5 * 60 * 1000
@@ -40,7 +41,7 @@ async function buildLiveKnowledge(): Promise<string> {
     const date = formatEventDate(evt.startDate)
     const type = evt.eventType || 'event'
     const venue = evt.venue ? ` · ${evt.venue}` : ''
-    const reg = evt.registrationOpen === false ? 'Registration closed' : 'Registration open'
+    const reg = isEventRegistrationOpen(evt) ? 'Registration open' : 'Registration closed'
     const excerpt = evt.excerpt || richTextToPlain(evt.description, 100)
     return `- ${evt.title} (${type}, ${date}${venue}) — /events/${evt.slug} — ${reg}${excerpt ? ` — ${excerpt}` : ''}`
   })

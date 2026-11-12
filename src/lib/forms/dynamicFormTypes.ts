@@ -1,4 +1,6 @@
 import { isOtherSelectValue } from '@/lib/forms/studyJobStatusOptions'
+import { isValidEmail } from '@/lib/email'
+import { isValidCalendarDate, isValidPhoneNumber } from '@/lib/forms/fieldValidation'
 
 export type DynamicFormField = {
   name: string
@@ -40,13 +42,28 @@ export function validateCustomResponses(
   files: Record<string, File | null | undefined> = {},
 ): string | null {
   for (const field of flattenSections(sections)) {
-    if (!field.required) continue
     if (field.fieldType === 'file') {
-      if (!files[field.name]) return `${field.label} is required.`
+      if (field.required && !files[field.name]) return `${field.label} is required.`
       continue
     }
-    const value = responses[field.name]?.trim()
-    if (!value) return `${field.label} is required.`
+    const value = responses[field.name]?.trim() || ''
+    if (!value && field.required) return `${field.label} is required.`
+    if (!value) continue
+
+    switch (field.fieldType.toLowerCase()) {
+      case 'email':
+        if (!isValidEmail(value)) return `Enter a valid email address for ${field.label}.`
+        break
+      case 'tel':
+        if (!isValidPhoneNumber(value)) return `Enter a valid phone number for ${field.label}.`
+        break
+      case 'date':
+        if (!isValidCalendarDate(value)) return `Choose a valid date for ${field.label}.`
+        break
+      default:
+        break
+    }
+
     if (field.fieldType === 'select' && isOtherSelectValue(value)) {
       const other = responses[otherFieldKey(field.name)]?.trim()
       if (!other) return `Please specify your answer for ${field.label}.`

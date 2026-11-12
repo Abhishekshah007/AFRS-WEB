@@ -2,16 +2,18 @@
 
 import { useMemo, useState } from 'react'
 import { Button } from '@payloadcms/ui'
+import { EventSelect } from './EventSelect'
 
 type CollectionSlug = 'courseRegistrations' | 'eventRegistrations'
 
 type Props = {
   collectionSlug: CollectionSlug
   title: string
-  primaryFilterKey: 'programmeTitle' | 'eventTitle'
-  primaryFilterLabel: string
+  primaryFilterKey?: 'programmeTitle' | 'eventTitle'
+  primaryFilterLabel?: string
   secondaryFilterKey?: 'programmeId' | 'eventSlug'
   secondaryFilterLabel?: string
+  eventSelector?: boolean
 }
 
 const paymentStatusOptions = [
@@ -37,16 +39,22 @@ export function RegistrationCsvExportPanel({
   primaryFilterLabel,
   secondaryFilterKey,
   secondaryFilterLabel,
+  eventSelector = false,
 }: Props) {
   const [primaryFilter, setPrimaryFilter] = useState('')
   const [secondaryFilter, setSecondaryFilter] = useState('')
+  const [eventSlug, setEventSlug] = useState('')
   const [paymentStatus, setPaymentStatus] = useState('')
   const [registrationStatus, setRegistrationStatus] = useState('')
 
   const exportUrl = useMemo(() => {
     const params = new URLSearchParams()
-    if (primaryFilter.trim()) params.set(primaryFilterKey, primaryFilter.trim())
-    if (secondaryFilterKey && secondaryFilter.trim()) {
+    if (eventSelector) {
+      if (eventSlug) params.set('eventSlug', eventSlug)
+    } else if (primaryFilterKey && primaryFilter.trim()) {
+      params.set(primaryFilterKey, primaryFilter.trim())
+    }
+    if (!eventSelector && secondaryFilterKey && secondaryFilter.trim()) {
       params.set(secondaryFilterKey, secondaryFilter.trim())
     }
     if (paymentStatus) params.set('paymentStatus', paymentStatus)
@@ -59,6 +67,8 @@ export function RegistrationCsvExportPanel({
     primaryFilterKey,
     secondaryFilter,
     secondaryFilterKey,
+    eventSelector,
+    eventSlug,
     paymentStatus,
     registrationStatus,
   ])
@@ -87,37 +97,56 @@ export function RegistrationCsvExportPanel({
           marginBottom: '16px',
         }}
       >
-        <label style={{ display: 'grid', gap: '6px', fontSize: '12px', fontWeight: 600 }}>
-          {primaryFilterLabel}
-          <input
-            value={primaryFilter}
-            onChange={(e) => setPrimaryFilter(e.target.value)}
-            placeholder="Optional filter"
-            style={{
-              height: '36px',
-              borderRadius: 'var(--border-radius-s)',
-              border: '1px solid var(--theme-elevation-150)',
-              padding: '0 10px',
-            }}
-          />
-        </label>
-
-        {secondaryFilterKey && secondaryFilterLabel ? (
+        {eventSelector ? (
           <label style={{ display: 'grid', gap: '6px', fontSize: '12px', fontWeight: 600 }}>
-            {secondaryFilterLabel}
-            <input
-              value={secondaryFilter}
-              onChange={(e) => setSecondaryFilter(e.target.value)}
-              placeholder="Optional exact match"
+            Event
+            <EventSelect
+              onChange={setEventSlug}
+              selectedSlug={eventSlug}
               style={{
                 height: '36px',
                 borderRadius: 'var(--border-radius-s)',
                 border: '1px solid var(--theme-elevation-150)',
                 padding: '0 10px',
+                width: '100%',
               }}
             />
           </label>
-        ) : null}
+        ) : (
+          <>
+            <label style={{ display: 'grid', gap: '6px', fontSize: '12px', fontWeight: 600 }}>
+              {primaryFilterLabel}
+              <input
+                value={primaryFilter}
+                onChange={(e) => setPrimaryFilter(e.target.value)}
+                placeholder="Optional filter"
+                style={{
+                  height: '36px',
+                  borderRadius: 'var(--border-radius-s)',
+                  border: '1px solid var(--theme-elevation-150)',
+                  padding: '0 10px',
+                }}
+              />
+            </label>
+
+            {secondaryFilterKey && secondaryFilterLabel ? (
+              <label style={{ display: 'grid', gap: '6px', fontSize: '12px', fontWeight: 600 }}>
+                {secondaryFilterLabel}
+                <input
+                  value={secondaryFilter}
+                  onChange={(e) => setSecondaryFilter(e.target.value)}
+                  placeholder="Optional exact match"
+                  style={{
+                    height: '36px',
+                    borderRadius: 'var(--border-radius-s)',
+                    border: '1px solid var(--theme-elevation-150)',
+                    padding: '0 10px',
+                  }}
+                />
+              </label>
+            ) : null}
+          </>
+        )}
 
         <label style={{ display: 'grid', gap: '6px', fontSize: '12px', fontWeight: 600 }}>
           Payment status

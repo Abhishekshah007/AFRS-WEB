@@ -2,7 +2,6 @@ import React from 'react'
 import localFont from 'next/font/local'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import { AppProviders } from '@/components/providers/AppProviders'
 import { AfrsChatbot } from '@/components/chatbot/AfrsChatbot'
 import { getLayoutGlobals } from '@/lib/queries/layout'
 import type { Viewport } from 'next'
@@ -125,16 +124,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </div>
         )}
         <Navbar settings={headerSettings} labEmail={siteSettings?.labEmail || DEFAULT_LAB_EMAIL} />
-        <AppProviders>
-          <main id="main-content" className="relative min-h-[50vh]" tabIndex={-1}>
-            {children}
-          </main>
-          <AfrsChatbot
-            phone={siteSettings?.phone || undefined}
-            email={siteSettings?.email || undefined}
-            labEmail={siteSettings?.labEmail || DEFAULT_LAB_EMAIL}
-          />
-        </AppProviders>
+        <main id="main-content" className="relative min-h-[50vh]" tabIndex={-1}>
+          {children}
+        </main>
+        <AfrsChatbot
+          phone={siteSettings?.phone || undefined}
+          email={siteSettings?.email || undefined}
+          labEmail={siteSettings?.labEmail || DEFAULT_LAB_EMAIL}
+        />
         <Footer
           settings={footerSettings}
           siteSettings={siteSettings}
