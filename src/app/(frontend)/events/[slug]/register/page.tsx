@@ -10,6 +10,7 @@ import { resolveEventSlug } from '@/lib/utils/slugify'
 import { DEFAULT_REGISTRATION_SECTIONS } from '@/fields/dynamicFormSections'
 import type { Event as AfrsEvent, Media, RegistrationForm } from '@/payload-types'
 import type { Metadata } from 'next'
+import { isEventRegistrationOpen } from '@/lib/registration/isEventRegistrationOpen'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -42,7 +43,7 @@ export default async function EventRegisterPage({ params }: Props) {
   ])
 
   const evt = result.docs[0] as AfrsEvent | undefined
-  if (!evt || evt.registrationOpen === false) notFound()
+  if (!evt || !isEventRegistrationOpen(evt)) notFound()
   const eventSlug = resolveEventSlug(evt.slug, slug)
   if (!eventSlug) notFound()
 

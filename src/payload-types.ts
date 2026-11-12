@@ -745,6 +745,10 @@ export interface Event {
    */
   endDate?: string | null;
   /**
+   * Registration stays open through this date and closes the following day. If blank, registration closes after the event start date. Set a future date to allow registration during or after the event.
+   */
+  registrationCloseDate?: string | null;
+  /**
    * Normally determined by the dates above. Choose a status here to manually override the automatic schedule.
    */
   scheduleStatus?: ('automatic' | 'upcoming' | 'ongoing' | 'completed') | null;
@@ -827,6 +831,9 @@ export interface Event {
   };
   includeKitOption?: boolean | null;
   kitPrice?: number | null;
+  /**
+   * Turn off to close registration immediately. The registration closing date still applies when this is on.
+   */
   registrationOpen?: boolean | null;
   /**
    * This is the full registration form participants fill in — name, email, WhatsApp, file uploads, etc. Add one or more sections with questions.
@@ -1652,6 +1659,7 @@ export interface EventsSelect<T extends boolean = true> {
   mode?: T;
   startDate?: T;
   endDate?: T;
+  registrationCloseDate?: T;
   scheduleStatus?: T;
   startTime?: T;
   venue?: T;

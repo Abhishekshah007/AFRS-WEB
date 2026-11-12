@@ -1,6 +1,7 @@
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 import { flattenSections } from '@/lib/forms/dynamicFormTypes'
 import { isValidEmail } from '@/lib/email'
+import { isValidPhoneNumber } from '@/lib/forms/fieldValidation'
 
 export type ExtractedContactFields = {
   fullName: string
@@ -124,5 +125,8 @@ export function validateContactFields(contact: ExtractedContactFields): string |
     return 'Please enter a valid email address.'
   }
   if (!contact.mobileNumber) return 'Please enter your mobile / WhatsApp number.'
+  if (!isValidPhoneNumber(`${contact.countryCode} ${contact.mobileNumber}`)) {
+    return 'Please enter a valid mobile / WhatsApp number, including its country code.'
+  }
   return null
 }

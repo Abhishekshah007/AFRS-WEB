@@ -1,5 +1,6 @@
 import { isEventOngoing, isEventUpcoming } from '@/components/programmes/mapEvent'
 import { formatEventDate, isSafeHref, resolveMediaUrlOptional } from '@/lib/cms'
+import { isEventRegistrationOpen } from '@/lib/registration/isEventRegistrationOpen'
 import { resolveEventSlug } from '@/lib/utils/slugify'
 import type { Event as AfrsEvent, Media, SitePopup } from '@/payload-types'
 
@@ -11,6 +12,8 @@ export type HomePopupPoster = {
   id: string
   title: string
   imageUrl: string
+  imageWidth: number
+  imageHeight: number
   href?: string
   updatedAt: string
 }
@@ -20,6 +23,8 @@ export type HomePopupEvent = {
   id: string
   title: string
   imageUrl?: string
+  imageWidth?: number
+  imageHeight?: number
   whenLabel: string
   venue?: string
   href: string
@@ -59,6 +64,7 @@ export function homePopupFingerprint(slides: Pick<HomePopupSlide, 'kind' | 'id' 
 }
 
 function posterSlide(doc: SitePopup): HomePopupPoster | null {
+  const media = typeof doc.image === 'object' ? doc.image : null
   const imageUrl = resolveMediaUrlOptional(doc.image as number | Media | null | undefined)
   if (!imageUrl || !doc.published) return null
   const href = doc.linkUrl?.trim()
@@ -67,6 +73,8 @@ function posterSlide(doc: SitePopup): HomePopupPoster | null {
     id: String(doc.id),
     title: doc.title,
     imageUrl,
+    imageWidth: media?.width || 1200,
+    imageHeight: media?.height || 1600,
     href: href && isSafeHref(href) ? href : undefined,
     updatedAt: doc.updatedAt,
   }
@@ -82,13 +90,16 @@ function eventSlide(evt: AfrsEvent, now: Date): HomePopupEvent | null {
   if (!isEligibleHomePopupEvent(evt, now)) return null
   const slug = resolveEventSlug(evt.slug, String(evt.id))
   if (!slug) return null
-  const registrationOpen = evt.registrationOpen !== false
+  const registrationOpen = isEventRegistrationOpen(evt, now)
   const venue = evt.venue?.trim()
+  const banner = typeof evt.banner === 'object' ? evt.banner : null
   return {
     kind: 'event',
     id: String(evt.id),
     title: evt.title,
     imageUrl: resolveMediaUrlOptional(evt.banner as number | Media | null | undefined),
+    imageWidth: banner?.width || undefined,
+    imageHeight: banner?.height || undefined,
     whenLabel: eventWhenLabel(evt),
     venue: venue || undefined,
     href: registrationOpen ? `/events/${slug}/register` : `/events/${slug}`,

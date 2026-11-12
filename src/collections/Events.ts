@@ -101,6 +101,15 @@ export const Events: CollectionConfig = {
       },
     },
     {
+      name: 'registrationCloseDate',
+      type: 'date',
+      label: 'Registration closing date',
+      admin: {
+        description:
+          'Registration stays open through this date and closes the following day. If blank, registration closes after the event start date. Set a future date to allow registration during or after the event.',
+      },
+    },
+    {
       name: 'scheduleStatus',
       type: 'select',
       label: 'Schedule status',
@@ -205,6 +214,10 @@ export const Events: CollectionConfig = {
       type: 'checkbox',
       defaultValue: true,
       label: 'Registration open',
+      admin: {
+        description:
+          'Turn off to close registration immediately. The registration closing date still applies when this is on.',
+      },
     },
     dynamicFormSectionsField({
       name: 'registrationSections',

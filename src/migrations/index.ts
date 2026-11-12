@@ -23,6 +23,7 @@ import * as migration_20261103_083910 from './20261103_083910'
 import * as migration_20261103_103548_founder_full_bio from './20261103_103548_founder_full_bio'
 import * as migration_20261107_150000_event_schedule_status from './20261107_150000_event_schedule_status'
 import * as migration_20261107_230000_registration_payment_method from './20261107_230000_registration_payment_method'
+import * as migration_20261112_165200_event_registration_close_date from './20261112_165200_event_registration_close_date'
 
 export const migrations = [
   {
@@ -149,5 +150,10 @@ export const migrations = [
     up: migration_20261107_230000_registration_payment_method.up,
     down: migration_20261107_230000_registration_payment_method.down,
     name: '20261107_230000_registration_payment_method',
+  },
+  {
+    up: migration_20261112_165200_event_registration_close_date.up,
+    down: migration_20261112_165200_event_registration_close_date.down,
+    name: '20261112_165200_event_registration_close_date',
   },
 ]

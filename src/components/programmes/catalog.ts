@@ -6,6 +6,7 @@ import {
   staleProgrammeIds,
 } from '@/data/defaults/programmes/catalog'
 import { isEventOngoing, isEventUpcoming } from '@/components/programmes/mapEvent'
+import { isEventRegistrationOpen } from '@/lib/registration/isEventRegistrationOpen'
 import { getPayloadClient } from '@/lib/payload'
 import type { Event as AfrsEvent } from '@/payload-types'
 import { safeQuery } from '@/lib/resilience/safeQuery'
@@ -525,7 +526,7 @@ export async function prioritizeActiveScheduledProgrammes(
       (docs as AfrsEvent[])
         .filter(
           (event) =>
-            event.registrationOpen !== false &&
+            isEventRegistrationOpen(event, now) &&
             (isEventUpcoming(event, now) || isEventOngoing(event, now)),
         )
         .map((event) => event.slug)

@@ -7,6 +7,8 @@ import { buildCourseConfirmationUrl } from '@/lib/registration/confirmationToken
 import { getPayloadClient } from '@/lib/payload'
 import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
 import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
+import { isValidEmail } from '@/lib/email'
+import { isValidPhoneNumber } from '@/lib/forms/fieldValidation'
 
 type InitiatePayload = {
   programmeType?: string
@@ -39,8 +41,16 @@ export async function POST(req: Request) {
     })
     if (blocked) return blocked
 
-    if (!hasRequiredFields(body, ['programmeTitle', 'fullName', 'email', 'mobileNumber'])) {
+    if (
+      !hasRequiredFields(body, ['programmeTitle', 'fullName', 'email', 'mobileNumber']) ||
+      !body.programmeTitle?.trim() ||
+      !body.fullName?.trim()
+    ) {
       return jsonError('Missing required fields.', 400)
+    }
+    if (!isValidEmail(body.email)) return jsonError('Please enter a valid email address.', 400)
+    if (!isValidPhoneNumber(`${body.countryCode || '+91'} ${body.mobileNumber}`)) {
+      return jsonError('Please enter a valid mobile number with its country code.', 400)
     }
 
     const payload = await getPayloadClient()

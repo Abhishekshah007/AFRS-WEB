@@ -1,11 +1,23 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { useState, useSyncExternalStore, type FormEvent } from 'react'
+import { EventSelect } from './EventSelect'
 
 const EVENT_LIST_FILTER = 'where[eventSlug][equals]'
 
+function subscribeToLocation(callback: () => void) {
+  window.addEventListener('popstate', callback)
+  return () => window.removeEventListener('popstate', callback)
+}
+
+function getEventSlugFromLocation(): string {
+  return new URLSearchParams(window.location.search).get(EVENT_LIST_FILTER) ?? ''
+}
+
 export default function EventRegistrationTools() {
-  const [eventSlug, setEventSlug] = useState('')
+  const urlEventSlug = useSyncExternalStore(subscribeToLocation, getEventSlugFromLocation, () => '')
+  const [selectedEventSlug, setSelectedEventSlug] = useState<string | null>(null)
+  const eventSlug = selectedEventSlug ?? urlEventSlug
 
   function applyListFilter(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -35,18 +47,16 @@ export default function EventRegistrationTools() {
     <section className="mb-5 rounded-xl border border-slate-200 bg-white p-4">
       <h2 className="text-sm font-bold text-slate-900">Manage registrations by event</h2>
       <p className="mt-1 text-xs text-slate-600">
-        Enter the event slug to filter this list or export that event’s registrations and payment
-        proof links.
+        Select an event to filter this list or export its registrations and payment proof links.
       </p>
       <form className="mt-3 flex flex-wrap items-end gap-3" onSubmit={applyListFilter}>
         <label className="min-w-[220px] flex-1 text-xs font-semibold text-slate-700">
-          Event slug
-          <input
-            autoComplete="off"
-            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-            onChange={(event) => setEventSlug(event.target.value)}
-            placeholder="e.g. forensic-workshop-2026"
-            value={eventSlug}
+          Event
+          <EventSelect
+            allLabel="All events"
+            className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm"
+            onChange={setSelectedEventSlug}
+            selectedSlug={eventSlug}
           />
         </label>
         <button

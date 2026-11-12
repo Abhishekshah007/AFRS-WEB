@@ -48,6 +48,10 @@ export function ContactForm() {
             className="mt-2 w-full h-11 rounded-lg border border-slate-200 px-3 text-sm outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-300"
             placeholder="+91 00000 00000"
             autoComplete="tel"
+            type="tel"
+            inputMode="tel"
+            pattern="\+?[0-9\s().-]{7,24}"
+            title="Enter a valid phone number, including country code if needed."
           />
         </label>
         <label className="text-xs font-semibold text-slate-600 sm:col-span-2">
@@ -87,6 +91,8 @@ export function ContactForm() {
 
       {state.status !== 'idle' && (
         <p
+          role={state.status === 'success' ? 'status' : 'alert'}
+          aria-live={state.status === 'success' ? 'polite' : 'assertive'}
           className={`mt-4 text-sm ${
             state.status === 'success'
               ? 'text-emerald-600'

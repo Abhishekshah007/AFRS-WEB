@@ -16,6 +16,7 @@ import { JsonLd } from '@/components/seo/JsonLd'
 import { breadcrumbList, withContext } from '@/lib/seo/schema'
 import { clipMeta } from '@/lib/seo/site'
 import { categoriesToFeeTiers, formatFeeAmount } from '@/lib/registration/resolveConfig'
+import { isEventRegistrationOpen } from '@/lib/registration/isEventRegistrationOpen'
 import type { Metadata } from 'next'
 
 import { FALLBACK_BANNER_IMAGE } from '@/lib/constants/assets'
@@ -211,13 +212,9 @@ export default async function EventDetailPage({ params }: Props) {
                         key={cat.id}
                         className="flex items-center justify-between rounded-xl bg-slate-50 border border-slate-100 px-4 py-3"
                       >
-                        <span className="text-sm font-semibold text-slate-800">
-                          {cat.label}
-                        </span>
+                        <span className="text-sm font-semibold text-slate-800">{cat.label}</span>
                         <span className="text-sm font-extrabold text-brand-700">
-                          {cat.amount
-                            ? formatFeeAmount(cat.amount, cat.currency)
-                            : 'Free'}
+                          {cat.amount ? formatFeeAmount(cat.amount, cat.currency) : 'Free'}
                         </span>
                       </div>
                     ))}
@@ -232,7 +229,7 @@ export default async function EventDetailPage({ params }: Props) {
               </p>
             )}
 
-            {evt.registrationOpen !== false ? (
+            {isEventRegistrationOpen(evt) ? (
               <Link
                 href={`/events/${evt.slug}/register`}
                 className="block w-full text-center h-12 leading-[48px] rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold transition"

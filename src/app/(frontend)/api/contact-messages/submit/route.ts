@@ -1,5 +1,6 @@
 import { jsonError } from '@/lib/apiResponses'
 import { isValidEmail, normalizeEmail } from '@/lib/email'
+import { isValidPhoneNumber } from '@/lib/forms/fieldValidation'
 import { getPayloadClient } from '@/lib/payload'
 import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
 import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
@@ -30,6 +31,7 @@ export async function POST(req: Request) {
     const fullName = body.fullName?.trim() || ''
     const email = normalizeEmail(body.email)
     const message = body.message?.trim() || ''
+    const mobile = body.mobile?.trim() || ''
 
     if (!fullName || !email || !message) {
       return jsonError('Please fill Full Name, Email, and Message.', 400)
@@ -38,6 +40,9 @@ export async function POST(req: Request) {
     if (!isValidEmail(email)) {
       return jsonError('Please enter a valid email address.', 400)
     }
+    if (mobile && !isValidPhoneNumber(mobile)) {
+      return jsonError('Please enter a valid phone number.', 400)
+    }
 
     const payload = await getPayloadClient()
     await payload.create({
@@ -45,7 +50,7 @@ export async function POST(req: Request) {
       data: {
         fullName,
         email,
-        mobile: body.mobile?.trim() || undefined,
+        mobile: mobile || undefined,
         subject: body.subject?.trim() || undefined,
         message,
         formType: body.formType || 'contact',

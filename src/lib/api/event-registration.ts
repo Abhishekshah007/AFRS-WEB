@@ -6,6 +6,7 @@ import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
 import { resolveEventSlug } from '@/lib/utils/slugify'
 import { getPayloadClient } from '@/lib/payload'
 import { createLocalReq } from 'payload'
+import { isValidCalendarDate } from '@/lib/forms/fieldValidation'
 
 type CompleteEventRegistrationBody = {
   registrationId?: string
@@ -43,6 +44,9 @@ export async function completeEventRegistration(req: Request) {
   if (!body.registrationId) return jsonError('Registration id is required.', 400)
   if (!body.transactionId) return jsonError('Transaction reference is required.', 400)
   if (!body.transactionDate) return jsonError('Transaction date is required.', 400)
+  if (!isValidCalendarDate(body.transactionDate)) {
+    return jsonError('Please provide a valid transaction date.', 400)
+  }
   if (!body.transactionTime) return jsonError('Transaction time is required.', 400)
   if (!uploadFile && formData) return jsonError('Transaction proof upload is required.', 400)
 

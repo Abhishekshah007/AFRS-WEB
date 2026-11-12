@@ -3,6 +3,7 @@ import { FALLBACK_BANNER_IMAGE, formatEventType, resolveMediaUrl, richTextToPlai
 import { resolveEventSlug } from '@/lib/utils/slugify'
 import type { Event as AfrsEvent, Media } from '@/payload-types'
 import { eventTypeDisplayLabel } from '@/components/programmes/eventStyles'
+import { isEventRegistrationOpen } from '@/lib/registration/isEventRegistrationOpen'
 
 const VISUAL_TONES: HubEventCard['visualTone'][] = ['blue', 'orange', 'purple']
 const EVENT_ICONS: Record<string, string> = {
@@ -38,7 +39,7 @@ export function mapEventToHubCard(evt: AfrsEvent, index = 0): HubEventCard {
     visualTone: VISUAL_TONES[index % VISUAL_TONES.length],
     visualIcon: EVENT_ICONS[type] ?? '📅',
     bannerUrl: bannerUrl || undefined,
-    registrationOpen: evt.registrationOpen,
+    registrationOpen: isEventRegistrationOpen(evt),
   }
 }
 

@@ -21,6 +21,8 @@ import { resolveEventSlug } from '@/lib/utils/slugify'
 import { buildEventConfirmationUrl } from '@/lib/registration/confirmationToken'
 import { logCmsError } from '@/lib/resilience/logger'
 import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
+import { isEventRegistrationOpen } from '@/lib/registration/isEventRegistrationOpen'
+import { isValidCalendarDate } from '@/lib/forms/fieldValidation'
 import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
 import { createLocalReq } from 'payload'
 import type { File as PayloadFile } from 'payload'
@@ -79,7 +81,7 @@ export async function submitEventRegistration(req: Request) {
   if (!evt) return jsonError('Event not found.', 404)
   const resolvedEventSlug = resolveEventSlug(evt.slug, eventSlug)
   if (!resolvedEventSlug) return jsonError('Event is missing a valid slug.', 400)
-  if (evt.registrationOpen === false) {
+  if (!isEventRegistrationOpen(evt)) {
     return jsonError('Registration is closed for this event.', 400)
   }
 
@@ -170,6 +172,9 @@ export async function submitEventRegistration(req: Request) {
   if (!isFree && config.requirePaymentProof) {
     if (!transactionId) return jsonError('Transaction reference is required.', 400)
     if (!transactionDate) return jsonError('Transaction date is required.', 400)
+    if (!isValidCalendarDate(transactionDate)) {
+      return jsonError('Please provide a valid transaction date.', 400)
+    }
     if (!transactionTime) return jsonError('Transaction time is required.', 400)
   }
 

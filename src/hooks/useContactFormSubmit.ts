@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import type { SubmissionFormType } from '@/fields/submissionExport'
 import type { FormSubmitState } from '@/domain/registration/types'
 import { isValidEmail, normalizeEmail } from '@/lib/email'
+import { isValidPhoneNumber } from '@/lib/forms/fieldValidation'
 import { isTurnstileConfiguredClient } from '@/lib/security/turnstileClient'
 
 export type ContactMessagePayload = {
@@ -52,7 +53,13 @@ export function useContactFormSubmit({
 
   async function onSubmit(formData: FormData) {
     const mappedPayload = mapFormData(formData)
-    const payload = { ...mappedPayload, email: normalizeEmail(mappedPayload.email) }
+    const payload = {
+      ...mappedPayload,
+      fullName: mappedPayload.fullName.trim(),
+      email: normalizeEmail(mappedPayload.email),
+      message: mappedPayload.message.trim(),
+      mobile: mappedPayload.mobile?.trim(),
+    }
 
     if (!payload.fullName || !payload.email || !payload.message) {
       setState({ status: 'error', message: 'Please fill Full Name, Email, and Message.' })
@@ -61,6 +68,11 @@ export function useContactFormSubmit({
 
     if (!isValidEmail(payload.email)) {
       setState({ status: 'error', message: 'Please enter a valid email address.' })
+      return
+    }
+
+    if (payload.mobile && !isValidPhoneNumber(payload.mobile)) {
+      setState({ status: 'error', message: 'Please enter a valid phone number.' })
       return
     }
 
