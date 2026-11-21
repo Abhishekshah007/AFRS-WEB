@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { isGeneratedArticleImage } from '@/lib/seo/metadata'
 import type { ArticleDetailData } from '@/components/student-hub/articles/detail/types'
 import { formatArticleDate } from '@/components/student-hub/articles/detail/buildArticleDetail'
 import { getCategoryTagClass } from '@/components/student-hub/articles/categoryStyles'
@@ -54,7 +55,7 @@ export function ArticleDetailHero({ article }: ArticleDetailHeroProps) {
 
       <div className="mt-8 relative aspect-[21/9] sm:aspect-[2.5/1] rounded-2xl overflow-hidden bg-[#1b5e20]">
         {article.coverUrl ? (
-          <Image src={article.coverUrl} alt="" fill sizes="(max-width: 1024px) 100vw, 70vw" className="object-cover" priority />
+          <Image src={article.coverUrl} unoptimized={isGeneratedArticleImage(article.coverUrl)} alt="" fill sizes="(max-width: 1024px) 100vw, 70vw" className="object-cover" priority />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-white/80" aria-hidden>
             <div className="text-center">

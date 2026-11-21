@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { isGeneratedArticleImage } from '@/lib/seo/metadata'
 import { getArticleHref } from '@/components/student-hub/articles/links'
 import type { FeaturedArticle } from '@/components/student-hub/articles/types'
 import { studentHubTokens } from '@/components/student-hub/tokens'
@@ -40,6 +41,7 @@ export function FeaturedArticleCard({ article }: FeaturedArticleCardProps) {
         {imageSrc ? (
           <Image
             src={imageSrc}
+            unoptimized={isGeneratedArticleImage(imageSrc)}
             alt={article.title}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"

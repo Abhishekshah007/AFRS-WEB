@@ -1,3 +1,6 @@
+import { unstable_cache } from 'next/cache'
+
+import { SITE_CACHE_TAGS } from '@/lib/cache/siteCacheTags'
 import { getPayloadClient } from '@/lib/payload'
 import { logCmsError } from '@/lib/resilience/logger'
 import type { Article, Event as AfrsEvent, Service } from '@/payload-types'
@@ -52,11 +55,14 @@ export type SiteSearchResults = {
   services: Service[]
 }
 
-export async function searchSiteContent(query: string, limits?: {
-  articles?: number
-  events?: number
-  services?: number
-}): Promise<SiteSearchResults> {
+async function searchSiteContentUncached(
+  query: string,
+  limits?: {
+    articles?: number
+    events?: number
+    services?: number
+  },
+): Promise<SiteSearchResults> {
   const empty: SiteSearchResults = { articles: [], events: [], services: [] }
 
   if (!isSearchQueryValid(query)) {
@@ -104,3 +110,17 @@ export async function searchSiteContent(query: string, limits?: {
     return empty
   }
 }
+
+/**
+ * Cached per query/limits (arguments are part of the cache key). Saves re-running three
+ * database searches for repeated queries; refreshed when content is saved.
+ */
+export const searchSiteContent = unstable_cache(searchSiteContentUncached, ['site-search-v1'], {
+  tags: [
+    SITE_CACHE_TAGS.search,
+    SITE_CACHE_TAGS.articles,
+    SITE_CACHE_TAGS.events,
+    SITE_CACHE_TAGS.services,
+  ],
+  revalidate: 3600,
+})

@@ -88,6 +88,11 @@ export function articleGeneratedImagePath(
   return `/api/og/article?${params.toString()}`
 }
 
+/** True for the generated /api/og/article image (serve as-is; it is already optimised and CDN-cached). */
+export function isGeneratedArticleImage(url: string | null | undefined): boolean {
+  return Boolean(url?.startsWith('/api/og/article'))
+}
+
 export function articleShareImageUrl(
   title: string,
   category?: string | null,

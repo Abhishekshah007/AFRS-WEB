@@ -29,11 +29,10 @@ async function safeCount(
   where?: Where,
 ): Promise<number | null> {
   try {
-    const result = await payload.find({
+    // count() runs SELECT COUNT(*); the previous find({ limit: 0 }) loaded every row.
+    const result = await payload.count({
       collection: collection as 'articles',
       where,
-      limit: 0,
-      depth: 0,
       user,
       overrideAccess: false,
     })
