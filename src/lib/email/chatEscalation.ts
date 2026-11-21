@@ -1,4 +1,5 @@
 import type { ChatMessage } from '@/lib/chatbot/provider'
+import { getSiteUrl } from '@/lib/seo/site'
 
 function escapeHtml(value: string): string {
   return value
@@ -72,7 +73,7 @@ export async function sendChatEscalationEmails({
   reason?: string
 }): Promise<{ adminSent: boolean; userSent: boolean }> {
   const adminTo = process.env.SUBMISSION_NOTIFY_EMAIL || process.env.SITE_NOTIFY_EMAIL
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.appliedforensicresearchsciences.in'
+  const siteUrl = getSiteUrl()
   const displayName = userName?.trim() || 'Website visitor'
 
   let adminSent = false

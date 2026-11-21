@@ -2,7 +2,8 @@
  * Production origin used for canonicals, sitemap, Open Graph, and JSON-LD.
  * Set NEXT_PUBLIC_SITE_URL in every deployed environment (no trailing slash).
  */
-export const DEFAULT_SITE_URL = 'https://www.appliedforensicresearchsciences.in'
+/** Live domain. (www.appliedforensicresearchsciences.in is the old site, linked as "Old Website".) */
+export const DEFAULT_SITE_URL = 'https://afrs.in'
 export const BRAND_SHORT = 'AFRS'
 export const BRAND_LEGAL = 'Applied Forensic Research Sciences Institute'
 export const AFSL_NAME = 'Applied Forensic Science Laboratory'

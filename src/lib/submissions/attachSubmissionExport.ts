@@ -5,6 +5,7 @@ import {
   sendSubmissionNotification,
 } from '@/lib/email/sendSubmissionNotification'
 import { logCmsError } from '@/lib/resilience/logger'
+import { getSiteUrl } from '@/lib/seo/site'
 import { buildSubmissionDocx, slugifyExportName } from '@/lib/submissions/generateSubmissionDocx'
 import type { SubmissionFormType } from '@/fields/submissionExport'
 
@@ -130,7 +131,8 @@ async function notifyByEmail({
   title: string
   doc: Record<string, unknown>
 }) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  // Admin link in notification emails; never fall back to localhost in production.
+  const siteUrl = getSiteUrl()
   await sendSubmissionNotification({
     kind,
     title,

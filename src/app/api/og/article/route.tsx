@@ -70,7 +70,7 @@ export async function GET(request: Request) {
           }}
         >
           <span>Forensic science insights and articles</span>
-          <span>appliedforensicresearchsciences.in</span>
+          <span>afrs.in</span>
         </div>
       </div>
     ),

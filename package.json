@@ -9,6 +9,7 @@
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "node -e \"require('node:fs').rmSync('.next',{recursive:true,force:true})\" && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "generate:sitemap": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" tsx scripts/generate-sitemap.ts",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
     "ci:check": "pnpm exec tsc --noEmit && pnpm lint",
