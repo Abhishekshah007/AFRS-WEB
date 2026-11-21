@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { isGeneratedArticleImage } from '@/lib/seo/metadata'
 import Image from 'next/image'
 import type { RelatedArticlePreview } from '@/components/student-hub/articles/detail/types'
 import { getCategoryTagClass } from '@/components/student-hub/articles/categoryStyles'
@@ -22,7 +23,7 @@ export function RelatedArticlesSidebar({ articles }: RelatedArticlesSidebarProps
             <article className="flex gap-3">
               <div className="relative h-16 w-16 shrink-0 rounded-xl overflow-hidden bg-slate-100">
                 {item.coverUrl ? (
-                  <Image src={item.coverUrl} alt="" fill sizes="64px" className="object-cover" loading="lazy" />
+                  <Image src={item.coverUrl} unoptimized={isGeneratedArticleImage(item.coverUrl)} alt="" fill sizes="64px" className="object-cover" loading="lazy" />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center text-lg opacity-40">📄</div>
                 )}
