@@ -1,10 +1,12 @@
 import type { Article } from '@/payload-types'
 import type { ArticleListItem, FeaturedArticle } from '@/components/student-hub/articles/types'
-import { getCategoryLabel } from '@/components/student-hub/articles/categoryStyles'
+import { resolveArticleCategory } from '@/lib/taxonomy'
 import { resolveMediaUrlOptional } from '@/lib/cms'
+import { articleGeneratedImagePath } from '@/lib/seo/metadata'
 import type { Media } from '@/payload-types'
 
-function resolveArticleCoverUrl(
+/** URL of the editor-uploaded cover image, if any (no generated fallback). */
+export function resolveArticleCoverUrl(
   media: number | Media | null | undefined,
 ): string | undefined {
   const url = resolveMediaUrlOptional(media)
@@ -18,17 +20,20 @@ function resolveArticleCoverUrl(
 }
 
 export function mapArticle(doc: Article): ArticleListItem {
-  const category = (doc.category ?? 'general') as ArticleListItem['category']
+  const category = resolveArticleCategory(doc.category)
   return {
     id: String(doc.id),
     slug: doc.slug,
     title: doc.title,
     excerpt: doc.excerpt,
-    category,
-    categoryLabel: getCategoryLabel(category),
+    category: category.slug,
+    categoryLabel: category.label,
     authorName: doc.authorName,
     readTimeMinutes: doc.readTimeMinutes ?? 10,
-    coverUrl: resolveArticleCoverUrl(doc.coverImage),
+    // Until an editor uploads a cover, show the same generated image used for share previews.
+    coverUrl:
+      resolveArticleCoverUrl(doc.coverImage) ??
+      articleGeneratedImagePath(doc.title, category.slug, category.label),
     publishedDate: doc.publishedDate ?? undefined,
   }
 }

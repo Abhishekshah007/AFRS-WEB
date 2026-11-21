@@ -12,6 +12,7 @@ const GLOBAL_SLUG_OPTIONS: { label: string; value: string }[] = [
   { label: 'Home page', value: 'homePage' },
   { label: 'About page', value: 'aboutPage' },
   { label: 'Services page (AFSL)', value: 'servicesPage' },
+  { label: 'Legal pages', value: 'legalPages' },
   { label: 'Course site settings', value: 'programmesCatalog' },
   { label: 'Course registration form', value: 'registrationForm' },
   { label: 'Student Hub pages', value: 'studentHubContent' },

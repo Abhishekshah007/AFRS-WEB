@@ -3,7 +3,10 @@ import { hasRequiredFields, jsonError } from '@/lib/apiResponses'
 import { validateCustomResponses } from '@/lib/forms/dynamicFormTypes'
 import type { DynamicFormSection } from '@/lib/forms/dynamicFormTypes'
 import { findProgrammeRegistrationContext } from '@/lib/queries/programme-registration'
-import { buildCourseConfirmationUrl } from '@/lib/registration/confirmationToken'
+import {
+  buildCourseConfirmationUrl,
+  createRegistrationConfirmationToken,
+} from '@/lib/registration/confirmationToken'
 import { getPayloadClient } from '@/lib/payload'
 import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
 import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
@@ -108,6 +111,8 @@ export async function POST(req: Request) {
       message:
         'Your request has been received. Our team will contact you when the batch schedule is confirmed. No payment is due now.',
       redirectTo: buildCourseConfirmationUrl(created.id),
+      // Required by /api/course-registrations/complete to prove ownership of this record.
+      confirmationToken: createRegistrationConfirmationToken(created.id, { kind: 'course' }),
     })
   } catch (error) {
     return jsonError(

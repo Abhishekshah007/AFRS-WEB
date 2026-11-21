@@ -35,6 +35,8 @@ export type HubEventCard = {
 
 export type ResourcePerson = {
   id: string
+  /** Profile URL segment; only CMS people have one (demo fallbacks do not). */
+  slug?: string
   name: string
   title: string
   photoUrl?: string

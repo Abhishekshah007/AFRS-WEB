@@ -7,6 +7,7 @@ import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 import type { Where } from 'payload'
 import { buildArticleSearchOrClause } from '@/lib/queries/search'
+import { getArticleFilterTopics } from '@/lib/queries/taxonomies'
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Forensic Insights & Articles',
@@ -31,7 +32,7 @@ export default async function StudentHubArticlesPage({ searchParams }: Props) {
   const andClauses: Where[] = [{ published: { equals: true } }]
 
   if (activeTopic && activeTopic !== 'all') {
-    andClauses.push({ category: { equals: activeTopic } })
+    andClauses.push({ 'category.slug': { equals: activeTopic } })
   }
 
   if (q?.trim()) {
@@ -40,7 +41,7 @@ export default async function StudentHubArticlesPage({ searchParams }: Props) {
 
   const where: Where = { and: andClauses }
 
-  const [featuredResult, listResult, countResult] = await Promise.all([
+  const [featuredResult, listResult, countResult, topics] = await Promise.all([
     payload.find({
       collection: 'articles',
       where: { and: [{ published: { equals: true } }, { featured: { equals: true } }] },
@@ -63,6 +64,7 @@ export default async function StudentHubArticlesPage({ searchParams }: Props) {
       limit: 0,
       overrideAccess: false,
     }),
+    getArticleFilterTopics(),
   ])
 
   const cmsFeatured = featuredResult.docs[0] as Article | undefined
@@ -85,7 +87,8 @@ export default async function StudentHubArticlesPage({ searchParams }: Props) {
           return true
         })
 
-  const totalDocs = countResult.totalDocs > 0 ? countResult.totalDocs : 1240
+  // Real number of published articles (previously showed an invented 1240 when 0).
+  const totalDocs = countResult.totalDocs
   const totalPages = cmsArticles.length > 0 ? listResult.totalPages : Math.max(1, Math.ceil(articles.length / PAGE_SIZE))
 
   const paginatedArticles =
@@ -103,6 +106,10 @@ export default async function StudentHubArticlesPage({ searchParams }: Props) {
       activeTopic={activeTopic}
       initialQuery={q}
       searchParams={{ q, topic: activeTopic, page: pageParam }}
+      topicFilters={[
+        { id: 'all', label: 'All Topics', value: 'all' },
+        ...topics.map((topic) => ({ id: topic.slug, label: topic.label, value: topic.slug })),
+      ]}
     />
   )
 }

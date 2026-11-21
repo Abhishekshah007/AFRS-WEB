@@ -1,7 +1,9 @@
 import type { Access } from 'payload'
 
-/** Anonymous users see only published documents; authenticated users see all. */
+import { isStaffUser } from '../config/adminRoles'
+
+/** Visitors (and student accounts) see only published documents; staff see all. */
 export const publishedRead: Access = ({ req: { user } }) => {
-  if (user) return true
+  if (isStaffUser(user)) return true
   return { published: { equals: true } }
 }

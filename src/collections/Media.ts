@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { isAdmin, isAdminOrEditor, isPublic } from '../access'
+import { isAdmin, isAdminOrEditor, mediaRead } from '../access'
 import { ADMIN_GROUPS } from '../config/adminGroups'
 
 export const Media: CollectionConfig = {
@@ -14,7 +14,7 @@ export const Media: CollectionConfig = {
     description: 'Photos, logos, and documents used on the website. Upload here, then pick the file in other screens.',
   },
   access: {
-    read: isPublic,
+    read: mediaRead,
     create: isAdminOrEditor,
     update: isAdminOrEditor,
     delete: isAdmin,
@@ -32,5 +32,17 @@ export const Media: CollectionConfig = {
   fields: [
     { name: 'alt', type: 'text', required: true },
     { name: 'caption', type: 'text' },
+    {
+      name: 'isPrivate',
+      type: 'checkbox',
+      label: 'Private (staff only)',
+      defaultValue: false,
+      index: true,
+      admin: {
+        position: 'sidebar',
+        description:
+          'Set automatically for participant uploads (payment proofs, ID documents) and registration exports. Private files are hidden from the public API.',
+      },
+    },
   ],
 }

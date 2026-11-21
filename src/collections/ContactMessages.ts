@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 
 
-import { isAdmin, isAdminOrEditor, isPublic } from '../access'
+import { isAdmin, isAdminOrEditor } from '../access'
 
 import { ADMIN_GROUPS } from '../config/adminGroups'
 
@@ -38,7 +38,8 @@ export const ContactMessages: CollectionConfig = {
 
   access: {
 
-    create: isPublic,
+    // Public submissions go through /api/contact-messages/submit (Turnstile + rate limit).
+    create: isAdminOrEditor,
 
     read: isAdminOrEditor,
 

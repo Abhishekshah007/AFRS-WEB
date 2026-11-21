@@ -1,12 +1,15 @@
 import { ImageResponse } from 'next/og'
-import { getCategoryLabel } from '@/components/student-hub/articles/categoryStyles'
+import { defaultArticleCategoryLabel } from '@/lib/taxonomy'
 
 export const runtime = 'nodejs'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const title = searchParams.get('title')?.trim().slice(0, 180) || 'Forensic Research & Insights'
-  const category = getCategoryLabel(searchParams.get('category') || 'general')
+  // `label` carries the CMS category name; older links only have the slug in `category`.
+  const category =
+    searchParams.get('label')?.trim().slice(0, 80) ||
+    defaultArticleCategoryLabel(searchParams.get('category') || 'general')
 
   return new ImageResponse(
     (

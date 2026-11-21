@@ -68,6 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     articles: Article;
+    articleCategories: ArticleCategory;
     aboutCertifications: AboutCertification;
     founders: Founder;
     services: Service;
@@ -80,6 +81,7 @@ export interface Config {
     sitePopups: SitePopup;
     partnersLogo: PartnersLogo;
     events: Event;
+    eventTypes: EventType;
     programmeCategories: ProgrammeCategory;
     programmes: Programme;
     eventRegistrations: EventRegistration;
@@ -96,6 +98,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    articleCategories: ArticleCategoriesSelect<false> | ArticleCategoriesSelect<true>;
     aboutCertifications: AboutCertificationsSelect<false> | AboutCertificationsSelect<true>;
     founders: FoundersSelect<false> | FoundersSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
@@ -108,6 +111,7 @@ export interface Config {
     sitePopups: SitePopupsSelect<false> | SitePopupsSelect<true>;
     partnersLogo: PartnersLogoSelect<false> | PartnersLogoSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
+    eventTypes: EventTypesSelect<false> | EventTypesSelect<true>;
     programmeCategories: ProgrammeCategoriesSelect<false> | ProgrammeCategoriesSelect<true>;
     programmes: ProgrammesSelect<false> | ProgrammesSelect<true>;
     eventRegistrations: EventRegistrationsSelect<false> | EventRegistrationsSelect<true>;
@@ -132,6 +136,7 @@ export interface Config {
     homePage: HomePage;
     aboutPage: AboutPage;
     servicesPage: ServicesPage;
+    legalPages: LegalPage;
     programmesCatalog: ProgrammesCatalog;
     registrationForm: RegistrationForm;
     studentHubContent: StudentHubContent;
@@ -144,6 +149,7 @@ export interface Config {
     homePage: HomePageSelect<false> | HomePageSelect<true>;
     aboutPage: AboutPageSelect<false> | AboutPageSelect<true>;
     servicesPage: ServicesPageSelect<false> | ServicesPageSelect<true>;
+    legalPages: LegalPagesSelect<false> | LegalPagesSelect<true>;
     programmesCatalog: ProgrammesCatalogSelect<false> | ProgrammesCatalogSelect<true>;
     registrationForm: RegistrationFormSelect<false> | RegistrationFormSelect<true>;
     studentHubContent: StudentHubContentSelect<false> | StudentHubContentSelect<true>;
@@ -209,28 +215,10 @@ export interface Article {
     };
     [k: string]: unknown;
   } | null;
-  category:
-    | 'biologySerology'
-    | 'dna'
-    | 'toxicology'
-    | 'ballistics'
-    | 'fingerprint'
-    | 'questionedDocument'
-    | 'crimeScene'
-    | 'forensicPhotography'
-    | 'forensicMedicine'
-    | 'forensicPathology'
-    | 'multimediaForensics'
-    | 'forensicInstrumentation'
-    | 'psychology'
-    | 'odontology'
-    | 'forensicAnthropology'
-    | 'digitalForensics'
-    | 'aiMl'
-    | 'forensicBiotechnology'
-    | 'voiceAnalysis'
-    | 'forensicAccounting'
-    | 'general';
+  /**
+   * Choose a topic. Need a new one? Add it under Website content → Article categories.
+   */
+  category: number | ArticleCategory;
   coverImage?: (number | null) | Media;
   authorName: string;
   authorTitle?: string | null;
@@ -267,6 +255,33 @@ export interface Article {
   createdAt: string;
 }
 /**
+ * Topics for Student Hub articles. New categories appear in the article Category dropdown and in the topic filters on the Articles page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articleCategories".
+ */
+export interface ArticleCategory {
+  id: number;
+  /**
+   * Name shown on article cards and in the topic filters.
+   */
+  label: string;
+  /**
+   * Used in website filter links (e.g. ?topic=…). Generated from the label when left empty. Avoid changing it after the category is in use.
+   */
+  slug: string;
+  /**
+   * Turn off for catch-all topics such as "General".
+   */
+  showInFilters?: boolean | null;
+  /**
+   * Lower numbers appear first in website filters and admin dropdowns.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Photos, logos, and documents used on the website. Upload here, then pick the file in other screens.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -276,6 +291,10 @@ export interface Media {
   id: number;
   alt: string;
   caption?: string | null;
+  /**
+   * Set automatically for participant uploads (payment proofs, ID documents) and registration exports. Private files are hidden from the public API.
+   */
+  isPrivate?: boolean | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -722,22 +741,10 @@ export interface Event {
     [k: string]: unknown;
   } | null;
   eventNature?: ('national' | 'international') | null;
-  eventType?:
-    | (
-        | 'workshop'
-        | 'conference'
-        | 'training'
-        | 'fdp'
-        | 'internship'
-        | 'professional-training-program'
-        | 'professional-internship-program'
-        | 'professional-workshop-program'
-        | 'capsule-training-program'
-        | 'police-training-program'
-        | 'certificate-course'
-        | 'foundation-certificate-course'
-      )
-    | null;
+  /**
+   * Need a new type? Add it under Events & registrations → Event types, then pick it here.
+   */
+  eventType?: (number | null) | EventType;
   mode?: ('online' | 'offline' | 'hybrid') | null;
   startDate: string;
   /**
@@ -884,6 +891,33 @@ export interface Event {
    * When unchecked, this entry is saved but hidden on the public website. Logged-in editors can still see it in the admin panel.
    */
   published?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Kinds of events (workshop, conference, …). New types appear in the Event type dropdown and in the event filters on the website.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "eventTypes".
+ */
+export interface EventType {
+  id: number;
+  /**
+   * Full name, e.g. "Faculty Development Program".
+   */
+  label: string;
+  /**
+   * Used in website filter links (e.g. ?topic=…). Generated from the label when left empty. Avoid changing it after the category is in use.
+   */
+  slug: string;
+  /**
+   * Shorter text for event card badges, e.g. "FDP". Defaults to the label.
+   */
+  shortLabel?: string | null;
+  /**
+   * Lower numbers appear first in website filters and admin dropdowns.
+   */
+  order?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1306,6 +1340,10 @@ export interface PayloadLockedDocument {
         value: number | Article;
       } | null)
     | ({
+        relationTo: 'articleCategories';
+        value: number | ArticleCategory;
+      } | null)
+    | ({
         relationTo: 'aboutCertifications';
         value: number | AboutCertification;
       } | null)
@@ -1352,6 +1390,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'events';
         value: number | Event;
+      } | null)
+    | ({
+        relationTo: 'eventTypes';
+        value: number | EventType;
       } | null)
     | ({
         relationTo: 'programmeCategories';
@@ -1459,6 +1501,18 @@ export interface ArticlesSelect<T extends boolean = true> {
   authorBio?: T;
   featured?: T;
   published?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articleCategories_select".
+ */
+export interface ArticleCategoriesSelect<T extends boolean = true> {
+  label?: T;
+  slug?: T;
+  showInFilters?: T;
+  order?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1736,6 +1790,18 @@ export interface EventsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "eventTypes_select".
+ */
+export interface EventTypesSelect<T extends boolean = true> {
+  label?: T;
+  slug?: T;
+  shortLabel?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "programmeCategories_select".
  */
 export interface ProgrammeCategoriesSelect<T extends boolean = true> {
@@ -1993,6 +2059,7 @@ export interface SiteVisitorsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  isPrivate?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2066,6 +2133,15 @@ export interface SiteSetting {
    */
   address?: string | null;
   /**
+   * Structured address used in search-engine data (Google business details). Keep in sync with the address above.
+   */
+  postalAddress?: {
+    streetAddress?: string | null;
+    locality?: string | null;
+    region?: string | null;
+    postalCode?: string | null;
+  };
+  /**
    * Optional historical starting total. New unique browser visitors are counted automatically in addition to this number.
    */
   totalVisitors?: number | null;
@@ -2084,6 +2160,21 @@ export interface SiteSetting {
     youtube?: string | null;
     whatsapp?: string | null;
     telegram?: string | null;
+  };
+  chatbot?: {
+    /**
+     * Plain-text facts the assistant should know (new offerings, policies, FAQs). Contact details, events and programmes are added automatically.
+     */
+    extraKnowledge?: string | null;
+    /**
+     * Buttons shown when the chat opens. Leave empty for the defaults.
+     */
+    suggestions?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -2161,7 +2252,7 @@ export interface FooterSetting {
   createdAt?: string | null;
 }
 /**
- * Home page hero, section headings, notice-board titles, and FAQs.
+ * Every text, card, link and image on the Home page. Leave a field empty to show the built-in default.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "homePage".
@@ -2193,6 +2284,165 @@ export interface HomePage {
     noticeBoardDescription?: string | null;
     faqHeading?: string | null;
     faqDescription?: string | null;
+  };
+  /**
+   * Card grid below the hero ("Specialized Courses").
+   */
+  training?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    subtitle?: string | null;
+    /**
+     * Shown in rows of three; the button fills the last slot.
+     */
+    items?:
+      | {
+          /**
+           * One emoji, e.g. 🔍
+           */
+          icon?: string | null;
+          title: string;
+          id?: string | null;
+        }[]
+      | null;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+  };
+  internship?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    description?: string | null;
+    features?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+    /**
+     * Square image on the right. Leave empty to keep the current one.
+     */
+    image?: (number | null) | Media;
+  };
+  /**
+   * "Exploring the Future of Forensics" video block.
+   */
+  video?: {
+    title?: string | null;
+    /**
+     * Leave a blank line between paragraphs.
+     */
+    body?: string | null;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+    /**
+     * Upload the video to Cloudinary and paste its https link.
+     */
+    videoUrl?: string | null;
+    /**
+     * Still image shown before the video plays.
+     */
+    posterUrl?: string | null;
+  };
+  impact?: {
+    title?: string | null;
+    subtitle?: string | null;
+    items?:
+      | {
+          icon?:
+            | (
+                | 'museum'
+                | 'youtube'
+                | 'library'
+                | 'blog'
+                | 'link'
+                | 'brain'
+                | 'briefcase'
+                | 'microscope'
+                | 'network'
+                | 'fileSearch'
+                | 'badge'
+                | 'award'
+                | 'graduation'
+                | 'fingerprint'
+                | 'flask'
+                | 'shield'
+                | 'users'
+                | 'video'
+                | 'book'
+                | 'globe'
+              )
+            | null;
+          title: string;
+          description: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  afsl?: {
+    title?: string | null;
+    tagline?: string | null;
+    description?: string | null;
+    cards?:
+      | {
+          /**
+           * One emoji, e.g. 🔍
+           */
+          icon?: string | null;
+          title: string;
+          id?: string | null;
+        }[]
+      | null;
+    offersTitle?: string | null;
+    offersDescription?: string | null;
+    offersPrimaryLabel?: string | null;
+    offersPrimaryHref?: string | null;
+    offersSecondaryLabel?: string | null;
+    offersSecondaryHref?: string | null;
+    offersImage?: (number | null) | Media;
+    contactEyebrow?: string | null;
+    contactDescription?: string | null;
+    contactPrimaryLabel?: string | null;
+    contactPrimaryHref?: string | null;
+    contactSecondaryLabel?: string | null;
+    contactSecondaryHref?: string | null;
+    contactImage?: (number | null) | Media;
+  };
+  quickLinks?: {
+    title?: string | null;
+    subtitle?: string | null;
+    items?:
+      | {
+          icon?:
+            | (
+                | 'museum'
+                | 'youtube'
+                | 'library'
+                | 'blog'
+                | 'link'
+                | 'brain'
+                | 'briefcase'
+                | 'microscope'
+                | 'network'
+                | 'fileSearch'
+                | 'badge'
+                | 'award'
+                | 'graduation'
+                | 'fingerprint'
+                | 'flask'
+                | 'shield'
+                | 'users'
+                | 'video'
+                | 'book'
+                | 'globe'
+              )
+            | null;
+          label: string;
+          href: string;
+          id?: string | null;
+        }[]
+      | null;
   };
   /**
    * Home page FAQ accordion and SEO FAQ schema.
@@ -2367,6 +2617,22 @@ export interface AboutPage {
     awardsImageAlt1?: string | null;
     awardsImageAlt2?: string | null;
     awardsImageAlt3?: string | null;
+    /**
+     * "Who it serves" table.
+     */
+    audienceEyebrow?: string | null;
+    audienceTitle?: string | null;
+    /**
+     * e.g. "10+ professional groups"
+     */
+    audienceBadge?: string | null;
+    audienceRows?:
+      | {
+          audience: string;
+          why: string;
+          id?: string | null;
+        }[]
+      | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -2457,6 +2723,53 @@ export interface ServicesPage {
           desc: string;
           cta: string;
           href?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Privacy Policy (/privacy) and Terms of Service (/terms). Empty fields show the built-in text.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "legalPages".
+ */
+export interface LegalPage {
+  id: number;
+  privacy?: {
+    title?: string | null;
+    /**
+     * Shown under the title, e.g. "January 2026".
+     */
+    lastUpdated?: string | null;
+    intro?: string | null;
+    /**
+     * Numbered sections. Leave a blank line between paragraphs.
+     */
+    sections?:
+      | {
+          title: string;
+          body: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  terms?: {
+    title?: string | null;
+    /**
+     * Shown under the title, e.g. "January 2026".
+     */
+    lastUpdated?: string | null;
+    intro?: string | null;
+    /**
+     * Numbered sections. Leave a blank line between paragraphs.
+     */
+    sections?:
+      | {
+          title: string;
+          body: string;
           id?: string | null;
         }[]
       | null;
@@ -2695,6 +3008,37 @@ export interface ProgrammesCatalog {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Rows in the "Archive" box on /courses. Each shows a count of completed events matching the filters and links to them. Leave empty to show the built-in five rows.
+   */
+  archiveRows?:
+    | {
+        label: string;
+        nature?: ('any' | 'national' | 'international') | null;
+        /**
+         * Optional. Leave empty to count every event type.
+         */
+        eventType?: (number | null) | EventType;
+        id?: string | null;
+      }[]
+    | null;
+  eventsPage?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    subtitle?: string | null;
+    primaryLabel?: string | null;
+    primaryHref?: string | null;
+    secondaryLabel?: string | null;
+    secondaryHref?: string | null;
+  };
+  eventsHub?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    description?: string | null;
+  };
+  /**
+   * Used only by the built-in archive rows (when "Archive sidebar" is empty).
+   */
   archiveFilterLinks: {
     nationalEvents: string;
     internationalEvents: string;
@@ -3446,10 +3790,12 @@ export interface AdminAccess {
         hiddenCollections?:
           | {
               slug:
+                | 'articleCategories'
                 | 'articles'
                 | 'aboutCertifications'
                 | 'courseRegistrations'
                 | 'eventRegistrations'
+                | 'eventTypes'
                 | 'events'
                 | 'galleryItems'
                 | 'sitePopups'
@@ -3479,6 +3825,7 @@ export interface AdminAccess {
                 | 'footerSettings'
                 | 'headerSettings'
                 | 'homePage'
+                | 'legalPages'
                 | 'servicesPage'
                 | 'siteSettings'
                 | 'studentHubContent';
@@ -3502,6 +3849,14 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   email?: T;
   labEmail?: T;
   address?: T;
+  postalAddress?:
+    | T
+    | {
+        streetAddress?: T;
+        locality?: T;
+        region?: T;
+        postalCode?: T;
+      };
   totalVisitors?: T;
   mapEmbedUrl?: T;
   socialLinks?:
@@ -3514,6 +3869,17 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         youtube?: T;
         whatsapp?: T;
         telegram?: T;
+      };
+  chatbot?:
+    | T
+    | {
+        extraKnowledge?: T;
+        suggestions?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;
@@ -3611,6 +3977,104 @@ export interface HomePageSelect<T extends boolean = true> {
         noticeBoardDescription?: T;
         faqHeading?: T;
         faqDescription?: T;
+      };
+  training?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        subtitle?: T;
+        items?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              id?: T;
+            };
+        ctaLabel?: T;
+        ctaHref?: T;
+      };
+  internship?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        features?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        ctaLabel?: T;
+        ctaHref?: T;
+        image?: T;
+      };
+  video?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+        videoUrl?: T;
+        posterUrl?: T;
+      };
+  impact?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+        items?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  afsl?:
+    | T
+    | {
+        title?: T;
+        tagline?: T;
+        description?: T;
+        cards?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              id?: T;
+            };
+        offersTitle?: T;
+        offersDescription?: T;
+        offersPrimaryLabel?: T;
+        offersPrimaryHref?: T;
+        offersSecondaryLabel?: T;
+        offersSecondaryHref?: T;
+        offersImage?: T;
+        contactEyebrow?: T;
+        contactDescription?: T;
+        contactPrimaryLabel?: T;
+        contactPrimaryHref?: T;
+        contactSecondaryLabel?: T;
+        contactSecondaryHref?: T;
+        contactImage?: T;
+      };
+  quickLinks?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+        items?:
+          | T
+          | {
+              icon?: T;
+              label?: T;
+              href?: T;
+              id?: T;
+            };
       };
   faqs?:
     | T
@@ -3781,6 +4245,16 @@ export interface AboutPageSelect<T extends boolean = true> {
         awardsImageAlt1?: T;
         awardsImageAlt2?: T;
         awardsImageAlt3?: T;
+        audienceEyebrow?: T;
+        audienceTitle?: T;
+        audienceBadge?: T;
+        audienceRows?:
+          | T
+          | {
+              audience?: T;
+              why?: T;
+              id?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;
@@ -3869,6 +4343,43 @@ export interface ServicesPageSelect<T extends boolean = true> {
               desc?: T;
               cta?: T;
               href?: T;
+              id?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "legalPages_select".
+ */
+export interface LegalPagesSelect<T extends boolean = true> {
+  privacy?:
+    | T
+    | {
+        title?: T;
+        lastUpdated?: T;
+        intro?: T;
+        sections?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+      };
+  terms?:
+    | T
+    | {
+        title?: T;
+        lastUpdated?: T;
+        intro?: T;
+        sections?:
+          | T
+          | {
+              title?: T;
+              body?: T;
               id?: T;
             };
       };
@@ -4033,6 +4544,32 @@ export interface ProgrammesCatalogSelect<T extends boolean = true> {
                   };
             };
         id?: T;
+      };
+  archiveRows?:
+    | T
+    | {
+        label?: T;
+        nature?: T;
+        eventType?: T;
+        id?: T;
+      };
+  eventsPage?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        subtitle?: T;
+        primaryLabel?: T;
+        primaryHref?: T;
+        secondaryLabel?: T;
+        secondaryHref?: T;
+      };
+  eventsHub?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        description?: T;
       };
   archiveFilterLinks?:
     | T

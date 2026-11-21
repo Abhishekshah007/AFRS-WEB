@@ -1,62 +1,26 @@
-import {
-  BadgeCheck,
-  BrainCircuit,
-  BriefcaseBusiness,
-  FileSearch,
-  Microscope,
-  Network,
-} from 'lucide-react'
+import { getCmsIcon } from '@/lib/cmsIcons'
+import type { ImpactSectionContent } from '@/lib/queries/home-sections'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import { TYPOGRAPHY, UI } from '../design'
 import { CONTAINER, SECTION } from './constants'
 
-export function AchievementsSection() {
-  const items = [
-    {
-      title: 'Skill Development',
-      description:
-        'Gain hands-on expertise in methodologies like DNA profiling and digital forensics.',
-      icon: BrainCircuit,
-      bg: 'bg-brand-50',
-      iconColor: 'text-brand-500',
-    },
-    {
-      title: 'Career Guidance',
-      description: 'Personalized mentorship to navigate career paths in private and govt sectors.',
-      icon: BriefcaseBusiness,
-      bg: 'bg-brand-100',
-      iconColor: 'text-brand-600',
-    },
-    {
-      title: 'Practical Exposure',
-      description: 'Bridge theory with access to state-of-the-art laboratory tools and methods.',
-      icon: Microscope,
-      bg: 'bg-brand-200/50',
-      iconColor: 'text-brand-700',
-    },
-    {
-      title: 'Mentorship & Networking',
-      description: 'Connect with a global community of forensic experts and researchers.',
-      icon: Network,
-      bg: 'bg-brand-50',
-      iconColor: 'text-brand-500',
-    },
-    {
-      title: 'Real-World Case Studies',
-      description: 'Learn from actual forensic cases to understand complex problem-solving.',
-      icon: FileSearch,
-      bg: 'bg-brand-100',
-      iconColor: 'text-brand-600',
-    },
-    {
-      title: 'Recognition',
-      description: 'Earn industry-recognized certifications.',
-      icon: BadgeCheck,
-      bg: 'bg-pink-100',
-      iconColor: 'text-pink-600',
-    },
-  ]
+/** Card colours by position (design palette; not editor-controlled). */
+const IMPACT_TONES = [
+  { bg: 'bg-brand-50', iconColor: 'text-brand-500' },
+  { bg: 'bg-brand-100', iconColor: 'text-brand-600' },
+  { bg: 'bg-brand-200/50', iconColor: 'text-brand-700' },
+  { bg: 'bg-brand-50', iconColor: 'text-brand-500' },
+  { bg: 'bg-brand-100', iconColor: 'text-brand-600' },
+  { bg: 'bg-pink-100', iconColor: 'text-pink-600' },
+]
+
+export function AchievementsSection({ content }: { content: ImpactSectionContent }) {
+  const items = content.items.map((item, index) => ({
+    ...item,
+    icon: getCmsIcon(item.icon, 'badge'),
+    ...IMPACT_TONES[index % IMPACT_TONES.length],
+  }))
 
   return (
     <section
@@ -64,8 +28,8 @@ export function AchievementsSection() {
     >
       <div className={CONTAINER}>
         <SectionHeader
-          title="The AFRS Impact"
-          subtitle="Our holistic approach ensures every student and professional gains more than just knowledge."
+          title={content.title}
+          subtitle={content.subtitle}
         />
         <AnimateOnScroll
           stagger

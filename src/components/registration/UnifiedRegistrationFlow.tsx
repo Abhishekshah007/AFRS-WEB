@@ -337,6 +337,7 @@ export function UnifiedRegistrationFlow({
 
     const body = new FormData()
     body.set('registrationId', registrationId)
+    if (data.confirmationToken) body.set('token', String(data.confirmationToken))
     body.set('transactionId', paymentForm.transactionId.trim())
     body.set('paymentMode', paymentMode)
     body.set('paymentMethod', paymentMethod)

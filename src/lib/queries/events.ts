@@ -37,11 +37,18 @@ export function filterActiveEvents(events: AfrsEvent[], now = new Date()): AfrsE
 
 export async function fetchActiveEvents(
   payload: Payload,
-  { limit = 12, depth = 1 }: { limit?: number; depth?: number } = {},
+  {
+    limit = 12,
+    depth = 1,
+    eventType,
+  }: { limit?: number; depth?: number; /** Event type slug filter. */ eventType?: string } = {},
 ) {
+  const where = activeEventsWhere()
   const result = await payload.find({
     collection: 'events',
-    where: activeEventsWhere(),
+    where: eventType
+      ? { and: [where, { 'eventType.slug': { equals: eventType } }] }
+      : where,
     sort: 'startDate',
     limit: Math.max(limit * 3, 24),
     depth,

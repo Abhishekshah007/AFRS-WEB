@@ -11,6 +11,9 @@ import { EventHubCard } from '@/components/programmes/EventHubCard'
 import { mapEventToHubCard } from '@/components/programmes/mapEvent'
 import { SiteGallerySection } from '@/components/gallery/SiteGallerySection'
 import { getGalleryForPage } from '@/lib/queries/gallery'
+import { getEventTypes } from '@/lib/queries/taxonomies'
+import { getProgrammePagesCopy } from '@/lib/queries/programme-pages'
+import { resolveEventType } from '@/lib/taxonomy'
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Forensic Science Events',
@@ -19,17 +22,25 @@ export const metadata: Metadata = buildPageMetadata({
   path: '/events',
 })
 
-export default async function EventsPage() {
-  const payload = await getPayloadClient()
+type Props = {
+  searchParams: Promise<{ type?: string }>
+}
 
-  const [upcoming, past, galleryItems] = await Promise.all([
-    fetchActiveEvents(payload, { limit: 9, depth: 1 }),
+export default async function EventsPage({ searchParams }: Props) {
+  const { type } = await searchParams
+  const payload = await getPayloadClient()
+  const [eventTypes, copy] = await Promise.all([getEventTypes(), getProgrammePagesCopy()])
+  const activeType = eventTypes.find((item) => item.slug === type)?.slug
+
+  const [upcoming, past, galleryItems, usedTypes] = await Promise.all([
+    fetchActiveEvents(payload, { limit: 9, depth: 1, eventType: activeType }),
     payload.find({
       collection: 'events',
       where: {
         and: [
           { published: { equals: true } },
           { startDate: { less_than: new Date().toISOString() } },
+          ...(activeType ? [{ 'eventType.slug': { equals: activeType } }] : []),
         ],
       },
       sort: '-startDate',
@@ -38,40 +49,61 @@ export default async function EventsPage() {
       overrideAccess: false,
     }),
     getGalleryForPage('events'),
+    // Only offer filter tabs for event types that published events actually use.
+    payload.find({
+      collection: 'events',
+      where: { published: { equals: true } },
+      limit: 500,
+      depth: 1,
+      select: { eventType: true },
+      overrideAccess: false,
+    }),
   ])
+
+  const usedTypeSlugs = new Set(
+    (usedTypes.docs as AfrsEvent[])
+      .map((evt) => resolveEventType(evt.eventType)?.slug)
+      .filter((slug): slug is string => Boolean(slug)),
+  )
+  const filterTabs = [
+    { label: 'All Events', href: '/events', active: !activeType },
+    ...eventTypes
+      .filter((item) => usedTypeSlugs.has(item.slug) || item.slug === activeType)
+      .map((item) => ({
+        label: item.label,
+        href: `/events?type=${encodeURIComponent(item.slug)}`,
+        active: item.slug === activeType,
+      })),
+  ]
 
   return (
     <div>
       <PageHero
-        eyebrow="AFRS EDUCATION"
-        title="Forensic Programmes & Events"
-        subtitle="Advance your career with structured workshops, conferences, faculty development programmes, internships, and certification programmes."
-        primaryCta={{ label: 'Register for Training', href: '/courses' }}
-        secondaryCta={{ label: 'Contact Us', href: '/contact' }}
+        eyebrow={copy.eventsPage.eyebrow}
+        title={copy.eventsPage.title}
+        subtitle={copy.eventsPage.subtitle}
+        primaryCta={{ label: copy.eventsPage.primaryLabel, href: copy.eventsPage.primaryHref }}
+        secondaryCta={{ label: copy.eventsPage.secondaryLabel, href: copy.eventsPage.secondaryHref }}
       />
 
-      {/* Filter tabs – static UI, ready to wire to search params */}
+      {/* Filter tabs — one per CMS event type in use */}
       <div className="bg-white border-b border-slate-100 sticky top-[68px] z-40">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-16">
           <div className="flex gap-1 py-2 overflow-x-auto no-scrollbar">
-            {[
-              'All Events',
-              'Workshop',
-              'Conference',
-              'Training',
-              'Faculty Development Program',
-              'Internship',
-            ].map((tab, i) => (
-              <span
-                key={tab}
+            {filterTabs.map((tab) => (
+              <Link
+                key={tab.href}
+                href={tab.href}
+                scroll={false}
+                aria-current={tab.active ? 'page' : undefined}
                 className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold cursor-pointer transition ${
-                  i === 0
+                  tab.active
                     ? 'bg-brand-600 text-white shadow-sm'
                     : 'text-slate-500 hover:bg-slate-100'
                 }`}
               >
-                {tab}
-              </span>
+                {tab.label}
+              </Link>
             ))}
           </div>
         </div>

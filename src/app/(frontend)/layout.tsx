@@ -113,7 +113,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         >
           Skip to main content
         </a>
-        <JsonLd data={withContext([organizationGraph(sameAs), websiteGraph()])} />
+        <JsonLd
+          data={withContext([
+            organizationGraph(sameAs, {
+              telephone: siteSettings?.phone,
+              email: siteSettings?.email,
+              streetAddress: siteSettings?.postalAddress?.streetAddress,
+              addressLocality: siteSettings?.postalAddress?.locality,
+              addressRegion: siteSettings?.postalAddress?.region,
+              postalCode: siteSettings?.postalAddress?.postalCode,
+            }),
+            websiteGraph(),
+          ])}
+        />
         <VisitorTracker startingTotal={resolveTotalVisitors(siteSettings)} />
         {!cmsAvailable && (
           <div
@@ -131,6 +143,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           phone={siteSettings?.phone || undefined}
           email={siteSettings?.email || undefined}
           labEmail={siteSettings?.labEmail || DEFAULT_LAB_EMAIL}
+          suggestions={siteSettings?.chatbot?.suggestions
+            ?.map((item) => item.text?.trim())
+            .filter((text): text is string => Boolean(text))}
         />
         <Footer
           settings={footerSettings}

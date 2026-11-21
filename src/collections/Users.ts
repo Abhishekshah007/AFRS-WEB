@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { isAdmin, isSelfOrAdmin } from '../access'
+import { canAccessAdmin, isAdmin, isSelfOrAdmin } from '../access'
 import { ADMIN_GROUPS } from '../config/adminGroups'
 
 export const Users: CollectionConfig = {
@@ -17,6 +17,8 @@ export const Users: CollectionConfig = {
     defaultColumns: ['name', 'email', 'role'],
   },
   access: {
+    // Only staff roles may open the admin panel; Student accounts are refused.
+    admin: canAccessAdmin,
     create: isAdmin,
     read: isSelfOrAdmin,
     update: isSelfOrAdmin,

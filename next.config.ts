@@ -18,6 +18,10 @@ const nextConfig: NextConfig = {
         pathname: '/api/media/file/**',
       },
       {
+        // Generated article cover/share image (title + category in the query string).
+        pathname: '/api/og/article',
+      },
+      {
         pathname: '/assets/social-media-logo/**',
       },
       {

@@ -2,6 +2,29 @@
 
 How to manage content in **Payload Admin** (`/admin`) for the AFRS public website.
 
+## Where to edit each part of the site
+
+Everything on the public site is now edited in the CMS. Leaving a text field empty shows the built-in default; emptying a list shows the default list.
+
+| On the site | Edit it in |
+|---|---|
+| Home: hero, section headings, FAQs | Page copy → Home page → *Hero & headings*, *FAQs* |
+| Home: Forensic Training Programs cards, Internship block | Home page → *Training & internship* |
+| Home: intro video, "The AFRS Impact" cards | Home page → *Video & impact* (video = Cloudinary https link) |
+| Home: AFSL block (service cards, training panel, get-in-touch panel) | Home page → *AFSL block* |
+| Home: Quick Links | Home page → *Quick links* (pick an icon per link) |
+| About: "Who it serves" table, Awards heading | Page copy → About page → section text (*audience* and *awards* fields) |
+| Leadership & Executive Committee cards (photo, bio, socials) | Website content → Leadership & Committee |
+| Resource persons (Courses page + their own Google-searchable pages) | Courses & training → Resource Persons |
+| Courses page "Archive" box | Course site settings → *Archive sidebar* (label + nature + event type; counts are automatic) |
+| /events and /courses/events hero text | Course site settings → *Events page hero*, *Online Events Hub hero* |
+| Article topics / event types | Website content → Article categories; Events & registrations → Event types |
+| Privacy Policy, Terms of Service | Page copy → Legal pages |
+| Phone, email, address (also used for Google business details) | Site-wide settings → Site identity (+ *Head office address (for Google)*) |
+| Chatbot extra facts and suggested questions | Site identity → *Website assistant (chatbot)* |
+
+Images left empty keep the current picture. Articles without a cover automatically use the same generated image that appears when the link is shared.
+
 ## Forms and inquiries
 
 For every public form (contact, course interest, events, what is missing for UGC/FACT/CUET), see **[form-matrix.md](./form-matrix.md)** — where submissions land in admin and who gets email.

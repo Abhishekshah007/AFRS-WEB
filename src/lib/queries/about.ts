@@ -182,22 +182,21 @@ function initialsFromName(name: string): string {
   return letters.join('') || name.slice(0, 2).toUpperCase()
 }
 
-function toFounderProfile(doc: Founder): LeaderProfile {
-  const fallbackProfile = [...fallbackLeaders, ...fallbackCommittee].find(
-    (profile) => profile.name.toLowerCase() === doc.name.toLowerCase(),
-  )
-
+/**
+ * CMS record -> card. Every field comes from the CMS; the hard-coded profiles are only
+ * used as a whole list when the CMS has no published records (see getAboutPageData).
+ * Their photos/bios were copied into the CMS by 20261121_140000_leader_profiles_to_cms.
+ */
+export function toFounderProfile(doc: Founder): LeaderProfile {
   return {
     id: String(doc.id),
     name: doc.name,
     designation: doc.designation,
-    initials: fallbackProfile?.initials ?? initialsFromName(doc.name),
-    photoUrl:
-      resolveMediaUrlOptional(doc.photo as number | Media | null | undefined) ??
-      fallbackProfile?.photoUrl,
+    initials: initialsFromName(doc.name),
+    photoUrl: resolveMediaUrlOptional(doc.photo as number | Media | null | undefined),
     message: doc.message?.trim() || null,
-    bio: doc.bio?.trim() || fallbackProfile?.bio || null,
-    fullBio: doc.fullBio?.trim() || fallbackProfile?.fullBio || null,
+    bio: doc.bio?.trim() || null,
+    fullBio: doc.fullBio?.trim() || null,
     socials: {
       linkedin: socialUrl(doc.linkedin),
       instagram: socialUrl(doc.instagram),

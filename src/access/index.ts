@@ -1,4 +1,5 @@
 import type { Access, CollectionConfig, GlobalConfig } from 'payload'
+import { isStaffUser } from '../config/adminRoles'
 import { publishedRead } from './published'
 
 export { publishedRead } from './published'
@@ -48,11 +49,31 @@ export const isAdminEditorOrEventManager: Access = ({ req: { user } }) => {
     return Boolean(role && ['superAdmin', 'contentEditor', 'eventManager'].includes(role))
 }
 
+/** Staff roles that may sign in to the admin panel (students are excluded). */
+export const canAccessAdmin = ({ req: { user } }: { req: { user?: unknown } }): boolean =>
+    isStaffUser(user)
+
+/**
+ * Registrations are created only by the guarded `/api/*-registrations/*` routes,
+ * which use the Local API with `overrideAccess: true`. Public REST create stays
+ * closed so Turnstile, rate limits and server-side price checks cannot be skipped.
+ */
 export const eventRegistrationAccess: CollectionConfig['access'] = {
-    create: isPublic,
+    create: isAdminOrEventManager,
     read: isAdminEditorOrEventManager,
     update: isAdminOrEventManager,
     delete: isAdmin,
+}
+
+/**
+ * Media is public except files uploaded by participants (payment proofs, ID
+ * documents), which are flagged `isPrivate` and visible to staff only.
+ */
+export const mediaRead: Access = ({ req: { user } }) => {
+    if (isStaffUser(user)) return true
+    return {
+        or: [{ isPrivate: { equals: false } }, { isPrivate: { exists: false } }],
+    }
 }
 
 export const editorManagedGlobalAccess: GlobalConfig['access'] = {

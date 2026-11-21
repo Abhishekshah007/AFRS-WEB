@@ -45,6 +45,7 @@ export const AFRS_NAV_SECTIONS: AdminNavSection[] = [
     entities: [
       { type: 'collection', slug: 'notices' },
       { type: 'collection', slug: 'articles' },
+      { type: 'collection', slug: 'articleCategories' },
       { type: 'collection', slug: 'galleryItems' },
       { type: 'collection', slug: 'testimonials' },
       { type: 'collection', slug: 'services' },
@@ -65,6 +66,7 @@ export const AFRS_NAV_SECTIONS: AdminNavSection[] = [
       { type: 'global', slug: 'homePage' },
       { type: 'global', slug: 'aboutPage' },
       { type: 'global', slug: 'servicesPage' },
+      { type: 'global', slug: 'legalPages' },
       { type: 'global', slug: 'studentHubContent' },
       { type: 'global', slug: 'siteSettings' },
       { type: 'global', slug: 'headerSettings' },
@@ -80,6 +82,7 @@ export const AFRS_NAV_SECTIONS: AdminNavSection[] = [
     roles: ['superAdmin', 'eventManager'],
     entities: [
       { type: 'collection', slug: 'events' },
+      { type: 'collection', slug: 'eventTypes' },
       { type: 'collection', slug: 'programmeCategories' },
       { type: 'collection', slug: 'programmes' },
       { type: 'collection', slug: 'resourcePersons' },

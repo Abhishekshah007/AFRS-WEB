@@ -3,7 +3,18 @@ import { describe, expect, it } from 'vitest'
 import { buildArticleDetail } from '@/components/student-hub/articles/detail/buildArticleDetail'
 import { mergeRelatedArticles } from '@/components/student-hub/articles/detail/relatedArticles'
 import { normalizePastedLexical, renderArticleHtml, slugifyHeading } from '@/lib/articleContent'
-import type { Article } from '@/payload-types'
+import type { Article, ArticleCategory } from '@/payload-types'
+
+/** Populated relationship, as returned by Payload queries with depth >= 1. */
+function articleCategory(slug: string): ArticleCategory {
+  return {
+    id: slug.length,
+    slug,
+    label: slug === 'general' ? 'General' : slug,
+    updatedAt: '2026-08-16T00:00:00.000Z',
+    createdAt: '2026-08-16T00:00:00.000Z',
+  }
+}
 
 function article(
   partial: Partial<Article> & Pick<Article, 'slug' | 'title' | 'category'>,
@@ -25,7 +36,7 @@ describe('article content rendering', () => {
         id: 7,
         slug: 'article-with-tags',
         title: 'Article with tags',
-        category: 'general',
+        category: articleCategory('general'),
         tags: [
           { id: 'tag-1', tag: '  Forensic DNA  ' },
           { id: 'tag-2', tag: 'Chain of custody' },
@@ -42,7 +53,7 @@ describe('article content rendering', () => {
         id: 8,
         slug: 'article-without-tags',
         title: 'Article without tags',
-        category: 'general',
+        category: articleCategory('general'),
         tags: [],
       }),
     )
@@ -128,7 +139,7 @@ describe('related articles', () => {
           id: 2,
           slug: 'same-domain-one',
           title: 'Same Domain One',
-          category: 'digitalForensics',
+          category: articleCategory('digitalForensics'),
         }),
       ],
       [
@@ -136,19 +147,19 @@ describe('related articles', () => {
           id: 2,
           slug: 'same-domain-one',
           title: 'Same Domain One',
-          category: 'digitalForensics',
+          category: articleCategory('digitalForensics'),
         }),
         article({
           id: 3,
           slug: 'recent-two',
           title: 'Recent Two',
-          category: 'ballistics',
+          category: articleCategory('ballistics'),
         }),
         article({
           id: 4,
           slug: 'recent-three',
           title: 'Recent Three',
-          category: 'psychology',
+          category: articleCategory('psychology'),
         }),
       ],
       'current-article',
@@ -169,13 +180,13 @@ describe('related articles', () => {
           id: 8,
           slug: 'recent-a',
           title: 'Recent A',
-          category: 'general',
+          category: articleCategory('general'),
         }),
         article({
           id: 9,
           slug: 'recent-b',
           title: 'Recent B',
-          category: 'dna',
+          category: articleCategory('dna'),
         }),
       ],
       'current-article',

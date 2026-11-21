@@ -2,7 +2,10 @@ import { AfRsEducationSection } from '@/components/programmes/AfRsEducationSecti
 import { AfslTrainingSection } from '@/components/programmes/AfslTrainingSection'
 import { OnlineEventsHub } from '@/components/programmes/OnlineEventsHub'
 import { ProgrammesHero } from '@/components/programmes/ProgrammesHero'
-import { ResourceArchiveGallery } from '@/components/programmes/ResourceArchiveGallery'
+import {
+  ResourceArchiveGallery,
+  type ResourcePersonModalView,
+} from '@/components/programmes/ResourceArchiveGallery'
 import type {
   ArchiveItem,
   EducationProgramme,
@@ -24,6 +27,8 @@ export type ProgrammesPageViewProps = {
   galleryViewAllHref?: string
   totalVisitors: number
   trainingChecklist: string[]
+  /** Opens a resource person modal on first render (crawlable profile URLs). */
+  initialResourceModal?: ResourcePersonModalView
 }
 
 /**
@@ -40,6 +45,7 @@ export function ProgrammesPageView({
   galleryViewAllHref,
   totalVisitors,
   trainingChecklist,
+  initialResourceModal,
 }: ProgrammesPageViewProps) {
   return (
     <div className="programmes-page bg-white">
@@ -52,6 +58,7 @@ export function ProgrammesPageView({
         archive={archive}
         gallery={gallery}
         galleryViewAllHref={galleryViewAllHref}
+        initialModal={initialResourceModal}
       />
       <VisitorCounterBar totalVisitors={totalVisitors} />
     </div>

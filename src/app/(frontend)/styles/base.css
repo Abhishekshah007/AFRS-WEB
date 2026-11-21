@@ -13,10 +13,6 @@ html {
   scroll-padding-top: 5.5rem;
   scrollbar-gutter: stable;
 }
-html.lenis { height: auto; }
-html.lenis.lenis-smooth { scroll-behavior: auto; }
-.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-.lenis.lenis-stopped { overflow: hidden; }
 
 body {
   font-family: var(--font-sans);

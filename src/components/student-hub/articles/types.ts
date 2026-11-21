@@ -1,6 +1,5 @@
-import type { ArticleCategoryValue } from '@/data/article-categories'
-
-export type ArticleCategory = ArticleCategoryValue
+/** Category slug from the CMS 'Article categories' collection. */
+export type ArticleCategory = string
 
 export type ArticleListItem = {
   id: string

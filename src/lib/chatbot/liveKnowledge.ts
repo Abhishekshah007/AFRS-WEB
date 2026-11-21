@@ -3,7 +3,8 @@ import { formatEventDate, richTextToPlain } from '@/lib/cms'
 import { fetchActiveEvents } from '@/lib/queries/events'
 import { getPayloadClient } from '@/lib/payload'
 import { isEventRegistrationOpen } from '@/lib/registration/isEventRegistrationOpen'
-import type { Event as AfrsEvent } from '@/payload-types'
+import type { Event as AfrsEvent, SiteSetting } from '@/payload-types'
+import { resolveEventType } from '@/lib/taxonomy'
 
 const CACHE_TTL_MS = 5 * 60 * 1000
 
@@ -32,14 +33,25 @@ function registerUrl(params: {
 
 async function buildLiveKnowledge(): Promise<string> {
   const payload = await getPayloadClient()
-  const [eventsResult, catalog] = await Promise.all([
-    fetchActiveEvents(payload, { limit: 12, depth: 0 }),
+  const [eventsResult, catalog, siteSettings] = await Promise.all([
+    fetchActiveEvents(payload, { limit: 12, depth: 1 }),
     getProgrammesCatalogData(),
+    payload
+      .findGlobal({ slug: 'siteSettings', depth: 0, overrideAccess: false })
+      .catch(() => null) as Promise<SiteSetting | null>,
   ])
+
+  const contactLines = [
+    siteSettings?.phone && `- Phone: ${siteSettings.phone}`,
+    siteSettings?.email && `- Email: ${siteSettings.email}`,
+    siteSettings?.labEmail && `- AFSL lab email: ${siteSettings.labEmail}`,
+    siteSettings?.address && `- Address: ${siteSettings.address.replace(/\s*\n+\s*/g, ' ')}`,
+  ].filter(Boolean)
+  const extraKnowledge = siteSettings?.chatbot?.extraKnowledge?.trim()
 
   const eventLines = (eventsResult.docs as AfrsEvent[]).map((evt) => {
     const date = formatEventDate(evt.startDate)
-    const type = evt.eventType || 'event'
+    const type = resolveEventType(evt.eventType)?.label || 'event'
     const venue = evt.venue ? ` · ${evt.venue}` : ''
     const reg = isEventRegistrationOpen(evt) ? 'Registration open' : 'Registration closed'
     const excerpt = evt.excerpt || richTextToPlain(evt.description, 100)
@@ -78,7 +90,7 @@ async function buildLiveKnowledge(): Promise<string> {
 
   return `
 LIVE SITE DATA (updated automatically — prefer this over static lists)
-
+${contactLines.length ? `\nCURRENT CONTACT DETAILS (use these, not older ones):\n${contactLines.join('\n')}\n` : ''}${extraKnowledge ? `\nADDITIONAL FACTS FROM THE AFRS TEAM:\n${extraKnowledge}\n` : ''}
 UPCOMING & ONGOING EVENTS (${eventLines.length}):
 ${eventLines.length ? eventLines.join('\n') : '- No active events listed right now. Check /events or /contact.'}
 

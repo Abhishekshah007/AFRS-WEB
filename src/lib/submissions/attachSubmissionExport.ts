@@ -98,6 +98,8 @@ export async function attachSubmissionExport({
     collection: 'media',
     data: {
       alt: `${title} export`,
+      // Exports contain personal data; staff-only.
+      isPrivate: true,
     },
     file: {
       data: buffer,

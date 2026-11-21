@@ -3,7 +3,6 @@ import {
   GALLERY_CATEGORIES,
   type GalleryBrand,
   type GalleryCategory,
-  galleryHref,
   isGalleryCategory,
 } from '@/lib/gallery/constants'
 

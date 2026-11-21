@@ -1,8 +1,8 @@
 import type { HubEventCard } from '@/components/programmes/types'
-import { FALLBACK_BANNER_IMAGE, formatEventType, resolveMediaUrl, richTextToPlain } from '@/lib/cms'
+import { FALLBACK_BANNER_IMAGE, resolveMediaUrl, richTextToPlain } from '@/lib/cms'
 import { resolveEventSlug } from '@/lib/utils/slugify'
 import type { Event as AfrsEvent, Media } from '@/payload-types'
-import { eventTypeDisplayLabel } from '@/components/programmes/eventStyles'
+import { resolveEventType } from '@/lib/taxonomy'
 import { isEventRegistrationOpen } from '@/lib/registration/isEventRegistrationOpen'
 
 const VISUAL_TONES: HubEventCard['visualTone'][] = ['blue', 'orange', 'purple']
@@ -16,7 +16,8 @@ const EVENT_ICONS: Record<string, string> = {
 }
 
 export function mapEventToHubCard(evt: AfrsEvent, index = 0): HubEventCard {
-  const type = evt.eventType ?? 'workshop'
+  const eventType = resolveEventType(evt.eventType) ?? resolveEventType('workshop')!
+  const type = eventType.slug
   const nature =
     evt.eventNature === 'international' || evt.eventNature === 'national'
       ? evt.eventNature
@@ -33,7 +34,7 @@ export function mapEventToHubCard(evt: AfrsEvent, index = 0): HubEventCard {
     title: evt.title,
     description: evt.excerpt ?? richTextToPlain(evt.description, 140),
     eventType: type,
-    eventTypeLabel: eventTypeDisplayLabel(type) || formatEventType(type),
+    eventTypeLabel: eventType.badgeLabel,
     eventNature: nature,
     startDate: evt.startDate,
     visualTone: VISUAL_TONES[index % VISUAL_TONES.length],

@@ -1,5 +1,7 @@
 import { EventsListingView } from '@/components/programmes/EventsListingView'
 import { fetchProgrammeHubEvents } from '@/lib/programmeEvents'
+import { getEventTypes } from '@/lib/queries/taxonomies'
+import { getProgrammePagesCopy } from '@/lib/queries/programme-pages'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
@@ -30,10 +32,14 @@ export default async function ProgrammeEventsPage({ searchParams }: Props) {
   const initialNature =
     nature === 'national' || nature === 'international' ? nature : ('all' as const)
 
-  const { upcoming, ongoing, completed } = await fetchProgrammeHubEvents({
-    nature: initialNature === 'all' ? undefined : initialNature,
-    type: type || undefined,
-  })
+  const [{ upcoming, ongoing, completed }, eventTypes, copy] = await Promise.all([
+    fetchProgrammeHubEvents({
+      nature: initialNature === 'all' ? undefined : initialNature,
+      type: type || undefined,
+    }),
+    getEventTypes(),
+    getProgrammePagesCopy(),
+  ])
 
   return (
     <EventsListingView
@@ -43,6 +49,8 @@ export default async function ProgrammeEventsPage({ searchParams }: Props) {
       initialSchedule={initialSchedule}
       initialNature={initialNature}
       initialType={type}
+      hero={copy.eventsHub}
+      initialTypeLabel={eventTypes.find((item) => item.slug === type)?.label}
     />
   )
 }

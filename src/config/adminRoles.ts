@@ -23,6 +23,14 @@ export function getAdminRole(user: unknown): AdminRole | null {
   return null
 }
 
+/** Roles that can sign in to Content Studio and see unpublished content. */
+export const STAFF_ROLES: readonly AdminRole[] = ['superAdmin', 'contentEditor', 'eventManager']
+
+export function isStaffUser(user: unknown): boolean {
+  const role = getAdminRole(user)
+  return Boolean(role && STAFF_ROLES.includes(role))
+}
+
 export function isSuperAdmin(user: unknown): boolean {
   return getAdminRole(user) === 'superAdmin'
 }

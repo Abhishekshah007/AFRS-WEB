@@ -1,11 +1,12 @@
 import { VisitorCounterBar } from '../../student-hub/VisitorCounterBar'
-import { resolveTotalVisitors } from '@/lib/site/totalVisitors'
+import { getSiteVisitorTotal } from '@/lib/site/visitorTotal'
 import type { SiteSetting } from '@/payload-types'
 
-export function CommunityBannerSection({
+/** Home page visitor strip — same live total as every other page. */
+export async function CommunityBannerSection({
   siteSettings,
 }: {
   siteSettings?: Pick<SiteSetting, 'totalVisitors'> | null
 }) {
-  return <VisitorCounterBar totalVisitors={resolveTotalVisitors(siteSettings)} />
+  return <VisitorCounterBar totalVisitors={await getSiteVisitorTotal(siteSettings)} />
 }

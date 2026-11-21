@@ -6,6 +6,11 @@ import {
 } from '@/data/defaults/programmes/catalog'
 import { defaultServicesCatalog } from '@/data/defaults/services-catalog'
 import { getSiteUrl } from '@/lib/seo/site'
+import {
+  getSiteResourcePersons,
+  RESOURCE_PERSONS_PATH,
+  resourcePersonPath,
+} from '@/lib/queries/resource-persons'
 
 const STATIC_PATHS = [
   '/',
@@ -43,7 +48,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const payload = await getPayloadClient()
-    const [services, events, articles, categories] = await Promise.all([
+    const [services, events, articles, categories, resourcePersons] = await Promise.all([
       payload.find({
         collection: 'services',
         where: { published: { equals: true } },
@@ -71,6 +76,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         depth: 0,
         overrideAccess: false,
       }),
+      getSiteResourcePersons(),
     ])
 
     const serviceEntries: MetadataRoute.Sitemap = services.docs
@@ -119,12 +125,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.6,
       }))
 
+    // One crawlable URL per published CMS resource person (opens their modal on /courses).
+    const resourcePersonEntries: MetadataRoute.Sitemap = resourcePersons.fromCms
+      ? [
+          {
+            url: `${origin}${RESOURCE_PERSONS_PATH}`,
+            lastModified: now,
+            changeFrequency: 'monthly',
+            priority: 0.6,
+          },
+          ...resourcePersons.people
+            .filter((person): person is typeof person & { slug: string } => Boolean(person.slug))
+            .map((person) => ({
+              url: `${origin}${resourcePersonPath(person.slug)}`,
+              lastModified: now,
+              changeFrequency: 'monthly' as const,
+              priority: 0.5,
+            })),
+        ]
+      : []
+
     return [
       ...staticEntries,
       ...serviceEntries,
       ...eventEntries,
       ...articleEntries,
       ...programmeCategoryEntries,
+      ...resourcePersonEntries,
     ]
   } catch {
     const fallbackServices: MetadataRoute.Sitemap = defaultServicesCatalog.map((service) => ({

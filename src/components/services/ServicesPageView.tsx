@@ -247,7 +247,7 @@ export function ServicesPageView({
               ) : (
                 directors.map((person) => (
                   <div key={person.id}>
-                    <article className="card-pop group overflow-hidden rounded-[20px] border border-[#e5ebf4] bg-gradient-to-br from-white to-[#FBF6EC] shadow-[0_12px_32px_rgba(15,23,42,0.08)]">
+                    <article className="card-pop group overflow-hidden rounded-[20px] border h-full border-[#e5ebf4] bg-gradient-to-br from-white to-[#FBF6EC] shadow-[0_12px_32px_rgba(15,23,42,0.08)]">
                       {/* Top gradient bar */}
                       <div className="h-1 w-full bg-gradient-to-r from-[#75162D] via-[#F2D9A0] to-[#75162D]" />
 
