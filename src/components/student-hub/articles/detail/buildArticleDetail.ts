@@ -13,7 +13,7 @@ export function buildArticleDetail(doc: Article): ArticleDetailData {
   return {
     ...base,
     coverUrl: base.coverUrl,
-    secondaryTag: doc.secondaryTag ?? (doc.category === 'digitalForensics' ? 'AI in Forensics' : undefined),
+    secondaryTag: doc.secondaryTag ?? (base.category === 'digitalForensics' ? 'AI in Forensics' : undefined),
     tags: [...new Set(cmsTags)],
     sections,
     htmlBody: html,

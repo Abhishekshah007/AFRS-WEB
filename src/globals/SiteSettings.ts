@@ -37,6 +37,21 @@ export const SiteSettings: GlobalConfig = {
       },
     },
     {
+      name: 'postalAddress',
+      type: 'group',
+      label: 'Head office address (for Google)',
+      admin: {
+        description:
+          'Structured address used in search-engine data (Google business details). Keep in sync with the address above.',
+      },
+      fields: [
+        { name: 'streetAddress', type: 'text' },
+        { name: 'locality', type: 'text', label: 'City' },
+        { name: 'region', type: 'text', label: 'State' },
+        { name: 'postalCode', type: 'text', label: 'PIN code' },
+      ],
+    },
+    {
       name: 'totalVisitors',
       type: 'number',
       defaultValue: 0,
@@ -62,6 +77,30 @@ export const SiteSettings: GlobalConfig = {
         { name: 'youtube', type: 'text' },
         { name: 'whatsapp', type: 'text' },
         { name: 'telegram', type: 'text' },
+      ],
+    },
+    {
+      name: 'chatbot',
+      type: 'group',
+      label: 'Website assistant (chatbot)',
+      fields: [
+        {
+          name: 'extraKnowledge',
+          type: 'textarea',
+          label: 'Extra facts for the assistant',
+          admin: {
+            description:
+              'Plain-text facts the assistant should know (new offerings, policies, FAQs). Contact details, events and programmes are added automatically.',
+            rows: 8,
+          },
+        },
+        {
+          name: 'suggestions',
+          type: 'array',
+          label: 'Suggested questions',
+          admin: { description: 'Buttons shown when the chat opens. Leave empty for the defaults.' },
+          fields: [{ name: 'text', type: 'text', required: true }],
+        },
       ],
     },
   ],

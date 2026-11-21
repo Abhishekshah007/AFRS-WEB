@@ -37,7 +37,8 @@ async function createMediaFile(
   fileReq.file = upload
   return payload.create({
     collection: 'media',
-    data: { alt },
+    // Participant uploads (payment proofs, ID documents) are hidden from public reads.
+    data: { alt, isPrivate: true },
     file: upload,
     req: fileReq,
     overrideAccess: true,

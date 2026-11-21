@@ -5,16 +5,10 @@ import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import { UI } from '../design'
 import { AfslOffers } from './AfslOffers'
 import { ProgramCtaSection } from './ProgramCtaSection'
+import type { AfslSectionContent } from '@/lib/queries/home-sections'
 
-export function TrustedPartnerSection() {
-  const cards = [
-    { title: 'Crime Scene Investigation & Management', icon: '🕵️' },
-    { title: 'Fingerprint Examination & Analysis', icon: '🔍' },
-    { title: 'Questioned Document & Signature Analysis', icon: '📄' },
-    { title: 'Multimedia & Digital Forensics', icon: '💻' },
-    { title: '65B IEA Certificate (63(4)(C) BSA)', icon: '⚖️' },
-    { title: 'Forensic Consultancy & Expert Opinion', icon: '📋' },
-  ]
+export function TrustedPartnerSection({ content }: { content: AfslSectionContent }) {
+  const cards = content.cards
 
   return (
     <section
@@ -53,20 +47,16 @@ export function TrustedPartnerSection() {
         </div>
         <SectionHeader
           light
-          title="Applied Forensic Science Laboratory (AFSL)"
-          subtitle="Scientific. Reliable. Professional."
+          title={content.title}
+          subtitle={content.tagline}
         />
         <p className="mx-auto  mb-14 max-w-3xl text-center text-base sm:text-lg leading-relaxed text-white/80">
-          Applied Forensic Science Laboratory (AFSL) is committed to delivering reliable,
-          scientific, and evidence-based forensic solutions that support investigations, legal
-          proceedings, research, and professional development. Our multidisciplinary team provides
-          expert forensic examination, analytical services, consultation, and training across
-          various domains of forensic science.
+          {content.description}
         </p>
         <AnimateOnScroll stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {cards.map((card) => (
             <div
-              key={card.title}
+              key={`${card.title}-${card.icon}`}
               className="card-pop card-pop-on-dark group rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 text-center shadow-lg min-h-[160px] flex flex-col items-center justify-center relative overflow-hidden hover:bg-white/10"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
@@ -84,12 +74,12 @@ export function TrustedPartnerSection() {
         </AnimateOnScroll>
         <AnimateOnScroll>
           <div className="mt-16 lg:mt-20">
-            <AfslOffers />
+            <AfslOffers content={content.offers} />
           </div>
         </AnimateOnScroll>
         <AnimateOnScroll>
           <div className="mt-10 lg:mt-12">
-            <ProgramCtaSection />
+            <ProgramCtaSection content={content.contact} />
           </div>
         </AnimateOnScroll>
       </div>

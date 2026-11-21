@@ -174,4 +174,16 @@ export const aboutPageSectionFields = (): Field[] => [
   { name: 'awardsImageAlt1', type: 'text', defaultValue: 'AFRS laboratory research' },
   { name: 'awardsImageAlt2', type: 'text', defaultValue: 'AFRS training session' },
   { name: 'awardsImageAlt3', type: 'text', defaultValue: 'AFRS team recognition' },
+  { name: 'audienceEyebrow', type: 'text', admin: { description: '"Who it serves" table.' } },
+  { name: 'audienceTitle', type: 'text' },
+  { name: 'audienceBadge', type: 'text', admin: { description: 'e.g. "10+ professional groups"' } },
+  {
+    name: 'audienceRows',
+    type: 'array',
+    label: 'Who it serves — rows',
+    fields: [
+      { name: 'audience', type: 'text', required: true, label: 'Target audience' },
+      { name: 'why', type: 'textarea', required: true, label: 'Why it matters' },
+    ],
+  },
 ]

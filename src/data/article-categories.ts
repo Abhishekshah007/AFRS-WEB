@@ -1,3 +1,8 @@
+/**
+ * Built-in article categories. These seed the CMS "Article categories" collection
+ * (see the 20261121_130000_cms_taxonomies migration) and label the demo articles
+ * shown when the CMS is empty. Editors add new categories in the CMS, not here.
+ */
 export const ARTICLE_CATEGORY_OPTIONS = [
   { label: 'Forensic Biology and Serology', value: 'biologySerology' },
   { label: 'Forensic DNA', value: 'dna' },
@@ -21,11 +26,12 @@ export const ARTICLE_CATEGORY_OPTIONS = [
   { label: 'Forensic Accounting', value: 'forensicAccounting' },
 ] as const
 
+/** Catch-all category; seeded into the CMS but hidden from the topic filter bar. */
+export const GENERAL_ARTICLE_CATEGORY = { label: 'General', value: 'general' } as const
+
 export const CMS_ARTICLE_CATEGORY_OPTIONS = [
   ...ARTICLE_CATEGORY_OPTIONS,
-  { label: 'General', value: 'general' },
+  GENERAL_ARTICLE_CATEGORY,
 ] as const
-
-export type ArticleCategoryValue = (typeof CMS_ARTICLE_CATEGORY_OPTIONS)[number]['value']
 
 export const VISIBLE_ARTICLE_CATEGORY_COUNT = 4

@@ -74,9 +74,26 @@ export function buildPageMetadata({
   }
 }
 
-export function articleShareImageUrl(title: string, category?: string | null): string {
+/**
+ * Site-relative URL of the generated article image (/api/og/article). The same image is
+ * used as the social share preview and as the on-site cover until an editor uploads one.
+ */
+export function articleGeneratedImagePath(
+  title: string,
+  category?: string | null,
+  categoryLabel?: string | null,
+): string {
   const params = new URLSearchParams({ title, category: category || 'general' })
-  return absoluteUrl(`/api/og/article?${params.toString()}`)
+  if (categoryLabel?.trim()) params.set('label', categoryLabel.trim())
+  return `/api/og/article?${params.toString()}`
+}
+
+export function articleShareImageUrl(
+  title: string,
+  category?: string | null,
+  categoryLabel?: string | null,
+): string {
+  return absoluteUrl(articleGeneratedImagePath(title, category, categoryLabel))
 }
 
 export function optimizeArticleSocialImage(imageUrl: string): string {

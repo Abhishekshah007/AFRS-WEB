@@ -1,6 +1,9 @@
 import { jsonError } from '@/lib/apiResponses'
 import { getFormValue, readUploadFile } from '@/lib/api/form-data'
-import { buildCourseConfirmationUrl } from '@/lib/registration/confirmationToken'
+import {
+  buildCourseConfirmationUrl,
+  verifyRegistrationConfirmationToken,
+} from '@/lib/registration/confirmationToken'
 import { enforcePublicApiGuards } from '@/lib/security/publicApiGuards'
 import { PUBLIC_RATE_LIMITS } from '@/lib/security/rateLimit'
 import { getPayloadClient } from '@/lib/payload'
@@ -14,6 +17,7 @@ import { createLocalReq } from 'payload'
 
 type CompleteCourseRegistrationBody = {
   registrationId?: string
+  token?: string
   transactionId?: string
   transactionDate?: string
   transactionTime?: string
@@ -34,6 +38,7 @@ export async function completeCourseRegistration(req: Request) {
   const body: CompleteCourseRegistrationBody = formData
     ? {
         registrationId: getFormValue(formData, 'registrationId'),
+        token: getFormValue(formData, 'token'),
         transactionId: getFormValue(formData, 'transactionId'),
         transactionDate: getFormValue(formData, 'transactionDate'),
         transactionTime: getFormValue(formData, 'transactionTime'),
@@ -55,6 +60,10 @@ export async function completeCourseRegistration(req: Request) {
   const uploadFile = formData ? await readUploadFile(formData, 'transactionProof') : undefined
 
   if (!body.registrationId) return jsonError('Registration id is required.', 400)
+  // Registration ids are sequential, so require the signed token issued at initiate time.
+  if (!verifyRegistrationConfirmationToken(body.registrationId, { kind: 'course' }, body.token)) {
+    return jsonError('Registration not found.', 404)
+  }
   if (!body.transactionId) return jsonError('Transaction reference is required.', 400)
   if (!body.transactionDate) return jsonError('Transaction date is required.', 400)
   if (!isValidCalendarDate(body.transactionDate)) {

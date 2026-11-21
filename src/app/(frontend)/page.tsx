@@ -5,6 +5,14 @@ import { HomePopupSequence } from '@/components/home/HomePopupSequence'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import { faqPage, withContext } from '@/lib/seo/schema'
 import {
+  resolveAfslSection,
+  resolveImpactSection,
+  resolveInternshipSection,
+  resolveQuickLinksSection,
+  resolveTrainingSection,
+  resolveVideoSection,
+} from '@/lib/queries/home-sections'
+import {
   AboutSection,
   AchievementsSection,
   CommunityBannerSection,
@@ -58,17 +66,17 @@ export default async function HomePage() {
       <HomePopupSequence key={popupFingerprint} slides={popups} fingerprint={popupFingerprint} />
       <HeroSection heroData={heroData} />
       <AFRSFeatureCards sectionText={sectionText} events={events} />
-      <ForensicTrainingProgram />
+      <ForensicTrainingProgram content={resolveTrainingSection(homePage?.training)} />
       <EventsSection sectionText={sectionText} events={events} />
       <AboutSection sectionText={sectionText} />
       <ImpactSection impactStats={impactStats} />
-      <InternshipProgramSection />
-      <FutureSection />
-      <AchievementsSection />
-      <TrustedPartnerSection />
+      <InternshipProgramSection content={resolveInternshipSection(homePage?.internship)} />
+      <FutureSection content={resolveVideoSection(homePage?.video)} />
+      <AchievementsSection content={resolveImpactSection(homePage?.impact)} />
+      <TrustedPartnerSection content={resolveAfslSection(homePage?.afsl)} />
       <ExpertsSection scientists={scientists} usePlaceholderExperts={!cmsAvailable} />
       <TestimonialsSection testimonials={testimonials} />
-      <MediaResourcesSection />
+      <MediaResourcesSection content={resolveQuickLinksSection(homePage?.quickLinks)} />
       <LatestNewsSection items={notices} sectionText={sectionText} />
       <CommunityBannerSection siteSettings={siteSettings} />
       <GallerySection />

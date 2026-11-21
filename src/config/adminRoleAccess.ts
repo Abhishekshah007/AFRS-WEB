@@ -10,6 +10,7 @@ export const DEFAULT_HIDDEN_BY_ROLE: Record<
     collections: [
       'users',
       'events',
+      'eventTypes',
       'eventRegistrations',
       'programmeCategories',
       'programmes',
@@ -20,6 +21,7 @@ export const DEFAULT_HIDDEN_BY_ROLE: Record<
     collections: [
       'users',
       'articles',
+      'articleCategories',
       'galleryItems',
       'testimonials',
       'services',
@@ -35,6 +37,7 @@ export const DEFAULT_HIDDEN_BY_ROLE: Record<
       'homePage',
       'aboutPage',
       'servicesPage',
+      'legalPages',
       'studentHubContent',
       'siteSettings',
       'headerSettings',
@@ -44,11 +47,13 @@ export const DEFAULT_HIDDEN_BY_ROLE: Record<
   student: {
     collections: [
       'articles',
+      'articleCategories',
       'aboutCertifications',
       'contactMessages',
       'courseRegistrations',
       'eventRegistrations',
       'events',
+      'eventTypes',
       'galleryItems',
       'impactStats',
       'media',
@@ -71,6 +76,7 @@ export const DEFAULT_HIDDEN_BY_ROLE: Record<
       'programmesCatalog',
       'registrationForm',
       'servicesPage',
+      'legalPages',
       'siteSettings',
       'studentHubContent',
     ],

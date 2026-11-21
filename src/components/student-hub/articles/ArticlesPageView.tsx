@@ -3,8 +3,12 @@ import { ArticlesHero } from '@/components/student-hub/articles/ArticlesHero'
 import { ArticlesStatsBar } from '@/components/student-hub/articles/ArticlesStatsBar'
 import { FeaturedArticleCard } from '@/components/student-hub/articles/FeaturedArticleCard'
 import { RecentPublicationsSection } from '@/components/student-hub/articles/RecentPublicationsSection'
-import { topicFilters } from '@/components/student-hub/articles/content'
-import type { ArticleListItem, FeaturedArticle } from '@/components/student-hub/articles/types'
+import { topicFilters as defaultTopicFilters } from '@/components/student-hub/articles/content'
+import type {
+  ArticleListItem,
+  FeaturedArticle,
+  TopicFilter,
+} from '@/components/student-hub/articles/types'
 import { studentHubTokens } from '@/components/student-hub/tokens'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import Link from 'next/link'
@@ -18,6 +22,8 @@ export type ArticlesPageViewProps = {
   activeTopic: string
   initialQuery?: string
   searchParams: Record<string, string | undefined>
+  /** Topic filters from CMS article categories (defaults to the built-in list). */
+  topicFilters?: TopicFilter[]
 }
 
 /**
@@ -32,6 +38,7 @@ export function ArticlesPageView({
   activeTopic,
   initialQuery,
   searchParams,
+  topicFilters = defaultTopicFilters,
 }: ArticlesPageViewProps) {
   return (
     <div className="student-hub-page articles-page bg-white">

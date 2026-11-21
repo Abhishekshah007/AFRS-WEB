@@ -20,8 +20,8 @@ export function mergeRelatedArticles(
     if (merged.length >= limit) break
   }
 
-  return merged.map((article) => ({
-    ...mapArticle(article),
-    tagLabel: article.category === 'general' ? 'CASE STUDY' : undefined,
-  }))
+  return merged.map((article) => {
+    const mapped = mapArticle(article)
+    return { ...mapped, tagLabel: mapped.category === 'general' ? 'CASE STUDY' : undefined }
+  })
 }

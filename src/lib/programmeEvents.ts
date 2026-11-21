@@ -28,7 +28,7 @@ export async function fetchProgrammeHubEvents(query: ProgrammeEventsQuery = {}) 
 
   const filters: Where[] = []
   if (query.nature) filters.push({ eventNature: { equals: query.nature } })
-  if (query.type) filters.push({ eventType: { equals: query.type } })
+  if (query.type) filters.push({ 'eventType.slug': { equals: query.type } })
 
   const { docs } = await payload.find({
     collection: 'events',

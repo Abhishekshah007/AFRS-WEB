@@ -2,10 +2,25 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useLayoutEffect, useRef, useState, useId } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type MouseEvent,
+  type ReactNode,
+} from 'react'
 import { ArrowLeft, X } from 'lucide-react'
 import type { ArchiveItem, GalleryThumb, ResourcePerson } from '@/components/programmes/types'
 import { programmesTokens } from '@/components/programmes/tokens'
+import {
+  COURSES_PATH,
+  RESOURCE_PERSONS_PATH,
+  modalViewFromPath,
+  resourcePersonPath,
+} from '@/components/programmes/resourcePersonLinks'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 
 export type ResourceArchiveGalleryProps = {
@@ -13,6 +28,63 @@ export type ResourceArchiveGalleryProps = {
   archive: ArchiveItem[]
   gallery: GalleryThumb[]
   galleryViewAllHref?: string
+  /** Modal to show on first render (set by the crawlable resource person URLs). */
+  initialModal?: ResourcePersonModalView
+}
+
+export type ResourcePersonModalView = { kind: 'all' } | { kind: 'person'; slug: string }
+
+function isModalDialog(dialog: HTMLDialogElement): boolean {
+  try {
+    return dialog.matches(':modal')
+  } catch {
+    return false
+  }
+}
+
+/** Let ctrl/cmd/shift/middle-clicks open the profile URL in a new tab as usual. */
+function isPlainLeftClick(event: MouseEvent<HTMLAnchorElement>): boolean {
+  return (
+    event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey
+  )
+}
+
+/**
+ * Renders a person trigger as a real link when the person has a profile URL, so search
+ * engines can discover each profile, while a normal click still opens the modal in place.
+ */
+function PersonTrigger({
+  href,
+  onOpen,
+  className,
+  children,
+}: {
+  href?: string
+  onOpen: () => void
+  className: string
+  children: ReactNode
+}) {
+  if (!href) {
+    return (
+      <button type="button" onClick={onOpen} className={className}>
+        {children}
+      </button>
+    )
+  }
+
+  return (
+    <a
+      href={href}
+      onClick={(event) => {
+        if (!isPlainLeftClick(event)) return
+        event.preventDefault()
+        onOpen()
+      }}
+      className={className}
+    >
+      {children}
+    </a>
+  )
 }
 
 /**
@@ -23,13 +95,22 @@ export function ResourceArchiveGallery({
   archive,
   gallery,
   galleryViewAllHref = '/gallery',
+  initialModal,
 }: ResourceArchiveGalleryProps) {
-  const [selectedPerson, setSelectedPerson] = useState<ResourcePerson | null>(null)
-  const [showAllPeople, setShowAllPeople] = useState(false)
+  const findBySlug = useCallback(
+    (slug: string) => resourcePersons.find((person) => person.slug === slug) ?? null,
+    [resourcePersons],
+  )
+  const [selectedPerson, setSelectedPerson] = useState<ResourcePerson | null>(() =>
+    initialModal?.kind === 'person' ? findBySlug(initialModal.slug) : null,
+  )
+  const [showAllPeople, setShowAllPeople] = useState(initialModal?.kind === 'all')
   const [canReturnToPeopleList, setCanReturnToPeopleList] = useState(false)
   const isModalOpen = Boolean(selectedPerson) || showAllPeople
   const dialogRef = useRef<HTMLDialogElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
+  /** True when this page pushed the modal URL, so closing can step back in history. */
+  const pushedHistoryRef = useRef(false)
   const modalTitleId = useId()
 
   useLayoutEffect(() => {
@@ -38,6 +119,9 @@ export function ResourceArchiveGallery({
 
     const htmlOverflow = document.documentElement.style.overflow
     const bodyOverflow = document.body.style.overflow
+    // Profile URLs are server-rendered with the dialog already open (so the details are
+    // in the HTML); reopen it as a true modal for focus trapping and the top layer.
+    if (dialog.open && !isModalDialog(dialog)) dialog.close()
     if (!dialog.open) dialog.showModal()
     document.documentElement.style.overflow = 'hidden'
     document.body.style.overflow = 'hidden'
@@ -50,11 +134,69 @@ export function ResourceArchiveGallery({
     }
   }, [isModalOpen])
 
+  // Keep the modal in sync with browser back/forward between profile URLs.
+  useEffect(() => {
+    function onPopState() {
+      const view = modalViewFromPath(window.location.pathname)
+      if (!view) {
+        pushedHistoryRef.current = false
+        setSelectedPerson(null)
+        setShowAllPeople(false)
+        setCanReturnToPeopleList(false)
+        return
+      }
+      if (view.kind === 'all') {
+        setSelectedPerson(null)
+        setShowAllPeople(true)
+        return
+      }
+      const person = findBySlug(view.slug)
+      if (person) {
+        setShowAllPeople(false)
+        setSelectedPerson(person)
+      }
+    }
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [findBySlug])
+
+  function showUrl(path: string) {
+    if (window.location.pathname === path) return
+    if (modalViewFromPath(window.location.pathname)) {
+      window.history.replaceState(window.history.state, '', path)
+    } else {
+      window.history.pushState(window.history.state, '', path)
+      pushedHistoryRef.current = true
+    }
+  }
+
+  function openPerson(person: ResourcePerson, fromList: boolean) {
+    setCanReturnToPeopleList(fromList)
+    setShowAllPeople(false)
+    setSelectedPerson(person)
+    if (person.slug) showUrl(resourcePersonPath(person.slug))
+  }
+
+  function openAllPeople() {
+    setSelectedPerson(null)
+    setShowAllPeople(true)
+    if (hasProfileUrls) showUrl(RESOURCE_PERSONS_PATH)
+  }
+
   function closeModal() {
     setSelectedPerson(null)
     setShowAllPeople(false)
     setCanReturnToPeopleList(false)
+    if (!modalViewFromPath(window.location.pathname)) return
+    if (pushedHistoryRef.current) {
+      pushedHistoryRef.current = false
+      window.history.back()
+    } else {
+      window.history.replaceState(window.history.state, '', COURSES_PATH)
+    }
   }
+
+  const hasProfileUrls = resourcePersons.some((person) => person.slug)
 
   return (
     <section
@@ -73,12 +215,9 @@ export function ResourceArchiveGallery({
               <ul className="space-y-3">
                 {resourcePersons.slice(0, 3).map((person) => (
                   <li key={person.id}>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setCanReturnToPeopleList(false)
-                        setSelectedPerson(person)
-                      }}
+                    <PersonTrigger
+                      href={person.slug ? resourcePersonPath(person.slug) : undefined}
+                      onOpen={() => openPerson(person, false)}
                       className="flex w-full items-center gap-3 rounded-2xl border border-slate-100 bg-white p-4 text-left shadow-sm card-pop group"
                     >
                       {person.photoUrl ? (
@@ -110,17 +249,17 @@ export function ResourceArchiveGallery({
                       >
                         →
                       </span>
-                    </button>
+                    </PersonTrigger>
                   </li>
                 ))}
               </ul>
-              <button
-                type="button"
-                onClick={() => setShowAllPeople(true)}
+              <PersonTrigger
+                href={hasProfileUrls ? RESOURCE_PERSONS_PATH : undefined}
+                onOpen={openAllPeople}
                 className="mt-4 inline-flex text-sm font-bold text-[var(--prog-primary)] hover:underline"
               >
                 View All →
-              </button>
+              </PersonTrigger>
             </div>
 
             {/* Archive */}
@@ -178,6 +317,9 @@ export function ResourceArchiveGallery({
       {isModalOpen && (
         <dialog
           ref={dialogRef}
+          // Rendered open so the server HTML of profile URLs contains the details; the
+          // layout effect above upgrades it to a real modal on the client.
+          open
           aria-labelledby={modalTitleId}
           aria-modal="true"
           className="fixed inset-0 z-50 m-0 h-full w-full max-h-none max-w-none border-0 bg-transparent p-0"
@@ -207,14 +349,7 @@ export function ResourceArchiveGallery({
               <PersonModalProfile
                 person={selectedPerson}
                 titleId={modalTitleId}
-                onBack={
-                  canReturnToPeopleList
-                    ? () => {
-                        setSelectedPerson(null)
-                        setShowAllPeople(true)
-                      }
-                    : undefined
-                }
+                onBack={canReturnToPeopleList ? openAllPeople : undefined}
               />
             ) : (
               <div className="p-6 sm:p-8">
@@ -226,14 +361,10 @@ export function ResourceArchiveGallery({
                 </h3>
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
                   {resourcePersons.map((person) => (
-                    <button
+                    <PersonTrigger
                       key={person.id}
-                      type="button"
-                      onClick={() => {
-                        setCanReturnToPeopleList(true)
-                        setShowAllPeople(false)
-                        setSelectedPerson(person)
-                      }}
+                      href={person.slug ? resourcePersonPath(person.slug) : undefined}
+                      onOpen={() => openPerson(person, true)}
                       className="flex items-center gap-4 rounded-2xl border border-slate-100 bg-slate-50 p-4 text-left transition hover:border-[var(--prog-primary)]/30 hover:bg-white"
                     >
                       <PersonAvatar person={person} size="md" />
@@ -247,7 +378,7 @@ export function ResourceArchiveGallery({
                           </span>
                         )}
                       </span>
-                    </button>
+                    </PersonTrigger>
                   ))}
                 </div>
               </div>

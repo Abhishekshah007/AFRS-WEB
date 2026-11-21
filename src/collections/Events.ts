@@ -63,22 +63,14 @@ export const Events: CollectionConfig = {
     eventNatureField(),
     {
       name: 'eventType',
-      type: 'select',
+      type: 'relationship',
+      relationTo: 'eventTypes',
       label: 'Event type',
-      options: [
-        { label: 'Workshop', value: 'workshop' },
-        { label: 'Conference', value: 'conference' },
-        { label: 'Training', value: 'training' },
-        { label: 'Faculty Development Program', value: 'fdp' },
-        { label: 'Internship', value: 'internship' },
-        { label: 'Professional Training Program', value: 'professional-training-program' },
-        { label: 'Professional Internship Program', value: 'professional-internship-program' },
-        { label: 'Professional Workshop Program', value: 'professional-workshop-program' },
-        { label: 'Capsule Training Program', value: 'capsule-training-program' },
-        { label: 'Police Training Program', value: 'police-training-program' },
-        { label: 'Certificate Course', value: 'certificate-course' },
-        { label: 'Foundation Certificate Course', value: 'foundation-certificate-course' },
-      ],
+      index: true,
+      admin: {
+        description:
+          'Need a new type? Add it under Events & registrations → Event types, then pick it here.',
+      },
     },
     {
       name: 'mode',

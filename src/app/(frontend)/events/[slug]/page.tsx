@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { getPayloadClient } from '@/lib/payload'
 import {
   formatEventDate,
-  formatEventType,
   renderRichTextHtml,
   resolveMediaUrl,
   resolveMediaUrlOptional,
@@ -15,6 +14,7 @@ import { buildPageMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { breadcrumbList, withContext } from '@/lib/seo/schema'
 import { clipMeta } from '@/lib/seo/site'
+import { resolveEventType } from '@/lib/taxonomy'
 import { categoriesToFeeTiers, formatFeeAmount } from '@/lib/registration/resolveConfig'
 import { isEventRegistrationOpen } from '@/lib/registration/isEventRegistrationOpen'
 import type { Metadata } from 'next'
@@ -77,6 +77,7 @@ export default async function EventDetailPage({ params }: Props) {
     FALLBACK_BANNER_IMAGE,
   )
   const summary = evt.excerpt || richTextToPlain(evt.description, 200)
+  const eventTypeInfo = resolveEventType(evt.eventType)
   const descriptionHtml = renderRichTextHtml(evt.description)
   const feeTiers = categoriesToFeeTiers(
     evt.registrationCategories || [],
@@ -155,9 +156,9 @@ export default async function EventDetailPage({ params }: Props) {
             </div>
 
             <div className="mt-8">
-              {evt.eventType && (
+              {eventTypeInfo && (
                 <span className="rounded-full bg-brand-100 text-brand-700 px-4 py-1.5 text-xs font-bold">
-                  {formatEventType(evt.eventType)}
+                  {eventTypeInfo.label}
                 </span>
               )}
               <h1 className="mt-4 text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">

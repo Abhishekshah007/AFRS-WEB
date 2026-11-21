@@ -15,6 +15,10 @@ export type EventsListingViewProps = {
   initialSchedule: 'upcoming' | 'ongoing' | 'completed'
   initialNature?: 'national' | 'international' | 'all'
   initialType?: string
+  /** Display name of `initialType` from the CMS event types. */
+  initialTypeLabel?: string
+  /** Hero copy from Course site settings → Online Events Hub. */
+  hero?: { eyebrow: string; title: string; description: string }
 }
 
 type Tab = 'upcoming' | 'ongoing' | 'completed'
@@ -29,6 +33,8 @@ export function EventsListingView({
   initialSchedule,
   initialNature = 'all',
   initialType,
+  initialTypeLabel,
+  hero,
 }: EventsListingViewProps) {
   const [tab, setTab] = useState<Tab>(initialSchedule)
 
@@ -43,7 +49,7 @@ export function EventsListingView({
 
   const filterLabel = [
     initialNature !== 'all' ? initialNature : null,
-    initialType ?? null,
+    initialType ? (initialTypeLabel ?? initialType) : null,
     tab === 'upcoming' ? 'upcoming' : tab === 'ongoing' ? 'ongoing' : 'completed',
   ]
     .filter(Boolean)
@@ -52,10 +58,13 @@ export function EventsListingView({
   return (
     <div className="programmes-page bg-white min-h-screen">
       <SubPageHero
-        breadcrumbs={[{ label: 'Programmes', href: '/courses' }, { label: 'Online Events Hub' }]}
-        eyebrow="Connect, Learn, and Grow"
-        title="Online Events Hub"
-        description="Register for workshops, conferences, faculty development programmes, and training sessions with global experts."
+        breadcrumbs={[{ label: 'Programmes', href: '/courses' }, { label: hero?.title ?? 'Online Events Hub' }]}
+        eyebrow={hero?.eyebrow ?? 'Connect, Learn, and Grow'}
+        title={hero?.title ?? 'Online Events Hub'}
+        description={
+          hero?.description ??
+          'Register for workshops, conferences, faculty development programmes, and training sessions with global experts.'
+        }
         icon="📅"
       />
 
@@ -78,7 +87,7 @@ export function EventsListingView({
                   <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
                     {tab === 'completed'
                       ? 'Browse completed AFRS events, workshops, conferences, and faculty development programmes from the archive.'
-                      : 'Events move to Ongoing on the start date and to Completed after the end date, or 7 days after the start date when no end date is set.'}
+                      : 'Register for upcoming and ongoing AFRS events, workshops, conferences, and faculty development programmes to enhance your skills and knowledge.'}
                   </p>
                 </div>
                 {(initialNature !== 'all' || initialType) && (

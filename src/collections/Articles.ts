@@ -1,6 +1,5 @@
 import type { CollectionConfig } from 'payload'
 
-import { CMS_ARTICLE_CATEGORY_OPTIONS } from '../data/article-categories'
 import { editorManagedPublishedAccess } from '../access'
 import { ADMIN_GROUPS } from '../config/adminGroups'
 import { contentRichTextField, excerptField, slugField } from '../fields'
@@ -27,10 +26,14 @@ export const Articles: CollectionConfig = {
     contentRichTextField(),
     {
       name: 'category',
-      type: 'select',
+      type: 'relationship',
+      relationTo: 'articleCategories',
       required: true,
-      options: [...CMS_ARTICLE_CATEGORY_OPTIONS],
-      defaultValue: 'general',
+      index: true,
+      admin: {
+        description:
+          'Choose a topic. Need a new one? Add it under Website content → Article categories.',
+      },
     },
     { name: 'coverImage', type: 'upload', relationTo: 'media' },
     { name: 'authorName', type: 'text', required: true },

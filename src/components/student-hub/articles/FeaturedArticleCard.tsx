@@ -43,7 +43,7 @@ export function FeaturedArticleCard({ article }: FeaturedArticleCardProps) {
             alt={article.title}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover"
+            className="md:object-fill"
             priority
           />
         ) : (

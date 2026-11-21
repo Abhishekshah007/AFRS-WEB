@@ -51,6 +51,16 @@ export function revalidatePlanForCollection(
       if (detail) paths.push(detail)
       return plan(paths, [SITE_CACHE_TAGS.events, SITE_CACHE_TAGS.home, SITE_CACHE_TAGS.courses])
     }
+    case 'articleCategories':
+      return plan(
+        ['/student-hub/articles', '/student-hub/articles/[slug]', '/'],
+        [SITE_CACHE_TAGS.articles, SITE_CACHE_TAGS.studentHub, SITE_CACHE_TAGS.search],
+      )
+    case 'eventTypes':
+      return plan(
+        ['/events', '/courses/events', '/courses', '/events/[slug]', '/'],
+        [SITE_CACHE_TAGS.events, SITE_CACHE_TAGS.home, SITE_CACHE_TAGS.courses],
+      )
     case 'articles': {
       const paths = ['/student-hub/articles', '/articles']
       const detail = articleDetailPath(doc?.slug)
@@ -68,7 +78,14 @@ export function revalidatePlanForCollection(
       return plan(['/about'], [SITE_CACHE_TAGS.about])
     case 'resourcePersons':
       return plan(
-        ['/courses', '/courses/education', '/courses/training'],
+        [
+          '/courses',
+          '/courses/education',
+          '/courses/training',
+          '/courses/resource-persons',
+          '/courses/resource-persons/[slug]',
+          '/sitemap.xml',
+        ],
         [SITE_CACHE_TAGS.courses],
       )
     case 'programmeCategories':
@@ -102,6 +119,8 @@ export function revalidatePlanForGlobal(slug: string): RevalidatePlan | null {
       return plan(['/about'], [SITE_CACHE_TAGS.about])
     case 'servicesPage':
       return plan(['/services'], [SITE_CACHE_TAGS.services])
+    case 'legalPages':
+      return plan(['/privacy', '/terms'], [])
     case 'siteSettings':
     case 'headerSettings':
     case 'footerSettings':
@@ -109,7 +128,16 @@ export function revalidatePlanForGlobal(slug: string): RevalidatePlan | null {
     case 'programmesCatalog':
     case 'registrationForm':
       return plan(
-        ['/courses', '/courses/education', '/courses/training', '/courses/register'],
+        [
+          '/courses',
+          '/courses/education',
+          '/courses/training',
+          '/courses/register',
+          '/courses/events',
+          '/events',
+          '/courses/resource-persons',
+          '/courses/resource-persons/[slug]',
+        ],
         [SITE_CACHE_TAGS.courses],
       )
     case 'studentHubContent':

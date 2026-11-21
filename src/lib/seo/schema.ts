@@ -2,7 +2,8 @@ import { AFSL_NAME, BRAND_LEGAL, absoluteUrl, getSiteUrl } from './site'
 
 export type BreadcrumbCrumb = { name: string; path: string }
 
-const NAP = {
+/** Built-in contact details; Site identity (phone, email, head office address) overrides. */
+const DEFAULT_NAP = {
   telephone: '+91-9926692487',
   email: 'afrsciences@gmail.com',
   streetAddress: '2nd Floor, 8/1, Moti Tabela, Near Collectorate Office',
@@ -12,8 +13,31 @@ const NAP = {
   addressCountry: 'IN',
 }
 
-export function organizationGraph(sameAs: string[] = []) {
+export type OrganizationContact = {
+  telephone?: string | null
+  email?: string | null
+  streetAddress?: string | null
+  addressLocality?: string | null
+  addressRegion?: string | null
+  postalCode?: string | null
+}
+
+function resolveNap(contact: OrganizationContact = {}) {
+  const pick = (value: string | null | undefined, fallback: string) => value?.trim() || fallback
+  return {
+    telephone: pick(contact.telephone, DEFAULT_NAP.telephone),
+    email: pick(contact.email, DEFAULT_NAP.email),
+    streetAddress: pick(contact.streetAddress, DEFAULT_NAP.streetAddress),
+    addressLocality: pick(contact.addressLocality, DEFAULT_NAP.addressLocality),
+    addressRegion: pick(contact.addressRegion, DEFAULT_NAP.addressRegion),
+    postalCode: pick(contact.postalCode, DEFAULT_NAP.postalCode),
+    addressCountry: DEFAULT_NAP.addressCountry,
+  }
+}
+
+export function organizationGraph(sameAs: string[] = [], contact?: OrganizationContact) {
   const origin = getSiteUrl()
+  const NAP = resolveNap(contact)
   return {
     '@type': ['Organization', 'EducationalOrganization'],
     '@id': `${origin}/#organization`,
@@ -96,5 +120,28 @@ export function withContext(nodes: Record<string, unknown> | Record<string, unkn
   return {
     '@context': 'https://schema.org',
     '@graph': Array.isArray(nodes) ? nodes : [nodes],
+  }
+}
+
+/** schema.org Person for a resource person profile URL. */
+export function resourcePersonSchema(person: {
+  name: string
+  title?: string | null
+  bio?: string | null
+  photoUrl?: string | null
+  path: string
+}) {
+  const origin = getSiteUrl()
+  return {
+    '@type': 'Person',
+    '@id': `${absoluteUrl(person.path)}#person`,
+    name: person.name,
+    url: absoluteUrl(person.path),
+    ...(person.title ? { jobTitle: person.title } : {}),
+    ...(person.bio ? { description: person.bio } : {}),
+    ...(person.photoUrl
+      ? { image: person.photoUrl.startsWith('http') ? person.photoUrl : absoluteUrl(person.photoUrl) }
+      : {}),
+    affiliation: { '@id': `${origin}/#organization` },
   }
 }

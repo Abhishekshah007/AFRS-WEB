@@ -5,14 +5,10 @@ import { SectionHeader } from '@/components/ui/SectionHeader'
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll'
 import { TYPOGRAPHY, UI } from '../design'
 import { CONTAINER, SECTION } from './constants'
+import type { InternshipSectionContent } from '@/lib/queries/home-sections'
 
-export function InternshipProgramSection() {
-  const internshipFeatures = [
-    'Crime Scene Investigation Training',
-    'Advanced Fingerprint Analysis',
-    'Digital Forensics & Data Recovery',
-    'Document & Handwriting Analysis',
-  ]
+export function InternshipProgramSection({ content }: { content: InternshipSectionContent }) {
+  const internshipFeatures = content.features
   return (
     <section className={`${SECTION} ${UI.sectionSurface} section-glow-top`}>
       <div className={CONTAINER}>
@@ -22,11 +18,11 @@ export function InternshipProgramSection() {
               <SectionHeader
                 align="left"
                 accent={false}
-                eyebrow="Career Catalyst"
+                eyebrow={content.eyebrow}
                 className="mb-0 max-w-none mx-0"
-                title="Forensic Science Internship Program in India"
+                title={content.title}
                 textAlign="justify"
-                subtitle="Join our highly structured internship programs designed to provide genuine practical exposure. Gain first-hand experience in professional laboratory settings and field investigations under the supervision of senior scientists."
+                subtitle={content.description}
               />
 
               <div className="mt-10 grid gap-y-7 gap-x-10 sm:grid-cols-2">
@@ -43,10 +39,10 @@ export function InternshipProgramSection() {
 
               <div className="mt-12">
                 <Link
-                  href="/courses"
+                  href={content.ctaHref}
                   className="inline-flex h-12 items-center justify-center rounded-xl bg-[#F97316] px-8 text-sm font-bold text-white shadow-[0_20px_35px_rgba(249,115,22,0.28)] transition hover:bg-[#EA580C]"
                 >
-                  Apply Now
+                  {content.ctaLabel}
                 </Link>
               </div>
             </div>
@@ -57,8 +53,8 @@ export function InternshipProgramSection() {
               <div className="overflow-hidden rounded-[24px] border-[10px] border-white bg-white shadow-[0_32px_60px_rgba(15,23,42,0.18)]">
                 <div className="relative aspect-[1/1] w-full">
                   <Image
-                    src="https://res.cloudinary.com/drrzakkgo/image/upload/v1789644470/afrs/payload/media/AFRS%20SITE%20IMAGEs/HomeScreenAFSLAboutSection_j2xg1v.png"
-                    alt="Forensic Internship Program"
+                    src={content.imageUrl}
+                    alt={content.imageAlt}
                     fill
                     className="object-cover"
                   />

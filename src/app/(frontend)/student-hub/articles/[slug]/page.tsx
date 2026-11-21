@@ -3,7 +3,7 @@ import { ArticleDetailView } from '@/components/student-hub/articles/detail/Arti
 import { buildArticleDetail } from '@/components/student-hub/articles/detail/buildArticleDetail'
 import { mergeRelatedArticles } from '@/components/student-hub/articles/detail/relatedArticles'
 import { defaultArticles, getDefaultArticleDetail } from '@/components/student-hub/articles/content'
-import { mapArticle } from '@/components/student-hub/articles/mapArticle'
+import { mapArticle, resolveArticleCoverUrl } from '@/components/student-hub/articles/mapArticle'
 import { getPayloadClient } from '@/lib/payload'
 import type { Article } from '@/payload-types'
 import {
@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: article.title,
       description: clipMeta(article.excerpt || article.title, 160),
       path: `/student-hub/articles/${article.slug}`,
-      image: articleShareImageUrl(article.title, article.category),
+      image: articleShareImageUrl(article.title, article.category, article.categoryLabel),
       type: 'article',
       publishedTime: article.publishedDate,
       authors: [article.authorName],
@@ -62,14 +62,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       doc.tags?.map((item) => item.tag?.trim()).filter((tag): tag is string => Boolean(tag)) ?? [],
     ),
   ]
-  const coverUrl = mapArticle(doc).coverUrl
+  const mapped = mapArticle(doc)
+  const customCoverUrl = resolveArticleCoverUrl(doc.coverImage)
   return buildPageMetadata({
     title: doc.title,
     description: clipMeta(doc.excerpt || doc.title, 160),
     path: `/student-hub/articles/${doc.slug}`,
-    image: coverUrl
-      ? optimizeArticleSocialImage(coverUrl)
-      : articleShareImageUrl(doc.title, doc.category),
+    image: customCoverUrl
+      ? optimizeArticleSocialImage(customCoverUrl)
+      : articleShareImageUrl(doc.title, mapped.category, mapped.categoryLabel),
     type: 'article',
     publishedTime: doc.publishedDate,
     authors: doc.authorName ? [doc.authorName] : undefined,
@@ -101,7 +102,7 @@ export default async function ArticleDetailPage({ params }: Props) {
         and: [
           { published: { equals: true } },
           { slug: { not_equals: slug } },
-          { category: { equals: article.category } },
+          { 'category.slug': { equals: article.category } },
         ],
       },
       sort: '-publishedDate',

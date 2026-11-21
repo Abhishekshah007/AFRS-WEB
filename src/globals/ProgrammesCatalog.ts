@@ -1,4 +1,5 @@
 import type { GlobalConfig } from 'payload'
+import { hrefField } from '../fields/homeSections'
 
 import { isAdminEditorOrEventManager, isPublic } from '../access'
 import { defaultArchiveFilterLinks } from '@/data/defaults/programmes/catalog'
@@ -119,8 +120,63 @@ export const ProgrammesCatalog: GlobalConfig = {
       ],
     },
     {
+      name: 'archiveRows',
+      type: 'array',
+      label: 'Archive sidebar (Courses page)',
+      admin: {
+        description:
+          'Rows in the "Archive" box on /courses. Each shows a count of completed events matching the filters and links to them. Leave empty to show the built-in five rows.',
+      },
+      fields: [
+        { name: 'label', type: 'text', required: true },
+        {
+          name: 'nature',
+          type: 'select',
+          defaultValue: 'any',
+          options: [
+            { label: 'Any', value: 'any' },
+            { label: 'National', value: 'national' },
+            { label: 'International', value: 'international' },
+          ],
+        },
+        {
+          name: 'eventType',
+          type: 'relationship',
+          relationTo: 'eventTypes',
+          admin: { description: 'Optional. Leave empty to count every event type.' },
+        },
+      ],
+    },
+    {
+      name: 'eventsPage',
+      type: 'group',
+      label: 'Events page (/events) hero',
+      fields: [
+        { name: 'eyebrow', type: 'text' },
+        { name: 'title', type: 'text' },
+        { name: 'subtitle', type: 'textarea' },
+        { name: 'primaryLabel', type: 'text', label: 'First button label' },
+        hrefField('primaryHref', 'First button link'),
+        { name: 'secondaryLabel', type: 'text', label: 'Second button label' },
+        hrefField('secondaryHref', 'Second button link'),
+      ],
+    },
+    {
+      name: 'eventsHub',
+      type: 'group',
+      label: 'Online Events Hub (/courses/events) hero',
+      fields: [
+        { name: 'eyebrow', type: 'text' },
+        { name: 'title', type: 'text' },
+        { name: 'description', type: 'textarea' },
+      ],
+    },
+    {
       name: 'archiveFilterLinks',
       type: 'group',
+      admin: {
+        description: 'Used only by the built-in archive rows (when "Archive sidebar" is empty).',
+      },
       fields: [
         {
           name: 'nationalEvents',

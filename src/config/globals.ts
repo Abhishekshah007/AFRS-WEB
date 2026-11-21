@@ -8,6 +8,7 @@ import { ServicesPage } from '../globals/ServicesPage'
 import { SiteSettings } from '../globals/SiteSettings'
 import { StudentHubContent } from '../globals/StudentHubContent'
 import { AdminAccess } from '../globals/AdminAccess'
+import { LegalPages } from '../globals/LegalPages'
 
 /** Globals registered in logical admin-nav order. */
 export const globals = [
@@ -19,6 +20,7 @@ export const globals = [
   HomePage,
   AboutPage,
   ServicesPage,
+  LegalPages,
   // Programmes
   ProgrammesCatalog,
   RegistrationForm,

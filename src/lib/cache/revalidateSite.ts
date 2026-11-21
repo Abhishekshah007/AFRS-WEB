@@ -19,7 +19,9 @@ export function applyRevalidatePlan(plan: RevalidatePlan, context?: { scope: str
 
     const paths = unique(plan.paths)
     for (const path of paths) {
-      revalidatePath(path)
+      // Route patterns such as /x/[slug] refresh every page of that dynamic route.
+      if (path.includes('[')) revalidatePath(path, 'page')
+      else revalidatePath(path)
     }
 
     if (plan.layout) {

@@ -15,6 +15,8 @@ type AfrsChatbotProps = {
   phone?: string
   email?: string
   labEmail?: string
+  /** Suggested questions from Site identity → Website assistant (defaults when empty). */
+  suggestions?: string[]
 }
 
 const STORAGE_KEY = 'afrs-chat-session-v1'
@@ -68,7 +70,9 @@ export function AfrsChatbot({
   phone = '+91-9926692487',
   email = 'afrsciences@gmail.com',
   labEmail = DEFAULT_LAB_EMAIL,
+  suggestions,
 }: AfrsChatbotProps) {
+  const suggestionList: readonly string[] = suggestions?.length ? suggestions : CHATBOT_SUGGESTIONS
   const pathname = usePathname()
   const contactEmail = isAfslPath(pathname) ? labEmail : email
   const [open, setOpen] = useState(false)
@@ -248,7 +252,7 @@ export function AfrsChatbot({
 
           {messages.length <= 2 ? (
             <div className="flex flex-wrap gap-2 border-t border-slate-100 bg-white px-3 py-2">
-              {CHATBOT_SUGGESTIONS.map((suggestion) => (
+              {suggestionList.map((suggestion) => (
                 <button
                   key={suggestion}
                   type="button"

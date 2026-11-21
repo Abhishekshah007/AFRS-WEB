@@ -1,25 +1,5 @@
 import type { HubEventCard } from '@/components/programmes/types'
 
-/** Display label for event type pills (Figma uses "FDP" for training programmes). */
-export function eventTypeDisplayLabel(eventType: string): string {
-  const map: Record<string, string> = {
-    workshop: 'Workshop',
-    conference: 'Conference',
-    training: 'Training',
-    fdp: 'FDP',
-    internship: 'Internship',
-    webinar: 'Webinar',
-    'professional-training-program': 'Professional Training Program',
-    'professional-internship-program': 'Professional Internship Program',
-    'professional-workshop-program': 'Professional Workshop Program',
-    'capsule-training-program': 'Capsule Training Program',
-    'police-training-program': 'Police Training Program',
-    'certificate-course': 'Certificate Course',
-    'foundation-certificate-course': 'Foundation Certificate Course',
-  }
-  return map[eventType] ?? eventType.charAt(0).toUpperCase() + eventType.slice(1)
-}
-
 export const eventTypeBadgeClass: Record<string, string> = {
   workshop: 'bg-brand-500 text-white',
   conference: 'bg-brand-700 text-white',

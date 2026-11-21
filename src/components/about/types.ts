@@ -71,6 +71,10 @@ export type AboutSectionText = {
   awardsImageAlt1?: string | null
   awardsImageAlt2?: string | null
   awardsImageAlt3?: string | null
+  audienceEyebrow?: string | null
+  audienceTitle?: string | null
+  audienceBadge?: string | null
+  audienceRows?: { audience?: string | null; why?: string | null }[] | null
   membershipReasons?: string[] | null
   certifications?: CertificationItem[] | null
   uniqueItems?: ListItem[] | null

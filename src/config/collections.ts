@@ -1,4 +1,6 @@
 import { Articles } from '../collections/Articles'
+import { ArticleCategories } from '../collections/ArticleCategories'
+import { EventTypes } from '../collections/EventTypes'
 import { AboutCertifications } from '../collections/AboutCertifications'
 import { Founders } from '../collections/Founders'
 import { ContactMessages } from '../collections/ContactMessages'
@@ -24,6 +26,7 @@ import { Programmes } from '../collections/Programmes'
 export const collections = [
   // Content
   Articles,
+  ArticleCategories,
   AboutCertifications,
   Founders,
   Services,
@@ -37,6 +40,7 @@ export const collections = [
   PartnersLogo,
   // Events & Programmes
   Events,
+  EventTypes,
   ProgrammeCategories,
   Programmes,
   EventRegistrations,

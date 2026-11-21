@@ -141,7 +141,12 @@ export function AboutPageView({
         variant="compact"
       />
 
-      <TargetAudienceTable />
+      <TargetAudienceTable
+        eyebrow={sectionText.audienceEyebrow}
+        title={sectionText.audienceTitle}
+        badge={sectionText.audienceBadge}
+        rows={sectionText.audienceRows}
+      />
 
       <AboutPillarsSection
         qualityEthicsItems={qualityEthicsItems}
@@ -185,8 +190,8 @@ export function AboutPageView({
       <SiteGallerySection
         items={galleryItems}
         size="compact"
-        title="Awards & Recognition"
-        subtitle=""
+        title={sectionText.awardsTitle?.trim() || 'Awards & Recognition'}
+        subtitle={sectionText.awardsSubtitle?.trim() ?? ''}
       />
     </div>
   )
