@@ -12,16 +12,20 @@ import { DEFAULT_REGISTRATION_SECTIONS } from '@/fields/dynamicFormSections'
 import type { Event as AfrsEvent, Media, RegistrationForm } from '@/payload-types'
 import type { Metadata } from 'next'
 import { isEventRegistrationOpen } from '@/lib/registration/isEventRegistrationOpen'
+import { eventShareMetadata, findPublishedEventBySlug } from '@/lib/seo/eventMetadata'
 
 type Props = { params: Promise<{ slug: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  return {
-    title: `Register: ${slug}`,
-    description: 'Complete event registration. This page is not indexed.',
-    robots: { index: false, follow: false },
-  }
+  const evt = await findPublishedEventBySlug(slug)
+  if (!evt) return { title: 'Event not found', robots: { index: false, follow: false } }
+  // Kept out of search results, but shared links still get the event poster and title.
+  return eventShareMetadata(evt, {
+    path: `/events/${evt.slug}/register`,
+    titlePrefix: 'Register: ',
+    index: false,
+  })
 }
 
 export default async function EventRegisterPage({ params }: Props) {

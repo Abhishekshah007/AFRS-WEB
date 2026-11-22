@@ -3037,7 +3037,7 @@ export interface ProgrammesCatalog {
     description?: string | null;
   };
   /**
-   * Used only by the built-in archive rows (when "Archive sidebar" is empty).
+   * No longer used: archive rows now link to their matching events automatically. Kept so existing data is not lost.
    */
   archiveFilterLinks: {
     nationalEvents: string;

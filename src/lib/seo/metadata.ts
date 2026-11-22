@@ -101,6 +101,19 @@ export function articleShareImageUrl(
   return absoluteUrl(articleGeneratedImagePath(title, category, categoryLabel))
 }
 
+/**
+ * Share-friendly version of an event poster: whole image kept (no crop), at most
+ * 1200px, compressed JPEG. Large original posters (several MB) are often skipped by
+ * WhatsApp's link preview, which then shows no thumbnail.
+ */
+export function optimizePosterSocialImage(imageUrl: string): string {
+  const match = imageUrl.match(/^(https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\/)(.+)$/)
+  if (!match) return imageUrl
+  const [baseUrl, assetPath] = match.slice(1)
+  if (assetPath.split('/')[0].includes(',')) return imageUrl
+  return `${baseUrl}f_jpg,q_auto:good,w_1200,h_1200,c_limit/${assetPath}`
+}
+
 export function optimizeArticleSocialImage(imageUrl: string): string {
   const match = imageUrl.match(
     /^(https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\/)(.+)$/,

@@ -6,14 +6,12 @@ import {
   formatEventDate,
   renderRichTextHtml,
   resolveMediaUrl,
-  resolveMediaUrlOptional,
   richTextToPlain,
 } from '@/lib/cms'
 import type { Event as AfrsEvent, Media } from '@/payload-types'
-import { buildPageMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { breadcrumbList, withContext } from '@/lib/seo/schema'
-import { clipMeta } from '@/lib/seo/site'
+import { eventShareMetadata, findPublishedEventBySlug } from '@/lib/seo/eventMetadata'
 import { resolveEventType } from '@/lib/taxonomy'
 import { categoriesToFeeTiers, formatFeeAmount } from '@/lib/registration/resolveConfig'
 import { isEventRegistrationOpen } from '@/lib/registration/isEventRegistrationOpen'
@@ -39,22 +37,9 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const payload = await getPayloadClient()
-  const result = await payload.find({
-    collection: 'events',
-    where: { slug: { equals: slug }, published: { equals: true } },
-    limit: 1,
-    depth: 1,
-    overrideAccess: false,
-  })
-  const evt = result.docs[0] as AfrsEvent | undefined
+  const evt = await findPublishedEventBySlug(slug)
   if (!evt) return { title: 'Event not found', robots: { index: false, follow: false } }
-  return buildPageMetadata({
-    title: evt.title,
-    description: clipMeta(evt.excerpt || richTextToPlain(evt.description, 160) || evt.title, 160),
-    path: `/events/${evt.slug}`,
-    image: resolveMediaUrlOptional(evt.banner as number | Media | null | undefined),
-  })
+  return eventShareMetadata(evt, { path: `/events/${evt.slug}` })
 }
 
 export default async function EventDetailPage({ params }: Props) {

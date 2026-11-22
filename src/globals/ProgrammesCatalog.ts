@@ -175,7 +175,8 @@ export const ProgrammesCatalog: GlobalConfig = {
       name: 'archiveFilterLinks',
       type: 'group',
       admin: {
-        description: 'Used only by the built-in archive rows (when "Archive sidebar" is empty).',
+        description:
+          'No longer used: archive rows now link to their matching events automatically. Kept so existing data is not lost.',
       },
       fields: [
         {

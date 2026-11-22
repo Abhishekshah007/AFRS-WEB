@@ -66,7 +66,7 @@ describe('Home page sections from the CMS', () => {
 
 describe('Programmes and SEO data from the CMS', () => {
   it('builds archive links from row filters', () => {
-    expect(archiveRowHref({ label: 'Workshops', eventTypeSlug: 'workshop' })).toBe(
+    expect(archiveRowHref({ label: 'Workshops', eventTypeSlugs: ['workshop'] })).toBe(
       '/courses/events?schedule=completed&type=workshop',
     )
     expect(archiveRowHref({ label: 'National', nature: 'national' })).toBe(
@@ -83,5 +83,30 @@ describe('Programmes and SEO data from the CMS', () => {
 
   it('no longer ships the placeholder "123 Forensic Lane" address', () => {
     expect(JSON.stringify(defaultPrivacyPage)).not.toContain('123 Forensic Lane')
+  })
+})
+
+describe('event share previews', () => {
+  it('gives the /register link the event poster and title (not the site logo)', async () => {
+    const { eventShareMetadata } = await import('@/lib/seo/eventMetadata')
+    const meta = eventShareMetadata(
+      {
+        id: 7,
+        title: 'Fingerprint Examination & Analysis',
+        slug: 'fingerprint-workshop',
+        excerpt: 'Five-day online workshop.',
+        banner: { id: 1, url: 'https://res.cloudinary.com/demo/image/upload/v1/poster.png' },
+        startDate: '2026-11-27T00:00:00.000Z',
+        updatedAt: '',
+        createdAt: '',
+      } as unknown as import('@/payload-types').Event,
+      { path: '/events/fingerprint-workshop/register', titlePrefix: 'Register: ', index: false },
+    )
+    const images = meta.openGraph?.images as { url: string }[]
+    expect(images[0].url).toBe(
+      'https://res.cloudinary.com/demo/image/upload/f_jpg,q_auto:good,w_1200,h_1200,c_limit/v1/poster.png',
+    )
+    expect(meta.title).toBe('Register: Fingerprint Examination & Analysis')
+    expect(meta.robots).toEqual({ index: false, follow: false })
   })
 })

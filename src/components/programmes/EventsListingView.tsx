@@ -14,14 +14,17 @@ export type EventsListingViewProps = {
   completed: HubEventCard[]
   initialSchedule: 'upcoming' | 'ongoing' | 'completed'
   initialNature?: 'national' | 'international' | 'all'
-  initialType?: string
-  /** Display name of `initialType` from the CMS event types. */
+  /** Event type slugs from ?type= (already applied on the server). */
+  initialTypes?: string[]
+  /** Display name for the type filter chip (archive row name or event type names). */
   initialTypeLabel?: string
   /** Hero copy from Course site settings → Online Events Hub. */
   hero?: { eyebrow: string; title: string; description: string }
 }
 
 type Tab = 'upcoming' | 'ongoing' | 'completed'
+
+const NO_TYPES: string[] = []
 
 /**
  * Full-page Online Events Hub with filters and Figma-aligned cards.
@@ -32,7 +35,7 @@ export function EventsListingView({
   completed,
   initialSchedule,
   initialNature = 'all',
-  initialType,
+  initialTypes = NO_TYPES,
   initialTypeLabel,
   hero,
 }: EventsListingViewProps) {
@@ -42,14 +45,14 @@ export function EventsListingView({
     const list = tab === 'upcoming' ? upcoming : tab === 'ongoing' ? ongoing : completed
     return list.filter((evt) => {
       if (initialNature !== 'all' && evt.eventNature !== initialNature) return false
-      if (initialType && evt.eventType !== initialType) return false
+      if (initialTypes.length && !initialTypes.includes(evt.eventType)) return false
       return true
     })
-  }, [tab, upcoming, ongoing, completed, initialNature, initialType])
+  }, [tab, upcoming, ongoing, completed, initialNature, initialTypes])
 
   const filterLabel = [
     initialNature !== 'all' ? initialNature : null,
-    initialType ? (initialTypeLabel ?? initialType) : null,
+    initialTypes.length ? (initialTypeLabel ?? initialTypes.join(', ')) : null,
     tab === 'upcoming' ? 'upcoming' : tab === 'ongoing' ? 'ongoing' : 'completed',
   ]
     .filter(Boolean)
@@ -90,7 +93,7 @@ export function EventsListingView({
                       : 'Register for upcoming and ongoing AFRS events, workshops, conferences, and faculty development programmes to enhance your skills and knowledge.'}
                   </p>
                 </div>
-                {(initialNature !== 'all' || initialType) && (
+                {(initialNature !== 'all' || initialTypes.length > 0) && (
                   <div className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-xs text-slate-500">
                     Filtered:{' '}
                     <span className="font-semibold capitalize text-slate-800">{filterLabel}</span>
