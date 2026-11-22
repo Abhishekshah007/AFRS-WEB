@@ -1,7 +1,7 @@
 import { EventsListingView } from '@/components/programmes/EventsListingView'
-import { fetchProgrammeHubEvents } from '@/lib/programmeEvents'
+import { fetchProgrammeHubEvents, parseEventTypes } from '@/lib/programmeEvents'
 import { getEventTypes } from '@/lib/queries/taxonomies'
-import { getProgrammePagesCopy } from '@/lib/queries/programme-pages'
+import { DEFAULT_ARCHIVE_ROWS, getProgrammePagesCopy } from '@/lib/queries/programme-pages'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 import type { Metadata } from 'next'
 
@@ -32,14 +32,27 @@ export default async function ProgrammeEventsPage({ searchParams }: Props) {
   const initialNature =
     nature === 'national' || nature === 'international' ? nature : ('all' as const)
 
+  // ?type= may list several slugs (archive rows group related types, e.g. internships).
+  const types = parseEventTypes(type)
+
   const [{ upcoming, ongoing, completed }, eventTypes, copy] = await Promise.all([
     fetchProgrammeHubEvents({
       nature: initialNature === 'all' ? undefined : initialNature,
-      type: type || undefined,
+      type: types,
     }),
     getEventTypes(),
     getProgrammePagesCopy(),
   ])
+
+  // Label for the "Filtered:" chip: the archive row's name when the types match one,
+  // otherwise the event type names.
+  const archiveRows = copy.archiveRows.length > 0 ? copy.archiveRows : DEFAULT_ARCHIVE_ROWS
+  const sameTypes = (a: string[] = [], b: string[]) =>
+    a.length === b.length && a.every((slug) => b.includes(slug))
+  const typeLabel = types.length
+    ? (archiveRows.find((row) => sameTypes(row.eventTypeSlugs, types))?.label ??
+      types.map((slug) => eventTypes.find((item) => item.slug === slug)?.label ?? slug).join(', '))
+    : undefined
 
   return (
     <EventsListingView
@@ -48,9 +61,9 @@ export default async function ProgrammeEventsPage({ searchParams }: Props) {
       completed={completed}
       initialSchedule={initialSchedule}
       initialNature={initialNature}
-      initialType={type}
+      initialTypes={types}
       hero={copy.eventsHub}
-      initialTypeLabel={eventTypes.find((item) => item.slug === type)?.label}
+      initialTypeLabel={typeLabel}
     />
   )
 }

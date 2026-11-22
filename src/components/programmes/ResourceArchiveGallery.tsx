@@ -44,9 +44,7 @@ function isModalDialog(dialog: HTMLDialogElement): boolean {
 
 /** Let ctrl/cmd/shift/middle-clicks open the profile URL in a new tab as usual. */
 function isPlainLeftClick(event: MouseEvent<HTMLAnchorElement>): boolean {
-  return (
-    event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey
-  )
+  return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey
 }
 
 /**
@@ -430,7 +428,7 @@ function PersonModalProfile({
       <div className="bg-slate-50 p-8">
         <PersonAvatar person={person} size="lg" />
         {person.title && (
-          <p className="mt-5 text-xs font-extrabold tracking-[0.18em] text-[var(--prog-primary)]">
+          <p className="mt-5 text-xs font-extrabold tracking-[0.18em] text-justify text-[var(--prog-primary)]">
             {person.title}
           </p>
         )}

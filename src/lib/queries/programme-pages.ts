@@ -11,8 +11,32 @@ export { DEFAULT_EVENTS_HUB_HERO, DEFAULT_EVENTS_PAGE_HERO }
 export type ArchiveRowConfig = {
   label: string
   nature?: 'national' | 'international'
-  eventTypeSlug?: string
+  /** Empty = every event type. */
+  eventTypeSlugs?: string[]
 }
+
+/**
+ * Built-in Archive rows (used when Course site settings → Archive sidebar is empty).
+ * Related types are grouped so e.g. "Professional Internship Program" counts as an
+ * internship.
+ */
+export const DEFAULT_ARCHIVE_ROWS: ArchiveRowConfig[] = [
+  { label: 'National Events', nature: 'national' },
+  { label: 'International Events', nature: 'international' },
+  { label: 'Workshops', eventTypeSlugs: ['workshop', 'professional-workshop-program'] },
+  {
+    label: 'Training Programs',
+    eventTypeSlugs: [
+      'training',
+      'professional-training-program',
+      'capsule-training-program',
+      'police-training-program',
+    ],
+  },
+  { label: 'Internships', eventTypeSlugs: ['internship', 'professional-internship-program'] },
+  { label: 'Faculty Development Programs', eventTypeSlugs: ['fdp'] },
+  { label: 'Conferences', eventTypeSlugs: ['conference'] },
+]
 
 const text = (value: string | null | undefined, fallback: string) => value?.trim() || fallback
 
@@ -38,7 +62,10 @@ export const getProgrammePagesCopy = cache(async () => {
     .map((row) => ({
       label: row.label.trim(),
       nature: row.nature === 'national' || row.nature === 'international' ? row.nature : undefined,
-      eventTypeSlug: resolveEventType(row.eventType)?.slug,
+      eventTypeSlugs: (() => {
+        const slug = resolveEventType(row.eventType)?.slug
+        return slug ? [slug] : undefined
+      })(),
     }))
 
   return {
@@ -65,6 +92,6 @@ export const getProgrammePagesCopy = cache(async () => {
 export function archiveRowHref(row: ArchiveRowConfig): string {
   const params = new URLSearchParams({ schedule: 'completed' })
   if (row.nature) params.set('nature', row.nature)
-  if (row.eventTypeSlug) params.set('type', row.eventTypeSlug)
+  if (row.eventTypeSlugs?.length) params.set('type', row.eventTypeSlugs.join(','))
   return `/courses/events?${params.toString()}`
 }
