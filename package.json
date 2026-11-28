@@ -30,6 +30,7 @@
     "@payloadcms/ui": "3.82.1",
     "@tailwindcss/postcss": "^4.2.2",
     "@tailwindcss/typography": "^0.5.19",
+    "@vercel/analytics": "^2.0.1",
     "cloudinary": "2.10.0",
     "cross-env": "^7.0.3",
     "docx": "^9.7.1",

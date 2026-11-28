@@ -12,6 +12,7 @@ import { DEFAULT_LAB_EMAIL } from '@/data/defaults/siteContact'
 import { VisitorTracker } from '@/components/site/VisitorTracker'
 import { ContentInteractionGuard } from '@/components/security/ContentInteractionGuard'
 import { resolveTotalVisitors } from '@/lib/site/totalVisitors'
+import { Analytics } from '@vercel/analytics/next'
 import './styles.css'
 
 // Body text - clean, readable, professional
@@ -152,6 +153,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           siteSettings={siteSettings}
           socialMediaLinks={headerSettings}
         />
+        <Analytics />
       </body>
     </html>
   )
